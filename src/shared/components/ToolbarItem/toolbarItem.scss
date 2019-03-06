@@ -1,0 +1,24 @@
+.toolbar-templates {
+  .toolbar-item {
+    float: left;
+    width: 48px;
+    display: inline-block;
+
+    img {
+      padding: 9px 12px;
+    }
+
+    img.active {
+      visibility: visible;
+    }
+
+    :hover {
+      cursor: pointer;
+    }
+  }
+
+  .toolbar-item.active {
+    background: #24446A;
+    opacity: 0.06;
+  }
+}
