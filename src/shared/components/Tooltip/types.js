@@ -1,7 +1,6 @@
 // @flow
 import type { Element } from 'react';
 
-
 export type State = {
   arrowRef: HTMLSpanElement | null,
   open: boolean,

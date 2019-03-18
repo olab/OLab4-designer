@@ -10,17 +10,18 @@ import * as serviceWorker from './serviceWorker';
 
 import App from './app';
 
+const target = document.getElementById('root'); // eslint-disable-line
 
-const target = document.querySelector('#root'); // eslint-disable-line no-undef
-
-ReactDOM.render(
+const Root = (
   <Provider store={store}>
     <ConnectedRouter history={history}>
       <App />
     </ConnectedRouter>
-  </Provider>,
-  target,
+  </Provider>
 );
+
+ReactDOM.render(Root, target);
+
 serviceWorker.register();
 
 // If you want your app to work offline and load faster, you can change

@@ -1,136 +1,59 @@
 // @flow
+import type {
+  Store as StoreType,
+  Constructor as ConstructorType,
+} from '../types';
 
-export type UserData = {
-  id: string,
-  name: string,
-  username: string,
-};
+import sample from '../helpers/nodes_sample';
 
-export type AuthData = {
-  token: string,
-};
-
-export type User = {
-  isAuth: boolean,
-  errorMessage: string,
-  data: UserData,
-  authData: AuthData,
-  isFetching: boolean,
-};
-
-export type NodeData = {
-  id: number,
-  map_id: number,
-  title: string,
-  type_id: number,
-  x: number,
-  y: number,
-  color: string,
-  text: string,
-  links: Array<{}>,
-  destination_id: number,
-  style_id: number,
-  type_id: number,
-};
-
-export type Node = {
-  isSelected: boolean,
-  expand: boolean,
-  locked: boolean,
-  data: NodeData,
-};
-
-export type ToolbarItem = {
-  id: string,
-  name: string,
-  icon: string,
-  mouseIcon: string,
-  order: number,
-  label: string,
-  onClick?: Function,
-};
-
-export type ToolbarGroup = {
-  id: string,
-  order: number,
-  itemList: Array<ToolbarItem>,
-};
-
-export type Constructor = {
-  currentTool: string,
+export const initialConstructorState: ConstructorType = {
+  currentTool: 'arrow',
   zoom: {
-    index: number,
-    zoomStep: number,
-    maxZoom: number,
-    minZoom: number,
+    index: 50,
+    zoomStep: 1,
+    maxZoom: 150,
+    minZoom: 15,
+    zoomControlsRef: {
+      current: null,
+    },
   },
-  selectedNodes: Array<Node>,
   autoSave: {
-    enabled: boolean,
-    interval: number,
+    enabled: true,
+    interval: 30000,
+  },
+  graph: {
+    undo: [],
+    current: {
+      nodes: sample.nodes,
+      edges: sample.edges,
+    },
+    redo: [],
   },
 };
 
-export type Map = {
-  id: number,
-  name: string,
-  abstract: string,
-  keywords: string,
-  enabled: boolean,
-};
-
-export type App = {
-  loadingState: Array<{
-    id: string,
-    isLoading: boolean,
-  }>,
-};
-
-export type ScopedObjects = Array<{
-  id: number,
-  name: string,
-  type: string,
-}>;
-
-export type Store = {
-  user: User,
-  constructor: Constructor,
-  maps: Array<Map>,
-  map: Map,
-  nodes: Array<Node>,
-  node: Node,
-  app: App,
-  scopedObjects: ScopedObjects,
-};
-
-const initialState: Store = {
+const initialState: StoreType = {
   user: {
     isAuth: false,
     errorMessage: '',
-    data: {},
+    data: {
+      id: null,
+      name: '',
+      username: '',
+    },
     authData: {
       token: '',
     },
     isFetching: false,
   },
-  constructor: {
-    currentTool: 'arrow',
-    zoom: {
-      index: 50,
-      zoomStep: 1,
-      maxZoom: 100,
-      minZoom: 1,
-    },
-    selectedNodes: [],
-    autoSave: {
-      enabled: true,
-      interval: 30000,
-    },
-  },
+  constructor: initialConstructorState,
   maps: [],
-  map: {},
-  nodes: [],
-  node: {},
+  map: {
+    id: null,
+    name: '',
+    abstract: '',
+    keywords: '',
+    enabled: false,
+  },
   app: {
     loadingState: [],
   },

@@ -10,7 +10,6 @@ import './App.scss';
 import Login from './Pages/Login';
 import Constructor from './Pages/Constructor';
 
-
 type Props = {
   isAuth: boolean,
 };
@@ -39,7 +38,7 @@ class App extends Component<Props, State> {
             {!isAuth && <Link to="/login" className="App-route-link">Login</Link>}
           </header>
           <Switch>
-            <Route exact path="/" component={() => <Constructor />} />
+            <Route exact path="/" component={Constructor} />
             <Route path="/login" component={Login} />
           </Switch>
         </div>

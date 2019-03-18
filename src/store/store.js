@@ -3,20 +3,23 @@ import {
 } from 'redux';
 import { connectRouter, routerMiddleware } from 'connected-react-router';
 import createSagaMiddleware from 'redux-saga';
-import createHistory from 'history/createBrowserHistory';
+import { createBrowserHistory } from 'history';
+
+import undoRedoMiddleware from './undoRedoMiddleware';
 
 import rootReducer from './rootReducer';
 import rootSaga from './rootSaga';
 import initialState from './initialState';
 
 
-export const history = createHistory();
+export const history = createBrowserHistory();
 const sagaMiddleware = createSagaMiddleware();
 
 const enhancers = [];
 const middleware = [
   sagaMiddleware,
   routerMiddleware(history),
+  undoRedoMiddleware,
 ];
 
 if (process.env.NODE_ENV === 'development') {

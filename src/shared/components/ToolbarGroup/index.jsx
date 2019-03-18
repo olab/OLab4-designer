@@ -1,30 +1,15 @@
 // @flow
-import React, { Component } from 'react';
+import React from 'react';
 
-import type { ToolbarGroup as ToolbarGroupType } from '../../../store/initialState';
+import type { ToolbarGroup as ToolbarGroupType } from '../../../types';
 import ToolbarItem from '../ToolbarItem';
 
 import './toolbarGroup.scss';
 
-
-type Props = {
-  group: ToolbarGroupType,
-};
-
-type State = {
-  expand: string,
-};
-
-class ToolbarGroup extends Component<Props, State> {
-  render() {
-    const { group } = this.props;
-
-    return (
-      <div key={group.id} className="toolbar-group">
-        {group.itemList.map(item => <ToolbarItem key={item.id} item={item} />)}
-      </div>
-    );
-  }
-}
+const ToolbarGroup = ({ group }: { group: ToolbarGroupType }) => (
+  <div key={group.id} className="toolbar-group">
+    {group.itemList.map(item => <ToolbarItem key={item.id} item={item} />)}
+  </div>
+);
 
 export default ToolbarGroup;

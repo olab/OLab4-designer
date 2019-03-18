@@ -3,16 +3,15 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Fullscreen from 'react-full-screen';
 
-import ToolbarTemplates from '../../Toolbars';
+import ToolbarTemplates from '../../Toolbars/Templates';
 import Graph from './Graph';
 
 import './constructor.scss';
 
-
 type Props = {};
 
 type State = {
-  isFullScreen: boolean,
+  isFullScreen: boolean;
 };
 
 class Constructor extends Component<Props, State> {
@@ -24,13 +23,12 @@ class Constructor extends Component<Props, State> {
     };
   }
 
-  changeIsFullScreen = (isFullScreen: boolean) => {
+  changeIfFullScreen = (isFullScreen: boolean) => {
     this.setState({ isFullScreen });
   };
 
-  toggleFullscreen = () => {
-    const { isFullScreen } = this.state;
-    this.setState({ isFullScreen: !isFullScreen });
+  toggleFullScreen = () => {
+    this.setState(({ isFullScreen }) => ({ isFullScreen: !isFullScreen }));
   };
 
   render() {
@@ -40,14 +38,19 @@ class Constructor extends Component<Props, State> {
       <div className="constructor">
         <Fullscreen
           enabled={isFullScreen}
-          onChange={isFull => this.changeIsFullScreen(isFull)}
+          onChange={this.changeIfFullScreen}
         >
           <div className="full-screenable-node">
+
             <ToolbarTemplates
-              fullscreenHandle={this.toggleFullscreen}
+              fullscreenHandle={this.toggleFullScreen}
               isFullScreen={isFullScreen}
             />
-            <Graph isFullScreen={isFullScreen} />
+
+            <Graph
+              isFullScreen={isFullScreen}
+            />
+
           </div>
         </Fullscreen>
       </div>
@@ -55,8 +58,4 @@ class Constructor extends Component<Props, State> {
   }
 }
 
-const mapStateToProps = state => ({
-  constructor: state.constructor,
-});
-
-export default connect(mapStateToProps)(Constructor);
+export default connect()(Constructor);

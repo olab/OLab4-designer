@@ -1,9 +1,16 @@
 // @flow
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import classNames from 'classnames';
 import { AppBar } from '@material-ui/core';
+import { GraphUndoRedoButtons } from 'react-digraph';
 
-import type { Props, State } from './types';
+import type {
+  Props,
+  State,
+} from './types';
+
+import * as actions from '../../Pages/Constructor/Graph/action';
 
 import ToolbarGroup from '../../../shared/components/ToolbarGroup';
 
@@ -17,7 +24,6 @@ import redoIcon from '../../../shared/assets/icons/toolbar/templates/toolbar-red
 import previewIcon from '../../../shared/assets/icons/toolbar/templates/toolbar-preview.png';
 import dropdownIcon
   from '../../../shared/assets/icons/toolbar/templates/toolbar-arrow-dropdown.png';
-import scaleIcon from '../../../shared/assets/icons/toolbar/templates/toolbar-scale.png';
 import fullscreenIcon from '../../../shared/assets/icons/toolbar/templates/toolbar-fullscreen.png';
 import settingsIcon from '../../../shared/assets/icons/toolbar/templates/toolbar-settings.png';
 import questionIcon from '../../../shared/assets/icons/toolbar/templates/meta-question.png';
@@ -27,7 +33,6 @@ import counterIcon from '../../../shared/assets/icons/toolbar/templates/meta-cou
 import filesIcon from '../../../shared/assets/icons/toolbar/templates/meta-files.png';
 
 import './templates.scss';
-
 
 class Templates extends Component<Props, State> {
   constructor(props: Props) {
@@ -189,17 +194,50 @@ class Templates extends Component<Props, State> {
         ],
       },
     };
+
+    this.zoomControlsRef = React.createRef();
   }
+
+  componentDidMount() {
+    const { ACTION_SET_ZOOM_CONTROLS_REF } = this.props;
+    ACTION_SET_ZOOM_CONTROLS_REF(this.zoomControlsRef);
+  }
+
+  onUndo = () => {
+    const { ACTION_UNDO_GRAPH, isUndoAvailable } = this.props;
+
+    if (!isUndoAvailable) {
+      return;
+    }
+
+    ACTION_UNDO_GRAPH();
+  }
+
+  onRedo = () => {
+    const { ACTION_REDO_GRAPH, isRedoAvailable } = this.props;
+
+    if (!isRedoAvailable) {
+      return;
+    }
+
+    ACTION_REDO_GRAPH();
+  }
+
+  zoomControlsRef: { current: null | HTMLDivElement };
 
   render() {
     const {
       expand, toolbars, history, right, meta, preview,
     } = this.state;
-    const { isFullScreen } = this.props;
+    const {
+      isFullScreen, isUndoAvailable, isRedoAvailable,
+    } = this.props;
 
     const fullScreenClass = classNames({
       'full-screen': isFullScreen,
     });
+
+    console.log('history::', history);
 
     return (
       <div className={`toolbar-templates ${fullScreenClass}`}>
@@ -207,19 +245,21 @@ class Templates extends Component<Props, State> {
           <div className="left">
             <ToolbarGroup group={preview} expand={expand} />
             <ToolbarGroup group={toolbars} expand={expand} />
-            <ToolbarGroup group={history} expand={expand} />
+            <div>
+              <GraphUndoRedoButtons
+                isUndoAvailable={isUndoAvailable}
+                isRedoAvailable={isRedoAvailable}
+                onUndo={this.onUndo}
+                onRedo={this.onRedo}
+              />
+            </div>
           </div>
           <div className="right">
             <div className="name">
               <span className="item">Lab name</span>
               <img alt="show" src={dropdownIcon} className="item" />
             </div>
-            <div className="scale">
-              <span className="separator">|</span>
-              <img alt="scale" src={scaleIcon} className="item" />
-              <span className="item">100%</span>
-              <img alt="show percentage" src={dropdownIcon} className="zoomImg" />
-            </div>
+            <div ref={this.zoomControlsRef} />
             <ToolbarGroup group={right} />
           </div>
         </AppBar>
@@ -231,4 +271,21 @@ class Templates extends Component<Props, State> {
   }
 }
 
-export default Templates;
+const mapStateToProps = ({ constructor: { graph } }) => ({
+  isUndoAvailable: !!graph.undo.length,
+  isRedoAvailable: !!graph.redo.length,
+});
+
+const mapDispatchToProps = dispatch => ({
+  ACTION_SET_ZOOM_CONTROLS_REF: (ref: { current: null | HTMLDivElement }) => {
+    dispatch(actions.ACTION_SET_ZOOM_CONTROLS_REF(ref));
+  },
+  ACTION_UNDO_GRAPH: () => {
+    dispatch(actions.ACTION_UNDO_GRAPH());
+  },
+  ACTION_REDO_GRAPH: () => {
+    dispatch(actions.ACTION_REDO_GRAPH());
+  },
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Templates);

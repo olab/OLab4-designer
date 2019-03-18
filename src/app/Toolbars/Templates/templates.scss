@@ -16,7 +16,7 @@ $toolbar-color: #F0F8FE;
     .right,
     .left {
       display: flex;
-      flex-direction: row;
+      align-items: center;
     }
 
     .name {
@@ -31,17 +31,17 @@ $toolbar-color: #F0F8FE;
       margin-right: 15px;
     }
 
-    .scale {
-      display: flex;
-      align-items: center;
-      font-family: $font-family;
-      line-height: normal;
-      font-size: 14px;
-      letter-spacing: 0.02em;
-      margin-right: 15px;
-      color: #24446A;
-      opacity: 0.6;
-    }
+    // .scale {
+    //   display: flex;
+    //   align-items: center;
+    //   font-family: $font-family;
+    //   line-height: normal;
+    //   font-size: 14px;
+    //   letter-spacing: 0.02em;
+    //   margin-right: 15px;
+    //   color: #24446A;
+    //   opacity: 0.6;
+    // }
 
     .preview {
       width: 48px;

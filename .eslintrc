@@ -8,6 +8,7 @@
     "flowtype"
   ],
   "rules": {
-    "react/prefer-stateless-function": "off"
+    "react/prefer-stateless-function": "off",
+    "no-param-reassign": 0
   }
 }

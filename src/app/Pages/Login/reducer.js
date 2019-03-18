@@ -1,11 +1,14 @@
 // @flow
-import type { UserActions } from './types';
-import { USER_AUTH_FAILED, USER_AUTH_SUCCEEDED, USER_AUTH_REQUESTED } from './types';
-import type { Store } from '../../../store/initialState';
+import {
+  type UserActions,
+  USER_AUTH_FAILED,
+  USER_AUTH_SUCCEEDED,
+  USER_AUTH_REQUESTED,
+} from './types';
+import type { Store as StoreType } from '../../../types';
 import initialState from '../../../store/initialState';
 
-
-const user = (state: Store = initialState, action: UserActions) => {
+const user = (state: StoreType = initialState, action: UserActions) => {
   switch (action.type) {
     case USER_AUTH_REQUESTED:
       return {
