@@ -1,5 +1,5 @@
 const defaultConfig = {
-  baseURL: 'https://demo.olab.ca/api/v2/',
+  baseURL: process.env.API_URL,
   headers: {
     'Content-Type': 'application/json',
   },
