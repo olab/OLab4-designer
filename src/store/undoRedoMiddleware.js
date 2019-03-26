@@ -5,7 +5,7 @@ import {
   CREATE_EDGE,
   CREATE_NODE,
   SAVE_GRAPH_TO_UNDO,
-} from '../app/Pages/Constructor/Graph/types';
+} from '../app/Constructor/types';
 
 const undoRedoMiddleware = store => next => (action) => {
   if ([SWAP_EDGE, DELETE_EDGE, DELETE_NODE, CREATE_EDGE, CREATE_NODE].includes(action.type)) {

@@ -10,7 +10,7 @@ import * as serviceWorker from './serviceWorker';
 
 import App from './app';
 
-const target = document.getElementById('root'); // eslint-disable-line
+const target = document.getElementById('root');
 
 const Root = (
   <Provider store={store}>

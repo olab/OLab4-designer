@@ -1,7 +1,7 @@
 // @flow
 import { fork } from 'redux-saga/effects';
 
-import authUserSaga from '../app/Pages/Login/sagas';
+import authUserSaga from '../app/Login/sagas';
 
 
 export default function* root(): Generator<any, void, void> {

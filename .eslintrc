@@ -7,8 +7,12 @@
   "plugins": [
     "flowtype"
   ],
+  "env": {
+    "browser": true
+  },
   "rules": {
     "react/prefer-stateless-function": "off",
-    "no-param-reassign": 0
+    "no-param-reassign": 0,
+    "react/sort-comp": [0, {}]
   }
 }

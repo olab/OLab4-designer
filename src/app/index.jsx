@@ -5,18 +5,15 @@ import {
 } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-import './App.scss';
+import Login from './Login';
+import Constructor from './Constructor';
 
-import Login from './Pages/Login';
-import Constructor from './Pages/Constructor';
+import type {
+  State,
+  Props,
+} from './types';
 
-type Props = {
-  isAuth: boolean,
-};
-
-type State = {
-  appTitle: string,
-};
+import './index.scss';
 
 class App extends Component<Props, State> {
   state = {
@@ -47,8 +44,6 @@ class App extends Component<Props, State> {
   }
 }
 
-const mapStateToProps = ({ user: { isAuth } }) => ({
-  isAuth,
-});
+const mapStateToProps = ({ user: { isAuth } }) => ({ isAuth });
 
 export default connect(mapStateToProps)(App);

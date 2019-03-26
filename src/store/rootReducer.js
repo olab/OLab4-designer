@@ -5,8 +5,8 @@ import {
   scopedObjects,
 } from '../app/reducers';
 
-import user from '../app/Pages/Login/reducer';
-import constructor from '../app/Pages/Constructor/Graph/reducer';
+import user from '../app/Login/reducer';
+import constructor from '../app/Constructor/reducer';
 
 export default {
   user,

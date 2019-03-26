@@ -1,6 +1,7 @@
 // @flow
-import initialState from '../../store/initialState';
-import type { Store as StoreType } from '../../types';
+import initialState, {
+  type Store as StoreType,
+} from '../../store/initialState';
 
 type FooAction = { type: 'FOO', foo: boolean };
 type BarAction = { type: 'BAR', bar: boolean };

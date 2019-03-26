@@ -1,20 +1,9 @@
-// @flow
 import randomColor from 'randomcolor';
-
-import type {
-  Edge as EdgeType,
-  Node as NodeType,
-} from '../types';
-
-type IGraph = {
-  nodes: Array<NodeType>;
-  edges: Array<EdgeType>;
-};
 
 const ids = [...Array(4)].map((_, i) => Date.now() + i);
 const mapId = Number(ids[0].toString().slice(0, 6));
 
-const sample: IGraph = {
+const sample = {
   edges: [
     {
       isSelected: false,

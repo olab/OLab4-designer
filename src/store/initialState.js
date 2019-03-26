@@ -1,50 +1,42 @@
 // @flow
-import type {
-  Store as StoreType,
-  Constructor as ConstructorType,
-} from '../types';
+import { initialUserState } from '../app/Login/reducer';
+import { initialConstructorState } from '../app/Constructor/reducer';
 
-import sample from '../helpers/nodes_sample';
+import type { Constructor as ConstructorType } from '../app/Constructor/types';
+import type { User as UserType } from '../app/Login/types';
 
-export const initialConstructorState: ConstructorType = {
-  currentTool: 'arrow',
-  zoom: {
-    index: 50,
-    zoomStep: 1,
-    maxZoom: 150,
-    minZoom: 15,
-    zoomControlsRef: {
-      current: null,
-    },
-  },
-  autoSave: {
-    enabled: true,
-    interval: 30000,
-  },
-  graph: {
-    undo: [],
-    current: {
-      nodes: sample.nodes,
-      edges: sample.edges,
-    },
-    redo: [],
-  },
+export type Map = {
+  id: number | null,
+  name: string,
+  abstract: string,
+  keywords: string,
+  enabled: boolean,
 };
 
-const initialState: StoreType = {
-  user: {
-    isAuth: false,
-    errorMessage: '',
-    data: {
-      id: null,
-      name: '',
-      username: '',
-    },
-    authData: {
-      token: '',
-    },
-    isFetching: false,
-  },
+export type App = {
+  loadingState: Array<{
+    id: string,
+    isLoading: boolean,
+  }>,
+};
+
+export type ScopedObjects = Array<{
+  id: number,
+  name: string,
+  type: string,
+}>;
+
+export type Store = {
+  user: UserType,
+  constructor: ConstructorType,
+  maps: Array<Map>,
+  map: Map,
+  app: App,
+  scopedObjects: ScopedObjects,
+};
+
+const initialState: Store = {
+  user: initialUserState,
   constructor: initialConstructorState,
   maps: [],
   map: {
