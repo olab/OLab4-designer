@@ -85,7 +85,7 @@ export class Edge extends React.Component<IEdgeProps> {
       height: 0,
     };
 
-    const defEndArrowElement: any = viewWrapperElem.querySelector('defs>marker>.arrow');
+    const defEndArrowElement: HTMLElement = viewWrapperElem.querySelector('defs>marker>.arrow');
     return defEndArrowElement ? defEndArrowElement.getBoundingClientRect() : emptyRect;
   }
 
@@ -175,7 +175,6 @@ export class Edge extends React.Component<IEdgeProps> {
    * @param {*} defSvgRotatedRectElement
    * @param {*} src
    * @param {*} trg
-   * @param {boolean} includesArrow
    * @param {(HTMLDivElement | HTMLDocument)} [viewWrapperElem=document]
    * @returns
    * @memberof Edge
@@ -184,11 +183,8 @@ export class Edge extends React.Component<IEdgeProps> {
     defSvgRotatedRectElement: any,
     src: any,
     trg: any,
-    includesArrow: boolean,
-    viewWrapperElem: HTMLDivElement | HTMLDocument = document,
   ) {
     const response = Edge.getDefaultIntersectResponse();
-    const arrowSize = Edge.getArrowSize(viewWrapperElem);
     const clientRect = defSvgRotatedRectElement.getBoundingClientRect();
 
     const widthAttr = defSvgRotatedRectElement.getAttribute('width');
@@ -249,29 +245,15 @@ export class Edge extends React.Component<IEdgeProps> {
     );
 
     if (pathIntersect.points.length > 0) {
-      let arrowWidth = 0;
-      let arrowHeight = 0;
-
       const [intersectPoint] = pathIntersect.points;
       const xIntersect = intersectPoint.x;
       const yIntersect = intersectPoint.y;
-      if (xIntersect > left && xIntersect < right && yIntersect > trgY) {
-        // arrow points to the bottom of the node
-        arrowHeight = arrowSize.height;
-      } else if (xIntersect > left && xIntersect < right && yIntersect < trgY) {
-        // arrow points to the top of the node
-        arrowHeight = -arrowSize.height;
-      } else if (yIntersect > top && yIntersect < bottom && xIntersect < trgX) {
-        // arrow points to the left of the node
-        arrowWidth = -arrowSize.width;
-      } else {
-        // arrow points to the right of the node
-        arrowWidth = arrowSize.width;
-      }
-      response.xOff = trgX - xIntersect - (includesArrow ? arrowWidth / 1.25 : 0);
-      response.yOff = trgY - yIntersect - (includesArrow ? arrowHeight / 1.25 : 0);
+
+      response.xOff = trgX - xIntersect;
+      response.yOff = trgY - yIntersect;
       response.intersect = intersectPoint;
     }
+
     return response;
   }
 
@@ -282,7 +264,6 @@ export class Edge extends React.Component<IEdgeProps> {
    * @param {*} defSvgPathElement
    * @param {*} src
    * @param {*} trg
-   * @param {boolean} [includesArrow=true]
    * @param {(HTMLDivElement | HTMLDocument)} [viewWrapperElem=document]
    * @returns
    * @memberof Edge
@@ -293,16 +274,10 @@ export class Edge extends React.Component<IEdgeProps> {
     defSvgPathElement: any,
     src: any,
     trg: any,
-    includesArrow?: boolean = true,
-    viewWrapperElem: HTMLDivElement | HTMLDocument = document,
   ) {
     const response = Edge.getDefaultIntersectResponse();
-    const arrowSize = Edge.getArrowSize(viewWrapperElem);
-    // get the rectangular area around path
-    const clientRect = defSvgPathElement.getBoundingClientRect();
+    const { width: w, height: h } = defSvgPathElement.getBoundingClientRect();
 
-    const w = clientRect.width;
-    const h = clientRect.height;
     const trgX = trg.x || 0;
     const trgY = trg.y || 0;
     const srcX = src.x || 0;
@@ -310,19 +285,14 @@ export class Edge extends React.Component<IEdgeProps> {
 
     // calculate the positions of each corner relative to the trg position
     const top = trgY - h / 2;
-    const bottom = trgY + h / 2;
+    // const bottom = trgY + h / 2;
     const left = trgX - w / 2;
-    const right = trgX + w / 2;
+    // const right = trgX + w / 2;
 
     // modify the d property to add top and left to the x and y positions
     let d = defSvgPathElement.getAttribute('d');
-    if (!/^M/.test(d)) {
-      // doesn't look like what we expect.
-      // TODO: add more use cases than simple moveTo commands
-      return {};
-    }
-
     d = d.replace(/^M /, '');
+
     let dArr = d.split(' ');
     dArr = dArr.map((val, index) => {
       let isEnd = false;
@@ -342,39 +312,20 @@ export class Edge extends React.Component<IEdgeProps> {
         d: `M ${dArr.join(' ')}`,
       }),
       shape('line', {
-        x1: srcX, y1: srcY, x2: trgX, y2: trgY,
+        x1: srcX,
+        y1: srcY,
+        x2: trgX,
+        y2: trgY,
       }),
     );
 
     if (pathIntersect.points.length > 0) {
-      let arrowWidth = 0;
-      let arrowHeight = 0;
-      let multiplier = 1;
       const [intersectPoint] = pathIntersect.points;
       const xIntersect = intersectPoint.x;
       const yIntersect = intersectPoint.y;
-      if (xIntersect > left && xIntersect < right) {
-        const yIntersectDiff = yIntersect - trgY;
-        multiplier = yIntersect < trgY ? -1 : 1;
 
-        arrowHeight = arrowSize.height * multiplier;
-        // Math.min is used to find a percentage of the arrow size
-        // as the arrow approaches a horizontal or vertical vector
-        // Math.abs is used to force the diff to be positive,
-        // because we're using a multiplier instead and Math.min would choose a large
-        // negative number as the minimum, which is undesirable.
-        arrowHeight *= Math.min(Math.abs(yIntersectDiff), 1);
-      }
-      if (yIntersect > top && yIntersect < bottom) {
-        const xIntersectDiff = xIntersect - trgX;
-        multiplier = xIntersect < trgX ? -1 : 1;
-
-        arrowWidth = arrowSize.width * multiplier;
-        arrowWidth *= Math.min(Math.abs(xIntersectDiff), 1);
-      }
-
-      response.xOff = trgX - xIntersect - (includesArrow ? arrowWidth / 1.25 : 0);
-      response.yOff = trgY - yIntersect - (includesArrow ? arrowHeight / 1.25 : 0);
+      response.xOff = trgX - xIntersect;
+      response.yOff = trgY - yIntersect;
 
       response.intersect = intersectPoint;
     }
@@ -400,31 +351,28 @@ export class Edge extends React.Component<IEdgeProps> {
     defSvgCircleElement: any,
     src: any,
     trg: any,
-    includesArrow?: boolean = true,
-    viewWrapperElem: HTMLDivElement | HTMLDocument = document,
   ) {
     const response = Edge.getDefaultIntersectResponse();
-    const { width: arrowWidth, height: arrowHeight } = Edge.getArrowSize(viewWrapperElem);
-    const clientRect = defSvgCircleElement.getBoundingClientRect();
+    const { width, height } = defSvgCircleElement.getBoundingClientRect();
+
     let parentWidth = defSvgCircleElement.parentElement.getAttribute('width');
-    let parentHeight = defSvgCircleElement.parentElement.getAttribute('height');
     if (parentWidth) {
       parentWidth = parseFloat(parentWidth);
     }
+    let parentHeight = defSvgCircleElement.parentElement.getAttribute('height');
     if (parentHeight) {
       parentHeight = parseFloat(parentHeight);
     }
 
-    const w = parentWidth || clientRect.width;
-    const h = parentHeight || clientRect.height;
+    const w = parentWidth || width;
+    const h = parentHeight || height;
     const trgX = trg.x || 0;
     const trgY = trg.y || 0;
     const srcX = src.x || 0;
     const srcY = src.y || 0;
     // from the center of the node to the perimeter
-    const arrowOffsetDiviser = 1.25;
-    const offX = w / 2 + (includesArrow ? arrowWidth / arrowOffsetDiviser : 0);
-    const offY = h / 2 + (includesArrow ? arrowHeight / arrowOffsetDiviser : 0);
+    const offX = w / 2;
+    const offY = h / 2;
 
     // Note: even though this is a circle function, we can use ellipse
     // because all circles are ellipses but not all ellipses are circles.
@@ -473,32 +421,21 @@ export class Edge extends React.Component<IEdgeProps> {
   static calculateOffset(
     src: any,
     trg: any,
-    includesArrow?: boolean = true,
     viewWrapperElem?: HTMLDivElement | HTMLDocument = document,
   ) {
-    let response = Edge.getDefaultIntersectResponse();
+    const response = Edge.getDefaultIntersectResponse();
 
-    if (!trg.id) {
-      return response;
-    }
-
-    // Note: document.getElementById is by far the fastest way to get a node.
-    // compare 2.82ms for querySelector('#node-a2 use.node') vs
-    // 0.31ms and 99us for document.getElementById()
     const nodeElem = document.getElementById(`node-${trg.id}`);
     if (!nodeElem) {
       return response;
     }
-    const trgNode = nodeElem.querySelector('use.node');
 
-    // the test for trgNode.getAttributeNS makes sure we really have a node
-    // and not some other type of object
+    const trgNode = nodeElem.querySelector('use.node');
     if (!trgNode || (trgNode && !trgNode.getAttributeNS)) {
       return response;
     }
 
     const xlinkHref = trgNode.getAttributeNS('http://www.w3.org/1999/xlink', 'href');
-
     if (!xlinkHref) {
       return response;
     }
@@ -516,43 +453,37 @@ export class Edge extends React.Component<IEdgeProps> {
 
     if (defSvgRectElement) {
       // it's a rectangle
-      response = {
+      return {
         ...response,
         ...Edge.getRotatedRectIntersect(
           defSvgRectElement,
           src,
           trg,
-          includesArrow,
-          viewWrapperElem,
         ),
       };
-    } else if (defSvgPathElement) {
+    }
+
+    if (defSvgPathElement) {
       // it's a complex path
-      response = {
+      return {
         ...response,
         ...Edge.getPathIntersect(
           defSvgPathElement,
           src,
           trg,
-          includesArrow,
-          viewWrapperElem,
-        ),
-      };
-    } else {
-      // it's a circle or some other type
-      response = {
-        ...response,
-        ...Edge.getCircleIntersect(
-          defSvgCircleElement,
-          src,
-          trg,
-          includesArrow,
-          viewWrapperElem,
         ),
       };
     }
 
-    return response;
+    // it's a circle or some other type
+    return {
+      ...response,
+      ...Edge.getCircleIntersect(
+        defSvgCircleElement,
+        src,
+        trg,
+      ),
+    };
   }
 
   /**
@@ -630,8 +561,8 @@ export class Edge extends React.Component<IEdgeProps> {
     // comes from and where it's going to. Don't think of a line as a one-way arrow, but rather
     // a connection between two points. In this case, to obtain the offsets for the src we
     // write trg first, then src second. Vice versa to get the offsets for trg.
-    const srcOff = Edge.calculateOffset(targetNode, sourceNode, false, viewWrapperElem);
-    const trgOff = Edge.calculateOffset(sourceNode, targetNode, false, viewWrapperElem);
+    const srcOff = Edge.calculateOffset(targetNode, sourceNode, viewWrapperElem);
+    const trgOff = Edge.calculateOffset(sourceNode, targetNode, viewWrapperElem);
 
     const linePoints = [
       {

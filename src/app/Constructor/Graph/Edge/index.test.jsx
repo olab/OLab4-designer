@@ -238,8 +238,6 @@ describe('<Edge />', () => {
         rectElement,
         source,
         target,
-        false,
-        viewWrapperElem,
       );
       const expected = {
         xOff: 5,
@@ -254,11 +252,9 @@ describe('<Edge />', () => {
         rectElement,
         source,
         target,
-        true,
-        viewWrapperElem,
       );
       const expected = {
-        xOff: -43,
+        xOff: 5,
         yOff: 5,
         intersect: { x: 10, y: 15 },
       };
@@ -272,11 +268,9 @@ describe('<Edge />', () => {
         rectElement,
         source,
         target,
-        true,
-        viewWrapperElem,
       );
       const expected = {
-        xOff: -40.5,
+        xOff: 7.5,
         yOff: 7.5,
         intersect: { x: 7.5, y: 12.5 },
       };
@@ -290,8 +284,6 @@ describe('<Edge />', () => {
         rectElement,
         source,
         target,
-        true,
-        viewWrapperElem,
       );
       const expected = {
         xOff: 0,
@@ -310,8 +302,6 @@ describe('<Edge />', () => {
         rectElement,
         source,
         target,
-        false,
-        viewWrapperElem,
       );
       const expected = {
         xOff: 3.535533905932736,
@@ -328,8 +318,6 @@ describe('<Edge />', () => {
         rectElement,
         source,
         target,
-        false,
-        viewWrapperElem,
       );
       const expected = {
         xOff: 0,
@@ -346,8 +334,6 @@ describe('<Edge />', () => {
         rectElement,
         source,
         target,
-        false,
-        viewWrapperElem,
       );
       const expected = {
         xOff: 5,
@@ -400,8 +386,6 @@ describe('<Edge />', () => {
         rectElement,
         source,
         target,
-        false,
-        viewWrapperElem,
       );
       const expected = {
         xOff: 7.5,
@@ -455,8 +439,6 @@ describe('<Edge />', () => {
         rectElement,
         source,
         target,
-        false,
-        viewWrapperElem,
       );
       const expected = {
         xOff: 3.5355339059327378,
@@ -500,13 +482,13 @@ describe('<Edge />', () => {
     it('returns a default response when there is no matching nodeKey', () => {
       source.id = '';
       target.id = '';
-      const result = Edge.calculateOffset(source, target, false, viewWrapperElem);
+      const result = Edge.calculateOffset(source, target, viewWrapperElem);
       const expected = defaultExpected;
       expect(JSON.stringify(result)).toEqual(JSON.stringify(expected));
     });
 
     it('returns a default response when there is no matching node element', () => {
-      const result = Edge.calculateOffset(source, target, false, viewWrapperElem);
+      const result = Edge.calculateOffset(source, target, viewWrapperElem);
       const expected = {
         xOff: 0,
         yOff: 0,
@@ -522,7 +504,7 @@ describe('<Edge />', () => {
 
       jest.spyOn(document, 'getElementById').mockImplementation(() => node);
 
-      const result = Edge.calculateOffset(source, target, false, viewWrapperElem);
+      const result = Edge.calculateOffset(source, target, viewWrapperElem);
       const expected = defaultExpected;
       expect(document.getElementById).toHaveBeenCalledWith('node-test2');
       expect(JSON.stringify(result)).toEqual(JSON.stringify(expected));
@@ -539,7 +521,7 @@ describe('<Edge />', () => {
       };
       jest.spyOn(document, 'getElementById').mockImplementation(() => node);
 
-      const result = Edge.calculateOffset(source, target, false, viewWrapperElem);
+      const result = Edge.calculateOffset(source, target, viewWrapperElem);
       const expected = defaultExpected;
       expect(document.getElementById).toHaveBeenCalledWith('node-test2');
       expect(trgNode.getAttributeNS).toHaveBeenCalledWith('http://www.w3.org/1999/xlink', 'href');
@@ -557,7 +539,7 @@ describe('<Edge />', () => {
       };
       jest.spyOn(document, 'getElementById').mockImplementation(() => node);
 
-      const result = Edge.calculateOffset(source, target, false, viewWrapperElem);
+      const result = Edge.calculateOffset(source, target, viewWrapperElem);
       const expected = {
         xOff: 5,
         yOff: 5,

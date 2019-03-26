@@ -238,6 +238,7 @@ export class Toolbars extends Component<IToolbarsProps, IToolbarsState> {
         <AppBar className={classes.positionRelative} position="fixed">
           <Block>
             <ToolbarGroup group={preview} expand={expand} />
+<<<<<<< HEAD:src/app/Constructor/Toolbars/index.jsx
             <Fragment>
               <ToolbarGroup
                 group={toolbars}
@@ -245,6 +246,7 @@ export class Toolbars extends Component<IToolbarsProps, IToolbarsState> {
               />
               { metaModal.isShow && <MetaModal /> }
             </Fragment>
+<<<<<<< HEAD
             <GraphUndoRedoButtons
               isUndoAvailable={isUndoAvailable}
               isRedoAvailable={isRedoAvailable}
@@ -257,6 +259,28 @@ export class Toolbars extends Component<IToolbarsProps, IToolbarsState> {
               <LabTitle className="item">Lab name</LabTitle>
               <LabIcon alt="show" src={dropdownIcon} />
             </LabTitleItem>
+=======
+=======
+            <ToolbarGroup
+              group={toolbars}
+              expand={expand}
+            />
+>>>>>>> OLUX-92: Injected digraph into Olab4.:src/app/Constructor/Toolbars/index.jsx
+            <div>
+              <GraphUndoRedoButtons
+                isUndoAvailable={isUndoAvailable}
+                isRedoAvailable={isRedoAvailable}
+                onUndo={this.onUndo}
+                onRedo={this.onRedo}
+              />
+            </div>
+          </div>
+          <div className="right">
+            <div className="name">
+              <span className="item">Lab name</span>
+              <img alt="show" src={dropdownIcon} className="item" />
+            </div>
+>>>>>>> OLUX-92: Injected digraph into Olab4.
             <div ref={this.zoomControlsRef} />
             <ToolbarGroup group={right} />
           </Block>
@@ -284,12 +308,15 @@ const mapDispatchToProps = dispatch => ({
   },
   ACTION_REDO_GRAPH: () => {
     dispatch(graphActions.ACTION_REDO_GRAPH());
+<<<<<<< HEAD:src/app/Constructor/Toolbars/index.jsx
   },
   ACTION_TOGGLE_META_MODAL: () => {
     dispatch(metaModalActions.ACTION_TOGGLE_META_MODAL());
   },
   ACTION_SET_POSITION_META_MODAL: (x: number, y: number) => {
     dispatch(metaModalActions.ACTION_SET_POSITION_META_MODAL(x, y));
+=======
+>>>>>>> OLUX-92: Injected digraph into Olab4.:src/app/Constructor/Toolbars/index.jsx
   },
 });
 

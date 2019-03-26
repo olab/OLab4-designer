@@ -72,7 +72,7 @@ export class Node extends React.Component<INodeProps, INodeState> {
       this.setState({ drawingEdge: true });
       // draw edge
       // undo the target offset subtraction done by Edge
-      const off = Edge.calculateOffset(data, newState, true, viewWrapperElem);
+      const off = Edge.calculateOffset(data, newState, viewWrapperElem);
       newState.x += off.xOff;
       newState.y += off.yOff;
       // now tell the graph that we're actually drawing an edge

@@ -6,6 +6,7 @@ Here it is possible to manipilate with nodes and edges.
 */
 import * as d3 from 'd3';
 import React from 'react';
+import isEqual from 'lodash.isequal';
 import { connect } from 'react-redux';
 import ReactDOM from 'react-dom';
 
@@ -259,19 +260,28 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
 
   componentDidUpdate(prevProps: IGraphViewProps, prevState: IGraphViewState) {
     const {
-      nodesMap, edgesMap, nodes: stateNodes, edges: stateEdges, selectedNodeObj, selectedEdgeObj,
+      nodesMap,
+      edgesMap,
+      nodes: stateNodes,
+      edges: stateEdges,
+      selectedNodeObj,
+      selectedEdgeObj,
+      componentUpToDate,
     } = this.state;
     const {
-      layoutEngineType, edges: propsEdges, nodes: propsNodes,
+      edges: propsEdges, nodes: propsNodes, layoutEngineType,
     } = this.props;
 
     if (layoutEngineType && LayoutEngines[layoutEngineType]) {
       this.layoutEngine = new LayoutEngines[layoutEngineType](this.props);
+
       const newNodes = this.layoutEngine.adjustNodes(stateNodes, nodesMap);
-      // eslint-disable-next-line react/no-did-update-set-state
-      this.setState({
-        nodes: newNodes,
-      });
+      if (!isEqual(stateNodes, newNodes)) {
+        // eslint-disable-next-line react/no-did-update-set-state
+        this.setState({
+          nodes: newNodes,
+        });
+      }
     }
 
     const forceReRender = propsNodes !== prevProps.nodes || propsEdges !== prevProps.edges;
@@ -301,10 +311,12 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
       forceReRender,
     );
 
-    // eslint-disable-next-line react/no-did-update-set-state
-    this.setState({
-      componentUpToDate: true,
-    });
+    if (!componentUpToDate) {
+      // eslint-disable-next-line react/no-did-update-set-state
+      this.setState({
+        componentUpToDate: true,
+      });
+    }
   }
 
   componentWillUnmount() {
@@ -349,19 +361,15 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
     let node = null;
     let prevNode = null;
 
-    GraphUtils.yieldingLoop(nodes.length, 50, (i) => {
+    GraphUtils.yieldingLoop(nodes.length, 50, (i: number) => {
       node = nodes[i];
       prevNode = this.getNodeById(node.id, oldNodesMap);
       // if there was a previous node and it changed
-      if (prevNode != null && (
-        prevNode.node !== node
-          || (
-            selectedNode.node !== prevSelectedNode.node && (
-              (selectedNode.node && node.id === selectedNode.node.id)
-                || (prevSelectedNode.node && node.id === prevSelectedNode.node.id)
-            )
-          )
-      )) {
+      if (prevNode != null
+        && (prevNode.node !== node
+          || (selectedNode.node !== prevSelectedNode.node
+            && ((selectedNode.node && node.id === selectedNode.node.id)
+              || (prevSelectedNode.node && node.id === prevSelectedNode.node.id))))) {
         // Updated node
         this.asyncRenderNode(node);
       } else if (forceRender || !prevNode) {
@@ -437,15 +445,12 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
 
   removeOldEdges = (prevEdges: Array<IEdge>, edgesMap: any) => {
     // remove old edges
-    let edge = null;
-    for (let i = 0; i < prevEdges.length; i += 1) {
-      edge = prevEdges[i];
-      // Check for deletions
+    prevEdges.forEach((edge: IEdge) => {
       if (!edge.source || !edge.target || !edgesMap[`${edge.source}_${edge.target}`]) {
         // remove edge
         GraphView.removeEdgeElement(edge.source, edge.target);
       }
-    }
+    });
   }
 
   deleteNode(selectedNode: INode) {
@@ -554,10 +559,11 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
     const { edges } = this.state;
     const { onSelectEdge } = this.props;
     const { source, target } = e.target.dataset;
-    let newState = {
+    const newState = {
       svgClicked: true,
       focused: true,
     };
+
     if (source && target) {
       const edge: IEdge | null = this.getEdgeBySourceTarget(source, target);
 
@@ -565,18 +571,17 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
         return;
       }
 
-      newState = {
-        ...newState,
+      Object.assign(newState, {
         selectedEdgeObj: {
           componentUpToDate: false,
           edge: edges[edge.originalArrIndex],
         },
-      };
-      this.setState(newState);
+      });
+
       onSelectEdge(edges[edge.originalArrIndex]);
-    } else {
-      this.setState(newState);
     }
+
+    this.setState(newState);
   }
 
   // eslint-disable-next-line no-unused-vars
@@ -1167,11 +1172,11 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
   }
 
   renderNodes = () => {
-    const { nodes } = this.state;
-
     if (!this.entities) {
       return;
     }
+
+    const { nodes } = this.state;
 
     nodes.forEach(node => this.asyncRenderNode(node));
   }
@@ -1206,12 +1211,12 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
   }
 
   renderEdge(id: string, element: any, edge: IEdge, nodeMoving: boolean = false) {
-    const { draggedEdge } = this.state;
-    const { afterRenderEdge } = this.props;
-
     if (!this.entities) {
       return;
     }
+
+    const { draggedEdge } = this.state;
+    const { afterRenderEdge } = this.props;
 
     let containerId = `${id}-container`;
     const customContainerId = `${id}-custom-container`;
