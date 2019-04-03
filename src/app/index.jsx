@@ -15,7 +15,7 @@ import type {
 
 import './index.scss';
 
-class App extends Component<Props, State> {
+export class App extends Component<Props, State> {
   state = {
     appTitle: 'oLab',
   };

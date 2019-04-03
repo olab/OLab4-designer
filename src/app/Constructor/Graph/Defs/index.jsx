@@ -1,16 +1,21 @@
 // @flow
+/*
+This component stores reusable html items that
+are being used by such items like: arrows/nodes/backgrounds etc.
+
+In turn these items are being copied in shadow roots or in css-styles by 'id'.
+*/
 import React from 'react';
 
-import ArrowheadMarker from './ArrowHead';
+import ArrowHead from './ArrowHead';
 import BackgroundPattern from './BackgroundPattern';
-import DropshadowFilter from './DropshadowFilter';
 
 import type {
   IDefsProps,
   IDefsState,
 } from './types';
 
-class Defs extends React.Component<IDefsProps, IDefsState> {
+export class Defs extends React.Component<IDefsProps, IDefsState> {
   constructor(props: IDefsProps) {
     super(props);
     this.state = {
@@ -34,7 +39,30 @@ class Defs extends React.Component<IDefsProps, IDefsState> {
     };
   }
 
-  static processGraphConfigDefs(typesObj: any, graphConfigDefs: any) {
+  /**
+   *
+   *
+   * @static
+   * @param {*} typesObj
+   * @param {Array<*>} graphConfigDefs
+   * @memberof Defs
+   *
+   * This method takes all items that should be stored in <defs /> section
+   * and set them key prop(aka list with items).
+   * All items should have the following structure:
+   {
+    <typeOfStructure_1>: {
+      <sub-type_1>: {
+        shape: <jsx>,
+        shapeId: '#${id}',
+        ...
+      },
+      ...
+    },
+    ...
+  }
+   */
+  static processGraphConfigDefs(typesObj: any, graphConfigDefs: Array<any>) {
     Object.keys(typesObj).forEach((type) => {
       const safeId = typesObj[type].shapeId ? typesObj[type].shapeId.replace('#', '') : 'graphdef';
       graphConfigDefs.push(React.cloneElement(typesObj[type].shape, { key: `${safeId}-${graphConfigDefs.length + 1}` }));
@@ -50,14 +78,13 @@ class Defs extends React.Component<IDefsProps, IDefsState> {
     return (
       <defs>
         {graphConfigDefs}
-        <ArrowheadMarker
+        <ArrowHead
           edgeArrowSize={edgeArrowSize}
         />
         <BackgroundPattern
           gridSpacing={gridSpacing}
           gridDotSize={gridDotSize}
         />
-        <DropshadowFilter />
         {renderDefs && renderDefs()}
       </defs>
     );

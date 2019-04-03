@@ -15,8 +15,8 @@ export type ToolbarGroup = {
   itemList: Array<ToolbarItem>,
 };
 
-export type Props = {
-  fullscreenHandle: Function;
+export type IToolbarsProps = {
+  fullscreenHandler: Function;
   isFullScreen: boolean;
   isUndoAvailable: boolean;
   isRedoAvailable: boolean;
@@ -27,7 +27,7 @@ export type Props = {
   ) => void;
 };
 
-export type State = {
+export type IToolbarsState = {
   expand: string;
   preview: ToolbarGroup;
   toolbars: ToolbarGroup;

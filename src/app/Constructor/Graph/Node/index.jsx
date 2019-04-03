@@ -11,7 +11,7 @@ import type {
   INodeState,
 } from './types';
 
-class Node extends React.Component<INodeProps, INodeState> {
+export class Node extends React.Component<INodeProps, INodeState> {
   constructor(props: INodeProps) {
     super(props);
 
@@ -95,10 +95,6 @@ class Node extends React.Component<INodeProps, INodeState> {
 
     ACTION_SAVE_GRAPH_TO_UNDO();
 
-    if (!this.oldSibling) {
-      this.oldSibling = currentNodeRefParent.nextSibling;
-    }
-
     // Moves child to the end of the element stack to re-arrange the z-index
     currentNodeRefParent.parentElement.appendChild(currentNodeRefParent);
   }
@@ -115,10 +111,6 @@ class Node extends React.Component<INodeProps, INodeState> {
     const { shiftKey } = d3.event.sourceEvent;
 
     this.setState({ drawingEdge: false });
-
-    if (this.oldSibling && this.oldSibling.parentElement) {
-      this.oldSibling.parentElement.insertBefore(currentNodeRef.parentElement, this.oldSibling);
-    }
 
     onNodeUpdate(
       { x, y },
@@ -153,8 +145,6 @@ class Node extends React.Component<INodeProps, INodeState> {
   }
 
   nodeRef: any;
-
-  oldSibling: any;
 
   renderText() {
     const { selected } = this.state;

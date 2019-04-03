@@ -1,4 +1,7 @@
 // @flow
+/*
+This component renders standalone edge.
+*/
 import * as d3 from 'd3';
 import classNames from 'classnames';
 import React from 'react';
@@ -11,7 +14,7 @@ import type {
   IEdgeProps,
 } from './types';
 
-class Edge extends React.Component<IEdgeProps> {
+export class Edge extends React.Component<IEdgeProps> {
   constructor(props: IEdgeProps) {
     super(props);
     this.edgeOverlayRef = React.createRef();
@@ -21,22 +24,54 @@ class Edge extends React.Component<IEdgeProps> {
     edgeHandleSize: 50,
   };
 
-  static getTheta(pt1: any, pt2: any) {
+  /**
+   *
+   *
+   * @static
+   * @param {*} pt1
+   * @param {*} pt2
+   * @returns
+   * @memberof Edge
+   *
+   * Calculates angle between 2 dots.
+   */
+  static calculateAngle(pt1: any, pt2: any) {
     const xComp = (pt2.x || 0) - (pt1.x || 0);
     const yComp = (pt2.y || 0) - (pt1.y || 0);
+
     const theta = Math.atan2(yComp, xComp);
-    return theta;
+    return theta * 180 / Math.PI;
   }
 
+  /**
+   *
+   *
+   * @static
+   * @param {*} srcTrgDataArray
+   * @returns
+   * @memberof Edge
+   *
+   * Provides API for curved lines using .curve() Example:
+   * https://bl.ocks.org/d3indepth/64be9fc39a92ef074034e9a8fb29dcce
+   */
   static lineFunction(srcTrgDataArray: any) {
-    // Provides API for curved lines using .curve() Example:
-    // https://bl.ocks.org/d3indepth/64be9fc39a92ef074034e9a8fb29dcce
     return d3
       .line()
       .x((d: any) => d.x)
       .y((d: any) => d.y)(srcTrgDataArray);
   }
 
+  /**
+   *
+   *
+   * @static
+   * @param {(HTMLDivElement | HTMLDocument)} [viewWrapperElem=document]
+   * @returns
+   * @memberof Edge
+   *
+   * Finds the arrow in the view wrapper element
+   * and returns rects of arrow.
+   */
   static getArrowSize(viewWrapperElem: HTMLDivElement | HTMLDocument = document) {
     const emptyRect = {
       left: 0,
@@ -53,6 +88,17 @@ class Edge extends React.Component<IEdgeProps> {
     return defEndArrowElement ? defEndArrowElement.getBoundingClientRect() : emptyRect;
   }
 
+  /**
+   *
+   *
+   * @static
+   * @param {IEdge} edge
+   * @param {(HTMLDivElement | HTMLDocument)} [viewWrapperElem=document]
+   * @returns
+   * @memberof Edge
+   *
+   * Returns the edge element from the viewWrapper.
+   */
   static getEdgePathElement(
     edge: IEdge,
     viewWrapperElem: HTMLDivElement | HTMLDocument = document,
@@ -60,6 +106,19 @@ class Edge extends React.Component<IEdgeProps> {
     return viewWrapperElem.querySelector(`#edge-${edge.source}-${edge.target}-container>.edge-container>.edge>.edge-path`);
   }
 
+  /**
+   *
+   *
+   * @static
+   * @param {(Element | null)} edgePathElement
+   * @returns
+   * @memberof Edge
+   *
+   * If edgePathElement != null
+   * converts an SVG path d property to an object with source and target objects
+   * else
+   * returns an object with source and target at position 0
+   */
   static parsePathToXY(edgePathElement: Element | null) {
     const response = {
       source: { x: 0, y: 0 },
@@ -85,6 +144,15 @@ class Edge extends React.Component<IEdgeProps> {
     return response;
   }
 
+  /**
+   *
+   *
+   * @static
+   * @returns
+   * @memberof Edge
+   *
+   * Returns a default intersect object.
+   */
   static getDefaultIntersectResponse() {
     return {
       xOff: 0,
@@ -99,6 +167,18 @@ class Edge extends React.Component<IEdgeProps> {
     };
   }
 
+  /**
+   *
+   *
+   * @static
+   * @param {*} defSvgRotatedRectElement
+   * @param {*} src
+   * @param {*} trg
+   * @param {boolean} includesArrow
+   * @param {(HTMLDivElement | HTMLDocument)} [viewWrapperElem=document]
+   * @returns
+   * @memberof Edge
+   */
   static getRotatedRectIntersect(
     defSvgRotatedRectElement: any,
     src: any,
@@ -194,6 +274,20 @@ class Edge extends React.Component<IEdgeProps> {
     return response;
   }
 
+  /**
+   *
+   *
+   * @static
+   * @param {*} defSvgPathElement
+   * @param {*} src
+   * @param {*} trg
+   * @param {boolean} [includesArrow=true]
+   * @param {(HTMLDivElement | HTMLDocument)} [viewWrapperElem=document]
+   * @returns
+   * @memberof Edge
+   *
+   * Finds the path intersect.
+   */
   static getPathIntersect(
     defSvgPathElement: any,
     src: any,
@@ -287,6 +381,20 @@ class Edge extends React.Component<IEdgeProps> {
     return response;
   }
 
+  /**
+   *
+   *
+   * @static
+   * @param {*} defSvgCircleElement
+   * @param {*} src
+   * @param {*} trg
+   * @param {boolean} [includesArrow=true]
+   * @param {(HTMLDivElement | HTMLDocument)} [viewWrapperElem=document]
+   * @returns
+   * @memberof Edge
+   *
+   * Finds the circle intersect.
+   */
   static getCircleIntersect(
     defSvgCircleElement: any,
     src: any,
@@ -348,6 +456,19 @@ class Edge extends React.Component<IEdgeProps> {
     return response;
   }
 
+  /**
+   *
+   *
+   * @static
+   * @param {*} src
+   * @param {*} trg
+   * @param {boolean} [includesArrow=true]
+   * @param {(HTMLDivElement | HTMLDocument)} [viewWrapperElem=document]
+   * @returns
+   * @memberof Edge
+   *
+   * Returns rect intersects depending on type of svg item.
+   */
   static calculateOffset(
     src: any,
     trg: any,
@@ -433,6 +554,17 @@ class Edge extends React.Component<IEdgeProps> {
     return response;
   }
 
+  /**
+   *
+   *
+   * @static
+   * @param {*} edgeTypes
+   * @param {*} data
+   * @returns
+   * @memberof Edge
+   *
+   * Returns a shapeId from the edge type.
+   */
   static getXlinkHref(edgeTypes: any, data: any) {
     if (data.type && edgeTypes[data.type]) {
       return edgeTypes[data.type].shapeId;
@@ -467,23 +599,16 @@ class Edge extends React.Component<IEdgeProps> {
     return `translate(${offset}, ${offset})`;
   }
 
-  getEdgeHandleRotation = (negate: any = false) => {
+  getEdgeHandleRotation = () => {
     const { sourceNode: src, targetNode: trg } = this.props;
-    let rotated = false;
-    let theta = Edge.getTheta(src, trg) * 180 / Math.PI;
-    if (negate) {
-      theta = -theta;
-    }
-    // if(theta > 90 || theta < -90){
-    // theta = theta + 180;
-    rotated = true;
-    // }
-    return [`rotate(${theta})`, rotated];
+    const theta = Edge.calculateAngle(src, trg);
+
+    return `rotate(${theta})`;
   }
 
   getEdgeHandleTransformation = () => {
     const translation = this.getEdgeHandleTranslation();
-    const [rotation] = this.getEdgeHandleRotation();
+    const rotation = this.getEdgeHandleRotation();
     const offset = this.getEdgeHandleOffsetTranslation();
 
     return `${translation} ${rotation} ${offset}`;
@@ -536,27 +661,6 @@ class Edge extends React.Component<IEdgeProps> {
     );
   }
 
-  renderLabelText(data: any) {
-    const [rotation, isRotated] = this.getEdgeHandleRotation();
-    const title = isRotated ? `${data.label_to} ↔ ${data.label_from}` : `${data.label_from} ↔ ${data.label_to}`;
-
-    return (
-      <text
-        className="edge-text"
-        textAnchor="middle"
-        alignmentBaseline="central"
-        style={{
-          fontSize: '11px',
-          stroke: 'none',
-          fill: 'black',
-        }}
-        transform={`${this.getEdgeHandleTranslation()} ${rotation} translate(0,-5)`}
-      >
-        {title}
-      </text>
-    );
-  }
-
   render() {
     const {
       data, edgeTypes, edgeHandleSize, viewWrapperElem, isSelected: selected,
@@ -580,8 +684,7 @@ class Edge extends React.Component<IEdgeProps> {
             height={edgeHandleSize}
             transform={`${this.getEdgeHandleTransformation()}`}
           />
-          {/* {data.handleText && this.renderHandleText(data)}
-          {data.label_from && data.label_to && this.renderLabelText(data)} */}
+          {/* {data.handleText && this.renderHandleText(data)} */}
         </g>
         <g className="edge-mouse-handler">
           <path

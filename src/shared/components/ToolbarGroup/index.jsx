@@ -11,7 +11,7 @@ const ToolbarGroup = ({ group }: { group: ToolbarGroupType }) => (
     key={group.id}
     className="toolbar-group"
   >
-    {group.itemList.map(item => <ToolbarItem key={item.id} item={item} />)}
+    {group.itemList.map(item => <ToolbarItem key={item.id} {...item} />)}
   </div>
 );
 

@@ -24,10 +24,10 @@ export type IGraphProps = {
   ACTION_UPDATE_NODE: (nodeData: INode) => void,
   ACTION_DELETE_NODE: (nodeId: number) => void,
   ACTION_DELETE_EDGE: (edges: Array<IEdge>) => void,
-  ACTION_SWAP_EDGE: (edge: IEdge) => void,
+  ACTION_SWAP_EDGE: (edge: IEdge, edge: IEdge, edge: IEdge) => void,
 };
 
 export type IGraphState = {
   layoutEngineType: LayoutEngineType;
-  copiedNode?: NodeType;
+  copiedNode: NodeType;
 };

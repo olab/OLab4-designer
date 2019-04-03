@@ -1,8 +1,4 @@
 // @flow
-import type { IEdge } from './Graph/Edge/types';
-import type { INode } from './Graph/Node/types';
-import type { LayoutEngine as LayoutEngineType } from './Graph/utilities/layout-engine/layout-engine-config';
-
 export type EdgeData = {
   id: number,
   handleText: string,
@@ -31,6 +27,7 @@ export type NodeData = {
 };
 
 export type Node = {
+  id: number,
   isSelected: boolean,
   expand: boolean,
   locked: boolean,
@@ -40,6 +37,11 @@ export type Node = {
 export type GraphItem = {
   nodes: Array<Node>,
   edges: Array<Edge>,
+};
+
+export type IConstructorProps = {};
+export type IConstructorState = {
+  isFullScreen: boolean;
 };
 
 export type Constructor = {
@@ -65,29 +67,6 @@ export type Constructor = {
   },
 };
 
-export type IGraphProps = {
-  isFullScreen: boolean,
-  minZoom: number,
-  maxZoom: number,
-  graph: GraphItem,
-  isUndoAvailable: boolean,
-  isRedoAvailable: boolean,
-  layoutEngineType: string,
-  ACTION_UNDO_GRAPH: () => void,
-  ACTION_REDO_GRAPH: () => void,
-  ACTION_SELECT_ITEM: (id: number | null) => void,
-  ACTION_CREATE_NODE: (nodeData: Node) => void,
-  ACTION_CREATE_EDGE: (edgeData: Edge) => void,
-  ACTION_UPDATE_NODE: (nodeData: INode) => void,
-  ACTION_DELETE_NODE: (nodeId: number) => void,
-  ACTION_DELETE_EDGE: (edges: Array<IEdge>) => void,
-  ACTION_SWAP_EDGE: (edge: IEdge) => void,
-};
-
-export type IGraphState = {
-  layoutEngineType: LayoutEngineType;
-  copiedNode?: Node;
-};
 
 // reducer types
 const SAVE_GRAPH_TO_UNDO = 'SAVE_GRAPH_TO_UNDO';
@@ -120,7 +99,7 @@ type CreateNode = {
 const UPDATE_NODE = 'UPDATE_NODE';
 type UpdateNode = {
   type: 'UPDATE_NODE',
-  nodeData: INode,
+  nodeData: Node,
 };
 
 const DELETE_NODE = 'DELETE_NODE';

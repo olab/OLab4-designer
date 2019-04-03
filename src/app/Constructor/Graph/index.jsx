@@ -1,4 +1,8 @@
 // @flow
+/*
+  This component is used as wrapper above GraphView.
+  It provides necessary methods into its child.
+*/
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import randomColor from 'randomcolor';
@@ -27,7 +31,7 @@ import * as actions from '../action';
 
 import './styles.scss';
 
-class Graph extends Component<IGraphProps, IGraphState> {
+export class Graph extends Component<IGraphProps, IGraphState> {
   constructor(props: IGraphProps) {
     super(props);
 
@@ -74,6 +78,7 @@ class Graph extends Component<IGraphProps, IGraphState> {
     const newNodeId = Date.now();
     const newNodeMapId = Number(newNodeId.toString().slice(0, 6));
     const newNode = {
+      id: newNodeId,
       isSelected: true,
       expand: false,
       locked: false,

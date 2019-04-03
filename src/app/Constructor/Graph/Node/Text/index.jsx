@@ -4,7 +4,7 @@ import classNames from 'classnames';
 
 import type { INodeTextProps } from './types';
 
-const NodeText = ({ data: { title }, isSelected: selected }: INodeTextProps) => (
+export const NodeText = ({ data: { title }, isSelected: selected }: INodeTextProps) => (
   <text
     className={classNames('node-text', { selected })}
     textAnchor="middle"

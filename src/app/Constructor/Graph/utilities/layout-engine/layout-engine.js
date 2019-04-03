@@ -21,7 +21,7 @@ class LayoutEngine {
   }
 
   // eslint-disable-next-line class-methods-use-this
-  adjustNodes(nodes: INode[]): INode[] {
+  adjustNodes(nodes: Array<INode>): Array<INode> {
     for (let i = 0; i < nodes.length; i += 1) {
       const node = nodes[i];
       const position = this.calculatePosition({

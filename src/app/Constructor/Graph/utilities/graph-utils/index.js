@@ -1,9 +1,22 @@
 // @flow
+/*
+Utils class for Graph functionality.
+*/
 import type { IEdge } from '../../Edge/types';
 import type { INode } from '../../Node/types';
 
 class GraphUtils {
-  static getNodesMap(arr: INode[]) {
+  /**
+   *
+   *
+   * @static
+   * @param {Array<INode>} arr
+   * @returns
+   * @memberof GraphUtils
+   *
+   * Converts an array of nodes to a hash map.
+   */
+  static getNodesMap(arr: Array<INode>) {
     const map = {};
     let item = null;
     for (let i = 0; i < arr.length; i += 1) {
@@ -20,7 +33,17 @@ class GraphUtils {
     return map;
   }
 
-  static getEdgesMap(arr: IEdge[]) {
+  /**
+   *
+   *
+   * @static
+   * @param {Array<IEdge>} arr
+   * @returns
+   * @memberof GraphUtils
+   *
+   * Converts an array of edges to a hash map.
+   */
+  static getEdgesMap(arr: Array<IEdge>) {
     const map = {};
     let item = null;
     for (let i = 0; i < arr.length; i += 1) {
@@ -35,7 +58,17 @@ class GraphUtils {
     return map;
   }
 
-  static linkNodesAndEdges(nodesMap: any, edges: IEdge[]) {
+  /**
+   *
+   *
+   * @static
+   * @param {*} nodesMap
+   * @param {Array<IEdge>} edges
+   * @memberof GraphUtils
+   *
+   * Not a pure method that fills various properties of a nodesMap.
+   */
+  static linkNodesAndEdges(nodesMap: any, edges: Array<IEdge>) {
     let nodeMapSourceNode = null;
     let nodeMapTargetNode = null;
     let edge = null;
@@ -55,6 +88,16 @@ class GraphUtils {
     }
   }
 
+  /**
+   *
+   *
+   * @static
+   * @param {string} id
+   * @returns
+   * @memberof GraphUtils
+   *
+   * Removes an element from DOM using an id.
+   */
   static removeElementFromDom(id: string) {
     const container = document.getElementById(id);
     if (container && container.parentNode) {
@@ -64,19 +107,31 @@ class GraphUtils {
     return false;
   }
 
-  static findParent(element: any, selector: string) {
-    if (element && element.matches && element.matches(selector)) {
-      return element;
-    }
-
-    if (element && element.parentNode) {
-      return GraphUtils.findParent(element.parentNode, selector);
+  /**
+   *
+   *
+   * @static
+   * @param {*} element
+   * @param {string} selector
+   * @returns
+   * @memberof GraphUtils
+   *
+   * Returns the element if an element matches a selector.
+   */
+  static findParent(element: HTMLElement, selector: string) {
+    if (element && element.closest) {
+      return element.closest(selector);
     }
 
     return null;
   }
 
-  static yieldingLoop(count, chunkSize, callback, finished) {
+  static yieldingLoop(
+    count: number,
+    chunkSize: number,
+    callback: Function,
+    finished: Function,
+  ) {
     let i = 0;
     const chunk = () => {
       const end = Math.min(i + chunkSize, count);
@@ -93,7 +148,18 @@ class GraphUtils {
     chunk();
   }
 
-  static hasNodeShallowChanged(prevNode, newNode) {
+  /**
+   *
+   *
+   * @static
+   * @param {*} prevNode
+   * @param {*} newNode
+   * @returns
+   * @memberof GraphUtils
+   *
+   * Finds shallow differences in 2 objects.
+   */
+  static hasNodeShallowChanged(prevNode: INode, newNode: INode) {
     const prevNodeKeys = Object.keys(prevNode);
     const newNodeKeys = Object.keys(prevNode);
     const checkedKeys = {};

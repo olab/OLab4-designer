@@ -5,9 +5,19 @@ import type { ToolbarItem as ToolbarItemType } from '../../../app/Constructor/To
 
 import './index.scss';
 
-const ToolbarItem = ({ item }: { item: ToolbarItemType }) => (
-  <div key={item.id} className="toolbar-item" onClick={item.onClick} aria-hidden="true">
-    <img alt={item.label} src={item.icon} />
+const ToolbarItem = ({
+  id,
+  icon,
+  label,
+  onClick = null,
+}: ToolbarItemType) => (
+  <div
+    key={id}
+    className="toolbar-item"
+    onClick={onClick}
+    aria-hidden="true"
+  >
+    <img alt={label} src={icon} />
   </div>
 );
 

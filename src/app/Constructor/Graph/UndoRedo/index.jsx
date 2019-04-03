@@ -10,7 +10,7 @@ import * as actions from '../../action';
 import type { IUndoRedoButtonsProps } from './types';
 import styles from './styles';
 
-const GraphUndoRedoButtons = ({
+export const GraphUndoRedoButtons = ({
   classes, isUndoAvailable, isRedoAvailable, ACTION_REDO_GRAPH, ACTION_UNDO_GRAPH,
 }: IUndoRedoButtonsProps) => (
   <div className="is-relative">

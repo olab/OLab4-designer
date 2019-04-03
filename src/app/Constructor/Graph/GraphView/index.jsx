@@ -1,5 +1,9 @@
-/* eslint-disable react/no-unused-state */
 // @flow
+/* eslint-disable react/no-unused-state */
+/*
+The top-level component digraph component.
+Here it is possible to manipilate with nodes and edges.
+*/
 import * as d3 from 'd3';
 import React from 'react';
 import { connect } from 'react-redux';
@@ -28,7 +32,7 @@ import GraphUtils from '../utilities/graph-utils';
 
 import * as actions from '../../action';
 
-class GraphView extends React.Component<IGraphViewProps, IGraphViewState> {
+export class GraphView extends React.Component<IGraphViewProps, IGraphViewState> {
   constructor(props: IGraphViewProps) {
     super(props);
 
@@ -121,21 +125,62 @@ class GraphView extends React.Component<IGraphViewProps, IGraphViewState> {
     return nextState;
   }
 
+  /**
+   *
+   *
+   * @static
+   * @param {INode} sourceNode
+   * @param {(INode | null)} hoveredNode
+   * @param {*} swapEdge
+   * @returns
+   * @memberof GraphView
+   *
+   * Checks if edge can be swapped.
+   */
   static canSwap(sourceNode: INode, hoveredNode: INode | null, swapEdge: any) {
     return (hoveredNode && sourceNode !== hoveredNode
       && (swapEdge.source !== sourceNode.id
         || swapEdge.target !== hoveredNode.id));
   }
 
+  /**
+   *
+   *
+   * @static
+   * @param {string} source
+   * @param {string} target
+   * @memberof GraphView
+   *
+   * Removes Edge from DOM.
+   */
   static removeEdgeElement(source: string, target: string) {
     const id = `${source}-${target}`;
     GraphUtils.removeElementFromDom(`edge-${id}-container`);
   }
 
-  static isPartOfEdge(element) {
+  /**
+   *
+   *
+   * @static
+   * @param {*} element
+   * @returns
+   * @memberof GraphView
+   *
+   * Checks whether clicked item is in the edge.
+   */
+  static isPartOfEdge(element: any) {
     return !!GraphUtils.findParent(element, '.edge-container');
   }
 
+  /**
+   *
+   *
+   * @static
+   * @returns
+   * @memberof GraphView
+   *
+   * Stops zoom whether if ctrl or some button on keyboard is pressed.
+   */
   static zoomFilter() {
     const { button, ctrlKey } = d3.event;
 
@@ -146,14 +191,15 @@ class GraphView extends React.Component<IGraphViewProps, IGraphViewState> {
     return true;
   }
 
-  // Keeps 'zoom' contained
-  static containZoom() {
-    const { button, ctrlKey, stopImmediatePropagation } = d3.event;
+  // Keeps 'zoom' contained.
+  // Now commented out cause of unnecessary on this moment.
+  // static containZoom() {
+  //   const { button, ctrlKey, stopImmediatePropagation } = d3.event;
 
-    if (button || ctrlKey) {
-      stopImmediatePropagation(); // stop zoom
-    }
-  }
+  //   if (button || ctrlKey) {
+  //     stopImmediatePropagation(); // stop zoom
+  //   }
+  // }
 
   componentDidMount() {
     const { minZoom = 0, maxZoom = 0, zoomDelay } = this.props;
@@ -172,8 +218,8 @@ class GraphView extends React.Component<IGraphViewProps, IGraphViewState> {
 
     d3
       .select(this.viewWrapper.current)
-      .on('touchstart', GraphView.containZoom)
-      .on('touchmove', GraphView.containZoom)
+      // .on('touchstart', GraphView.containZoom)
+      // .on('touchmove', GraphView.containZoom)
       .on('click', this.handleSvgClicked) // handle element click in the element components
       .select('svg')
       .call(this.zoom);
@@ -286,7 +332,7 @@ class GraphView extends React.Component<IGraphViewProps, IGraphViewState> {
   }
 
   addNewNodes(
-    nodes: INode[],
+    nodes: Array<INode>,
     oldNodesMap: any,
     selectedNode: any,
     prevSelectedNode: any,
@@ -308,11 +354,10 @@ class GraphView extends React.Component<IGraphViewProps, IGraphViewState> {
       if (prevNode != null && (
         prevNode.node !== node
           || (
-            selectedNode.node !== prevSelectedNode.node
-              && (
-                (selectedNode.node && node.id === selectedNode.node.id)
-                  || (prevSelectedNode.node && node.id === prevSelectedNode.node.id)
-              )
+            selectedNode.node !== prevSelectedNode.node && (
+              (selectedNode.node && node.id === selectedNode.node.id)
+                || (prevSelectedNode.node && node.id === prevSelectedNode.node.id)
+            )
           )
       )) {
         // Updated node
@@ -354,7 +399,7 @@ class GraphView extends React.Component<IGraphViewProps, IGraphViewState> {
   }
 
   addNewEdges(
-    edges: IEdge[],
+    edges: Array<IEdge>,
     oldEdgesMap: any,
     selectedEdge: any,
     prevSelectedEdge: any,
@@ -388,7 +433,7 @@ class GraphView extends React.Component<IGraphViewProps, IGraphViewState> {
     }
   }
 
-  removeOldEdges = (prevEdges: IEdge[], edgesMap: any) => {
+  removeOldEdges = (prevEdges: Array<IEdge>, edgesMap: any) => {
     // remove old edges
     let edge = null;
     for (let i = 0; i < prevEdges.length; i += 1) {
@@ -470,6 +515,8 @@ class GraphView extends React.Component<IGraphViewProps, IGraphViewState> {
       return;
     }
 
+    const isSpecialKeyPressed = d.metaKey || d.ctrlKey;
+
     switch (d.key) {
       case 'Delete':
       case 'Backspace':
@@ -478,22 +525,22 @@ class GraphView extends React.Component<IGraphViewProps, IGraphViewState> {
         }
         break;
       case 'z':
-        if ((d.metaKey || d.ctrlKey) && onUndo) {
+        if (isSpecialKeyPressed && onUndo) {
           onUndo();
         }
         break;
       case 'y':
-        if ((d.metaKey || d.ctrlKey) && onRedo) {
+        if (isSpecialKeyPressed && onRedo) {
           onRedo();
         }
         break;
       case 'c':
-        if ((d.metaKey || d.ctrlKey) && selectedNodeObj.node && onCopySelected) {
+        if (isSpecialKeyPressed && selectedNodeObj.node && onCopySelected) {
           onCopySelected();
         }
         break;
       case 'v':
-        if ((d.metaKey || d.ctrlKey) && selectedNodeObj.node && onPasteSelected) {
+        if (isSpecialKeyPressed && selectedNodeObj.node && onPasteSelected) {
           onPasteSelected();
         }
         break;
@@ -501,7 +548,7 @@ class GraphView extends React.Component<IGraphViewProps, IGraphViewState> {
     }
   }
 
-  handleEdgeSelected = (e) => {
+  handleEdgeSelected = (e: Event) => {
     const { edges } = this.state;
     const { onSelectEdge } = this.props;
     const { source, target } = e.target.dataset;
@@ -691,13 +738,8 @@ class GraphView extends React.Component<IGraphViewProps, IGraphViewState> {
 
   handleNodeMouseEnter = (event: any, data: any, hovered: boolean) => {
     const { hoveredNode, draggingEdge } = this.state;
-    // hovered is false when creating edges
-    if (hovered && !hoveredNode) {
-      this.setState({
-        hoveredNode: true,
-        hoveredNodeData: data,
-      });
-    } else if (!hovered && hoveredNode && draggingEdge) {
+
+    if (!hovered && hoveredNode && draggingEdge) {
       this.setState({
         edgeEndNode: data,
       });
@@ -1071,7 +1113,7 @@ class GraphView extends React.Component<IGraphViewProps, IGraphViewState> {
     );
   }
 
-  renderNode = (id: string, element: Element) => {
+  renderNode = (id: string, element: React.Element) => {
     if (!this.entities) {
       return;
     }

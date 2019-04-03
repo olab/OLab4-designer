@@ -3,16 +3,14 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
 import { AppBar } from '@material-ui/core';
+
+import ToolbarGroup from '../../../shared/components/ToolbarGroup';
 import GraphUndoRedoButtons from '../Graph/UndoRedo';
 
 import type {
-  Props,
-  State,
+  IToolbarsProps,
+  IToolbarsState,
 } from './types';
-
-import * as graphActions from '../action';
-
-import ToolbarGroup from '../../../shared/components/ToolbarGroup';
 
 import moveIcon from '../../../shared/assets/icons/toolbar/templates/toolbar-move.png';
 import selectIcon from '../../../shared/assets/icons/toolbar/templates/toolbar-select.png';
@@ -22,8 +20,7 @@ import flagIcon from '../../../shared/assets/icons/toolbar/templates/toolbar-fla
 // import undoIcon from '../../../shared/assets/icons/toolbar/templates/toolbar-undo.png';
 // import redoIcon from '../../../shared/assets/icons/toolbar/templates/toolbar-redo.png';
 import previewIcon from '../../../shared/assets/icons/toolbar/templates/toolbar-preview.png';
-import dropdownIcon
-  from '../../../shared/assets/icons/toolbar/templates/toolbar-arrow-dropdown.png';
+import dropdownIcon from '../../../shared/assets/icons/toolbar/templates/toolbar-arrow-dropdown.png';
 import fullscreenIcon from '../../../shared/assets/icons/toolbar/templates/toolbar-fullscreen.png';
 import settingsIcon from '../../../shared/assets/icons/toolbar/templates/toolbar-settings.png';
 import questionIcon from '../../../shared/assets/icons/toolbar/templates/meta-question.png';
@@ -32,13 +29,15 @@ import addIcon from '../../../shared/assets/icons/toolbar/templates/meta-add.png
 import counterIcon from '../../../shared/assets/icons/toolbar/templates/meta-counter.png';
 import filesIcon from '../../../shared/assets/icons/toolbar/templates/meta-files.png';
 
+import * as graphActions from '../action';
+
 import './styles.scss';
 
-class Templates extends Component<Props, State> {
-  constructor(props: Props) {
+export class Toolbars extends Component<IToolbarsProps, IToolbarsState> {
+  constructor(props: IToolbarsProps) {
     super(props);
 
-    const { fullscreenHandle } = this.props;
+    const { fullscreenHandler } = props;
 
     this.state = {
       expand: '',
@@ -111,7 +110,7 @@ class Templates extends Component<Props, State> {
             name: 'fullscreen',
             icon: fullscreenIcon,
             mouseIcon: 'template_mouse_icon',
-            onClick: fullscreenHandle,
+            onClick: fullscreenHandler,
             order: 10,
             label: 'Go to fullscreen',
           },
@@ -267,4 +266,4 @@ const mapDispatchToProps = dispatch => ({
   },
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Templates);
+export default connect(mapStateToProps, mapDispatchToProps)(Toolbars);

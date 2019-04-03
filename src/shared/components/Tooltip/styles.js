@@ -1,5 +1,4 @@
-import arrowGenerator from './arrowGenerator';
-
+import arrowGenerator from '../../../helpers/arrowGenerator';
 
 const styles = theme => ({
   button: {

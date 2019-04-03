@@ -1,13 +1,12 @@
 // @flow
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import { Tooltip, ClickAwayListener } from '@material-ui/core';
 
 import type { State, Props } from './types';
 import styles from './styles';
 
-
-class CustomizedTooltip extends Component<Props, State> {
+export class CustomizedTooltip extends Component<Props, State> {
   state = {
     arrowRef: null,
     open: false,
@@ -31,10 +30,10 @@ class CustomizedTooltip extends Component<Props, State> {
     } = this.props;
     const { open, arrowRef } = this.state;
     const title = (
-      <React.Fragment>
+      <Fragment>
         {tooltipText}
         {arrow && <span className={classes.arrow} ref={this.handleArrowRef} />}
-      </React.Fragment>
+      </Fragment>
     );
 
     const customPropsWhenClickable = {

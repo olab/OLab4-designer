@@ -2,25 +2,20 @@
 import React, { Component } from 'react';
 import Fullscreen from 'react-full-screen';
 
-import ToolbarTemplates from './Toolbars';
 import Graph from './Graph';
+import ToolbarTemplates from './Toolbars';
+
+import type {
+  IConstructorProps,
+  IConstructorState,
+} from './types';
 
 import './styles.scss';
 
-type Props = {};
-
-type State = {
-  isFullScreen: boolean;
-};
-
-class Constructor extends Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-
-    this.state = {
-      isFullScreen: false,
-    };
-  }
+export class Constructor extends Component<IConstructorProps, IConstructorState> {
+  state = {
+    isFullScreen: false,
+  };
 
   changeIfFullScreen = (isFullScreen: boolean) => {
     this.setState({ isFullScreen });
@@ -42,7 +37,7 @@ class Constructor extends Component<Props, State> {
           <div className="full-screenable-node">
 
             <ToolbarTemplates
-              fullscreenHandle={this.toggleFullScreen}
+              fullscreenHandler={this.toggleFullScreen}
               isFullScreen={isFullScreen}
             />
 

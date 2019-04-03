@@ -1,6 +1,6 @@
 // @flow
 /*
-This component is drawing background of the graph;
+This component draws background of the graph;
 Here you can set type and view of the Background.
 It can be e.x. dotted/grid etc.
 All patterns are being grabbed from Defs section by id.
@@ -11,7 +11,7 @@ import React, { Component } from 'react';
 
 import type { IBackgroundProps } from './types';
 
-class Background extends Component<IBackgroundProps> {
+export class Background extends Component<IBackgroundProps> {
   static defaultProps: IBackgroundProps = {
     backgroundFillId: '#grid',
     gridSize: 40960,
@@ -27,7 +27,7 @@ class Background extends Component<IBackgroundProps> {
         y={-gridSize / 4}
         width={gridSize}
         height={gridSize}
-        fill={`url(${backgroundFillId || ''})`}
+        fill={`url(${backgroundFillId})`}
       />
     );
   }

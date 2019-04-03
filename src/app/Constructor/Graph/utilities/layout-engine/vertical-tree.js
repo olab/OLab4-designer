@@ -3,9 +3,12 @@ import * as dagre from 'dagre';
 import type { INode } from '../../Node/types';
 import SnapToGrid from './snap-to-grid';
 
+type MapNodes = {
+  [key: string]: any;
+}
 class VerticalTree extends SnapToGrid {
   // eslint-disable-next-line class-methods-use-this
-  adjustNodes(nodes: INode[], nodesMap?: any): INode[] {
+  adjustNodes(nodes: Array<INode>, nodesMap?: MapNodes): Array<INode> {
     const size = 154 * 1.5;
     const g = new dagre.graphlib.Graph();
     g.setGraph({});
@@ -32,7 +35,7 @@ class VerticalTree extends SnapToGrid {
 
     dagre.layout(g);
 
-    g.nodes().forEach((gNodeId) => {
+    g.nodes().forEach((gNodeId: string) => {
       const nodesMapNode = nodesMap[gNodeId];
 
       // gNode is the dagre representation

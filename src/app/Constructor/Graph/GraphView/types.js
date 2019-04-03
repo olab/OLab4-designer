@@ -11,10 +11,10 @@ export type IViewTransform = {
 export type INodeMapNode = {
   node: INode;
   originalArrIndex: number;
-  incomingEdges: IEdge[];
-  outgoingEdges: IEdge[];
-  parents: INode[];
-  children: INode[];
+  incomingEdges: Array<IEdge>;
+  outgoingEdges: Array<IEdge>;
+  parents: Array<INode>;
+  children: Array<INode>;
 };
 
 export type IGraphViewState = {
@@ -55,13 +55,13 @@ export type IGraphViewProps = {
   selected: any;
   zoomDelay?: number;
   zoomDur?: number;
-  canCreateEdge?: (startNode?: INode, endNode?: INode) => boolean;
-  canDeleteEdge?: (selected: any) => boolean;
-  canDeleteNode?: (selected: any) => boolean;
+  canCreateEdge?: Function;
+  canDeleteEdge?: Function;
+  canDeleteNode?: Function;
   onCopySelected?: () => void;
   onCreateEdge: (sourceNode: INode, targetNode: INode) => void;
-  onCreateNode: (x: number, y: number) => void;
-  onDeleteEdge: (selectedEdge: IEdge, edges: IEdge[]) => void;
+  onCreateNode: (x: number, y: number, value: string) => void;
+  onDeleteEdge: (selectedEdge: IEdge, edges: Array<IEdge>) => void;
   onDeleteNode: (selected: any, nodeId: string, nodes: any[]) => void;
   onPasteSelected?: () => void;
   onSelectEdge: (selectedEdge: IEdge) => void;

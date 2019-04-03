@@ -11,7 +11,7 @@ import React, { Component } from 'react';
 
 import type { ICircleProps } from './types';
 
-class Circle extends Component<ICircleProps> {
+export class Circle extends Component<ICircleProps> {
   static defaultProps: ICircleProps = {
     gridDotSize: 2,
   }

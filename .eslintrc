@@ -8,11 +8,13 @@
     "flowtype"
   ],
   "env": {
-    "browser": true
+    "browser": true,
+    "jest": true
   },
   "rules": {
     "react/prefer-stateless-function": "off",
     "no-param-reassign": 0,
-    "react/sort-comp": [0, {}]
+    "react/sort-comp": [0, {}],
+    "import/no-named-as-default": 0
   }
 }

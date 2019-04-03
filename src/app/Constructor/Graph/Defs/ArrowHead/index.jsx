@@ -12,7 +12,7 @@ import type { IArrowHeadProps } from './types';
 import { getMarkerViewBox, getPathToBeDrawn } from './helpers';
 import { markerId } from './config';
 
-const ArrowheadMarker = ({ edgeArrowSize }: IArrowHeadProps) => {
+export const ArrowHead = ({ edgeArrowSize }: IArrowHeadProps) => {
   if (!edgeArrowSize) {
     return null;
   }
@@ -38,4 +38,4 @@ const ArrowheadMarker = ({ edgeArrowSize }: IArrowHeadProps) => {
   );
 };
 
-export default ArrowheadMarker;
+export default ArrowHead;

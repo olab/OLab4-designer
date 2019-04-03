@@ -20,7 +20,7 @@ import type {
 import { sliderSteps } from './config';
 import styles from './styles';
 
-class ZoomControls extends React.Component<IGraphControlProps, IGraphControlState> {
+export class ZoomControls extends React.Component<IGraphControlProps, IGraphControlState> {
   constructor(props: IGraphControlProps) {
     super(props);
 
