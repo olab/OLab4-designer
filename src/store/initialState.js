@@ -1,9 +1,11 @@
 // @flow
 import { initialUserState } from '../app/Login/reducer';
+import { initialModalsState } from '../app/Modals/reducer';
 import { initialConstructorState } from '../app/Constructor/reducer';
 
-import type { Constructor as ConstructorType } from '../app/Constructor/types';
 import type { User as UserType } from '../app/Login/types';
+import type { Modals as ModalsType } from '../app/Modals/types';
+import type { Constructor as ConstructorType } from '../app/Constructor/types';
 
 export type Map = {
   id: number | null,
@@ -33,6 +35,7 @@ export type Store = {
   map: Map,
   app: App,
   scopedObjects: ScopedObjects,
+  modals: ModalsType,
 };
 
 const initialState: Store = {
@@ -50,6 +53,7 @@ const initialState: Store = {
     loadingState: [],
   },
   scopedObjects: [],
+  modals: initialModalsState,
 };
 
 export default initialState;

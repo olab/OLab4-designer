@@ -6,6 +6,7 @@ import {
 } from '../app/reducers';
 
 import user from '../app/Login/reducer';
+import modals from '../app/Modals/reducer';
 import constructor from '../app/Constructor/reducer';
 
 export default {
@@ -15,4 +16,5 @@ export default {
   map,
   app,
   scopedObjects,
+  modals,
 };

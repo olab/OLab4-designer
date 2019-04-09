@@ -5,6 +5,7 @@
 */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { DropTarget } from 'react-dnd';
 import randomColor from 'randomcolor';
 import isEqual from 'lodash.isequal';
 
@@ -27,6 +28,7 @@ import type {
 } from '../types';
 
 import { EdgeTypes } from './config';
+import { DndItemTypes } from '../../Modals/Meta-Modal/config';
 
 import * as actions from '../action';
 
@@ -207,10 +209,10 @@ export class Graph extends Component<IGraphProps, IGraphState> {
 
   render() {
     const {
-      isFullScreen, graph, minZoom, maxZoom, layoutEngineType,
+      isFullScreen, graph, minZoom, maxZoom, layoutEngineType, connectDropTarget,
     } = this.props;
 
-    return (
+    return connectDropTarget(
       <Wrapper id="graph" isFullScreen={isFullScreen}>
         <Container>
           <GraphView
@@ -239,7 +241,7 @@ export class Graph extends Component<IGraphProps, IGraphState> {
 
         { this.getSelectedItem
           && <div>---SIDEBAR HERE---</div> }
-      </Wrapper>
+      </Wrapper>,
     );
   }
 }
@@ -283,4 +285,31 @@ const mapDispatchToProps = dispatch => ({
   },
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Graph);
+/*
+  It describes how the drop target reacts to the drag and drop events.
+  See docs here: http://react-dnd.github.io/react-dnd/docs/api/drop-target#parameters
+*/
+const spec = {
+  drop: (props, monitor, component) => {
+    if (!component) {
+      return null;
+    }
+
+    return monitor.getDifferenceFromInitialOffset();
+  },
+};
+
+/*
+  It should return a plain object of the props to inject into your component.
+  It receives two parameters: connect and monitor.
+  See docs here: http://react-dnd.github.io/react-dnd/docs/api/drop-target#parameters
+*/
+const collect = conn => ({
+  connectDropTarget: conn.dropTarget(),
+});
+
+export default DropTarget(
+  DndItemTypes.META_MODAL,
+  spec,
+  collect,
+)(connect(mapStateToProps, mapDispatchToProps)(Graph));

@@ -24,6 +24,7 @@ describe('<Graph />', () => {
   let ACTION_DELETE_NODE;
   let ACTION_DELETE_EDGE;
   let ACTION_SWAP_EDGE;
+  let connectDropTarget;
   beforeEach(() => {
     isFullScreen = false;
     isUndoAvailable = false;
@@ -41,6 +42,7 @@ describe('<Graph />', () => {
     ACTION_DELETE_NODE = jest.fn();
     ACTION_DELETE_EDGE = jest.fn();
     ACTION_SWAP_EDGE = jest.fn();
+    connectDropTarget = jest.fn().mockReturnValue(<div id="graph" />);
     output = shallow(
       <Graph
         isFullScreen={isFullScreen}
@@ -59,6 +61,7 @@ describe('<Graph />', () => {
         ACTION_DELETE_NODE={ACTION_DELETE_NODE}
         ACTION_DELETE_EDGE={ACTION_DELETE_EDGE}
         ACTION_SWAP_EDGE={ACTION_SWAP_EDGE}
+        connectDropTarget={connectDropTarget}
       />,
     );
   });

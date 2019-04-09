@@ -8,6 +8,9 @@ const ToolbarGroup = ({ group }: { group: ToolbarGroupType }) => (
   <div
     key={group.id}
     className="toolbar-group"
+    onClick={group.onClick}
+    onKeyDown={group.onClick}
+    role="toolbar"
   >
     {group.itemList.map(item => <ToolbarItem key={item.id} {...item} />)}
   </div>

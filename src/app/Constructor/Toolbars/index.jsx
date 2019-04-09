@@ -1,10 +1,10 @@
 // @flow
-/* eslint-disable */
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { AppBar } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 
+import MetaModal from '../../Modals/Meta-Modal';
 import ToolbarGroup from '../../../shared/components/ToolbarGroup';
 import GraphUndoRedoButtons from '../Graph/UndoRedo';
 
@@ -31,6 +31,7 @@ import counterIcon from '../../../shared/assets/icons/toolbar/templates/meta-cou
 import filesIcon from '../../../shared/assets/icons/toolbar/templates/meta-files.png';
 
 import * as graphActions from '../action';
+import * as metaModalActions from '../../Modals/action';
 
 import styles, { Wrapper, Block, LabTitleItem, LabTitle, LabIcon } from './styles';
 
@@ -170,6 +171,7 @@ export class Toolbars extends Component<IToolbarsProps, IToolbarsState> {
             label: 'add',
           },
         ],
+        onClick: this.toggleShowMetaModal,
       },
     };
 
@@ -179,6 +181,26 @@ export class Toolbars extends Component<IToolbarsProps, IToolbarsState> {
   componentDidMount() {
     const { ACTION_SET_ZOOM_CONTROLS_REF } = this.props;
     ACTION_SET_ZOOM_CONTROLS_REF(this.zoomControlsRef);
+  }
+
+  toggleShowMetaModal = (e: Event) => {
+    const {
+      ACTION_TOGGLE_META_MODAL, ACTION_SET_POSITION_META_MODAL, metaModal,
+    } = this.props;
+
+    if (!metaModal.isShow && !metaModal.x && !metaModal.y) {
+      const toolbarItem = (e.target: window.HTMLInputElement).closest('.toolbar-item');
+      const [{
+        x: rectsX, y: rectsY, width: rectsWidth, height: rectsHeight,
+      }] = toolbarItem.getClientRects();
+
+      const x = rectsX + rectsWidth;
+      const y = rectsY - rectsHeight;
+
+      ACTION_SET_POSITION_META_MODAL(x, y);
+    }
+
+    ACTION_TOGGLE_META_MODAL();
   }
 
   onUndo = () => {
@@ -208,7 +230,7 @@ export class Toolbars extends Component<IToolbarsProps, IToolbarsState> {
       expand, toolbars, right, meta, preview,
     } = this.state;
     const {
-      isFullScreen, isUndoAvailable, isRedoAvailable, classes,
+      isUndoAvailable, isRedoAvailable, metaModal, classes,
     } = this.props;
 
     return (
@@ -216,10 +238,13 @@ export class Toolbars extends Component<IToolbarsProps, IToolbarsState> {
         <AppBar className={classes.positionRelative} position="fixed">
           <Block>
             <ToolbarGroup group={preview} expand={expand} />
-            <ToolbarGroup
-              group={toolbars}
-              expand={expand}
-            />
+            <Fragment>
+              <ToolbarGroup
+                group={toolbars}
+                expand={expand}
+              />
+              { metaModal.isShow && <MetaModal /> }
+            </Fragment>
             <GraphUndoRedoButtons
               isUndoAvailable={isUndoAvailable}
               isRedoAvailable={isRedoAvailable}
@@ -244,9 +269,10 @@ export class Toolbars extends Component<IToolbarsProps, IToolbarsState> {
   }
 }
 
-const mapStateToProps = ({ constructor: { graph } }) => ({
+const mapStateToProps = ({ constructor: { graph }, modals: { metaModal } }) => ({
   isUndoAvailable: !!graph.undo.length,
   isRedoAvailable: !!graph.redo.length,
+  metaModal,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -258,6 +284,12 @@ const mapDispatchToProps = dispatch => ({
   },
   ACTION_REDO_GRAPH: () => {
     dispatch(graphActions.ACTION_REDO_GRAPH());
+  },
+  ACTION_TOGGLE_META_MODAL: () => {
+    dispatch(metaModalActions.ACTION_TOGGLE_META_MODAL());
+  },
+  ACTION_SET_POSITION_META_MODAL: (x: number, y: number) => {
+    dispatch(metaModalActions.ACTION_SET_POSITION_META_MODAL(x, y));
   },
 });
 

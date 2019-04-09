@@ -1,5 +1,7 @@
 // @flow
 import React, { Component } from 'react';
+import { DragDropContext } from 'react-dnd';
+import HTML5Backend from 'react-dnd-html5-backend';
 import Fullscreen from 'react-full-screen';
 
 import Graph from './Graph';
@@ -46,4 +48,4 @@ export class Constructor extends Component<IConstructorProps, IConstructorState>
   }
 }
 
-export default Constructor;
+export default DragDropContext(HTML5Backend)(Constructor);
