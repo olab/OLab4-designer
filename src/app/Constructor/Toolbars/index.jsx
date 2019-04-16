@@ -1,8 +1,9 @@
 // @flow
+/* eslint-disable */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import classNames from 'classnames';
 import { AppBar } from '@material-ui/core';
+import { withStyles } from '@material-ui/core/styles';
 
 import ToolbarGroup from '../../../shared/components/ToolbarGroup';
 import GraphUndoRedoButtons from '../Graph/UndoRedo';
@@ -31,7 +32,7 @@ import filesIcon from '../../../shared/assets/icons/toolbar/templates/meta-files
 
 import * as graphActions from '../action';
 
-import './styles.scss';
+import styles, { Wrapper, Block, LabTitleItem, LabTitle, LabIcon } from './styles';
 
 export class Toolbars extends Component<IToolbarsProps, IToolbarsState> {
   constructor(props: IToolbarsProps) {
@@ -207,44 +208,38 @@ export class Toolbars extends Component<IToolbarsProps, IToolbarsState> {
       expand, toolbars, right, meta, preview,
     } = this.state;
     const {
-      isFullScreen, isUndoAvailable, isRedoAvailable,
+      isFullScreen, isUndoAvailable, isRedoAvailable, classes,
     } = this.props;
 
-    const fullScreenClass = classNames({
-      'full-screen': isFullScreen,
-    });
-
     return (
-      <div className={`toolbar-templates ${fullScreenClass}`}>
-        <AppBar className="appbar-templates" position="fixed">
-          <div className="left">
+      <>
+        <AppBar className={classes.positionRelative} position="fixed">
+          <Block>
             <ToolbarGroup group={preview} expand={expand} />
             <ToolbarGroup
               group={toolbars}
               expand={expand}
             />
-            <div>
-              <GraphUndoRedoButtons
-                isUndoAvailable={isUndoAvailable}
-                isRedoAvailable={isRedoAvailable}
-                onUndo={this.onUndo}
-                onRedo={this.onRedo}
-              />
-            </div>
-          </div>
-          <div className="right">
-            <div className="name">
-              <span className="item">Lab name</span>
-              <img alt="show" src={dropdownIcon} className="item" />
-            </div>
+            <GraphUndoRedoButtons
+              isUndoAvailable={isUndoAvailable}
+              isRedoAvailable={isRedoAvailable}
+              onUndo={this.onUndo}
+              onRedo={this.onRedo}
+            />
+          </Block>
+          <Block>
+            <LabTitleItem>
+              <LabTitle className="item">Lab name</LabTitle>
+              <LabIcon alt="show" src={dropdownIcon} />
+            </LabTitleItem>
             <div ref={this.zoomControlsRef} />
             <ToolbarGroup group={right} />
-          </div>
+          </Block>
         </AppBar>
-        <AppBar className={`metabar-templates ${fullScreenClass}`}>
+        <AppBar className={classes.root}>
           <ToolbarGroup group={meta} expand={expand} />
         </AppBar>
-      </div>
+      </>
     );
   }
 }
@@ -266,4 +261,4 @@ const mapDispatchToProps = dispatch => ({
   },
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Toolbars);
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Toolbars));

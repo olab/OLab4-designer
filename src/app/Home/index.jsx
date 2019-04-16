@@ -2,8 +2,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import './home.scss';
-
 const Home = ({ appTitle }: {appTitle: string}) => (
   <div>
     <h1>{appTitle}</h1>

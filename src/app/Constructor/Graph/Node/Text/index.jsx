@@ -1,17 +1,18 @@
 // @flow
 import React from 'react';
-import classNames from 'classnames';
 
 import type { INodeTextProps } from './types';
 
+import { NodeTextWrapper } from './styles';
+
 export const NodeText = ({ data: { title }, isSelected: selected }: INodeTextProps) => (
-  <text
-    className={classNames('node-text', { selected })}
+  <NodeTextWrapper
+    selected={selected}
     textAnchor="middle"
   >
     <tspan x={0} dy={18} fontSize="10px">{title}</tspan>
     <title>{title}</title>
-  </text>
+  </NodeTextWrapper>
 );
 
 export default NodeText;

@@ -1,7 +1,7 @@
 // @flow
+/* eslint-disable */
 import * as d3 from 'd3';
 import React from 'react';
-import classNames from 'classnames';
 
 import Edge from '../Edge';
 import NodeText from './Text';
@@ -10,6 +10,8 @@ import type {
   INodeProps,
   INodeState,
 } from './types';
+
+import { NodeShapeContainer } from './styles';
 
 export class Node extends React.Component<INodeProps, INodeState> {
   constructor(props: INodeProps) {
@@ -154,7 +156,7 @@ export class Node extends React.Component<INodeProps, INodeState> {
   }
 
   renderShape() {
-    const { hovered, selected } = this.state;
+    // const { hovered, selected } = this.state;
     // const { index } = this.props;
 
     // if (!this.nodeRef.current) {
@@ -167,14 +169,11 @@ export class Node extends React.Component<INodeProps, INodeState> {
     //   height,
     //   width,
     // };
-    const nodeShapeContainerClassName = classNames('shape');
-    const nodeClassName = classNames('node', { selected, hovered });
 
     return (
-      <g className={nodeShapeContainerClassName}>
+      <NodeShapeContainer>
         <circle
           // data-index={index}
-          className={nodeClassName}
           // x={-props.width / 2}
           // y={-props.height / 2}
           // width={props.width}
@@ -182,23 +181,18 @@ export class Node extends React.Component<INodeProps, INodeState> {
           r="76"
           fill="black"
         />
-      </g>
+      </NodeShapeContainer>
     );
   }
 
   render() {
     const {
-      x, y, hovered, selected,
+      x, y,
     } = this.state;
-    const { id, data } = this.props;
-    const className = classNames('node', data.type, {
-      hovered,
-      selected,
-    });
+    const { id } = this.props;
 
     return (
       <g
-        className={className}
         onMouseOver={this.handleMouseOver}
         onMouseOut={this.handleMouseOut}
         onFocus={() => undefined}

@@ -9,6 +9,7 @@ https://developer.mozilla.org/en-US/docs/Web/SVG/Element/circle
 */
 import React, { Component } from 'react';
 
+import { CircleWrapper } from './styles';
 import type { ICircleProps } from './types';
 
 export class Circle extends Component<ICircleProps> {
@@ -20,7 +21,7 @@ export class Circle extends Component<ICircleProps> {
     const { gridDotSize } = this.props;
 
     return (
-      <circle
+      <CircleWrapper
         className="circle"
         cx={gridDotSize}
         cy={gridDotSize}

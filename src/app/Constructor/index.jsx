@@ -10,8 +10,6 @@ import type {
   IConstructorState,
 } from './types';
 
-import './styles.scss';
-
 export class Constructor extends Component<IConstructorProps, IConstructorState> {
   state = {
     isFullScreen: false,
@@ -34,18 +32,14 @@ export class Constructor extends Component<IConstructorProps, IConstructorState>
           enabled={isFullScreen}
           onChange={this.changeIfFullScreen}
         >
-          <div className="full-screenable-node">
+          <ToolbarTemplates
+            fullscreenHandler={this.toggleFullScreen}
+            isFullScreen={isFullScreen}
+          />
 
-            <ToolbarTemplates
-              fullscreenHandler={this.toggleFullScreen}
-              isFullScreen={isFullScreen}
-            />
-
-            <Graph
-              isFullScreen={isFullScreen}
-            />
-
-          </div>
+          <Graph
+            isFullScreen={isFullScreen}
+          />
         </Fullscreen>
       </div>
     );

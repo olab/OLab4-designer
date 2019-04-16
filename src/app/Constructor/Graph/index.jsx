@@ -6,12 +6,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import randomColor from 'randomcolor';
-import classNames from 'classnames';
 import isEqual from 'lodash.isequal';
 
 import GraphView from './GraphView';
 import type { IEdge } from './Edge/types';
 import type { INode } from './Node/types';
+
+import { Wrapper, Container } from './styles';
 
 import type {
   IGraphProps,
@@ -28,8 +29,6 @@ import type {
 import { EdgeTypes } from './config';
 
 import * as actions from '../action';
-
-import './styles.scss';
 
 export class Graph extends Component<IGraphProps, IGraphState> {
   constructor(props: IGraphProps) {
@@ -211,13 +210,9 @@ export class Graph extends Component<IGraphProps, IGraphState> {
       isFullScreen, graph, minZoom, maxZoom, layoutEngineType,
     } = this.props;
 
-    const graphClass = classNames({
-      'full-screen': isFullScreen,
-    });
-
     return (
-      <div id="graph" className={graphClass}>
-        <div className="graph-container">
+      <Wrapper id="graph" isFullScreen={isFullScreen}>
+        <Container>
           <GraphView
             ref={this.GraphView}
             minZoom={minZoom / 100}
@@ -240,11 +235,11 @@ export class Graph extends Component<IGraphProps, IGraphState> {
             onPasteSelected={this.onPasteSelected}
             layoutEngineType={layoutEngineType}
           />
-        </div>
+        </Container>
 
         { this.getSelectedItem
           && <div>---SIDEBAR HERE---</div> }
-      </div>
+      </Wrapper>
     );
   }
 }

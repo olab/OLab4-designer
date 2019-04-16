@@ -3,7 +3,6 @@
 This component renders standalone edge.
 */
 import * as d3 from 'd3';
-import classNames from 'classnames';
 import React from 'react';
 import { intersect, shape } from 'svg-intersections';
 import { Point2D, Matrix2D } from 'kld-affine';
@@ -13,6 +12,8 @@ import type {
   IEdge,
   IEdgeProps,
 } from './types';
+
+import { EdgeWrapper, EdgeMouseHandlerWrapper, EdgeTextWrapper } from './styles';
 
 export class Edge extends React.Component<IEdgeProps> {
   constructor(props: IEdgeProps) {
@@ -650,14 +651,13 @@ export class Edge extends React.Component<IEdgeProps> {
 
   renderHandleText(data: any) {
     return (
-      <text
-        className="edge-text"
+      <EdgeTextWrapper
         textAnchor="middle"
         alignmentBaseline="central"
         transform={`${this.getEdgeHandleTranslation()}`}
       >
         {data.handleText}
-      </text>
+      </EdgeTextWrapper>
     );
   }
 
@@ -671,12 +671,11 @@ export class Edge extends React.Component<IEdgeProps> {
     }
 
     const id = `${data.source || ''}_${data.target}`;
-    const className = classNames('edge', { selected });
 
     return (
       <g className="edge-container" data-source={data.source} data-target={data.target}>
-        <g className={className}>
-          <path className="edge-path" d={this.getPathDescription() || undefined} />
+        <EdgeWrapper selected={selected}>
+          <path d={this.getPathDescription() || undefined} />
           <use
             className="edge-use"
             xlinkHref={Edge.getXlinkHref(edgeTypes, data)}
@@ -685,17 +684,16 @@ export class Edge extends React.Component<IEdgeProps> {
             transform={`${this.getEdgeHandleTransformation()}`}
           />
           {/* {data.handleText && this.renderHandleText(data)} */}
-        </g>
-        <g className="edge-mouse-handler">
+        </EdgeWrapper>
+        <EdgeMouseHandlerWrapper>
           <path
-            className="edge-overlay-path"
             ref={this.edgeOverlayRef}
             id={id}
             data-source={data.source}
             data-target={data.target}
             d={this.getPathDescription() || undefined}
           />
-        </g>
+        </EdgeMouseHandlerWrapper>
       </g>
     );
   }

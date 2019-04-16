@@ -23,7 +23,6 @@ describe('<NodeText />', () => {
   describe('render method', () => {
     it('renders', () => {
       expect(output.getElement()).not.toBeNull();
-      expect(output.props().className).toEqual('node-text');
       const tspan = output.find('tspan');
       expect(tspan.at(0).text()).toEqual('Test');
       expect(tspan.at(0).props().x).toEqual(0);
@@ -36,7 +35,7 @@ describe('<NodeText />', () => {
       output.setProps({
         isSelected: true,
       });
-      expect(output.props().className).toEqual('node-text selected');
+      expect(output.props().selected).toEqual(true);
     });
 
     it('does not render a title element when there is no title', () => {

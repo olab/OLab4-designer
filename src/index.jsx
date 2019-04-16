@@ -2,18 +2,17 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router';
-
-import './index.scss';
-
 import store, { history } from './store/store';
 import * as serviceWorker from './serviceWorker';
 
 import App from './app';
+import GlobalStyles from './styles';
 
 const target = document.getElementById('root');
 
 const Root = (
   <Provider store={store}>
+    <GlobalStyles />
     <ConnectedRouter history={history}>
       <App />
     </ConnectedRouter>

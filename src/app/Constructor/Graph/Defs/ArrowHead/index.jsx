@@ -12,6 +12,8 @@ import type { IArrowHeadProps } from './types';
 import { getMarkerViewBox, getPathToBeDrawn } from './helpers';
 import { markerId } from './config';
 
+import { ArrowWrapper } from './styles';
+
 export const ArrowHead = ({ edgeArrowSize }: IArrowHeadProps) => {
   if (!edgeArrowSize) {
     return null;
@@ -29,8 +31,7 @@ export const ArrowHead = ({ edgeArrowSize }: IArrowHeadProps) => {
       refX={edgeArrowSize / 2}
       viewBox={getMarkerViewBox(edgeArrowSize)}
     >
-      <path
-        className="arrow"
+      <ArrowWrapper
         d={getPathToBeDrawn(edgeArrowSize)}
         fill="transparent"
       />

@@ -16,6 +16,7 @@ export type ToolbarGroup = {
 };
 
 export type IToolbarsProps = {
+  classes: any,
   fullscreenHandler: Function;
   isFullScreen: boolean;
   isUndoAvailable: boolean;

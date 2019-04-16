@@ -32,6 +32,8 @@ import GraphUtils from '../utilities/graph-utils';
 
 import * as actions from '../../action';
 
+import { ViewWrapper, GraphWrapper } from './styles';
+
 export class GraphView extends React.Component<IGraphViewProps, IGraphViewState> {
   constructor(props: IGraphViewProps) {
     super(props);
@@ -1336,11 +1338,8 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
     } = this.props;
 
     return (
-      <div
-        className="view-wrapper"
-        ref={this.viewWrapper}
-      >
-        <svg className="graph" ref={this.graphSvg}>
+      <ViewWrapper ref={this.viewWrapper}>
+        <GraphWrapper ref={this.graphSvg}>
           <Defs
             edgeArrowSize={edgeArrowSize}
             gridSpacing={gridSpacing}
@@ -1348,13 +1347,13 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
             edgeTypes={edgeTypes}
             renderDefs={renderDefs}
           />
-          <g className="view" ref={(el) => { this.view = el; }}>
+          <g ref={(el) => { this.view = el; }}>
             {this.renderBackground()}
 
-            <g className="entities" ref={(el) => { this.entities = el; }} />
+            <g ref={(el) => { this.entities = el; }} />
           </g>
-        </svg>
-      </div>
+        </GraphWrapper>
+      </ViewWrapper>
     );
   }
 }

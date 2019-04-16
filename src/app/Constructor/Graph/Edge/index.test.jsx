@@ -641,7 +641,6 @@ describe('<Edge />', () => {
         handleText: 'Fake',
       };
       const handleText = output.instance().renderHandleText(expectedData);
-      expect(handleText.props.className).toEqual('edge-text');
       expect(handleText.props.children).toEqual('Fake');
     });
   });

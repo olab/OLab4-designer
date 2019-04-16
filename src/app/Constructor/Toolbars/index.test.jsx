@@ -24,6 +24,7 @@ describe('<Toolbars />', () => {
 
     output = shallow(
       <Toolbars
+        classes={{}}
         fullscreenHandler={fullscreenHandler}
         isFullScreen={isFullScreen}
         isUndoAvailable={isUndoAvailable}

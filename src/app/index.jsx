@@ -7,13 +7,12 @@ import { connect } from 'react-redux';
 
 import Login from './Login';
 import Constructor from './Constructor';
+import { Header } from './styles';
 
 import type {
   State,
   Props,
 } from './types';
-
-import './index.scss';
 
 export class App extends Component<Props, State> {
   state = {
@@ -26,19 +25,19 @@ export class App extends Component<Props, State> {
 
     return (
       <Router>
-        <div className="App">
-          <header className="App-header">
+        <>
+          <Header>
             <span>{appTitle}</span>
-            <Link to="/" className="App-route-link">
+            <Link to="/" className="route-link">
               Home
             </Link>
-            {!isAuth && <Link to="/login" className="App-route-link">Login</Link>}
-          </header>
+            {!isAuth && <Link to="/login" className="route-link">Login</Link>}
+          </Header>
           <Switch>
             <Route exact path="/" component={Constructor} />
             <Route path="/login" component={Login} />
           </Switch>
-        </div>
+        </>
       </Router>
     );
   }

@@ -8,13 +8,13 @@ import UndoRedoIcon from '../../../../shared/assets/icons/toolbar/templates/undo
 
 import * as actions from '../../action';
 import type { IUndoRedoButtonsProps } from './types';
-import styles from './styles';
+import styles, { Wrapper, Container } from './styles';
 
 export const GraphUndoRedoButtons = ({
   classes, isUndoAvailable, isRedoAvailable, ACTION_REDO_GRAPH, ACTION_UNDO_GRAPH,
 }: IUndoRedoButtonsProps) => (
-  <div className="is-relative">
-    <div className="undo_redo-container">
+  <Wrapper>
+    <Container>
       <IconButton
         aria-label="Undo Button"
         onClick={ACTION_UNDO_GRAPH}
@@ -31,8 +31,8 @@ export const GraphUndoRedoButtons = ({
       >
         <UndoRedoIcon redo />
       </IconButton>
-    </div>
-  </div>
+    </Container>
+  </Wrapper>
 );
 
 const mapStateToProps = ({ constructor: { graph } }) => ({

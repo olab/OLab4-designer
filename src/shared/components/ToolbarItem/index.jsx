@@ -3,22 +3,12 @@ import React from 'react';
 
 import type { ToolbarItem as ToolbarItemType } from '../../../app/Constructor/Toolbars/types';
 
-import './index.scss';
+import { Item, Icon } from './styles';
 
-const ToolbarItem = ({
-  id,
-  icon,
-  label,
-  onClick = null,
-}: ToolbarItemType) => (
-  <div
-    key={id}
-    className="toolbar-item"
-    onClick={onClick}
-    aria-hidden="true"
-  >
-    <img alt={label} src={icon} />
-  </div>
+const ToolbarItem = (item: ToolbarItemType) => (
+  <Item key={item.id} onClick={item.onClick} aria-hidden="true">
+    <Icon alt={item.label} src={item.icon} />
+  </Item>
 );
 
 export default ToolbarItem;

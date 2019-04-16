@@ -72,8 +72,6 @@ describe('Node component', () => {
   describe('render method', () => {
     it('renders', () => {
       expect(output.getElement()).not.toBeNull();
-
-      expect(output.props().className).toEqual('node emptyNode');
       expect(output.props().transform).toEqual('translate(5, 10)');
 
       const nodeText = output.find(NodeText);
@@ -84,7 +82,7 @@ describe('Node component', () => {
       const event = {
         test: true,
       };
-      output.find('g.node').props().onMouseOver(event);
+      output.find('g').props().onMouseOver(event);
       expect(onNodeMouseEnter).toHaveBeenCalledWith(event, nodeData, true);
     });
 
@@ -95,7 +93,7 @@ describe('Node component', () => {
       output.setState({
         hovered: true,
       });
-      output.find('g.node').props().onMouseOut(event);
+      output.find('g').props().onMouseOut(event);
       expect(onNodeMouseLeave).toHaveBeenCalledWith(event, nodeData);
       expect(output.state().hovered).toEqual(false);
     });

@@ -18,7 +18,13 @@ import type {
 } from './types';
 
 import { sliderSteps } from './config';
-import styles from './styles';
+
+import styles, {
+  ZoomContainer, ZoomWrapper, ScaleIconWrapper,
+} from './styles';
+
+import DropDownIcon from '../../../../shared/assets/icons/dropdown.svg';
+import ScaleIcon from '../../../../shared/assets/icons/scale.svg';
 
 export class ZoomControls extends React.Component<IGraphControlProps, IGraphControlState> {
   constructor(props: IGraphControlProps) {
@@ -94,14 +100,16 @@ export class ZoomControls extends React.Component<IGraphControlProps, IGraphCont
           aria-owns={open ? 'menu-list-grow' : undefined}
           aria-haspopup="true"
         >
-          <div className="block m-right_small fit-icon" onClick={zoomToFit} role="none" />
-          <div className="flex" onClick={this.handleToggle} role="none">
-            <span className="m-right_small">
+          <ScaleIconWrapper>
+            <ScaleIcon onClick={zoomToFit} role="none" />
+          </ScaleIconWrapper>
+          <ZoomWrapper onClick={this.handleToggle} role="none">
+            <ZoomContainer>
               {this.zoomToSlider(zoomLevel).toFixed(0)}
               %
-            </span>
-            <div className="zoom-dropdown" role="none" />
-          </div>
+            </ZoomContainer>
+            <DropDownIcon role="none" />
+          </ZoomWrapper>
         </Button>
         <Popper
           open={open}
@@ -129,7 +137,7 @@ export class ZoomControls extends React.Component<IGraphControlProps, IGraphCont
                   <ClickAwayListener onClickAway={this.handleClose}>
                     <MenuList>
                       <Slider
-                        classes={{ root: 'slider-width' }}
+                        classes={{ root: classes.sliderWidth }}
                         value={this.zoomToSlider(zoomLevel)}
                         onChange={this.zoom}
                         onDragEnd={this.handleClose}
