@@ -16,10 +16,7 @@ export type IGraphProps = {
   isUndoAvailable: boolean,
   isRedoAvailable: boolean,
   layoutEngineType: string,
-<<<<<<< HEAD
   connectDropTarget: Function,
-=======
->>>>>>> OLUX-92: Injected digraph into Olab4.
   ACTION_UNDO_GRAPH: () => void,
   ACTION_REDO_GRAPH: () => void,
   ACTION_SELECT_ITEM: (id: number | null) => void,

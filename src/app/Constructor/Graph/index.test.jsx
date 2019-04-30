@@ -24,10 +24,7 @@ describe('<Graph />', () => {
   let ACTION_DELETE_NODE;
   let ACTION_DELETE_EDGE;
   let ACTION_SWAP_EDGE;
-<<<<<<< HEAD
   let connectDropTarget;
-=======
->>>>>>> OLUX-92: Injected digraph into Olab4.
   beforeEach(() => {
     isFullScreen = false;
     isUndoAvailable = false;
@@ -45,10 +42,7 @@ describe('<Graph />', () => {
     ACTION_DELETE_NODE = jest.fn();
     ACTION_DELETE_EDGE = jest.fn();
     ACTION_SWAP_EDGE = jest.fn();
-<<<<<<< HEAD
     connectDropTarget = jest.fn().mockReturnValue(<div id="graph" />);
-=======
->>>>>>> OLUX-92: Injected digraph into Olab4.
     output = shallow(
       <Graph
         isFullScreen={isFullScreen}
@@ -67,10 +61,7 @@ describe('<Graph />', () => {
         ACTION_DELETE_NODE={ACTION_DELETE_NODE}
         ACTION_DELETE_EDGE={ACTION_DELETE_EDGE}
         ACTION_SWAP_EDGE={ACTION_SWAP_EDGE}
-<<<<<<< HEAD
         connectDropTarget={connectDropTarget}
-=======
->>>>>>> OLUX-92: Injected digraph into Olab4.
       />,
     );
   });

@@ -94,29 +94,6 @@ describe('<Edge />', () => {
     });
   });
 
-  describe('getArrowSize static method', () => {
-    it('finds the arrow in the view wrapper element', () => {
-      const rect = {
-        bottom: 10,
-        height: 20,
-        left: 30,
-        right: 40,
-        top: 50,
-        width: 60,
-      };
-      const boundingClientRectMock = jest.fn().mockImplementation(() => rect);
-      const viewWrapperElem = {
-        querySelector: jest.fn().mockImplementation(() => ({
-          getBoundingClientRect: boundingClientRectMock,
-        })),
-      };
-
-      const size = Edge.getArrowSize(viewWrapperElem);
-      expect(viewWrapperElem.querySelector).toHaveBeenCalledWith('defs>marker>.arrow');
-      expect(size).toEqual(rect);
-    });
-  });
-
   describe('getEdgePathElement static method', () => {
     it('returns the edge element from the viewWrapper', () => {
       const viewWrapperElem = {

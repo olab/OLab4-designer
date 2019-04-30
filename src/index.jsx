@@ -8,8 +8,6 @@ import * as serviceWorker from './serviceWorker';
 import App from './app';
 import GlobalStyles from './styles';
 
-import './index.scss';
-
 const target = document.getElementById('root');
 
 const Root = (

@@ -66,33 +66,6 @@ export class Edge extends React.Component<IEdgeProps> {
    *
    *
    * @static
-   * @param {(HTMLDivElement | HTMLDocument)} [viewWrapperElem=document]
-   * @returns
-   * @memberof Edge
-   *
-   * Finds the arrow in the view wrapper element
-   * and returns rects of arrow.
-   */
-  static getArrowSize(viewWrapperElem: HTMLDivElement | HTMLDocument = document) {
-    const emptyRect = {
-      left: 0,
-      top: 0,
-      right: 0,
-      bottom: 0,
-      x: 0,
-      y: 0,
-      width: 0,
-      height: 0,
-    };
-
-    const defEndArrowElement: HTMLElement = viewWrapperElem.querySelector('defs>marker>.arrow');
-    return defEndArrowElement ? defEndArrowElement.getBoundingClientRect() : emptyRect;
-  }
-
-  /**
-   *
-   *
-   * @static
    * @param {IEdge} edge
    * @param {(HTMLDivElement | HTMLDocument)} [viewWrapperElem=document]
    * @returns

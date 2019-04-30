@@ -213,35 +213,37 @@ export class Graph extends Component<IGraphProps, IGraphState> {
     } = this.props;
 
     return connectDropTarget(
-      <Wrapper id="graph" isFullScreen={isFullScreen}>
-        <Container>
-          <GraphView
-            ref={this.GraphView}
-            minZoom={minZoom / 100}
-            maxZoom={maxZoom / 100}
-            nodes={graph.nodes.map(({ data }) => data)}
-            edges={graph.edges.map(({ data }) => data)}
-            selected={this.getSelectedItem}
-            edgeTypes={EdgeTypes}
-            onSelectNode={this.onSelectItem}
-            onCreateNode={this.onCreateNode}
-            onUpdateNode={this.onUpdateNode}
-            onDeleteNode={this.onDeleteNode}
-            onSelectEdge={this.onSelectItem}
-            onCreateEdge={this.onCreateEdge}
-            onSwapEdge={this.onSwapEdge}
-            onDeleteEdge={this.onDeleteEdge}
-            onUndo={this.onUndo}
-            onRedo={this.onRedo}
-            onCopySelected={this.onCopySelected}
-            onPasteSelected={this.onPasteSelected}
-            layoutEngineType={layoutEngineType}
-          />
-        </Container>
+      <div>
+        <Wrapper id="graph" isFullScreen={isFullScreen}>
+          <Container>
+            <GraphView
+              ref={this.GraphView}
+              minZoom={minZoom / 100}
+              maxZoom={maxZoom / 100}
+              nodes={graph.nodes.map(({ data }) => data)}
+              edges={graph.edges.map(({ data }) => data)}
+              selected={this.getSelectedItem}
+              edgeTypes={EdgeTypes}
+              onSelectNode={this.onSelectItem}
+              onCreateNode={this.onCreateNode}
+              onUpdateNode={this.onUpdateNode}
+              onDeleteNode={this.onDeleteNode}
+              onSelectEdge={this.onSelectItem}
+              onCreateEdge={this.onCreateEdge}
+              onSwapEdge={this.onSwapEdge}
+              onDeleteEdge={this.onDeleteEdge}
+              onUndo={this.onUndo}
+              onRedo={this.onRedo}
+              onCopySelected={this.onCopySelected}
+              onPasteSelected={this.onPasteSelected}
+              layoutEngineType={layoutEngineType}
+            />
+          </Container>
 
-        { this.getSelectedItem
-          && <div>---SIDEBAR HERE---</div> }
-      </Wrapper>,
+          { this.getSelectedItem
+            && <div>---SIDEBAR HERE---</div> }
+        </Wrapper>
+      </div>,
     );
   }
 }
