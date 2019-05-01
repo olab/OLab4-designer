@@ -21,15 +21,18 @@ export type INodeProps = {
   onNodeMove: (point: IPoint, id: string, shiftKey: boolean) => void;
   onNodeSelected: (data: any, id: string, shiftKey: boolean) => void;
   onNodeUpdate: (point: IPoint, id: string, shiftKey: boolean) => void;
+  onNodeCollapsed: (id: number) => void;
   ACTION_SAVE_GRAPH_TO_UNDO: () => void;
   layoutEngine?: any;
   viewWrapperElem: HTMLDivElement;
 };
 
 export type INodeState = {
-  hovered: boolean;
+  // hovered: boolean;
   x: number;
   y: number;
-  selected: boolean;
+  width: number;
+  height: number;
+  // selected: boolean;
   drawingEdge: boolean;
 };

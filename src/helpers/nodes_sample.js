@@ -36,7 +36,6 @@ const sample = {
   nodes: [
     {
       isSelected: false,
-      expand: false,
       locked: false,
       data: {
         id: ids[0],
@@ -50,11 +49,11 @@ const sample = {
         destination_id: mapId,
         style_id: mapId,
         type_id: mapId,
+        isCollapsed: false,
       },
     },
     {
       isSelected: false,
-      expand: false,
       locked: false,
       data: {
         id: ids[1],
@@ -68,11 +67,11 @@ const sample = {
         destination_id: mapId,
         style_id: mapId,
         type_id: mapId,
+        isCollapsed: false,
       },
     },
     {
       isSelected: false,
-      expand: false,
       locked: false,
       data: {
         id: ids[2],
@@ -86,11 +85,11 @@ const sample = {
         destination_id: mapId,
         style_id: mapId,
         type_id: mapId,
+        isCollapsed: false,
       },
     },
     {
       isSelected: false,
-      expand: false,
       locked: false,
       data: {
         id: ids[3],
@@ -104,6 +103,7 @@ const sample = {
         destination_id: mapId,
         style_id: mapId,
         type_id: mapId,
+        isCollapsed: false,
       },
     },
   ],

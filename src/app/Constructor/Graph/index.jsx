@@ -73,6 +73,11 @@ export class Graph extends Component<IGraphProps, IGraphState> {
     ACTION_SELECT_ITEM(itemId);
   };
 
+  onCollapseItem = (id: number) => {
+    const { ACTION_COLLAPSE_NODE } = this.props;
+    ACTION_COLLAPSE_NODE(id);
+  };
+
   onCreateNode = (x: number, y: number) => {
     const { ACTION_CREATE_NODE } = this.props;
 
@@ -95,6 +100,7 @@ export class Graph extends Component<IGraphProps, IGraphState> {
         style_id: newNodeMapId,
         x,
         y,
+        isCollapsed: false,
       },
     };
 
@@ -225,6 +231,7 @@ export class Graph extends Component<IGraphProps, IGraphState> {
               selected={this.getSelectedItem}
               edgeTypes={EdgeTypes}
               onSelectNode={this.onSelectItem}
+              onCollapseNode={this.onCollapseItem}
               onCreateNode={this.onCreateNode}
               onUpdateNode={this.onUpdateNode}
               onDeleteNode={this.onDeleteNode}
@@ -239,9 +246,6 @@ export class Graph extends Component<IGraphProps, IGraphState> {
               layoutEngineType={layoutEngineType}
             />
           </Container>
-
-          { this.getSelectedItem
-            && <div>---SIDEBAR HERE---</div> }
         </Wrapper>
       </div>,
     );
@@ -278,6 +282,9 @@ const mapDispatchToProps = dispatch => ({
   },
   ACTION_SELECT_ITEM: (id: number) => {
     dispatch(actions.ACTION_SELECT_ITEM(id));
+  },
+  ACTION_COLLAPSE_NODE: (id: number) => {
+    dispatch(actions.ACTION_COLLAPSE_NODE(id));
   },
   ACTION_REDO_GRAPH: () => {
     dispatch(actions.ACTION_REDO_GRAPH());

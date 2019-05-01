@@ -2,9 +2,8 @@
 import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import {
-  CardHeader, Icon, Fab, Typography, Card, CardContent,
+  CardHeader, Icon, Fab, Typography, Card, CardContent, RootRef,
 } from '@material-ui/core';
-// import classNames from 'classnames';
 
 import {
   LockIcon, DragableIcon, StarIcon, MinimizeIcon,
@@ -17,19 +16,16 @@ import styles from './styles';
 class Node extends React.Component <Props, State> {
   state = {
     isMainNode: false,
-    isCollapsed: false,
   };
 
 
   render() {
-    const { classes } = this.props;
-    const { isCollapsed, isMainNode } = this.state;
-
-    const { cardHeader } = classes;
+    const { classes, isCollapsed, resizeRef } = this.props;
+    const { isMainNode } = this.state;
 
     const ActionBar = (
       <div>
-        <Fab className={classes.actionBarButton}>
+        <Fab data-id="collapse" className={classes.actionBarButton}>
           <MinimizeIcon />
         </Fab>
         <Fab className={classes.actionBarButton}>
@@ -49,17 +45,18 @@ class Node extends React.Component <Props, State> {
     );
 
     return (
-      <Card className={classes.card}>
-        <CardHeader
-          className={cardHeader}
-          classes={{ action: classes.action }}
-          title={title}
-          disableTypography
-          action={ActionBar}
-        />
-        {!isCollapsed && (
+      <RootRef rootRef={resizeRef}>
+        <Card className={classes.card}>
+          <CardHeader
+            className={classes.cardHeader}
+            classes={{ action: classes.action }}
+            title={title}
+            disableTypography
+            action={ActionBar}
+          />
+          {!isCollapsed && (
           <>
-            <CardContent className={classes.cardContent}>
+            <CardContent data-id="resize" className={classes.cardContent}>
               <Typography component="p">
                 This impressive paella is a perfect party dish
                 and a fun meal to cook together with your
@@ -68,8 +65,9 @@ class Node extends React.Component <Props, State> {
             </CardContent>
             <CardFooter />
           </>
-        )}
-      </Card>
+          )}
+        </Card>
+      </RootRef>
     );
   }
 }

@@ -1,5 +1,4 @@
 // @flow
-/* eslint-disable */
 import * as d3 from 'd3';
 import React from 'react';
 
@@ -15,16 +14,18 @@ import NodeComponent from './NodeComponent';
 export class Node extends React.Component<INodeProps, INodeState> {
   constructor(props: INodeProps) {
     super(props);
-
     this.state = {
       drawingEdge: false,
-      hovered: false,
-      selected: false,
+      // hovered: false,
+      // selected: false,
+      width: 340,
+      height: 180,
       x: props.data.x || 0,
       y: props.data.y || 0,
     };
 
     this.nodeRef = React.createRef();
+    this.resizeRef = React.createRef();
   }
 
   static getDerivedStateFromProps(nextProps: INodeProps) {
@@ -43,11 +44,22 @@ export class Node extends React.Component<INodeProps, INodeState> {
       .on('end', this.handleDragEnd);
     d3
       .select(this.nodeRef.current)
-      // .on('click', function(){console.log('CLICKED_HERE!!!')})
-      // .on('mousedown', function(){console.log('d3:::', d3.event.target)})
+      .on('mousedown', this.handleMouseDown)
       .on('mouseout', this.handleMouseOut)
       .call(dragFunction);
   }
+
+  handleMouseDown = () => {
+    const { target } = d3.event;
+    const { data: { id } } = this.props;
+    const { onNodeCollapsed } = this.props;
+    const collapsedIcon = target.closest('[data-id="collapse"]');
+    if (collapsedIcon) {
+      d3.event.stopImmediatePropagation();
+      onNodeCollapsed(id);
+    }
+  }
+
 
   handleMouseMove = () => {
     const { drawingEdge } = this.state;
@@ -66,6 +78,7 @@ export class Node extends React.Component<INodeProps, INodeState> {
       x: d3.event.x,
       y: d3.event.y,
     };
+
 
     if (shiftKey) {
       this.setState({ drawingEdge: true });
@@ -125,10 +138,11 @@ export class Node extends React.Component<INodeProps, INodeState> {
   handleMouseOver = (event: any) => {
     // Detect if mouse is already down and do nothing.
     let hovered = false;
+
     const { data, onNodeMouseEnter } = this.props;
     if ((d3.event && d3.event.buttons !== 1) || (event && event.buttons !== 1)) {
       hovered = true;
-      this.setState({ hovered });
+      // this.setState({ hovered });
     }
 
     onNodeMouseEnter(event, data, hovered);
@@ -141,16 +155,21 @@ export class Node extends React.Component<INodeProps, INodeState> {
 
     const { data, onNodeMouseLeave } = this.props;
 
-    this.setState({ hovered: false });
+    // this.setState({ hovered: false });
     onNodeMouseLeave(event, data);
   }
 
   nodeRef: any;
 
+  resizeRef: any;
+
   renderShape() {
+    const { width, height } = this.state;
+    const { data: { isCollapsed } } = this.props;
+
     return (
-      <foreignObject x={-170} y={-90} width='340' height='180' viewBox={`0 0 340 180`}>
-        <NodeComponent />
+      <foreignObject x={-width / 2} y={-20} width={width} height={height} viewBox="0 0 100% 100%">
+        <NodeComponent isCollapsed={isCollapsed} resizeRef={this.resizeRef} />
       </foreignObject>
     );
   }

@@ -24,6 +24,7 @@ export type NodeData = {
   destination_id: number,
   style_id: number,
   type_id: number,
+  isCollapsed: boolean,
 };
 
 export type Node = {
@@ -90,6 +91,13 @@ type SelectItem = {
   id?: number,
 };
 
+const COLLAPSE_NODE = 'COLLAPSE_NODE';
+
+type CollapseItem = {
+  type: 'COLLAPSE_NODE',
+  id: number,
+};
+
 const CREATE_NODE = 'CREATE_NODE';
 type CreateNode = {
   type: 'CREATE_NODE',
@@ -135,7 +143,7 @@ type SetZoomControlsRef = {
 };
 
 export type GraphActions = GraphToUndo |
-  UndoGraph | RedoGraph | SelectItem |
+  UndoGraph | RedoGraph | SelectItem | CollapseItem |
   CreateNode | UpdateNode | DeleteNode |
   CreateEdge | DeleteEdge | SwapEdge |
   SetZoomControlsRef;
@@ -145,6 +153,7 @@ export {
   UNDO_GRAPH,
   REDO_GRAPH,
   SELECT_ITEM,
+  COLLAPSE_NODE,
   CREATE_NODE,
   UPDATE_NODE,
   DELETE_NODE,
@@ -152,4 +161,5 @@ export {
   DELETE_EDGE,
   SWAP_EDGE,
   SET_ZOOM_CONTROLS_REF,
+
 };

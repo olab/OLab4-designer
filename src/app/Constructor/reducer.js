@@ -7,6 +7,7 @@ import {
   UNDO_GRAPH,
   REDO_GRAPH,
   SELECT_ITEM,
+  COLLAPSE_NODE,
   CREATE_NODE,
   UPDATE_NODE,
   DELETE_NODE,
@@ -99,6 +100,22 @@ const constructor = (state: ConstructorType = initialConstructorState, action: G
         graph,
       };
     }
+
+    case COLLAPSE_NODE: {
+      const graph = cloneDeep(state.graph);
+      const { id } = action;
+      [graph.current.nodes]
+        .forEach(items => items
+          .forEach((item) => {
+            if (item.data.id === id) { item.data.isCollapsed = !item.data.isCollapsed; }
+          }));
+
+      return {
+        ...state,
+        graph,
+      };
+    }
+
     case CREATE_NODE: {
       const graph = cloneDeep(state.graph);
       const { nodeData } = action;
@@ -197,14 +214,16 @@ const constructor = (state: ConstructorType = initialConstructorState, action: G
       };
     }
     case SET_ZOOM_CONTROLS_REF: {
-      const zoom = cloneDeep(state.zoom);
       const { ref } = action;
-
-      zoom.zoomControlsRef = ref;
 
       return {
         ...state,
-        zoom,
+        zoom: {
+          ...state.zoom,
+          zoomControlsRef: {
+            current: ref.current,
+          },
+        },
       };
     }
     default:

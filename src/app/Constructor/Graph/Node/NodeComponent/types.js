@@ -11,10 +11,11 @@ export type Props = {
     cardContent: {},
     pos: {},
     actionBarButton: {},
-  }
+  },
+  isCollapsed: boolean,
+  resizeRef: any,
 };
 
 export type State = {
-  isCollapsed: boolean,
   isMainNode: boolean,
 }

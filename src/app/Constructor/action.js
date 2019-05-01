@@ -7,6 +7,7 @@ import {
   UNDO_GRAPH,
   REDO_GRAPH,
   SELECT_ITEM,
+  COLLAPSE_NODE,
   CREATE_NODE,
   UPDATE_NODE,
   DELETE_NODE,
@@ -30,6 +31,11 @@ export const ACTION_REDO_GRAPH = () => ({
 
 export const ACTION_SELECT_ITEM = (id: number | null) => ({
   type: SELECT_ITEM,
+  id,
+});
+
+export const ACTION_COLLAPSE_NODE = (id: number) => ({
+  type: COLLAPSE_NODE,
   id,
 });
 
