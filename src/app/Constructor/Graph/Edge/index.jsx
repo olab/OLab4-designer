@@ -9,8 +9,8 @@ import { Point2D, Matrix2D } from 'kld-affine';
 import { Intersection } from 'kld-intersections';
 
 import type {
-  IEdge,
   IEdgeProps,
+  EdgeData as EdgeDataType,
 } from './types';
 
 import { EdgeWrapper, EdgeMouseHandlerWrapper, EdgeTextWrapper } from './styles';
@@ -66,7 +66,7 @@ export class Edge extends React.Component<IEdgeProps> {
    *
    *
    * @static
-   * @param {IEdge} edge
+   * @param {EdgeDataType} edge
    * @param {(HTMLDivElement | HTMLDocument)} [viewWrapperElem=document]
    * @returns
    * @memberof Edge
@@ -74,7 +74,7 @@ export class Edge extends React.Component<IEdgeProps> {
    * Returns the edge element from the viewWrapper.
    */
   static getEdgePathElement(
-    edge: IEdge,
+    edge: EdgeDataType,
     viewWrapperElem: HTMLDivElement | HTMLDocument = document,
   ) {
     return viewWrapperElem.querySelector(`#edge-${edge.source}-${edge.target}-container>.edge-container>.edge>.edge-path`);
@@ -560,7 +560,7 @@ export class Edge extends React.Component<IEdgeProps> {
         alignmentBaseline="central"
         transform={`${this.getEdgeHandleTranslation()}`}
       >
-        {data.handleText}
+        {data.label}
       </EdgeTextWrapper>
     );
   }
@@ -587,7 +587,6 @@ export class Edge extends React.Component<IEdgeProps> {
             height={edgeHandleSize}
             transform={`${this.getEdgeHandleTransformation()}`}
           />
-          {/* {data.handleText && this.renderHandleText(data)} */}
         </EdgeWrapper>
         <EdgeMouseHandlerWrapper>
           <path

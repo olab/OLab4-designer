@@ -1,14 +1,14 @@
 // @flow
 import type { INode } from '../Node/types';
 
-export type IEdge = {
-  source: string;
-  target: string;
+export type EdgeData = {
+  id: number,
   type?: string;
-  handleText?: string;
-  label_from?: string;
-  label_to?: string;
-  [key: string]: any;
+  source: number;
+  target: number;
+  label: string;
+  color: string;
+  isHidden: boolean;
 };
 
 export type ITargetPosition = {
@@ -17,7 +17,7 @@ export type ITargetPosition = {
 };
 
 export type IEdgeProps = {
-  data: IEdge;
+  data: EdgeData;
   edgeTypes: any;
   edgeHandleSize?: number;
   sourceNode: INode | null;

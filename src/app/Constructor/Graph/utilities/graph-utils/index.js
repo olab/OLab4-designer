@@ -2,7 +2,7 @@
 /*
 Utils class for Graph functionality.
 */
-import type { IEdge } from '../../Edge/types';
+import type { EdgeData as EdgeDataType } from '../../Edge/types';
 import type { INode } from '../../Node/types';
 
 class GraphUtils {
@@ -37,13 +37,13 @@ class GraphUtils {
    *
    *
    * @static
-   * @param {Array<IEdge>} arr
+   * @param {Array<EdgeDataType>} arr
    * @returns
    * @memberof GraphUtils
    *
    * Converts an array of edges to a hash map.
    */
-  static getEdgesMap(arr: Array<IEdge>) {
+  static getEdgesMap(arr: Array<EdgeDataType>) {
     const map = {};
     let item = null;
     for (let i = 0; i < arr.length; i += 1) {
@@ -63,12 +63,12 @@ class GraphUtils {
    *
    * @static
    * @param {*} nodesMap
-   * @param {Array<IEdge>} edges
+   * @param {Array<EdgeDataType>} edges
    * @memberof GraphUtils
    *
    * Not a pure method that fills various properties of a nodesMap.
    */
-  static linkNodesAndEdges(nodesMap: any, edges: Array<IEdge>) {
+  static linkNodesAndEdges(nodesMap: any, edges: Array<EdgeDataType>) {
     let nodeMapSourceNode = null;
     let nodeMapTargetNode = null;
     let edge = null;

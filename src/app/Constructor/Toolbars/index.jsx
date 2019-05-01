@@ -12,14 +12,13 @@ import type {
   IToolbarsProps,
   IToolbarsState,
 } from './types';
+import { ModalsNames } from '../../Modals/config';
 
 import moveIcon from '../../../shared/assets/icons/toolbar/templates/toolbar-move.png';
 import selectIcon from '../../../shared/assets/icons/toolbar/templates/toolbar-select.png';
 import addNewIcon from '../../../shared/assets/icons/toolbar/templates/toolbar-addnew.png';
 import templateIcon from '../../../shared/assets/icons/toolbar/templates/toolbar-template.png';
 import flagIcon from '../../../shared/assets/icons/toolbar/templates/toolbar-flag.png';
-// import undoIcon from '../../../shared/assets/icons/toolbar/templates/toolbar-undo.png';
-// import redoIcon from '../../../shared/assets/icons/toolbar/templates/toolbar-redo.png';
 import previewIcon from '../../../shared/assets/icons/toolbar/templates/toolbar-preview.png';
 import dropdownIcon from '../../../shared/assets/icons/toolbar/templates/toolbar-arrow-dropdown.png';
 import fullscreenIcon from '../../../shared/assets/icons/toolbar/templates/toolbar-fullscreen.png';
@@ -31,7 +30,7 @@ import counterIcon from '../../../shared/assets/icons/toolbar/templates/meta-cou
 import filesIcon from '../../../shared/assets/icons/toolbar/templates/meta-files.png';
 
 import * as graphActions from '../action';
-import * as metaModalActions from '../../Modals/action';
+import * as modalActions from '../../Modals/action';
 
 import styles, {
   Block, LabTitleItem, LabTitle, LabIcon,
@@ -288,11 +287,17 @@ const mapDispatchToProps = dispatch => ({
     dispatch(graphActions.ACTION_REDO_GRAPH());
   },
   ACTION_TOGGLE_META_MODAL: () => {
-    dispatch(metaModalActions.ACTION_TOGGLE_META_MODAL());
+    dispatch(modalActions.ACTION_TOGGLE_MODAL(ModalsNames.META_MODAL));
   },
   ACTION_SET_POSITION_META_MODAL: (x: number, y: number) => {
-    dispatch(metaModalActions.ACTION_SET_POSITION_META_MODAL(x, y));
+    dispatch(modalActions.ACTION_SET_POSITION_MODAL(
+      ModalsNames.META_MODAL,
+      x,
+      y,
+    ));
   },
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Toolbars));
+export default connect(mapStateToProps, mapDispatchToProps)(
+  withStyles(styles)(Toolbars),
+);

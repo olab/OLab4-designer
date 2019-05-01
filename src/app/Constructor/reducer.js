@@ -15,6 +15,7 @@ import {
   UPDATE_NODE,
   DELETE_NODE,
   CREATE_EDGE,
+  UPDATE_EDGE,
   DELETE_EDGE,
   SWAP_EDGE,
   SET_ZOOM_CONTROLS_REF,
@@ -209,7 +210,24 @@ const constructor = (state: ConstructorType = initialConstructorState, action: G
         graph,
       };
     }
+    case UPDATE_EDGE: {
+      const graph = cloneDeep(state.graph);
+      const { edgeData } = action;
 
+      [graph.current.nodes, graph.current.edges]
+        .forEach(items => items
+          .forEach((item) => {
+            item.isSelected = false;
+          }));
+
+      const edge = graph.current.edges.find(({ data }) => data.id === edgeData.id);
+      Object.assign(edge.data, edgeData);
+
+      return {
+        ...state,
+        graph,
+      };
+    }
     case UPDATE_NODE: {
       const graph = cloneDeep(state.graph);
       const { nodeData } = action;

@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { DragSource } from 'react-dnd';
 
 import type { IMetaModalProps } from './types';
-import { DndItemTypes } from './config';
+import { DndContexts, ModalsNames } from '../config';
 
 import * as actions from '../action';
 
@@ -12,8 +12,8 @@ import './styles.scss';
 
 export class MetaModal extends Component<IMetaModalProps> {
   handleCloseModal = () => {
-    const { ACTION_CLOSE_META_MODAL, ACTION_SET_INIT_POSITION_META_MODAL } = this.props;
-    ACTION_SET_INIT_POSITION_META_MODAL();
+    const { ACTION_CLOSE_META_MODAL, ACTION_SET_POSITION_META_MODAL } = this.props;
+    ACTION_SET_POSITION_META_MODAL(0, 0);
     ACTION_CLOSE_META_MODAL();
   }
 
@@ -57,13 +57,14 @@ const mapStateToProps = ({ modals: { metaModal } }) => ({ ...metaModal });
 
 const mapDispatchToProps = dispatch => ({
   ACTION_CLOSE_META_MODAL: () => {
-    dispatch(actions.ACTION_CLOSE_META_MODAL());
+    dispatch(actions.ACTION_CLOSE_MODAL(ModalsNames.META_MODAL));
   },
   ACTION_SET_POSITION_META_MODAL: (x: number, y: number) => {
-    dispatch(actions.ACTION_SET_POSITION_META_MODAL(x, y));
-  },
-  ACTION_SET_INIT_POSITION_META_MODAL: () => {
-    dispatch(actions.ACTION_SET_INIT_POSITION_META_MODAL());
+    dispatch(actions.ACTION_SET_POSITION_MODAL(
+      ModalsNames.META_MODAL,
+      x,
+      y,
+    ));
   },
 });
 
@@ -106,7 +107,7 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps,
 )(DragSource(
-  DndItemTypes.META_MODAL,
+  DndContexts.VIEWPORT,
   spec,
   collect,
 )(MetaModal));

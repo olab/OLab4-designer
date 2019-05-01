@@ -5,38 +5,48 @@ export type MetaModal = {
   y: number,
 };
 
-export type Modals = {
-  metaModal: MetaModal,
-};
-
-const CLOSE_META_MODAL = 'CLOSE_META_MODAL';
-type CloseMetaModal = {
-  type: 'CLOSE_META_MODAL',
-};
-
-const TOGGLE_META_MODAL = 'TOGGLE_META_MODAL';
-type ToggleMetaModal = {
-  type: 'TOGGLE_META_MODAL',
-};
-
-const SET_POSITION_META_MODAL = 'SET_POSITION_META_MODAL';
-type SetPosMetaModal = {
-  type: 'SET_POSITION_META_MODAL',
+export type LinkEditorModal = {
   x: number,
   y: number,
 };
 
-const SET_INIT_POSITION_META_MODAL = 'SET_INIT_POSITION_META_MODAL';
-type SetInitPosMetaModal = {
-  type: 'SET_INIT_POSITION_META_MODAL',
+export type Modals = {
+  metaModal: MetaModal,
+  linkEditorModal: LinkEditorModal,
 };
 
-export type ModalsActions = CloseMetaModal | ToggleMetaModal
-  | SetPosMetaModal | SetInitPosMetaModal;
+const CLOSE_MODAL = 'CLOSE_MODAL';
+type CloseModal = {
+  type: 'CLOSE_MODAL',
+  name: string,
+};
+
+const OPEN_MODAL = 'OPEN_MODAL';
+type OpenModal = {
+  type: 'OPEN_MODAL',
+  name: string,
+};
+
+const TOGGLE_MODAL = 'TOGGLE_MODAL';
+type ToggleModal = {
+  type: 'TOGGLE_MODAL',
+  name: string,
+};
+
+const SET_POSITION_MODAL = 'SET_POSITION_MODAL';
+type SetPosModal = {
+  type: 'SET_POSITION_MODAL',
+  name: string,
+  x: number,
+  y: number,
+};
+
+export type ModalsActions = OpenModal | CloseModal
+  | ToggleModal | SetPosModal | SetInitPosMetaModal;
 
 export {
-  CLOSE_META_MODAL,
-  TOGGLE_META_MODAL,
-  SET_POSITION_META_MODAL,
-  SET_INIT_POSITION_META_MODAL,
+  OPEN_MODAL,
+  CLOSE_MODAL,
+  TOGGLE_MODAL,
+  SET_POSITION_MODAL,
 };

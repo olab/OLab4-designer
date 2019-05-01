@@ -1,14 +1,9 @@
 // @flow
-export type EdgeData = {
-  id: number,
-  handleText: string,
-  source: number,
-  target: number,
-};
+import type { EdgeData as EdgeDataType } from './Graph/Edge/types';
 
 export type Edge = {
   isSelected: boolean,
-  data: EdgeData,
+  data: EdgeDataType,
 };
 
 export type NodeData = {
@@ -41,9 +36,13 @@ export type GraphItem = {
   edges: Array<Edge>,
 };
 
-export type IConstructorProps = {};
+export type IConstructorProps = {
+  graph: GraphItem,
+};
 export type IConstructorState = {
-  isFullScreen: boolean;
+  isFullScreen: boolean,
+  selectedLink?: EdgeDataType,
+  selectedNode?: NodeData,
 };
 
 export type Constructor = {
@@ -146,6 +145,12 @@ type CreateNodeWithEdge = {
   edgeData: Edge,
 };
 
+const UPDATE_EDGE = 'UPDATE_EDGE';
+type UpdateEdge = {
+  type: 'UPDATE_EDGE',
+  edgeData: EdgeDataType,
+};
+
 const DELETE_EDGE = 'DELETE_EDGE';
 type DeleteEdge = {
   type: 'DELETE_EDGE',
@@ -171,7 +176,7 @@ export type GraphActions = GraphToUndo |
   CollapseNode | CreateNode | UpdateNode |
   DeleteNode | CreateEdge | DeleteEdge |
   SwapEdge | LockNode | SetZoomControlsRef |
-  CreateNodeWithEdge | ResizeNode;
+  CreateNodeWithEdge | ResizeNode | UpdateEdge;
 
 export {
   SAVE_GRAPH_TO_UNDO,
@@ -185,6 +190,7 @@ export {
   UPDATE_NODE,
   DELETE_NODE,
   CREATE_EDGE,
+  UPDATE_EDGE,
   DELETE_EDGE,
   SWAP_EDGE,
   CREATE_NODE_WITH_EDGE,

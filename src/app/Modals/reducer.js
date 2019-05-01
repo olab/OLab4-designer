@@ -1,11 +1,13 @@
 // @flow
+import cloneDeep from 'lodash.clonedeep';
+
 import {
   type ModalsActions,
   type Modals as ModalsType,
-  CLOSE_META_MODAL,
-  TOGGLE_META_MODAL,
-  SET_POSITION_META_MODAL,
-  SET_INIT_POSITION_META_MODAL,
+  OPEN_MODAL,
+  CLOSE_MODAL,
+  TOGGLE_MODAL,
+  SET_POSITION_MODAL,
 } from './types';
 
 export const initialModalsState: ModalsType = {
@@ -14,59 +16,57 @@ export const initialModalsState: ModalsType = {
     x: 0,
     y: 0,
   },
+  linkEditorModal: {
+    x: 0,
+    y: 0,
+  },
 };
 
 const modals = (state: ModalsType = initialModalsState, action: ModalsActions) => {
   switch (action.type) {
-    case CLOSE_META_MODAL: {
-      const { metaModal, ...rest } = state;
+    case OPEN_MODAL: {
+      const { name: modalName } = action;
+      const clonedState = cloneDeep(state);
+      const modal = clonedState[modalName];
 
-      metaModal.isShow = false;
+      modal.isShow = true;
 
       return {
-        ...rest,
-        metaModal: {
-          ...metaModal,
-        },
+        ...clonedState,
       };
     }
-    case TOGGLE_META_MODAL: {
-      const { metaModal, ...rest } = state;
+    case CLOSE_MODAL: {
+      const { name: modalName } = action;
+      const clonedState = cloneDeep(state);
+      const modal = clonedState[modalName];
 
-      metaModal.isShow = !metaModal.isShow;
+      modal.isShow = false;
 
       return {
-        ...rest,
-        metaModal: {
-          ...metaModal,
-        },
+        ...clonedState,
       };
     }
-    case SET_POSITION_META_MODAL: {
-      const { metaModal, ...rest } = state;
-      const { x, y } = action;
+    case TOGGLE_MODAL: {
+      const { name: modalName } = action;
+      const clonedState = cloneDeep(state);
+      const modal = clonedState[modalName];
 
-      metaModal.x = x;
-      metaModal.y = y;
+      modal.isShow = !modal.isShow;
 
       return {
-        ...rest,
-        metaModal: {
-          ...metaModal,
-        },
+        ...clonedState,
       };
     }
-    case SET_INIT_POSITION_META_MODAL: {
-      const { metaModal, ...rest } = state;
+    case SET_POSITION_MODAL: {
+      const { name: modalName, x, y } = action;
+      const clonedState = cloneDeep(state);
+      const modal = clonedState[modalName];
 
-      metaModal.x = 0;
-      metaModal.y = 0;
+      modal.x = x;
+      modal.y = y;
 
       return {
-        ...rest,
-        metaModal: {
-          ...metaModal,
-        },
+        ...clonedState,
       };
     }
     default:

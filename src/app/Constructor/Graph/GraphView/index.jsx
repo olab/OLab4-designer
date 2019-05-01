@@ -27,7 +27,7 @@ import type {
   IGraphViewState,
   IGraphViewProps,
 } from './types';
-import type { IEdge } from '../Edge/types';
+import type { EdgeData as EdgeDataType } from '../Edge/types';
 
 import GraphUtils from '../utilities/graph-utils';
 
@@ -331,7 +331,7 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
     return nodesMapVar ? nodesMapVar[`key-${id || ''}`] : null;
   }
 
-  getEdgeBySourceTarget(source: string, target: string): IEdge | null {
+  getEdgeBySourceTarget(source: string, target: string): EdgeDataType | null {
     const { edgesMap } = this.state;
 
     return edgesMap ? edgesMap[`${source}_${target}`] : null;
@@ -409,7 +409,7 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
   }
 
   addNewEdges(
-    edges: Array<IEdge>,
+    edges: Array<EdgeDataType>,
     oldEdgesMap: any,
     selectedEdge: any,
     prevSelectedEdge: any,
@@ -443,9 +443,9 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
     }
   }
 
-  removeOldEdges = (prevEdges: Array<IEdge>, edgesMap: any) => {
+  removeOldEdges = (prevEdges: Array<EdgeDataType>, edgesMap: any) => {
     // remove old edges
-    prevEdges.forEach((edge: IEdge) => {
+    prevEdges.forEach((edge: EdgeDataType) => {
       if (!edge.source || !edge.target || !edgesMap[`${edge.source}_${edge.target}`]) {
         // remove edge
         GraphView.removeEdgeElement(edge.source, edge.target);
@@ -472,7 +472,7 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
     onDeleteNode(selectedNode, nodeId, newNodesArr);
   }
 
-  deleteEdge(selectedEdge: IEdge) {
+  deleteEdge(selectedEdge: EdgeDataType) {
     const { edges } = this.state;
     const { onDeleteEdge } = this.props;
     if (!selectedEdge.source || !selectedEdge.target) {
@@ -502,7 +502,7 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
     onDeleteEdge(selectedEdge, newEdgesArr);
   }
 
-  handleDelete = (selected: IEdge | INode) => {
+  handleDelete = (selected: EdgeDataType | INode) => {
     const { canDeleteNode, canDeleteEdge, readOnly } = this.props;
     if (readOnly || !selected) { return; }
     if (!selected.source && canDeleteNode && canDeleteNode(selected)) {
@@ -559,13 +559,15 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
     const { edges } = this.state;
     const { onSelectEdge } = this.props;
     const { source, target } = e.target.dataset;
+    const { clientX, clientY } = d3.event;
+
     const newState = {
       svgClicked: true,
       focused: true,
     };
 
     if (source && target) {
-      const edge: IEdge | null = this.getEdgeBySourceTarget(source, target);
+      const edge: EdgeDataType | null = this.getEdgeBySourceTarget(source, target);
 
       if (!edge) {
         return;
@@ -578,7 +580,7 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
         },
       });
 
-      onSelectEdge(edges[edge.originalArrIndex]);
+      onSelectEdge(edges[edge.originalArrIndex], { clientX, clientY });
     }
 
     this.setState(newState);
@@ -687,7 +689,7 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
         && canCreateEdge(hoveredNodeData, edgeEndNode)
         && !edgesMap[mapId1]
         && !edgesMap[mapId2]) {
-        const edge: IEdge = {
+        const edge: EdgeDataType = {
           source: hoveredNodeData.id,
           target: edgeEndNode.id,
         };
@@ -825,7 +827,7 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
   // One can't attach handlers to 'markers' or obtain them from the event.target
   // If the click occurs within a certain radius of edge target, assume the click
   // occurred on the arrow
-  isArrowClicked(edge: IEdge | null) {
+  isArrowClicked(edge: EdgeDataType | null) {
     const { edgeArrowSize = 0 } = this.props;
     const { target: eventTarget } = d3.event.sourceEvent;
     if (!edge || !edge.target || eventTarget.tagName !== 'path') {
@@ -897,7 +899,7 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
     return mouseCoordinates;
   }
 
-  dragEdge(draggedEdge?: IEdge) {
+  dragEdge(draggedEdge?: EdgeDataType) {
     const { draggedEdge: draggedEdgeState } = this.state;
 
     draggedEdge = draggedEdge || draggedEdgeState;
@@ -1205,7 +1207,7 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
     nodes.forEach(node => this.asyncRenderNode(node));
   }
 
-  isEdgeSelected = (edge: IEdge) => {
+  isEdgeSelected = (edge: EdgeDataType) => {
     const { selectedEdgeObj } = this.state;
 
     return !!selectedEdgeObj
@@ -1214,7 +1216,7 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
       && selectedEdgeObj.edge.target === edge.target;
   }
 
-  getEdgeComponent = (edge: IEdge | any) => {
+  getEdgeComponent = (edge: EdgeDataType | any) => {
     const { edgeTypes, edgeHandleSize } = this.props;
     const sourceNodeMapNode = this.getNodeById(edge.source);
     const sourceNode = sourceNodeMapNode ? sourceNodeMapNode.node : null;
@@ -1234,7 +1236,7 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
     );
   }
 
-  renderEdge(id: string, element: any, edge: IEdge, nodeMoving: boolean = false) {
+  renderEdge(id: string, element: any, edge: EdgeDataType, nodeMoving: boolean = false) {
     if (!this.entities) {
       return;
     }
@@ -1279,7 +1281,7 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
     }
   }
 
-  asyncRenderEdge = (edge: IEdge, nodeMoving: boolean = false) => {
+  asyncRenderEdge = (edge: EdgeDataType, nodeMoving: boolean = false) => {
     if (!edge.source || !edge.target) {
       return;
     }
@@ -1291,7 +1293,7 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
     });
   }
 
-  syncRenderEdge(edge: IEdge | any, nodeMoving: boolean = false) {
+  syncRenderEdge(edge: EdgeDataType | any, nodeMoving: boolean = false) {
     if (!edge.source) {
       return;
     }

@@ -1,6 +1,6 @@
 // @flow
 import type { INode } from '../Node/types';
-import type { IEdge } from '../Edge/types';
+import type { EdgeData as EdgeDataType } from '../Edge/types';
 
 export type IViewTransform = {
   k: number,
@@ -11,8 +11,8 @@ export type IViewTransform = {
 export type INodeMapNode = {
   node: INode;
   originalArrIndex: number;
-  incomingEdges: Array<IEdge>;
-  outgoingEdges: Array<IEdge>;
+  incomingEdges: Array<EdgeDataType>;
+  outgoingEdges: Array<EdgeDataType>;
   parents: Array<INode>;
   children: Array<INode>;
 };
@@ -62,15 +62,15 @@ export type IGraphViewProps = {
   onCreateEdge: (sourceNode: INode, targetNode: INode) => void;
   onCreateNode: (x: number, y: number, value: string) => void;
   onCreateNodeWithEdge: (x: number, y: number, sourceNode: INode) => void;
-  onDeleteEdge: (selectedEdge: IEdge, edges: Array<IEdge>) => void;
+  onDeleteEdge: (selectedEdge: EdgeDataType, edges: Array<EdgeDataType>) => void;
   onDeleteNode: (selected: any, nodeId: string, nodes: any[]) => void;
   onPasteSelected?: () => void;
-  onSelectEdge: (selectedEdge: IEdge) => void;
+  onSelectEdge: (selectedEdge: EdgeDataType) => void;
   onSelectNode: (node: INode | null) => void;
   onCollapseNode: (id: number) => void;
   onResizeNode: (id: number, width: number, height: number) => void;
   onLockNode: (id: number) => void;
-  onSwapEdge: (sourceNode: INode, targetNode: INode, edge: IEdge) => void;
+  onSwapEdge: (sourceNode: INode, targetNode: INode, edge: EdgeDataType) => void;
   onUndo?: () => void;
   onRedo?: () => void;
   onUpdateNode: (node: INode) => void;
@@ -79,7 +79,7 @@ export type IGraphViewProps = {
   afterRenderEdge?: (
     id: string,
     element: any,
-    edge: IEdge,
+    edge: EdgeDataType,
     edgeContainer: any,
     isEdgeSelected: boolean,
   ) => void;

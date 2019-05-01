@@ -1,5 +1,6 @@
 // @flow
 import type { INode } from './Graph/Node/types';
+import type { EdgeData as EdgeDataType } from './Graph/Edge/types';
 import {
   type Node as NodeType,
   type Edge as EdgeType,
@@ -15,6 +16,7 @@ import {
   UPDATE_NODE,
   DELETE_NODE,
   CREATE_EDGE,
+  UPDATE_EDGE,
   DELETE_EDGE,
   SWAP_EDGE,
   SET_ZOOM_CONTROLS_REF,
@@ -79,6 +81,11 @@ export const ACTION_DELETE_NODE = (nodeId: number) => ({
 
 export const ACTION_CREATE_EDGE = (edgeData: EdgeType) => ({
   type: CREATE_EDGE,
+  edgeData,
+});
+
+export const ACTION_UPDATE_EDGE = (edgeData: EdgeDataType) => ({
+  type: UPDATE_EDGE,
   edgeData,
 });
 

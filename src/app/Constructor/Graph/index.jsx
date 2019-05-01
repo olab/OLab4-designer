@@ -9,7 +9,7 @@ import { DropTarget } from 'react-dnd';
 import isEqual from 'lodash.isequal';
 
 import GraphView from './GraphView';
-import type { IEdge } from './Edge/types';
+import type { EdgeData as EdgeDataType } from './Edge/types';
 import type { INode } from './Node/types';
 import type {
   IGraphProps,
@@ -19,22 +19,30 @@ import type {
   Edge as EdgeType,
   Node as NodeType,
   NodeData as NodeDataType,
-  EdgeData as EdgeDataType,
 } from '../types';
 
 import { createNewEdge, createNewNode } from './utils';
 import { EdgeTypes } from './config';
-import { DndItemTypes } from '../../Modals/Meta-Modal/config';
+import { DndContexts, ModalsNames } from '../../Modals/config';
 
-import * as actions from '../action';
+import * as graphActions from '../action';
+import * as modalActions from '../../Modals/action';
 
-import { Wrapper, Container } from './styles';
+import { Wrapper } from './styles';
 
 export class Graph extends Component<IGraphProps, IGraphState> {
   constructor(props: IGraphProps) {
     super(props);
 
-    this.GraphView = React.createRef();
+    this.graphViewRef = React.createRef();
+    this.graphViewWrapperRef = React.createRef();
+  }
+
+  componentDidMount() {
+    const { connectDropTarget } = this.props;
+    const { current: graphViewWrapperRef } = this.graphViewWrapperRef;
+
+    connectDropTarget(graphViewWrapperRef);
   }
 
   get getSelectedItem(): NodeDataType | EdgeDataType | null {
@@ -64,10 +72,25 @@ export class Graph extends Component<IGraphProps, IGraphState> {
     return graph.edges.find(edge => edge.isSelected) || null;
   }
 
-  onSelectItem = (item: INode | IEdge | null) => {
+  onSelectNode = (item: INode | null) => {
+    const itemId = item ? item.id : null;
+    const { ACTION_SELECT_ITEM } = this.props;
+
+    ACTION_SELECT_ITEM(itemId);
+  };
+
+  onSelectEdge = (
+    item: EdgeDataType | null,
+    { clientX, clientY }: { clientX: number, clientY: number },
+  ) => {
     const itemId = item ? item.id : null;
 
-    const { ACTION_SELECT_ITEM } = this.props;
+    const {
+      ACTION_SELECT_ITEM,
+      ACTION_SET_POSITION_LINK_EDITOR_MODAL,
+    } = this.props;
+
+    ACTION_SET_POSITION_LINK_EDITOR_MODAL(clientX, clientY);
     ACTION_SELECT_ITEM(itemId);
   };
 
@@ -128,12 +151,12 @@ export class Graph extends Component<IGraphProps, IGraphState> {
     ACTION_DELETE_NODE(node.id);
   }
 
-  onDeleteEdge = (edge: IEdge) => {
+  onDeleteEdge = (edge: EdgeDataType) => {
     const { ACTION_DELETE_EDGE } = this.props;
     ACTION_DELETE_EDGE(edge.id);
   }
 
-  onSwapEdge = (sourceNode: INode, targetNode: INode, edge: IEdge) => {
+  onSwapEdge = (sourceNode: INode, targetNode: INode, edge: EdgeDataType) => {
     const { ACTION_SWAP_EDGE } = this.props;
     ACTION_SWAP_EDGE(edge.id, sourceNode.id, targetNode.id);
   }
@@ -197,46 +220,49 @@ export class Graph extends Component<IGraphProps, IGraphState> {
     ACTION_CREATE_NODE(newNode);
   }
 
-  GraphView: { current: null | HTMLDivElement };
+  graphViewWrapperRef: { current: null | HTMLDivElement };
+
+  graphViewRef: { current: null | HTMLDivElement };
 
   render() {
     const {
-      isFullScreen, graph, minZoom, maxZoom, layoutEngineType, connectDropTarget,
+      isFullScreen, graph, minZoom, maxZoom, layoutEngineType,
     } = this.props;
 
-    return connectDropTarget(
-      <div>
-        <Wrapper id="graph" isFullScreen={isFullScreen}>
-          <Container>
-            <GraphView
-              ref={this.GraphView}
-              minZoom={minZoom / 100}
-              maxZoom={maxZoom / 100}
-              nodes={graph.nodes.map(({ data }) => data)}
-              edges={graph.edges.map(({ data }) => data)}
-              selected={this.getSelectedItem}
-              edgeTypes={EdgeTypes}
-              onSelectNode={this.onSelectItem}
-              onCollapseNode={this.onCollapseItem}
-              onLockNode={this.onLockNode}
-              onResizeNode={this.onResizeNode}
-              onCreateNode={this.onCreateNode}
-              onUpdateNode={this.onUpdateNode}
-              onDeleteNode={this.onDeleteNode}
-              onSelectEdge={this.onSelectItem}
-              onCreateEdge={this.onCreateEdge}
-              onSwapEdge={this.onSwapEdge}
-              onDeleteEdge={this.onDeleteEdge}
-              onUndo={this.onUndo}
-              onRedo={this.onRedo}
-              onCopySelected={this.onCopySelected}
-              onPasteSelected={this.onPasteSelected}
-              onCreateNodeWithEdge={this.onCreateNodeWithEdge}
-              layoutEngineType={layoutEngineType}
-            />
-          </Container>
-        </Wrapper>
-      </div>,
+
+    return (
+      <Wrapper
+        id="graph"
+        ref={this.graphViewWrapperRef}
+        isFullScreen={isFullScreen}
+      >
+        <GraphView
+          ref={this.graphViewRef}
+          minZoom={minZoom / 100}
+          maxZoom={maxZoom / 100}
+          nodes={graph.nodes.map(({ data }) => data)}
+          edges={graph.edges.map(({ data }) => data)}
+          selected={this.getSelectedItem}
+          edgeTypes={EdgeTypes}
+          onSelectNode={this.onSelectNode}
+          onCreateNode={this.onCreateNode}
+          onCollapseNode={this.onCollapseItem}
+          onLockNode={this.onLockNode}
+          onResizeNode={this.onResizeNode}
+          onUpdateNode={this.onUpdateNode}
+          onDeleteNode={this.onDeleteNode}
+          onSelectEdge={this.onSelectEdge}
+          onCreateEdge={this.onCreateEdge}
+          onSwapEdge={this.onSwapEdge}
+          onDeleteEdge={this.onDeleteEdge}
+          onUndo={this.onUndo}
+          onRedo={this.onRedo}
+          onCopySelected={this.onCopySelected}
+          onPasteSelected={this.onPasteSelected}
+          onCreateNodeWithEdge={this.onCreateNodeWithEdge}
+          layoutEngineType={layoutEngineType}
+        />
+      </Wrapper>
     );
   }
 }
@@ -252,43 +278,50 @@ const mapStateToProps = ({ constructor: { zoom, graph, layoutEngineType } }) => 
 
 const mapDispatchToProps = dispatch => ({
   ACTION_SWAP_EDGE: (edgeId: number, sourceNodeId: number, targetNodeId: number) => {
-    dispatch(actions.ACTION_SWAP_EDGE(edgeId, sourceNodeId, targetNodeId));
+    dispatch(graphActions.ACTION_SWAP_EDGE(edgeId, sourceNodeId, targetNodeId));
   },
   ACTION_DELETE_EDGE: (edgeId: number) => {
-    dispatch(actions.ACTION_DELETE_EDGE(edgeId));
+    dispatch(graphActions.ACTION_DELETE_EDGE(edgeId));
   },
   ACTION_CREATE_EDGE: (edgeData: EdgeType) => {
-    dispatch(actions.ACTION_CREATE_EDGE(edgeData));
+    dispatch(graphActions.ACTION_CREATE_EDGE(edgeData));
   },
   ACTION_DELETE_NODE: (nodeId: number) => {
-    dispatch(actions.ACTION_DELETE_NODE(nodeId));
+    dispatch(graphActions.ACTION_DELETE_NODE(nodeId));
   },
   ACTION_UPDATE_NODE: (nodeData: INode) => {
-    dispatch(actions.ACTION_UPDATE_NODE(nodeData));
+    dispatch(graphActions.ACTION_UPDATE_NODE(nodeData));
   },
   ACTION_CREATE_NODE: (nodeData: NodeType) => {
-    dispatch(actions.ACTION_CREATE_NODE(nodeData));
+    dispatch(graphActions.ACTION_CREATE_NODE(nodeData));
   },
   ACTION_CREATE_NODE_WITH_EDGE: (nodeData: NodeType, edgeData: EdgeType) => {
-    dispatch(actions.ACTION_CREATE_NODE_WITH_EDGE(nodeData, edgeData));
+    dispatch(graphActions.ACTION_CREATE_NODE_WITH_EDGE(nodeData, edgeData));
   },
   ACTION_SELECT_ITEM: (id: number) => {
-    dispatch(actions.ACTION_SELECT_ITEM(id));
+    dispatch(graphActions.ACTION_SELECT_ITEM(id));
   },
   ACTION_COLLAPSE_NODE: (id: number, width: number, height: number) => {
-    dispatch(actions.ACTION_COLLAPSE_NODE(id, width, height));
+    dispatch(graphActions.ACTION_COLLAPSE_NODE(id, width, height));
   },
   ACTION_RESIZE_NODE: (id: number, width: number, height: number) => {
-    dispatch(actions.ACTION_RESIZE_NODE(id, width, height));
+    dispatch(graphActions.ACTION_RESIZE_NODE(id, width, height));
   },
   ACTION_LOCK_NODE: (id: number) => {
-    dispatch(actions.ACTION_LOCK_NODE(id));
+    dispatch(graphActions.ACTION_LOCK_NODE(id));
   },
   ACTION_REDO_GRAPH: () => {
-    dispatch(actions.ACTION_REDO_GRAPH());
+    dispatch(graphActions.ACTION_REDO_GRAPH());
   },
   ACTION_UNDO_GRAPH: () => {
-    dispatch(actions.ACTION_UNDO_GRAPH());
+    dispatch(graphActions.ACTION_UNDO_GRAPH());
+  },
+  ACTION_SET_POSITION_LINK_EDITOR_MODAL: (x: number, y: number) => {
+    dispatch(modalActions.ACTION_SET_POSITION_MODAL(
+      ModalsNames.LINK_EDITOR_MODAL,
+      x,
+      y,
+    ));
   },
 });
 
@@ -316,7 +349,7 @@ const collect = conn => ({
 });
 
 export default DropTarget(
-  DndItemTypes.META_MODAL,
+  DndContexts.VIEWPORT,
   spec,
   collect,
 )(connect(mapStateToProps, mapDispatchToProps)(Graph));
