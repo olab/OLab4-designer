@@ -13,7 +13,9 @@ import type {
   EdgeData as EdgeDataType,
 } from './types';
 
-import { EdgeWrapper, EdgeMouseHandlerWrapper, EdgeTextWrapper } from './styles';
+import { getStringVariant } from './utils';
+
+import { EdgeWrapper } from './styles';
 
 export class Edge extends React.Component<IEdgeProps> {
   constructor(props: IEdgeProps) {
@@ -551,19 +553,7 @@ export class Edge extends React.Component<IEdgeProps> {
     return Edge.lineFunction(linePoints);
   }
 
-  edgeOverlayRef: { current: null | HTMLDivElement };
-
-  renderHandleText(data: any) {
-    return (
-      <EdgeTextWrapper
-        textAnchor="middle"
-        alignmentBaseline="central"
-        transform={`${this.getEdgeHandleTranslation()}`}
-      >
-        {data.label}
-      </EdgeTextWrapper>
-    );
-  }
+  edgeOverlayRef: { current: null | Element };
 
   render() {
     const {
@@ -579,24 +569,25 @@ export class Edge extends React.Component<IEdgeProps> {
     return (
       <g className="edge-container" data-source={data.source} data-target={data.target}>
         <EdgeWrapper selected={selected}>
-          <path d={this.getPathDescription() || undefined} />
-          <use
-            className="edge-use"
-            xlinkHref={Edge.getXlinkHref(edgeTypes, data)}
-            width={edgeHandleSize}
-            height={edgeHandleSize}
-            transform={`${this.getEdgeHandleTransformation()}`}
-          />
-        </EdgeWrapper>
-        <EdgeMouseHandlerWrapper>
           <path
-            ref={this.edgeOverlayRef}
-            id={id}
-            data-source={data.source}
-            data-target={data.target}
+            stroke={data.color}
+            strokeWidth={`${data.thickness}px`}
+            strokeDasharray={getStringVariant(data.variant)}
             d={this.getPathDescription() || undefined}
           />
-        </EdgeMouseHandlerWrapper>
+          <use
+            id={id}
+            className="edge-use"
+            ref={this.edgeOverlayRef}
+            width={edgeHandleSize}
+            height={edgeHandleSize}
+            xlinkHref={Edge.getXlinkHref(edgeTypes, data)}
+            transform={`${this.getEdgeHandleTransformation()}`}
+            data-source={data.source}
+            data-target={data.target}
+            fill={data.color || '#D3DAE1'}
+          />
+        </EdgeWrapper>
       </g>
     );
   }

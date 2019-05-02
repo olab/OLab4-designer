@@ -41,8 +41,8 @@ export type IConstructorProps = {
 };
 export type IConstructorState = {
   isFullScreen: boolean,
-  selectedLink?: EdgeDataType,
-  selectedNode?: NodeData,
+  selectedLink: EdgeDataType | null,
+  selectedNode: NodeData | null,
 };
 
 export type Constructor = {

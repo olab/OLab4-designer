@@ -3,11 +3,13 @@ import type { INode } from '../Node/types';
 
 export type EdgeData = {
   id: number,
+  label: string;
   type?: string;
+  color: string;
+  variant: string;
+  thickness: number;
   source: number;
   target: number;
-  label: string;
-  color: string;
   isHidden: boolean;
 };
 

@@ -214,12 +214,6 @@ const constructor = (state: ConstructorType = initialConstructorState, action: G
       const graph = cloneDeep(state.graph);
       const { edgeData } = action;
 
-      [graph.current.nodes, graph.current.edges]
-        .forEach(items => items
-          .forEach((item) => {
-            item.isSelected = false;
-          }));
-
       const edge = graph.current.edges.find(({ data }) => data.id === edgeData.id);
       Object.assign(edge.data, edgeData);
 

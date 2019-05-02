@@ -19,6 +19,7 @@ export type IGraphProps = {
   connectDropTarget: Function,
   ACTION_UNDO_GRAPH: () => void,
   ACTION_REDO_GRAPH: () => void,
+  ACTION_SET_POSITION_LINK_EDITOR_MODAL: (x: number, y: number) => void,
   ACTION_SELECT_ITEM: (id: number | null) => void,
   ACTION_COLLAPSE_NODE: (id: number, width: number, height: number) => void,
   ACTION_RESIZE_NODE: (id: number, width: number, height: number) => void,

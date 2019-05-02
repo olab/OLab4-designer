@@ -24,6 +24,7 @@
     "fs-extra": "7.0.0",
     "history": "^4.7.2",
     "jest-enzyme": "^7.0.2",
+    "jss-rtl": "^0.2.3",
     "kld-affine": "^2.0.4",
     "kld-intersections": "^0.4.3",
     "lodash.clonedeep": "^4.5.0",

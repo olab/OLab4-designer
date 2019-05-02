@@ -42,7 +42,7 @@ type SetPosModal = {
 };
 
 export type ModalsActions = OpenModal | CloseModal
-  | ToggleModal | SetPosModal | SetInitPosMetaModal;
+  | ToggleModal | SetPosModal;
 
 export {
   OPEN_MODAL,
