@@ -5,7 +5,6 @@ import React from 'react';
 import { shallow } from 'enzyme';
 
 import { Node } from '.';
-import { NodeText } from './Text';
 
 describe('Node component', () => {
   let output = {};
@@ -74,8 +73,8 @@ describe('Node component', () => {
       expect(output.getElement()).not.toBeNull();
       expect(output.props().transform).toEqual('translate(5, 10)');
 
-      const nodeText = output.find(NodeText);
-      expect(nodeText.length).toEqual(1);
+      const nodeText = output.find(Node);
+      expect(nodeText).toBeDefined();
     });
 
     it('calls handleMouseOver', () => {
@@ -96,14 +95,6 @@ describe('Node component', () => {
       output.find('g').props().onMouseOut(event);
       expect(onNodeMouseLeave).toHaveBeenCalledWith(event, nodeData);
       expect(output.state().hovered).toEqual(false);
-    });
-  });
-
-  describe('renderText method', () => {
-    it('creates its own NodeText element', () => {
-      output.instance().renderText = jest.fn();
-      output.instance().forceUpdate();
-      expect(output.instance().renderText).toHaveBeenCalled();
     });
   });
 

@@ -4,14 +4,13 @@ import * as d3 from 'd3';
 import React from 'react';
 
 import Edge from '../Edge';
-import NodeText from './Text';
 
 import type {
   INodeProps,
   INodeState,
 } from './types';
 
-import { NodeShapeContainer } from './styles';
+import NodeComponent from './NodeComponent';
 
 export class Node extends React.Component<INodeProps, INodeState> {
   constructor(props: INodeProps) {
@@ -148,40 +147,11 @@ export class Node extends React.Component<INodeProps, INodeState> {
 
   nodeRef: any;
 
-  renderText() {
-    const { selected } = this.state;
-    const { data } = this.props;
-
-    return (<NodeText data={data} isSelected={selected} />);
-  }
-
   renderShape() {
-    // const { hovered, selected } = this.state;
-    // const { index } = this.props;
-
-    // if (!this.nodeRef.current) {
-    //   return null;
-    // }
-
-    // const { height, width } = this.nodeRef.current.getBBox();
-
-    // const props = {
-    //   height,
-    //   width,
-    // };
-
     return (
-      <NodeShapeContainer>
-        <circle
-          // data-index={index}
-          // x={-props.width / 2}
-          // y={-props.height / 2}
-          // width={props.width}
-          // height={props.height}
-          r="76"
-          fill="black"
-        />
-      </NodeShapeContainer>
+      <foreignObject x={-170} y={-90} width='340' height='180' viewBox={`0 0 340 180`}>
+        <NodeComponent />
+      </foreignObject>
     );
   }
 
@@ -202,7 +172,6 @@ export class Node extends React.Component<INodeProps, INodeState> {
         transform={`translate(${x}, ${y})`}
       >
         {this.renderShape()}
-        {this.renderText()}
       </g>
     );
   }

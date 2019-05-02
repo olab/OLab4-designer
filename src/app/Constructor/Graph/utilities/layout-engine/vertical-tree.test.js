@@ -55,8 +55,8 @@ describe('VerticalTree', () => {
       };
       const newNodes = verticalTree.adjustNodes(nodes, nodesMap);
       const expected = [
-        { id: 'test', x: 115.5, y: 115.5 },
-        { id: 'test1', x: 115.5, y: 396.5 },
+        { id: 'test', x: 150, y: 150 },
+        { id: 'test1', x: 150, y: 500 },
       ];
       expect(JSON.stringify(newNodes)).toEqual(JSON.stringify(expected));
     });
@@ -119,8 +119,8 @@ describe('VerticalTree', () => {
 
       const newNodes = verticalTree.adjustNodes(nodes, nodesMap);
       const expected = [
-        { id: 'test', x: 115.5, y: 115.5 },
-        { id: 'test1', x: 115.5, y: 396.5 },
+        { id: 'test', x: 150, y: 150 },
+        { id: 'test1', x: 150, y: 500 },
       ];
       expect(JSON.stringify(newNodes)).toEqual(JSON.stringify(expected));
     });
