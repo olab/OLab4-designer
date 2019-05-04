@@ -24,7 +24,7 @@ export class Edge extends React.Component<IEdgeProps> {
   }
 
   static defaultProps = {
-    edgeHandleSize: 50,
+    edgeHandleSize: 24,
   };
 
   /**
@@ -58,10 +58,7 @@ export class Edge extends React.Component<IEdgeProps> {
    * https://bl.ocks.org/d3indepth/64be9fc39a92ef074034e9a8fb29dcce
    */
   static lineFunction(srcTrgDataArray: any) {
-    return d3
-      .line()
-      .x((d: any) => d.x)
-      .y((d: any) => d.y)(srcTrgDataArray);
+    return d3.line()(srcTrgDataArray);
   }
 
   /**
@@ -485,11 +482,11 @@ export class Edge extends React.Component<IEdgeProps> {
   }
 
   getEdgeHandleTranslation = () => {
-    let pathDescription = this.getPathDescription();
-
-    pathDescription = pathDescription.replace(/^M/, '');
-    pathDescription = pathDescription.replace(/L/, ',');
-    const pathDescriptionArr = pathDescription.split(',');
+    const pathDescription = this.getPathDescription();
+    const pathDescriptionArr = pathDescription
+      .replace(/^M/, '')
+      .replace(/L/, ',')
+      .split(',');
 
     const diffX = parseFloat(pathDescriptionArr[2]) - parseFloat(pathDescriptionArr[0]);
     const diffY = parseFloat(pathDescriptionArr[3]) - parseFloat(pathDescriptionArr[1]);
@@ -523,8 +520,9 @@ export class Edge extends React.Component<IEdgeProps> {
 
   getPathDescription() {
     const {
-      sourceNode, targetNode, viewWrapperElem,
+      sourceNode, targetNode, edgeHandleSize: alfa = 0, hasSibling,
     } = this.props;
+    let linePoints;
 
     const trgX = (targetNode && targetNode.x) ? targetNode.x : 0;
     const trgY = (targetNode && targetNode.y) ? targetNode.y : 0;
@@ -536,19 +534,32 @@ export class Edge extends React.Component<IEdgeProps> {
     // comes from and where it's going to. Don't think of a line as a one-way arrow, but rather
     // a connection between two points. In this case, to obtain the offsets for the src we
     // write trg first, then src second. Vice versa to get the offsets for trg.
-    const srcOff = Edge.calculateOffset(targetNode, sourceNode, viewWrapperElem);
-    const trgOff = Edge.calculateOffset(sourceNode, targetNode, viewWrapperElem);
+    // const srcOff = Edge.calculateOffset(targetNode, sourceNode, viewWrapperElem);
+    // const trgOff = Edge.calculateOffset(sourceNode, targetNode, viewWrapperElem);
 
-    const linePoints = [
-      {
-        x: srcX - srcOff.xOff,
-        y: srcY - srcOff.yOff,
-      },
-      {
-        x: trgX - trgOff.xOff,
-        y: trgY - trgOff.yOff,
-      },
-    ];
+    if (hasSibling) {
+      const thetaDegrees = Edge.calculateAngle(sourceNode, targetNode);
+      const thetaRadians = (90 - thetaDegrees) * (Math.PI / 180);
+
+      const deltaX = -alfa * Math.cos(thetaRadians);
+      const deltaY = alfa * Math.sin(thetaRadians);
+
+      linePoints = [
+        [
+          srcX - deltaX,
+          srcY - deltaY,
+        ],
+        [
+          trgX - deltaX,
+          trgY - deltaY,
+        ],
+      ];
+    } else {
+      linePoints = [
+        [srcX, srcY],
+        [trgX, trgY],
+      ];
+    }
 
     return Edge.lineFunction(linePoints);
   }

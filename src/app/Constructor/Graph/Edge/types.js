@@ -25,5 +25,6 @@ export type IEdgeProps = {
   sourceNode: INode | null;
   targetNode: INode | ITargetPosition;
   isSelected: boolean;
+  hasSibling: boolean;
   viewWrapperElem: HTMLDivElement;
 };

@@ -681,14 +681,12 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
     GraphUtils.removeElementFromDom('edge-custom-container');
 
     if (edgeEndNode) {
-      const mapId1 = `${hoveredNodeData.id}_${edgeEndNode.id}`;
-      const mapId2 = `${edgeEndNode.id}_${hoveredNodeData.id}`;
+      const mapId = `${hoveredNodeData.id}_${edgeEndNode.id}`;
       if (edgesMap
         && hoveredNodeData !== edgeEndNode
         && canCreateEdge
         && canCreateEdge(hoveredNodeData, edgeEndNode)
-        && !edgesMap[mapId1]
-        && !edgesMap[mapId2]) {
+        && !edgesMap[mapId]) {
         const edge: EdgeDataType = {
           source: hoveredNodeData.id,
           target: edgeEndNode.id,
@@ -1232,8 +1230,16 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
         targetNode={targetNode || edge.targetPosition}
         viewWrapperElem={this.viewWrapper.current}
         isSelected={this.isEdgeSelected(edge)}
+        hasSibling={this.checkIfEdgeHasSibling(edge)}
       />
     );
+  }
+
+  checkIfEdgeHasSibling = (edge: EdgeDataType | any) => {
+    const { edges } = this.props;
+    const { source: edgeSource, target: edgeTarget } = edge;
+
+    return edges.some(({ source, target }) => source === edgeTarget && target === edgeSource);
   }
 
   renderEdge(id: string, element: any, edge: EdgeDataType, nodeMoving: boolean = false) {

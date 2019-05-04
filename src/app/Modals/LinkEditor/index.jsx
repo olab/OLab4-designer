@@ -146,7 +146,7 @@ class LinkEditor extends Component<ILinkEditorProps, ILinkEditorState> {
               label="Thickness"
               value={thickness}
               min={1}
-              max={15}
+              max={10}
               onChange={this.handleSliderChange}
             />
           </article>
