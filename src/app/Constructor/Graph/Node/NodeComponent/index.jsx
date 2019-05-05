@@ -1,34 +1,41 @@
 // @flow
 import React from 'react';
+import classNames from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
 import {
-  CardHeader, Icon, Fab, Typography, Card, CardContent, RootRef,
+  CardHeader, Fab, Typography, Card, CardContent, RootRef,
 } from '@material-ui/core';
-
 import {
-  LockIcon, DragableIcon, StarIcon, MinimizeIcon,
+  LockIcon, DragableIcon, StarIcon, MinimizeIcon, NodeLockedIcon,
 } from './icons';
 import CardFooter from './CardFooter';
 import type { State, Props } from './types';
 import styles from './styles';
-
 
 class Node extends React.Component <Props, State> {
   state = {
     isMainNode: false,
   };
 
-
   render() {
-    const { classes, isCollapsed, resizeRef } = this.props;
+    const {
+      classes, isCollapsed, resizeRef, isLocked,
+    } = this.props;
     const { isMainNode } = this.state;
+
+    const { cardContent, cardContentLocked } = classes;
+
+    const cardContentMain = classNames(
+      cardContent,
+      { [cardContentLocked]: isLocked },
+    );
 
     const ActionBar = (
       <div>
         <Fab data-id="collapse" className={classes.actionBarButton}>
           <MinimizeIcon />
         </Fab>
-        <Fab className={classes.actionBarButton}>
+        <Fab data-id="lock" className={classes.actionBarButton}>
           <LockIcon />
         </Fab>
       </div>
@@ -36,10 +43,9 @@ class Node extends React.Component <Props, State> {
 
     const title = (
       <div className={classes.titleContainer}>
-        <Icon>
-          <DragableIcon />
-        </Icon>
+        <DragableIcon />
         {isMainNode && <StarIcon />}
+        {isLocked && <NodeLockedIcon />}
         <p className={classes.title}>Node name</p>
       </div>
     );
@@ -54,9 +60,10 @@ class Node extends React.Component <Props, State> {
             disableTypography
             action={ActionBar}
           />
+
           {!isCollapsed && (
           <>
-            <CardContent data-id="resize" className={classes.cardContent}>
+            <CardContent data-id="resize" className={cardContentMain}>
               <Typography component="p">
                 This impressive paella is a perfect party dish
                 and a fun meal to cook together with your

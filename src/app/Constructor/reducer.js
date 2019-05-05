@@ -8,6 +8,7 @@ import {
   REDO_GRAPH,
   SELECT_ITEM,
   COLLAPSE_NODE,
+  LOCK_NODE,
   CREATE_NODE,
   UPDATE_NODE,
   DELETE_NODE,
@@ -108,6 +109,21 @@ const constructor = (state: ConstructorType = initialConstructorState, action: G
         .forEach(items => items
           .forEach((item) => {
             if (item.data.id === id) { item.data.isCollapsed = !item.data.isCollapsed; }
+          }));
+
+      return {
+        ...state,
+        graph,
+      };
+    }
+
+    case LOCK_NODE: {
+      const graph = cloneDeep(state.graph);
+      const { id } = action;
+      [graph.current.nodes]
+        .forEach(items => items
+          .forEach((item) => {
+            if (item.data.id === id) { item.data.isLocked = !item.data.isLocked; }
           }));
 
       return {

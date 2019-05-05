@@ -21,6 +21,7 @@ export type IGraphProps = {
   ACTION_REDO_GRAPH: () => void,
   ACTION_SELECT_ITEM: (id: number | null) => void,
   ACTION_COLLAPSE_NODE: (id: number) => void,
+  ACTION_LOCK_NODE: (id: number) => void,
   ACTION_CREATE_NODE: (nodeData: NodeType) => void,
   ACTION_CREATE_EDGE: (edgeData: EdgeType) => void,
   ACTION_UPDATE_NODE: (nodeData: INode) => void,

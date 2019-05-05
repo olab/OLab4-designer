@@ -9,10 +9,12 @@ export type Props = {
     title: {},
     action: {},
     cardContent: {},
+    cardContentLocked: string,
     pos: {},
     actionBarButton: {},
   },
   isCollapsed: boolean,
+  isLocked: boolean,
   resizeRef: any,
 };
 

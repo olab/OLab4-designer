@@ -78,6 +78,11 @@ export class Graph extends Component<IGraphProps, IGraphState> {
     ACTION_COLLAPSE_NODE(id);
   };
 
+  onLockNode = (id: number) => {
+    const { ACTION_LOCK_NODE } = this.props;
+    ACTION_LOCK_NODE(id);
+  };
+
   onCreateNode = (x: number, y: number) => {
     const { ACTION_CREATE_NODE } = this.props;
 
@@ -86,8 +91,6 @@ export class Graph extends Component<IGraphProps, IGraphState> {
     const newNode = {
       id: newNodeId,
       isSelected: true,
-      expand: false,
-      locked: false,
       data: {
         id: newNodeId,
         map_id: newNodeMapId,
@@ -101,6 +104,7 @@ export class Graph extends Component<IGraphProps, IGraphState> {
         x,
         y,
         isCollapsed: false,
+        isLocked: false,
       },
     };
 
@@ -232,6 +236,7 @@ export class Graph extends Component<IGraphProps, IGraphState> {
               edgeTypes={EdgeTypes}
               onSelectNode={this.onSelectItem}
               onCollapseNode={this.onCollapseItem}
+              onLockNode={this.onLockNode}
               onCreateNode={this.onCreateNode}
               onUpdateNode={this.onUpdateNode}
               onDeleteNode={this.onDeleteNode}
@@ -285,6 +290,9 @@ const mapDispatchToProps = dispatch => ({
   },
   ACTION_COLLAPSE_NODE: (id: number) => {
     dispatch(actions.ACTION_COLLAPSE_NODE(id));
+  },
+  ACTION_LOCK_NODE: (id: number) => {
+    dispatch(actions.ACTION_LOCK_NODE(id));
   },
   ACTION_REDO_GRAPH: () => {
     dispatch(actions.ACTION_REDO_GRAPH());

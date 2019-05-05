@@ -31,7 +31,7 @@ export type Node = {
   id: number,
   isSelected: boolean,
   expand: boolean,
-  locked: boolean,
+  isLocked: boolean,
   data: NodeData,
 };
 
@@ -98,6 +98,13 @@ type CollapseItem = {
   id: number,
 };
 
+const LOCK_NODE = 'LOCK_NODE';
+
+type LockItem = {
+  type: 'LOCK_NODE',
+  id?: number,
+};
+
 const CREATE_NODE = 'CREATE_NODE';
 type CreateNode = {
   type: 'CREATE_NODE',
@@ -143,10 +150,10 @@ type SetZoomControlsRef = {
 };
 
 export type GraphActions = GraphToUndo |
-  UndoGraph | RedoGraph | SelectItem | CollapseItem |
-  CreateNode | UpdateNode | DeleteNode |
-  CreateEdge | DeleteEdge | SwapEdge |
-  SetZoomControlsRef;
+  UndoGraph | RedoGraph | SelectItem |
+  CollapseItem | CreateNode | UpdateNode |
+  DeleteNode | CreateEdge | DeleteEdge |
+  SwapEdge | LockItem | SetZoomControlsRef;
 
 export {
   SAVE_GRAPH_TO_UNDO,
@@ -154,6 +161,7 @@ export {
   REDO_GRAPH,
   SELECT_ITEM,
   COLLAPSE_NODE,
+  LOCK_NODE,
   CREATE_NODE,
   UPDATE_NODE,
   DELETE_NODE,

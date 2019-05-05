@@ -807,6 +807,11 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
     onCollapseNode(nodeId);
   }
 
+  handleNodeLocked = (nodeId: number) => {
+    const { onLockNode } = this.props;
+    onLockNode(nodeId);
+  }
+
   // One can't attach handlers to 'markers' or obtain them from the event.target
   // If the click occurs within a certain radius of edge target, assume the click
   // occurred on the arrow
@@ -1118,6 +1123,7 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
         onNodeUpdate={this.handleNodeUpdate}
         onNodeSelected={this.handleNodeSelected}
         onNodeCollapsed={this.handleNodeCollapsed}
+        onNodeLocked={this.handleNodeLocked}
         isSelected={selectedNodeObj.node === node}
         layoutEngine={this.layoutEngine}
         viewWrapperElem={this.viewWrapper.current}

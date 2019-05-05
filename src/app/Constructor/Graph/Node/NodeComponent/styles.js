@@ -27,6 +27,9 @@ const styles = {
   titleContainer: {
     display: 'flex',
     alignItems: 'center',
+    '& svg': {
+      marginRight: 5,
+    },
   },
   title: {
     marginLeft: 5,
@@ -55,6 +58,9 @@ const styles = {
     '&::-webkit-resizer': {
       display: 'none',
     },
+  },
+  cardContentLocked: {
+    resize: 'none',
   },
   pos: {
     marginBottom: 12,

@@ -52,24 +52,31 @@ export class Node extends React.Component<INodeProps, INodeState> {
   handleMouseDown = () => {
     const { target } = d3.event;
     const { data: { id } } = this.props;
-    const { onNodeCollapsed } = this.props;
-    const collapsedIcon = target.closest('[data-id="collapse"]');
-    if (collapsedIcon) {
+    const { onNodeCollapsed, onNodeLocked } = this.props;
+    const isCollapseClicked = target.closest('[data-id="collapse"]');
+    const isLockClicked = target.closest('[data-id="lock"]');
+    if (isCollapseClicked) {
       d3.event.stopImmediatePropagation();
       onNodeCollapsed(id);
+    }
+    if (isLockClicked) {
+      d3.event.stopImmediatePropagation();
+      onNodeLocked(id);
     }
   }
 
 
   handleMouseMove = () => {
     const { drawingEdge } = this.state;
+    const { data: { isLocked } } = this.props;
     const {
       layoutEngine, viewWrapperElem, data, onNodeMove,
     } = this.props;
     const { buttons, shiftKey } = d3.event.sourceEvent;
     const mouseButtonDown = buttons === 1;
 
-    if (!mouseButtonDown) {
+
+    if (!mouseButtonDown || isLocked) {
       return;
     }
 
@@ -99,11 +106,11 @@ export class Node extends React.Component<INodeProps, INodeState> {
   }
 
   handleDragStart = () => {
-    const { ACTION_SAVE_GRAPH_TO_UNDO } = this.props;
+    const { ACTION_SAVE_GRAPH_TO_UNDO, data: { isLocked } } = this.props;
     const { current: currentNodeRef } = this.nodeRef;
     const { parentElement: currentNodeRefParent } = currentNodeRef;
 
-    if (!currentNodeRef) {
+    if (!currentNodeRef || isLocked) {
       return;
     }
 
@@ -165,11 +172,11 @@ export class Node extends React.Component<INodeProps, INodeState> {
 
   renderShape() {
     const { width, height } = this.state;
-    const { data: { isCollapsed } } = this.props;
+    const { data: { isCollapsed, isLocked } } = this.props;
 
     return (
       <foreignObject x={-width / 2} y={-20} width={width} height={height} viewBox="0 0 100% 100%">
-        <NodeComponent isCollapsed={isCollapsed} resizeRef={this.resizeRef} />
+        <NodeComponent isLocked={isLocked} isCollapsed={isCollapsed} resizeRef={this.resizeRef} />
       </foreignObject>
     );
   }

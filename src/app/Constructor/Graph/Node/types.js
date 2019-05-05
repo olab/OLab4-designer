@@ -22,6 +22,7 @@ export type INodeProps = {
   onNodeSelected: (data: any, id: string, shiftKey: boolean) => void;
   onNodeUpdate: (point: IPoint, id: string, shiftKey: boolean) => void;
   onNodeCollapsed: (id: number) => void;
+  onNodeLocked: (id: number) => void;
   ACTION_SAVE_GRAPH_TO_UNDO: () => void;
   layoutEngine?: any;
   viewWrapperElem: HTMLDivElement;

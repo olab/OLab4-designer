@@ -8,6 +8,7 @@ import {
   REDO_GRAPH,
   SELECT_ITEM,
   COLLAPSE_NODE,
+  LOCK_NODE,
   CREATE_NODE,
   UPDATE_NODE,
   DELETE_NODE,
@@ -38,6 +39,12 @@ export const ACTION_COLLAPSE_NODE = (id: number) => ({
   type: COLLAPSE_NODE,
   id,
 });
+
+export const ACTION_LOCK_NODE = (id: number) => ({
+  type: LOCK_NODE,
+  id,
+});
+
 
 export const ACTION_CREATE_NODE = (nodeData: NodeType) => ({
   type: CREATE_NODE,
