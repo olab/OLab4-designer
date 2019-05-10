@@ -25,13 +25,12 @@ export type NodeData = {
   style_id: number,
   type_id: number,
   isCollapsed: boolean,
+  isLocked: boolean,
 };
 
 export type Node = {
   id: number,
   isSelected: boolean,
-  expand: boolean,
-  isLocked: boolean,
   data: NodeData,
 };
 
@@ -129,6 +128,14 @@ type CreateEdge = {
   edgeData: Edge,
 };
 
+const CREATE_NODE_WITH_EDGE = 'CREATE_NODE_WITH_EDGE';
+
+type CreateNodeWithEdge = {
+  type: 'CREATE_NODE_WITH_EDGE',
+  nodeData: Node,
+  edgeData: Edge,
+};
+
 const DELETE_EDGE = 'DELETE_EDGE';
 type DeleteEdge = {
   type: 'DELETE_EDGE',
@@ -153,7 +160,8 @@ export type GraphActions = GraphToUndo |
   UndoGraph | RedoGraph | SelectItem |
   CollapseItem | CreateNode | UpdateNode |
   DeleteNode | CreateEdge | DeleteEdge |
-  SwapEdge | LockItem | SetZoomControlsRef;
+  SwapEdge | LockItem | SetZoomControlsRef |
+  CreateNodeWithEdge;
 
 export {
   SAVE_GRAPH_TO_UNDO,
@@ -168,6 +176,7 @@ export {
   CREATE_EDGE,
   DELETE_EDGE,
   SWAP_EDGE,
+  CREATE_NODE_WITH_EDGE,
   SET_ZOOM_CONTROLS_REF,
 
 };

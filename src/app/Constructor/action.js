@@ -10,6 +10,7 @@ import {
   COLLAPSE_NODE,
   LOCK_NODE,
   CREATE_NODE,
+  CREATE_NODE_WITH_EDGE,
   UPDATE_NODE,
   DELETE_NODE,
   CREATE_EDGE,
@@ -20,6 +21,12 @@ import {
 
 export const ACTION_SAVE_GRAPH_TO_UNDO = () => ({
   type: SAVE_GRAPH_TO_UNDO,
+});
+
+export const ACTION_CREATE_NODE_WITH_EDGE = (nodeData: NodeType, edgeData: EdgeType) => ({
+  type: CREATE_NODE_WITH_EDGE,
+  nodeData,
+  edgeData,
 });
 
 export const ACTION_UNDO_GRAPH = () => ({

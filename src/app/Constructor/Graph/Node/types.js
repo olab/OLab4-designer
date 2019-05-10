@@ -21,6 +21,7 @@ export type INodeProps = {
   onNodeMove: (point: IPoint, id: string, shiftKey: boolean) => void;
   onNodeSelected: (data: any, id: string, shiftKey: boolean) => void;
   onNodeUpdate: (point: IPoint, id: string, shiftKey: boolean) => void;
+  onCreateNodeWithEdge: (x: number, y: number, sourceNode: INode) => void;
   onNodeCollapsed: (id: number) => void;
   onNodeLocked: (id: number) => void;
   ACTION_SAVE_GRAPH_TO_UNDO: () => void;

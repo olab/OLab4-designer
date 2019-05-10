@@ -5,14 +5,20 @@ import { withStyles } from '@material-ui/core/styles';
 import {
   CardHeader, Fab, Typography, Card, CardContent, RootRef,
 } from '@material-ui/core';
+
 import {
   LockIcon, DragableIcon, StarIcon, MinimizeIcon, NodeLockedIcon,
 } from './icons';
 import CardFooter from './CardFooter';
-import type { State, Props } from './types';
+
+import type { INodeState, INodeProps } from './types';
+
+import { COLLAPSE_NODE, RESIZE_NODE, LOCK_NODE } from '../config';
+
 import styles from './styles';
 
-class Node extends React.Component <Props, State> {
+
+class Node extends React.Component <INodeProps, INodeState> {
   state = {
     isMainNode: false,
   };
@@ -31,14 +37,14 @@ class Node extends React.Component <Props, State> {
     );
 
     const ActionBar = (
-      <div>
-        <Fab data-id="collapse" className={classes.actionBarButton}>
+      <>
+        <Fab data-active="true" data-action={COLLAPSE_NODE} className={classes.actionBarButton}>
           <MinimizeIcon />
         </Fab>
-        <Fab data-id="lock" className={classes.actionBarButton}>
+        <Fab data-active="true" data-action={LOCK_NODE} className={classes.actionBarButton}>
           <LockIcon />
         </Fab>
-      </div>
+      </>
     );
 
     const title = (
@@ -63,7 +69,7 @@ class Node extends React.Component <Props, State> {
 
           {!isCollapsed && (
           <>
-            <CardContent data-id="resize" className={cardContentMain}>
+            <CardContent data-active="true" data-action={RESIZE_NODE} className={cardContentMain}>
               <Typography component="p">
                 This impressive paella is a perfect party dish
                 and a fun meal to cook together with your

@@ -12,7 +12,7 @@ const styles = {
     width: 32,
     padding: 8,
     marginRight: 8,
-    boxShadow: ' 0px 4px 8px rgba(36, 68, 106, 0.2)',
+    boxShadow: '0px 4px 8px rgba(36, 68, 106, 0.2)',
     minHeight: 32,
   },
 };

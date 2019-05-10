@@ -10,6 +10,7 @@ import {
   COLLAPSE_NODE,
   LOCK_NODE,
   CREATE_NODE,
+  CREATE_NODE_WITH_EDGE,
   UPDATE_NODE,
   DELETE_NODE,
   CREATE_EDGE,
@@ -58,6 +59,7 @@ const constructor = (state: ConstructorType = initialConstructorState, action: G
         graph,
       };
     }
+
     case UNDO_GRAPH: {
       const { graph, ...rest } = state;
       const prev = graph.undo.pop();
@@ -70,6 +72,7 @@ const constructor = (state: ConstructorType = initialConstructorState, action: G
         graph,
       };
     }
+
     case REDO_GRAPH: {
       const { graph, ...rest } = state;
       const next = graph.redo.pop();
@@ -82,6 +85,7 @@ const constructor = (state: ConstructorType = initialConstructorState, action: G
         graph,
       };
     }
+
     case SELECT_ITEM: {
       const graph = cloneDeep(state.graph);
       const { id } = action;
@@ -149,6 +153,26 @@ const constructor = (state: ConstructorType = initialConstructorState, action: G
         graph,
       };
     }
+
+    case CREATE_NODE_WITH_EDGE: {
+      const graph = cloneDeep(state.graph);
+      const { nodeData, edgeData } = action;
+
+      [graph.current.nodes, graph.current.edges]
+        .forEach(items => items
+          .forEach((item) => {
+            item.isSelected = false;
+          }));
+
+      graph.current.nodes.push(nodeData);
+      graph.current.edges.push(edgeData);
+
+      return {
+        ...state,
+        graph,
+      };
+    }
+
     case CREATE_EDGE: {
       const graph = cloneDeep(state.graph);
       const { edgeData } = action;
@@ -166,6 +190,7 @@ const constructor = (state: ConstructorType = initialConstructorState, action: G
         graph,
       };
     }
+
     case UPDATE_NODE: {
       const graph = cloneDeep(state.graph);
       const { nodeData } = action;
@@ -178,6 +203,7 @@ const constructor = (state: ConstructorType = initialConstructorState, action: G
         graph,
       };
     }
+
     case DELETE_NODE: {
       const graph = cloneDeep(state.graph);
       const { nodeId } = action;
@@ -196,6 +222,7 @@ const constructor = (state: ConstructorType = initialConstructorState, action: G
         graph,
       };
     }
+
     case DELETE_EDGE: {
       const graph = cloneDeep(state.graph);
       const { edgeId } = action;
@@ -207,6 +234,7 @@ const constructor = (state: ConstructorType = initialConstructorState, action: G
         graph,
       };
     }
+
     case SWAP_EDGE: {
       const graph = cloneDeep(state.graph);
       const { edgeId, sourceNodeId, targetNodeId } = action;
@@ -229,6 +257,7 @@ const constructor = (state: ConstructorType = initialConstructorState, action: G
         graph,
       };
     }
+
     case SET_ZOOM_CONTROLS_REF: {
       const { ref } = action;
 
@@ -242,6 +271,7 @@ const constructor = (state: ConstructorType = initialConstructorState, action: G
         },
       };
     }
+
     default:
       return state;
   }

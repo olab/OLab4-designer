@@ -9,6 +9,8 @@ import type {
   INodeState,
 } from './types';
 
+import { COLLAPSE_NODE, LOCK_NODE, ADD_NODE } from './config';
+
 import NodeComponent from './NodeComponent';
 
 export class Node extends React.Component<INodeProps, INodeState> {
@@ -49,20 +51,52 @@ export class Node extends React.Component<INodeProps, INodeState> {
       .call(dragFunction);
   }
 
+  callElementAction = (action: string) => {
+    const {
+      data: { id }, data,
+      onNodeCollapsed,
+      onNodeLocked,
+      onCreateNodeWithEdge,
+    } = this.props;
+
+    d3.event.stopImmediatePropagation();
+
+    switch (action) {
+      case LOCK_NODE:
+        onNodeLocked(id);
+        break;
+
+      case COLLAPSE_NODE:
+        onNodeCollapsed(id);
+        break;
+
+
+      case ADD_NODE:
+        onCreateNodeWithEdge(145, 670, data);
+        break;
+
+      default:
+        break;
+    }
+  }
+
   handleMouseDown = () => {
     const { target } = d3.event;
-    const { data: { id } } = this.props;
-    const { onNodeCollapsed, onNodeLocked } = this.props;
-    const isCollapseClicked = target.closest('[data-id="collapse"]');
-    const isLockClicked = target.closest('[data-id="lock"]');
-    if (isCollapseClicked) {
-      d3.event.stopImmediatePropagation();
-      onNodeCollapsed(id);
+    const { data: { locked } } = this.props;
+
+    const activeElement = target.closest('[data-active="true"]');
+
+    if (!activeElement) {
+      return;
     }
-    if (isLockClicked) {
-      d3.event.stopImmediatePropagation();
-      onNodeLocked(id);
+
+    const action = activeElement.getAttribute('data-action');
+
+    if (locked && action !== LOCK_NODE) {
+      return;
     }
+
+    this.callElementAction(action);
   }
 
 

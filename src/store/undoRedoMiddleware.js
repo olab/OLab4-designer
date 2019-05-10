@@ -4,6 +4,7 @@ import {
   DELETE_NODE,
   CREATE_EDGE,
   CREATE_NODE,
+  CREATE_NODE_WITH_EDGE,
   SAVE_GRAPH_TO_UNDO,
   COLLAPSE_NODE,
   LOCK_NODE,
@@ -17,8 +18,9 @@ const undoRedoMiddleware = store => next => (action) => {
     LOCK_NODE,
     DELETE_NODE,
     CREATE_EDGE,
-    CREATE_NODE]
-    .includes(action.type)) {
+    CREATE_NODE,
+    CREATE_NODE_WITH_EDGE,
+  ].includes(action.type)) {
     store.dispatch({ type: SAVE_GRAPH_TO_UNDO });
   }
 

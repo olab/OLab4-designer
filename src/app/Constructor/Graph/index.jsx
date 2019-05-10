@@ -6,20 +6,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { DropTarget } from 'react-dnd';
-import randomColor from 'randomcolor';
 import isEqual from 'lodash.isequal';
 
 import GraphView from './GraphView';
 import type { IEdge } from './Edge/types';
 import type { INode } from './Node/types';
-
-import { Wrapper, Container } from './styles';
-
 import type {
   IGraphProps,
   IGraphState,
 } from './types';
-
 import type {
   Edge as EdgeType,
   Node as NodeType,
@@ -27,10 +22,13 @@ import type {
   EdgeData as EdgeDataType,
 } from '../types';
 
+import { createNewEdge, createNewNode } from './utils';
 import { EdgeTypes } from './config';
 import { DndItemTypes } from '../../Modals/Meta-Modal/config';
 
 import * as actions from '../action';
+
+import { Wrapper, Container } from './styles';
 
 export class Graph extends Component<IGraphProps, IGraphState> {
   constructor(props: IGraphProps) {
@@ -85,28 +83,7 @@ export class Graph extends Component<IGraphProps, IGraphState> {
 
   onCreateNode = (x: number, y: number) => {
     const { ACTION_CREATE_NODE } = this.props;
-
-    const newNodeId = Date.now();
-    const newNodeMapId = Number(newNodeId.toString().slice(0, 6));
-    const newNode = {
-      id: newNodeId,
-      isSelected: true,
-      data: {
-        id: newNodeId,
-        map_id: newNodeMapId,
-        title: `New Node - (${newNodeId})`,
-        type_id: newNodeMapId,
-        color: randomColor(),
-        text: 'Dummy Text',
-        links: [],
-        destination_id: newNodeMapId,
-        style_id: newNodeMapId,
-        x,
-        y,
-        isCollapsed: false,
-        isLocked: false,
-      },
-    };
+    const newNode = createNewNode(x, y);
 
     ACTION_CREATE_NODE(newNode);
   }
@@ -118,18 +95,18 @@ export class Graph extends Component<IGraphProps, IGraphState> {
 
     const { ACTION_CREATE_EDGE } = this.props;
 
-    const newEdgeId = Date.now();
-    const newEdge = {
-      isSelected: true,
-      data: {
-        id: newEdgeId,
-        handleText: `Arrow-${newEdgeId}`,
-        source: sourceNode.id,
-        target: targetNode.id,
-      },
-    };
+    const newEdge = createNewEdge(sourceNode.id, targetNode.id);
 
     ACTION_CREATE_EDGE(newEdge);
+  }
+
+  onCreateNodeWithEdge = (x: number, y: number, sourceNode: INode) => {
+    const { ACTION_CREATE_NODE_WITH_EDGE } = this.props;
+
+    const newNode = createNewNode(x, y);
+    const newEdge = createNewEdge(sourceNode.id, newNode.id);
+
+    ACTION_CREATE_NODE_WITH_EDGE(newNode, newEdge);
   }
 
   onUpdateNode = (node: INode) => {
@@ -248,6 +225,7 @@ export class Graph extends Component<IGraphProps, IGraphState> {
               onRedo={this.onRedo}
               onCopySelected={this.onCopySelected}
               onPasteSelected={this.onPasteSelected}
+              onCreateNodeWithEdge={this.onCreateNodeWithEdge}
               layoutEngineType={layoutEngineType}
             />
           </Container>
@@ -284,6 +262,9 @@ const mapDispatchToProps = dispatch => ({
   },
   ACTION_CREATE_NODE: (nodeData: NodeType) => {
     dispatch(actions.ACTION_CREATE_NODE(nodeData));
+  },
+  ACTION_CREATE_NODE_WITH_EDGE: (nodeData: NodeType, edgeData: EdgeType) => {
+    dispatch(actions.ACTION_CREATE_NODE_WITH_EDGE(nodeData, edgeData));
   },
   ACTION_SELECT_ITEM: (id: number) => {
     dispatch(actions.ACTION_SELECT_ITEM(id));

@@ -1,6 +1,6 @@
 // @flow
 
-export type Props = {
+export type INodeProps = {
   classes: {
     card: {},
     cardHeader: {},
@@ -18,6 +18,6 @@ export type Props = {
   resizeRef: any,
 };
 
-export type State = {
+export type INodeState = {
   isMainNode: boolean,
 }

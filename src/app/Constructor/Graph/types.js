@@ -23,6 +23,7 @@ export type IGraphProps = {
   ACTION_COLLAPSE_NODE: (id: number) => void,
   ACTION_LOCK_NODE: (id: number) => void,
   ACTION_CREATE_NODE: (nodeData: NodeType) => void,
+  ACTION_CREATE_NODE_WITH_EDGE: (nodeData: NodeType, edgeData: EdgeType)=> void,
   ACTION_CREATE_EDGE: (edgeData: EdgeType) => void,
   ACTION_UPDATE_NODE: (nodeData: INode) => void,
   ACTION_DELETE_NODE: (nodeId: number) => void,

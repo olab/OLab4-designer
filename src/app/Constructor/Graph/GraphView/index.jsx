@@ -1110,7 +1110,7 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
 
   getNodeComponent(id: string, node: INode) {
     const { selectedNodeObj } = this.state;
-    const { ACTION_SAVE_GRAPH_TO_UNDO } = this.props;
+    const { ACTION_SAVE_GRAPH_TO_UNDO, onCreateNodeWithEdge } = this.props;
 
     return (
       <Node
@@ -1124,6 +1124,7 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
         onNodeSelected={this.handleNodeSelected}
         onNodeCollapsed={this.handleNodeCollapsed}
         onNodeLocked={this.handleNodeLocked}
+        onCreateNodeWithEdge={onCreateNodeWithEdge}
         isSelected={selectedNodeObj.node === node}
         layoutEngine={this.layoutEngine}
         viewWrapperElem={this.viewWrapper.current}

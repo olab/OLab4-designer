@@ -61,6 +61,7 @@ export type IGraphViewProps = {
   onCopySelected?: () => void;
   onCreateEdge: (sourceNode: INode, targetNode: INode) => void;
   onCreateNode: (x: number, y: number, value: string) => void;
+  onCreateNodeWithEdge: (x: number, y: number, sourceNode: INode) => void;
   onDeleteEdge: (selectedEdge: IEdge, edges: Array<IEdge>) => void;
   onDeleteNode: (selected: any, nodeId: string, nodes: any[]) => void;
   onPasteSelected?: () => void;
