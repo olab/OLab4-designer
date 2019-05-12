@@ -1,5 +1,6 @@
 // @flow
 import randomColor from 'randomcolor';
+import { DEFAULT_WIDTH, DEFAULT_HEIGHT } from './Node/config';
 
 export const createNewNode = (x: number, y: number) => {
   const newNodeId = Date.now();
@@ -20,8 +21,10 @@ export const createNewNode = (x: number, y: number) => {
       style_id: newNodeMapId,
       x,
       y,
-      collapsed: false,
-      locked: false,
+      width: DEFAULT_WIDTH,
+      height: DEFAULT_HEIGHT,
+      isCollapsed: false,
+      isLocked: false,
     },
   };
 };

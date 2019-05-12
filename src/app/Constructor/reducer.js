@@ -8,6 +8,7 @@ import {
   REDO_GRAPH,
   SELECT_ITEM,
   COLLAPSE_NODE,
+  RESIZE_NODE,
   LOCK_NODE,
   CREATE_NODE,
   CREATE_NODE_WITH_EDGE,
@@ -108,13 +109,32 @@ const constructor = (state: ConstructorType = initialConstructorState, action: G
 
     case COLLAPSE_NODE: {
       const graph = cloneDeep(state.graph);
-      const { id } = action;
-      [graph.current.nodes]
-        .forEach(items => items
-          .forEach((item) => {
-            if (item.data.id === id) { item.data.isCollapsed = !item.data.isCollapsed; }
-          }));
+      const { id, width, height } = action;
+      graph.current.nodes
+        .forEach((item) => {
+          if (item.data.id === id) {
+            item.data.isCollapsed = !item.data.isCollapsed;
+            item.data.width = width;
+            item.data.height = height;
+          }
+        });
 
+      return {
+        ...state,
+        graph,
+      };
+    }
+
+    case RESIZE_NODE: {
+      const graph = cloneDeep(state.graph);
+      const { id, width, height } = action;
+      graph.current.nodes
+        .forEach((item) => {
+          if (item.data.id === id) {
+            item.data.width = width;
+            item.data.height = height;
+          }
+        });
       return {
         ...state,
         graph,
@@ -124,11 +144,10 @@ const constructor = (state: ConstructorType = initialConstructorState, action: G
     case LOCK_NODE: {
       const graph = cloneDeep(state.graph);
       const { id } = action;
-      [graph.current.nodes]
-        .forEach(items => items
-          .forEach((item) => {
-            if (item.data.id === id) { item.data.isLocked = !item.data.isLocked; }
-          }));
+      graph.current.nodes
+        .forEach((item) => {
+          if (item.data.id === id) { item.data.isLocked = !item.data.isLocked; }
+        });
 
       return {
         ...state,

@@ -3,11 +3,14 @@ const mainNodeColor = '#F78749';
 
 const styles = {
   card: {
-    display: 'inline-grid',
-    boxShadow: 0,
+    display: 'inline-block',
+    verticalAlign: 'top',
+    flexDirection: 'column',
     position: 'relative',
     overflow: 'visible',
-    minWidth: 300,
+    '&:focus': {
+      outline: '2px solid #F78749',
+    },
   },
   cardHeader: {
     paddingLeft: 10,
@@ -19,7 +22,32 @@ const styles = {
     padding: 0,
     height: 40,
     borderRadius: '4px 4px 0 0',
-    minWidth: 330,
+  },
+  cardContent: {
+    resize: 'both',
+    overflow: 'auto',
+    opacity: 0.7,
+    fontSize: 16,
+    width: '100%',
+    maxWidth: 500,
+    maxHeight: 400,
+    minWidth: 200,
+    letterSpacing: '0.06em',
+    padding: 0,
+    paddingBottom: 20,
+    '&::-webkit-scrollbar': {
+      width: 4,
+    },
+    '&::-webkit-scrollbar-thumb': {
+      backgroundColor: regularColor,
+      borderRadius: 4,
+    },
+    '&::-webkit-resizer': {
+      display: 'none',
+    },
+  },
+  cardContentText: {
+    padding: 10,
   },
   cardHeaderRegular: {
     backgroundColor: regularColor,
@@ -32,6 +60,7 @@ const styles = {
     },
   },
   title: {
+    margin: 0,
     marginLeft: 5,
     marginRight: 10,
   },
@@ -39,25 +68,6 @@ const styles = {
     display: 'flex',
     margin: 0,
     alignSelf: 'center',
-  },
-  cardContent: {
-    resize: 'both',
-    overflow: 'auto',
-    opacity: 0.7,
-    fontSize: 16,
-    letterSpacing: '0.06em',
-    minWidth: 300,
-    paddingBottom: 20,
-    '&::-webkit-scrollbar': {
-      width: 4,
-    },
-    '&::-webkit-scrollbar-thumb': {
-      backgroundColor: regularColor,
-      borderRadius: 4,
-    },
-    '&::-webkit-resizer': {
-      display: 'none',
-    },
   },
   cardContentLocked: {
     resize: 'none',

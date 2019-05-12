@@ -9,9 +9,16 @@ import type {
   INodeState,
 } from './types';
 
-import { COLLAPSE_NODE, LOCK_NODE, ADD_NODE } from './config';
+import {
+  COLLAPSE_NODE,
+  LOCK_NODE,
+  ADD_NODE,
+  DEFAULT_HEIGHT,
+  DEFAULT_WIDTH,
+} from './config';
 
 import NodeComponent from './NodeComponent';
+import { RESIZE_NODE } from '../../types';
 
 export class Node extends React.Component<INodeProps, INodeState> {
   constructor(props: INodeProps) {
@@ -20,8 +27,7 @@ export class Node extends React.Component<INodeProps, INodeState> {
       drawingEdge: false,
       // hovered: false,
       // selected: false,
-      width: 340,
-      height: 180,
+      isResizeStart: false,
       x: props.data.x || 0,
       y: props.data.y || 0,
     };
@@ -51,15 +57,42 @@ export class Node extends React.Component<INodeProps, INodeState> {
       .call(dragFunction);
   }
 
+  componentDidUpdate() {
+    const {
+      onNodeResize,
+      data: {
+        id, width, height, isCollapsed,
+      },
+    } = this.props;
+    const { isResizeStart } = this.state;
+
+    if (isCollapsed) {
+      return;
+    }
+    if (!isResizeStart) {
+      return;
+    }
+    if (this.resizeRef.current !== null) {
+      const newWidth = this.resizeRef.current.offsetWidth;
+      const newHeight = this.resizeRef.current.offsetHeight;
+      if (newWidth !== width || newHeight !== height) {
+        onNodeResize(id, newWidth, newHeight);
+        // eslint-disable-next-line react/no-did-update-set-state
+        this.setState({ isResizeStart: false });
+      }
+    }
+  }
+
   callElementAction = (action: string) => {
     const {
-      data: { id }, data,
+      data: {
+        id, width, height, isCollapsed,
+      },
+      data,
       onNodeCollapsed,
       onNodeLocked,
       onCreateNodeWithEdge,
     } = this.props;
-
-    d3.event.stopImmediatePropagation();
 
     switch (action) {
       case LOCK_NODE:
@@ -67,12 +100,22 @@ export class Node extends React.Component<INodeProps, INodeState> {
         break;
 
       case COLLAPSE_NODE:
-        onNodeCollapsed(id);
+        if (this.resizeRef.current !== null) {
+          const newWidth = this.resizeRef.current.offsetWidth;
+          const newHeight = this.resizeRef.current.offsetHeight;
+          if (!isCollapsed) {
+            onNodeCollapsed(id, newWidth, newHeight);
+          } else onNodeCollapsed(id, width, height);
+        }
         break;
 
 
       case ADD_NODE:
         onCreateNodeWithEdge(145, 670, data);
+        break;
+
+      case RESIZE_NODE:
+        this.setState({ isResizeStart: true });
         break;
 
       default:
@@ -81,8 +124,8 @@ export class Node extends React.Component<INodeProps, INodeState> {
   }
 
   handleMouseDown = () => {
-    const { target } = d3.event;
-    const { data: { locked } } = this.props;
+    const { target, shiftKey } = d3.event;
+    const { data: { isLocked } } = this.props;
 
     const activeElement = target.closest('[data-active="true"]');
 
@@ -90,15 +133,18 @@ export class Node extends React.Component<INodeProps, INodeState> {
       return;
     }
 
+    if (!shiftKey) {
+      d3.event.stopImmediatePropagation();
+    }
+
     const action = activeElement.getAttribute('data-action');
 
-    if (locked && action !== LOCK_NODE) {
+    if (isLocked && action !== LOCK_NODE) {
       return;
     }
 
     this.callElementAction(action);
   }
-
 
   handleMouseMove = () => {
     const { drawingEdge } = this.state;
@@ -110,10 +156,13 @@ export class Node extends React.Component<INodeProps, INodeState> {
     const mouseButtonDown = buttons === 1;
 
 
-    if (!mouseButtonDown || isLocked) {
+    if (!mouseButtonDown) {
       return;
     }
 
+    if (isLocked && !shiftKey) {
+      return;
+    }
     // While the mouse is down, this function handles all mouse movement
     const newState = {
       x: d3.event.x,
@@ -193,7 +242,6 @@ export class Node extends React.Component<INodeProps, INodeState> {
     // Detect if mouse is already down and do nothing. Sometimes the system lags on
     // drag and we don't want the mouseOut to fire while the user is moving the
     // node around
-
     const { data, onNodeMouseLeave } = this.props;
 
     // this.setState({ hovered: false });
@@ -205,12 +253,31 @@ export class Node extends React.Component<INodeProps, INodeState> {
   resizeRef: any;
 
   renderShape() {
-    const { width, height } = this.state;
-    const { data: { isCollapsed, isLocked } } = this.props;
+    const {
+      data: {
+        isCollapsed, isLocked, width, height, type,
+      },
+    } = this.props;
+
+    const currentWidth = width || DEFAULT_WIDTH;
+    const currentHeight = height || DEFAULT_HEIGHT;
 
     return (
-      <foreignObject x={-width / 2} y={-20} width={width} height={height} viewBox="0 0 100% 100%">
-        <NodeComponent isLocked={isLocked} isCollapsed={isCollapsed} resizeRef={this.resizeRef} />
+      <foreignObject
+        x={-currentWidth / 2}
+        y={-20}
+        width={currentWidth}
+        height={currentHeight}
+        viewBox={`0 0 ${currentWidth} ${currentHeight}`}
+      >
+        <NodeComponent
+          isLocked={isLocked}
+          isCollapsed={isCollapsed}
+          resizeRef={this.resizeRef}
+          width={width}
+          height={height}
+          type={type}
+        />
       </foreignObject>
     );
   }

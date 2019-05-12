@@ -22,7 +22,8 @@ export type INodeProps = {
   onNodeSelected: (data: any, id: string, shiftKey: boolean) => void;
   onNodeUpdate: (point: IPoint, id: string, shiftKey: boolean) => void;
   onCreateNodeWithEdge: (x: number, y: number, sourceNode: INode) => void;
-  onNodeCollapsed: (id: number) => void;
+  onNodeCollapsed: (id: number, width: number, height: number) => void;
+  onNodeResize: (id: number, width: number, height: number) => void;
   onNodeLocked: (id: number) => void;
   ACTION_SAVE_GRAPH_TO_UNDO: () => void;
   layoutEngine?: any;
@@ -33,8 +34,7 @@ export type INodeState = {
   // hovered: boolean;
   x: number;
   y: number;
-  width: number;
-  height: number;
+  isResizeStart: boolean,
   // selected: boolean;
   drawingEdge: boolean;
 };

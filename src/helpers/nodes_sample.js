@@ -1,4 +1,5 @@
 import randomColor from 'randomcolor';
+import { DEFAULT_WIDTH, DEFAULT_HEIGHT } from '../app/Constructor/Graph/Node/config';
 
 const ids = [...Array(4)].map((_, i) => Date.now() + i);
 const mapId = Number(ids[0].toString().slice(0, 6));
@@ -38,10 +39,13 @@ const sample = {
       isSelected: false,
       data: {
         id: ids[0],
+        type: 1,
         map_id: mapId,
         title: 'Node A (1)',
         x: 258.3976135253906,
         y: 331.9783248901367,
+        width: DEFAULT_WIDTH,
+        height: DEFAULT_HEIGHT,
         color: randomColor(),
         text: 'Node A (1) TEXT',
         links: [],
@@ -56,10 +60,13 @@ const sample = {
       isSelected: false,
       data: {
         id: ids[1],
+        type: 0,
         map_id: mapId,
         title: 'Node B (2)',
         x: 593.9393920898438,
         y: 260.6060791015625,
+        width: DEFAULT_WIDTH,
+        height: DEFAULT_HEIGHT,
         color: randomColor(),
         text: 'Node B (2) TEXT',
         links: [],
@@ -74,10 +81,13 @@ const sample = {
       isSelected: false,
       data: {
         id: ids[2],
+        type: 0,
         map_id: mapId,
         title: 'Node C (3)',
         x: 237.5757598876953,
         y: 61.81818389892578,
+        width: DEFAULT_WIDTH,
+        height: DEFAULT_HEIGHT,
         color: randomColor(),
         text: 'Node C (3) TEXT',
         links: [],
@@ -92,10 +102,13 @@ const sample = {
       isSelected: false,
       data: {
         id: ids[3],
+        type: 0,
         map_id: mapId,
         title: 'Node F (7)',
         x: 0,
         y: 300,
+        width: DEFAULT_WIDTH,
+        height: DEFAULT_HEIGHT,
         color: randomColor(),
         text: 'Node F (7) TEXT',
         links: [],

@@ -8,6 +8,7 @@ import {
   REDO_GRAPH,
   SELECT_ITEM,
   COLLAPSE_NODE,
+  RESIZE_NODE,
   LOCK_NODE,
   CREATE_NODE,
   CREATE_NODE_WITH_EDGE,
@@ -42,9 +43,11 @@ export const ACTION_SELECT_ITEM = (id: number | null) => ({
   id,
 });
 
-export const ACTION_COLLAPSE_NODE = (id: number) => ({
+export const ACTION_COLLAPSE_NODE = (id: number, width: number, height: number) => ({
   type: COLLAPSE_NODE,
   id,
+  width,
+  height,
 });
 
 export const ACTION_LOCK_NODE = (id: number) => ({
@@ -52,6 +55,12 @@ export const ACTION_LOCK_NODE = (id: number) => ({
   id,
 });
 
+export const ACTION_RESIZE_NODE = (id: number, width: number, height: number) => ({
+  type: RESIZE_NODE,
+  width,
+  height,
+  id,
+});
 
 export const ACTION_CREATE_NODE = (nodeData: NodeType) => ({
   type: CREATE_NODE,

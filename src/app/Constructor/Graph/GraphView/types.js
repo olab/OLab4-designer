@@ -68,6 +68,7 @@ export type IGraphViewProps = {
   onSelectEdge: (selectedEdge: IEdge) => void;
   onSelectNode: (node: INode | null) => void;
   onCollapseNode: (id: number) => void;
+  onResizeNode: (id: number, width: number, height: number) => void;
   onLockNode: (id: number) => void;
   onSwapEdge: (sourceNode: INode, targetNode: INode, edge: IEdge) => void;
   onUndo?: () => void;

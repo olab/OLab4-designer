@@ -9,7 +9,7 @@ type MapNodes = {
 class VerticalTree extends SnapToGrid {
   // eslint-disable-next-line class-methods-use-this
   adjustNodes(nodes: Array<INode>, nodesMap?: MapNodes): Array<INode> {
-    const size = 200 * 1.7;
+    const size = 300 * 1.7;
     const g = new dagre.graphlib.Graph();
     g.setGraph({});
     g.setDefaultEdgeLabel(() => ({}));

@@ -18,6 +18,8 @@ export type NodeData = {
   type_id: number,
   x: number,
   y: number,
+  width: number,
+  height: number,
   color: string,
   text: string,
   links: Array<{}>,
@@ -91,18 +93,26 @@ type SelectItem = {
 };
 
 const COLLAPSE_NODE = 'COLLAPSE_NODE';
-
-type CollapseItem = {
+type CollapseNode = {
   type: 'COLLAPSE_NODE',
+  width: number,
+  height: number,
   id: number,
 };
 
 const LOCK_NODE = 'LOCK_NODE';
-
-type LockItem = {
+type LockNode = {
   type: 'LOCK_NODE',
-  id?: number,
+  id: number,
 };
+
+const RESIZE_NODE = 'RESIZE_NODE';
+type ResizeNode = {
+  type: 'RESIZE_NODE',
+  width: number,
+  height: number,
+  id: number,
+}
 
 const CREATE_NODE = 'CREATE_NODE';
 type CreateNode = {
@@ -158,10 +168,10 @@ type SetZoomControlsRef = {
 
 export type GraphActions = GraphToUndo |
   UndoGraph | RedoGraph | SelectItem |
-  CollapseItem | CreateNode | UpdateNode |
+  CollapseNode | CreateNode | UpdateNode |
   DeleteNode | CreateEdge | DeleteEdge |
-  SwapEdge | LockItem | SetZoomControlsRef |
-  CreateNodeWithEdge;
+  SwapEdge | LockNode | SetZoomControlsRef |
+  CreateNodeWithEdge | ResizeNode;
 
 export {
   SAVE_GRAPH_TO_UNDO,
@@ -170,6 +180,7 @@ export {
   SELECT_ITEM,
   COLLAPSE_NODE,
   LOCK_NODE,
+  RESIZE_NODE,
   CREATE_NODE,
   UPDATE_NODE,
   DELETE_NODE,

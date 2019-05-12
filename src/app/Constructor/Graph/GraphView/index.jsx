@@ -802,9 +802,19 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
     }
   }
 
-  handleNodeCollapsed = (nodeId: number) => {
+  handleNodeCollapsed = (nodeId: number, width: number, height: number) => {
     const { onCollapseNode } = this.props;
-    onCollapseNode(nodeId);
+    onCollapseNode(nodeId, width, height);
+  }
+
+  handleNodeResize = (nodeId: number, width: number, height: number) => {
+    const { onResizeNode } = this.props;
+    onResizeNode(nodeId, width, height);
+  }
+
+  handleNodeResize = (nodeId: number, width: number, height: number) => {
+    const { onResizeNode } = this.props;
+    onResizeNode(nodeId, width, height);
   }
 
   handleNodeLocked = (nodeId: number) => {
@@ -1123,6 +1133,7 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
         onNodeUpdate={this.handleNodeUpdate}
         onNodeSelected={this.handleNodeSelected}
         onNodeCollapsed={this.handleNodeCollapsed}
+        onNodeResize={this.handleNodeResize}
         onNodeLocked={this.handleNodeLocked}
         onCreateNodeWithEdge={onCreateNodeWithEdge}
         isSelected={selectedNodeObj.node === node}

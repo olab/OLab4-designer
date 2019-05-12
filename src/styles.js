@@ -15,6 +15,10 @@ const GlobalStyle = createGlobalStyle`
     font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
   }
+
+  foreignObject {
+    overflow: unset;
+  }
 `;
 
 export default GlobalStyle;
