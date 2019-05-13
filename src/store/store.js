@@ -2,6 +2,7 @@ import {
   createStore, applyMiddleware, compose, combineReducers,
 } from 'redux';
 import { connectRouter, routerMiddleware } from 'connected-react-router';
+import notifyReducer from 'react-redux-notify';
 import createSagaMiddleware from 'redux-saga';
 import { createBrowserHistory } from 'history';
 
@@ -37,6 +38,7 @@ const composedEnhancers = compose(
 
 const reducer = combineReducers({
   router: connectRouter(history),
+  notifications: notifyReducer,
   ...rootReducer,
 });
 

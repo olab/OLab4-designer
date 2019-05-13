@@ -3,6 +3,7 @@ import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { Route, Switch, Link } from 'react-router-dom';
 import { ConnectedRouter } from 'connected-react-router';
+import { Notify } from 'react-redux-notify';
 
 import Login from './Login';
 import Home from './Home';
@@ -13,6 +14,8 @@ import type {
   IAppProps,
   IAppState,
 } from './types';
+
+import 'react-redux-notify/dist/ReactReduxNotify.css';
 
 export class App extends PureComponent<IAppProps, IAppState> {
   render() {
@@ -36,6 +39,7 @@ export class App extends PureComponent<IAppProps, IAppState> {
             <Route exact path="/login" component={Login} />
             <Route exact path="/constructor" component={Constructor} />
           </Switch>
+          <Notify />
         </>
       </ConnectedRouter>
     );

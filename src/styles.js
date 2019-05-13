@@ -21,6 +21,10 @@ const GlobalStyle = createGlobalStyle`
   foreignObject {
     overflow: visible;
   }
+
+  span[class^="Notification__icon"] {
+    padding-top: 6px;
+  }
 `;
 
 export default GlobalStyle;
