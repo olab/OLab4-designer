@@ -1,5 +1,5 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
-import { postUser } from '../../services/api';
+import { postUser } from '../../services/api/auth';
 
 import { USER_AUTH_FAILED, USER_AUTH_REQUESTED, USER_AUTH_SUCCEEDED } from './types';
 

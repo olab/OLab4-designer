@@ -1,9 +1,12 @@
 // @flow
-import { fork } from 'redux-saga/effects';
+import { all } from 'redux-saga/effects';
 
 import authUserSaga from '../app/Login/sagas';
+import edgeSaga from '../app/Modals/LinkEditor/sagas';
 
-
-export default function* root(): Generator<any, void, void> {
-  yield fork(authUserSaga);
+export default function* rootSaga(): Generator<any, void, void> {
+  yield all([
+    authUserSaga(),
+    edgeSaga(),
+  ]);
 }

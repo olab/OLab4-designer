@@ -2,8 +2,6 @@
 import * as d3 from 'd3';
 import React from 'react';
 
-import Edge from '../Edge';
-
 import type {
   INodeProps,
   INodeState,
@@ -150,7 +148,7 @@ export class Node extends React.Component<INodeProps, INodeState> {
     const { drawingEdge } = this.state;
     const { data: { isLocked } } = this.props;
     const {
-      layoutEngine, viewWrapperElem, data, onNodeMove,
+      layoutEngine, data, onNodeMove,
     } = this.props;
     const { buttons, shiftKey } = d3.event.sourceEvent;
     const mouseButtonDown = buttons === 1;
@@ -174,9 +172,9 @@ export class Node extends React.Component<INodeProps, INodeState> {
       this.setState({ drawingEdge: true });
       // draw edge
       // undo the target offset subtraction done by Edge
-      const off = Edge.calculateOffset(data, newState, viewWrapperElem);
-      newState.x += off.xOff;
-      newState.y += off.yOff;
+      // const off = Edge.calculateOffset(data, newState, viewWrapperElem);
+      // newState.x += off.xOff;
+      // newState.y += off.yOff;
       // now tell the graph that we're actually drawing an edge
     } else if (!drawingEdge && layoutEngine) {
       // move node using the layout engine

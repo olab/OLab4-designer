@@ -518,11 +518,21 @@ export class Edge extends React.Component<IEdgeProps> {
     return `${translation} ${rotation} ${offset}`;
   }
 
+  static getOffset = (sourceNodeXY, targetNodeXY, offset) => {
+    const { x: sourceX, y: sourceY } = sourceNodeXY;
+    const { x: targetX, y: targetY } = targetNodeXY;
+
+    const lineLength = Math.sqrt(((targetX - sourceX) ** 2) + ((targetY - sourceY) ** 2));
+    const k = offset / lineLength;
+
+    return [
+      (targetX - sourceX) * k,
+      (targetY - sourceY) * k,
+    ];
+  }
+
   getPathDescription() {
-    const {
-      sourceNode, targetNode, edgeHandleSize: alfa = 0, hasSibling,
-    } = this.props;
-    let linePoints;
+    const { sourceNode, targetNode, hasSibling } = this.props;
 
     const trgX = (targetNode && targetNode.x) ? targetNode.x : 0;
     const trgY = (targetNode && targetNode.y) ? targetNode.y : 0;
@@ -537,12 +547,19 @@ export class Edge extends React.Component<IEdgeProps> {
     // const srcOff = Edge.calculateOffset(targetNode, sourceNode, viewWrapperElem);
     // const trgOff = Edge.calculateOffset(sourceNode, targetNode, viewWrapperElem);
 
-    if (hasSibling) {
-      const thetaDegrees = Edge.calculateAngle(sourceNode, targetNode);
-      const thetaRadians = (90 - thetaDegrees) * (Math.PI / 180);
+    const { width: sourceWidth, height: sourceHeight } = sourceNode;
+    const { width: targetWidth = 0, height: targetHeight = 0 } = targetNode;
 
-      const deltaX = -alfa * Math.cos(thetaRadians);
-      const deltaY = alfa * Math.sin(thetaRadians);
+    const minRadius = Math.min(sourceWidth, sourceHeight, targetWidth, targetHeight);
+
+    const thetaDegrees = Edge.calculateAngle(sourceNode, targetNode);
+    const thetaRadians = (90 - thetaDegrees) * (Math.PI / 180);
+
+    let linePoints;
+
+    if (hasSibling) {
+      const deltaX = -minRadius * Math.cos(thetaRadians);
+      const deltaY = minRadius * Math.sin(thetaRadians);
 
       linePoints = [
         [
@@ -555,9 +572,27 @@ export class Edge extends React.Component<IEdgeProps> {
         ],
       ];
     } else {
+      const [srcDeltaX, srcDeltaY] = Edge.getOffset(
+        { x: srcX, y: srcY },
+        { x: trgX, y: trgY },
+        minRadius,
+      );
+
+      const [trgDeltaX, trgDeltaY] = Edge.getOffset(
+        { x: trgX, y: trgY },
+        { x: srcX, y: srcY },
+        minRadius,
+      );
+
       linePoints = [
-        [srcX, srcY],
-        [trgX, trgY],
+        [
+          srcX + srcDeltaX,
+          srcY + srcDeltaY,
+        ],
+        [
+          trgX + trgDeltaX,
+          trgY + trgDeltaY,
+        ],
       ];
     }
 

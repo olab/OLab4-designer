@@ -7,6 +7,7 @@ Here it is possible to manipilate with nodes and edges.
 import * as d3 from 'd3';
 import React from 'react';
 import isEqual from 'lodash.isequal';
+import omit from 'lodash.omit';
 import { connect } from 'react-redux';
 import ReactDOM from 'react-dom';
 
@@ -337,14 +338,6 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
     return edgesMap ? edgesMap[`${source}_${target}`] : null;
   }
 
-  deleteEdgeBySourceTarget(source: string, target: string) {
-    const { edgesMap } = this.state;
-
-    if (edgesMap && edgesMap[`${source}_${target}`]) {
-      delete edgesMap[`${source}_${target}`];
-    }
-  }
-
   addNewNodes(
     nodes: Array<INode>,
     oldNodesMap: any,
@@ -437,7 +430,7 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
             )
         ) {
           // new edge
-          this.asyncRenderEdge(edge);
+          this.syncRenderEdge(edge, false);
         }
       }
     }
@@ -473,38 +466,38 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
   }
 
   deleteEdge(selectedEdge: EdgeDataType) {
-    const { edges } = this.state;
+    const { edges, edgesMap } = this.state;
     const { onDeleteEdge } = this.props;
+
     if (!selectedEdge.source || !selectedEdge.target) {
       return;
     }
+
     const newEdgesArr = edges.filter(edge => !(
       edge.source === selectedEdge.source
         && edge.target === selectedEdge.target
     ));
-    if (selectedEdge.source && selectedEdge.target) {
-      this.deleteEdgeBySourceTarget(selectedEdge.source, selectedEdge.target);
-    }
+
+    const newEdgesMap = omit(
+      edgesMap,
+      `${selectedEdge.source}_${selectedEdge.target}`,
+    );
+
+    onDeleteEdge(selectedEdge, newEdgesArr);
 
     this.setState({
       componentUpToDate: false,
       edges: newEdgesArr,
+      edgesMap: newEdgesMap,
     });
-
-    // remove from UI
-    if (selectedEdge.source && selectedEdge.target) {
-      // remove extra custom containers just in case.
-      GraphUtils.removeElementFromDom(`edge-${selectedEdge.source}-${selectedEdge.target}-custom-container`);
-      GraphUtils.removeElementFromDom(`edge-${selectedEdge.source}-${selectedEdge.target}-container`);
-    }
-
-    // inform consumer
-    onDeleteEdge(selectedEdge, newEdgesArr);
   }
 
   handleDelete = (selected: EdgeDataType | INode) => {
     const { canDeleteNode, canDeleteEdge, readOnly } = this.props;
-    if (readOnly || !selected) { return; }
+    if (readOnly || !selected) {
+      return;
+    }
+
     if (!selected.source && canDeleteNode && canDeleteNode(selected)) {
       this.deleteNode(selected);
     } else if (selected.source && canDeleteEdge && canDeleteEdge(selected)) {
