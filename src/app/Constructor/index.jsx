@@ -10,6 +10,7 @@ import Graph from './Graph';
 import ToolbarTemplates from './Toolbars';
 import LinkEditor from '../Modals/LinkEditor';
 import NodeEditor from '../Modals/NodeEditor';
+import TemplateModal from '../../shared/components/ConfirmationModal';
 
 import type { EdgeData as EdgeDataType } from './Graph/Edge/types';
 import type { NodeData as NodeDataType } from './Graph/Node/types';
@@ -26,6 +27,7 @@ export class Constructor extends Component<IConstructorProps, IConstructorState>
     isFullScreen: false,
     selectedLink: null,
     selectedNode: null,
+    isShowCreateTemplateModal: true,
   };
 
   static getDerivedStateFromProps(nextProps: IConstructorProps, state: IConstructorState) {
@@ -71,12 +73,36 @@ export class Constructor extends Component<IConstructorProps, IConstructorState>
   };
 
   toggleFullScreen = () => {
-    this.setState(({ isFullScreen }) => ({ isFullScreen: !isFullScreen }));
+    this.setState(({ isFullScreen }) => ({
+      isFullScreen: !isFullScreen,
+    }));
   };
 
+  toggleCreateTemplateModal = () => {
+    this.setState(({ isShowCreateTemplateModal }) => ({
+      isShowCreateTemplateModal: !isShowCreateTemplateModal,
+    }));
+  }
+
+  showCreateTemplateModal = () => {
+    this.setState({
+      isShowCreateTemplateModal: true,
+    });
+  }
+
+  closeCreateTemplateModal = () => {
+    this.setState({
+      isShowCreateTemplateModal: false,
+    });
+  }
+
+  saveTemplateFromMap = () => {}
+
   render() {
-    // eslint-disable-next-line no-unused-vars
-    const { isFullScreen, selectedNode, selectedLink } = this.state;
+    const {
+      // eslint-disable-next-line no-unused-vars
+      isFullScreen, selectedNode, selectedLink, isShowCreateTemplateModal,
+    } = this.state;
 
     return (
       <ConstructorWrapper>
@@ -89,10 +115,20 @@ export class Constructor extends Component<IConstructorProps, IConstructorState>
             isFullScreen={isFullScreen}
           />
 
-          <Graph isFullScreen={isFullScreen} />
-
+          <Graph
+            isFullScreen={isFullScreen}
+          />
           { !!selectedLink && <LinkEditor link={selectedLink} /> }
           { !!selectedNode && <NodeEditor node={selectedNode} /> }
+
+          { isShowCreateTemplateModal && (
+            <TemplateModal
+              label="Create template"
+              text="Please enter name of template:"
+              onClose={this.closeCreateTemplateModal}
+              onSave={this.saveTemplateFromMap}
+            />
+          ) }
         </Fullscreen>
       </ConstructorWrapper>
     );

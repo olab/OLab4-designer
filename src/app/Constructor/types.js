@@ -11,6 +11,7 @@ export type IConstructorState = {
   isFullScreen: boolean,
   selectedLink: EdgeData | null,
   selectedNode: NodeData | null,
+  isShowCreateTemplateModal: boolean,
 };
 
 export type Constructor = {
