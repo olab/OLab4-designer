@@ -1,8 +1,8 @@
 // @flow
-export type Props = {
+export type IAppProps = {
   isAuth: boolean,
+  history: any;
 };
 
-export type State = {
-  appTitle: string,
+export type IAppState = {
 };

@@ -32,7 +32,7 @@ import type { EdgeData as EdgeDataType } from '../Edge/types';
 
 import GraphUtils from '../utilities/graph-utils';
 
-import * as actions from '../../action';
+import * as actions from '../../../reducers/map/action';
 
 import { ViewWrapper, GraphWrapper } from './styles';
 
@@ -195,16 +195,6 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
     return true;
   }
 
-  // Keeps 'zoom' contained.
-  // Now commented out cause of unnecessary on this moment.
-  // static containZoom() {
-  //   const { button, ctrlKey, stopImmediatePropagation } = d3.event;
-
-  //   if (button || ctrlKey) {
-  //     stopImmediatePropagation(); // stop zoom
-  //   }
-  // }
-
   componentDidMount() {
     const { minZoom = 0, maxZoom = 0, zoomDelay } = this.props;
 
@@ -222,8 +212,6 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
 
     d3
       .select(this.viewWrapper.current)
-      // .on('touchstart', GraphView.containZoom)
-      // .on('touchmove', GraphView.containZoom)
       .on('click', this.handleSvgClicked) // handle element click in the element components
       .select('svg')
       .call(this.zoom);
@@ -233,13 +221,7 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
     // On the initial load, the 'view' <g> doesn't exist until componentDidMount.
     // Manually render the first view.
     this.renderView();
-    this.renderGraphControls();
-
-    setTimeout(() => {
-      if (this.viewWrapper != null) {
-        this.handleZoomToFit();
-      }
-    }, zoomDelay);
+    this.asyncHandleZoomToFit(zoomDelay);
   }
 
   shouldComponentUpdate(nextProps: IGraphViewProps, nextState: IGraphViewState) {
@@ -318,11 +300,21 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
         componentUpToDate: true,
       });
     }
+
+    this.asyncHandleZoomToFit(50);
   }
 
   componentWillUnmount() {
     document.removeEventListener('keydown', this.handleWrapperKeydown);
     document.removeEventListener('click', this.handleDocumentClick);
+  }
+
+  asyncHandleZoomToFit = (delay: number = 0): void => {
+    setTimeout(() => {
+      if (this.viewWrapper != null && this.entities) {
+        this.handleZoomToFit();
+      }
+    }, delay);
   }
 
   getNodeById(id: string | null, nodesMap: any | null): INodeMapNode | null {
@@ -374,9 +366,7 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
 
   removeOldNodes(prevNodes: any, prevNodesMap: any, nodesMap: any) {
     // remove old nodes
-    // const prevNodeMapKeys = Object.keys(prevNodeMap);
-    for (let i = 0; i < prevNodes.length; i += 1) {
-      const prevNode = prevNodes[i];
+    prevNodes.forEach((prevNode) => {
       const nodeId = prevNode.id;
 
       // Check for deletions
@@ -398,7 +388,7 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
           GraphUtils.removeElementFromDom(`node-${nodeId}-container`);
         });
       }
-    }
+    });
   }
 
   addNewEdges(
@@ -412,6 +402,7 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
 
     if (!draggingEdge) {
       let edge = null;
+
       for (let i = 0; i < edges.length; i += 1) {
         edge = edges[i];
         if (!edge.source || !edge.target) {
@@ -616,7 +607,7 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
 
       if (!readOnly && shiftKey) {
         const [x, y] = d3.mouse(target);
-        onCreateNode(x, y, event);
+        onCreateNode(x, y);
       }
     }
   }
@@ -1113,7 +1104,7 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
 
   getNodeComponent(id: string, node: INode) {
     const { selectedNodeObj } = this.state;
-    const { ACTION_SAVE_GRAPH_TO_UNDO, onCreateNodeWithEdge } = this.props;
+    const { ACTION_SAVE_MAP_TO_UNDO, onCreateNodeWithEdge } = this.props;
 
     return (
       <Node
@@ -1132,7 +1123,7 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
         isSelected={selectedNodeObj.node === node}
         layoutEngine={this.layoutEngine}
         viewWrapperElem={this.viewWrapper.current}
-        ACTION_SAVE_GRAPH_TO_UNDO={ACTION_SAVE_GRAPH_TO_UNDO}
+        ACTION_SAVE_MAP_TO_UNDO={ACTION_SAVE_MAP_TO_UNDO}
       />
     );
   }
@@ -1173,6 +1164,7 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
   asyncRenderNode(node: INode) {
     const timeoutId = `nodes-${node.id}`;
     cancelAnimationFrame(this.nodeTimeouts[timeoutId]);
+
     this.nodeTimeouts[timeoutId] = requestAnimationFrame(() => {
       this.syncRenderNode(node);
     });
@@ -1287,6 +1279,7 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
 
     const timeoutId = `edges-${edge.source}-${edge.target}`;
     cancelAnimationFrame(this.edgeTimeouts[timeoutId]);
+
     this.edgeTimeouts[timeoutId] = requestAnimationFrame(() => {
       this.syncRenderEdge(edge, nodeMoving);
     });
@@ -1392,8 +1385,8 @@ const mapStateToProps = ({ constructor: { zoom } }) => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  ACTION_SAVE_GRAPH_TO_UNDO: () => {
-    dispatch(actions.ACTION_SAVE_GRAPH_TO_UNDO());
+  ACTION_SAVE_MAP_TO_UNDO: () => {
+    dispatch(actions.ACTION_SAVE_MAP_TO_UNDO());
   },
 });
 

@@ -19,7 +19,7 @@ import type {
 } from './types';
 
 import * as modalActions from '../action';
-import * as graphActions from '../../Constructor/action';
+import * as graphActions from '../../reducers/map/action';
 import { DndContexts, ModalsNames } from '../config';
 
 import {

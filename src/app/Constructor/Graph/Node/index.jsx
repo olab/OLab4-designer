@@ -13,10 +13,10 @@ import {
   ADD_NODE,
   DEFAULT_HEIGHT,
   DEFAULT_WIDTH,
+  RESIZE_NODE,
 } from './config';
 
 import NodeComponent from './NodeComponent';
-import { RESIZE_NODE } from '../../types';
 
 export class Node extends React.Component<INodeProps, INodeState> {
   constructor(props: INodeProps) {
@@ -187,7 +187,7 @@ export class Node extends React.Component<INodeProps, INodeState> {
   }
 
   handleDragStart = () => {
-    const { ACTION_SAVE_GRAPH_TO_UNDO, data: { isLocked } } = this.props;
+    const { ACTION_SAVE_MAP_TO_UNDO, data: { isLocked } } = this.props;
     const { current: currentNodeRef } = this.nodeRef;
     const { parentElement: currentNodeRefParent } = currentNodeRef;
 
@@ -195,7 +195,7 @@ export class Node extends React.Component<INodeProps, INodeState> {
       return;
     }
 
-    ACTION_SAVE_GRAPH_TO_UNDO();
+    ACTION_SAVE_MAP_TO_UNDO();
 
     // Moves child to the end of the element stack to re-arrange the z-index
     currentNodeRefParent.parentElement.appendChild(currentNodeRefParent);

@@ -16,12 +16,9 @@ import type {
 } from './types';
 
 export class Defs extends React.Component<IDefsProps, IDefsState> {
-  constructor(props: IDefsProps) {
-    super(props);
-    this.state = {
-      graphConfigDefs: [],
-    };
-  }
+  state: IDefsState = {
+    graphConfigDefs: [],
+  };
 
   static defaultProps: IDefsProps = {
     gridSpacing: 36,

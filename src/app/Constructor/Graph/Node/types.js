@@ -25,7 +25,7 @@ export type INodeProps = {
   onNodeCollapsed: (id: number, width: number, height: number) => void;
   onNodeResize: (id: number, width: number, height: number) => void;
   onNodeLocked: (id: number) => void;
-  ACTION_SAVE_GRAPH_TO_UNDO: () => void;
+  ACTION_SAVE_MAP_TO_UNDO: () => void;
   layoutEngine?: any;
   viewWrapperElem: HTMLDivElement;
 };

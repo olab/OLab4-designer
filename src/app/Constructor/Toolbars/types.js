@@ -20,24 +20,24 @@ export type ToolbarGroup = {
 
 export type IToolbarsProps = {
   classes: any,
-  fullscreenHandler: Function;
-  isFullScreen: boolean;
-  isUndoAvailable: boolean;
-  isRedoAvailable: boolean;
-  metaModal: MetaModalType;
-  ACTION_UNDO_GRAPH: Function;
-  ACTION_REDO_GRAPH: Function;
+  fullscreenHandler: Function,
+  isFullScreen: boolean,
+  isUndoAvailable: boolean,
+  isRedoAvailable: boolean,
+  metaModal: MetaModalType,
+  ACTION_UNDO_MAP: Function,
+  ACTION_REDO_MAP: Function,
   ACTION_SET_ZOOM_CONTROLS_REF: (
     ref: { current: null | HTMLDivElement },
-  ) => void;
-  ACTION_TOGGLE_META_MODAL: Function;
-  ACTION_SET_POSITION_META_MODAL: Function;
+  ) => void,
+  ACTION_TOGGLE_META_MODAL: Function,
+  ACTION_SET_POSITION_META_MODAL: Function,
 };
 
 export type IToolbarsState = {
-  expand: string;
-  preview: ToolbarGroup;
-  toolbars: ToolbarGroup;
-  meta: ToolbarGroup;
-  right: ToolbarGroup;
+  expand: string,
+  preview: ToolbarGroup,
+  toolbars: ToolbarGroup,
+  meta: ToolbarGroup,
+  right: ToolbarGroup,
 };

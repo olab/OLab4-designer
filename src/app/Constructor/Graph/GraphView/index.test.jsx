@@ -103,7 +103,7 @@ describe('GraphView component', () => {
         onRedo={onRedo}
         layoutEngineType={layoutEngineType}
         zoomControlsRef={zoomControlsRef}
-        ACTION_SAVE_GRAPH_TO_UNDO={jest.fn()}
+        ACTION_SAVE_MAP_TO_UNDO={jest.fn()}
       />,
     );
   });

@@ -1,7 +1,11 @@
 import styled from 'styled-components';
 
+const colorDark = '#282c34';
+const colorWhite = '#fff';
+const colorBlue = '#61dafb';
+
 export const Header = styled.header`
-  background-color: #282c34;
+  background-color: ${colorDark};
   min-height: 4vh;
   display: flex;
   flex-direction: row;
@@ -13,8 +17,13 @@ export const Header = styled.header`
   .route-link {
     margin-left: 2rem;
     font-size: 1rem;
-    color: #61dafb;
+    color: ${colorBlue};
   }
+`;
+
+export const Logo = styled.a`
+  text-decoration: none;
+  color: ${colorWhite};
 `;
 
 export default Header;

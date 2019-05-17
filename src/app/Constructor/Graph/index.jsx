@@ -19,13 +19,13 @@ import type {
   Edge as EdgeType,
   Node as NodeType,
   NodeData as NodeDataType,
-} from '../types';
+} from '../../reducers/map/types';
 
 import { createNewEdge, createNewNode } from './utils';
 import { EdgeTypes } from './config';
 import { DndContexts, ModalsNames } from '../../Modals/config';
 
-import * as graphActions from '../action';
+import * as graphActions from '../../reducers/map/action';
 import * as modalActions from '../../Modals/action';
 
 import { Wrapper } from './styles';
@@ -162,23 +162,23 @@ export class Graph extends Component<IGraphProps, IGraphState> {
   }
 
   onUndo = () => {
-    const { ACTION_UNDO_GRAPH, isUndoAvailable } = this.props;
+    const { ACTION_UNDO_MAP, isUndoAvailable } = this.props;
 
     if (!isUndoAvailable) {
       return;
     }
 
-    ACTION_UNDO_GRAPH();
+    ACTION_UNDO_MAP();
   }
 
   onRedo = () => {
-    const { ACTION_REDO_GRAPH, isRedoAvailable } = this.props;
+    const { ACTION_REDO_MAP, isRedoAvailable } = this.props;
 
     if (!isRedoAvailable) {
       return;
     }
 
-    ACTION_REDO_GRAPH();
+    ACTION_REDO_MAP();
   }
 
   onCopySelected = () => {
@@ -267,13 +267,18 @@ export class Graph extends Component<IGraphProps, IGraphState> {
   }
 }
 
-const mapStateToProps = ({ constructor: { zoom, graph, layoutEngineType } }) => ({
+const mapStateToProps = ({
+  map: {
+    nodes, edges, undo, redo,
+  },
+  constructor: { zoom, layoutEngineType },
+}) => ({
   minZoom: zoom.minZoom,
   maxZoom: zoom.maxZoom,
-  graph: graph.current,
+  graph: { nodes, edges },
   layoutEngineType,
-  isUndoAvailable: !!graph.undo.length,
-  isRedoAvailable: !!graph.redo.length,
+  isUndoAvailable: !!undo.length,
+  isRedoAvailable: !!redo.length,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -310,18 +315,21 @@ const mapDispatchToProps = dispatch => ({
   ACTION_LOCK_NODE: (id: number) => {
     dispatch(graphActions.ACTION_LOCK_NODE(id));
   },
-  ACTION_REDO_GRAPH: () => {
-    dispatch(graphActions.ACTION_REDO_GRAPH());
-  },
-  ACTION_UNDO_GRAPH: () => {
-    dispatch(graphActions.ACTION_UNDO_GRAPH());
-  },
   ACTION_SET_POSITION_LINK_EDITOR_MODAL: (x: number, y: number) => {
     dispatch(modalActions.ACTION_SET_POSITION_MODAL(
       ModalsNames.LINK_EDITOR_MODAL,
       x,
       y,
     ));
+  },
+  ACTION_REDO_MAP: () => {
+    dispatch(graphActions.ACTION_REDO_MAP());
+  },
+  ACTION_UNDO_MAP: () => {
+    dispatch(graphActions.ACTION_UNDO_MAP());
+  },
+  ACTION_RESET_MAP: () => {
+    dispatch(graphActions.ACTION_RESET_MAP());
   },
 });
 

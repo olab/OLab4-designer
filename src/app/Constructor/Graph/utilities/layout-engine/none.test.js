@@ -18,7 +18,7 @@ describe('None', () => {
     zoomControlsRef: {
       current: document.createElement('div'),
     },
-    ACTION_SAVE_GRAPH_TO_UNDO: jest.fn(),
+    ACTION_SAVE_MAP_TO_UNDO: jest.fn(),
     gridSpacing: 10,
   };
   describe('class', () => {

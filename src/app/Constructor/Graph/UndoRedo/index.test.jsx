@@ -8,16 +8,16 @@ import { GraphUndoRedoButtons } from '.';
 describe('<GraphUndoRedoButtons />', () => {
   const classes = {};
   let wrapper;
-  let ACTION_UNDO_GRAPH;
-  let ACTION_REDO_GRAPH;
+  let ACTION_UNDO_MAP;
+  let ACTION_REDO_MAP;
 
   beforeEach(() => {
-    ACTION_UNDO_GRAPH = jest.fn();
-    ACTION_REDO_GRAPH = jest.fn();
+    ACTION_UNDO_MAP = jest.fn();
+    ACTION_REDO_MAP = jest.fn();
     wrapper = mount(<GraphUndoRedoButtons
       classes={classes}
-      ACTION_UNDO_GRAPH={ACTION_UNDO_GRAPH}
-      ACTION_REDO_GRAPH={ACTION_REDO_GRAPH}
+      ACTION_UNDO_MAP={ACTION_UNDO_MAP}
+      ACTION_REDO_MAP={ACTION_REDO_MAP}
       isUndoAvailable
       isRedoAvailable
     />);
@@ -31,24 +31,24 @@ describe('<GraphUndoRedoButtons />', () => {
     expect(wrapper.find('svg')).toHaveLength(2);
   });
 
-  it('call ACTION_UNDO_GRAPH on click', () => {
+  it('call ACTION_UNDO_MAP on click', () => {
     wrapper.find('button').at(0).simulate('click');
-    expect(ACTION_UNDO_GRAPH).toBeCalled();
+    expect(ACTION_UNDO_MAP).toBeCalled();
   });
 
-  it('call ACTION_REDO_GRAPH on click', () => {
+  it('call ACTION_REDO_MAP on click', () => {
     wrapper.find('button').at(1).simulate('click');
-    expect(ACTION_REDO_GRAPH).toBeCalled();
+    expect(ACTION_REDO_MAP).toBeCalled();
   });
 
-  it('not call ACTION_UNDO_GRAPH and ACTION_REDO_GRAPH when Undo and Redo buttons are disabled', () => {
+  it('not call ACTION_UNDO_MAP and ACTION_REDO_MAP when Undo and Redo buttons are disabled', () => {
     wrapper.setProps({
       isUndoAvailable: false,
       isRedoAvailable: false,
     });
     wrapper.find('button').at(0).simulate('click');
     wrapper.find('button').at(1).simulate('click');
-    expect(ACTION_UNDO_GRAPH).not.toBeCalled();
-    expect(ACTION_REDO_GRAPH).not.toBeCalled();
+    expect(ACTION_UNDO_MAP).not.toBeCalled();
+    expect(ACTION_REDO_MAP).not.toBeCalled();
   });
 });

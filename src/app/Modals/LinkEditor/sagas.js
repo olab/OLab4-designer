@@ -4,7 +4,7 @@ import {
 } from 'redux-saga/effects';
 import { updateEdge } from '../../../services/api/edge';
 
-import { UPDATE_EDGE } from '../../Constructor/types';
+import { UPDATE_EDGE } from '../../reducers/map/types';
 
 function* updateEdgeSaga(action) {
   try {

@@ -7,6 +7,7 @@ import { withStyles } from '@material-ui/core/styles';
 import MetaModal from '../../Modals/Meta-Modal';
 import ToolbarGroup from '../../../shared/components/ToolbarGroup';
 import GraphUndoRedoButtons from '../Graph/UndoRedo';
+import MapTitle from './MapTitle';
 
 import type {
   IToolbarsProps,
@@ -20,7 +21,8 @@ import addNewIcon from '../../../shared/assets/icons/toolbar/templates/toolbar-a
 import templateIcon from '../../../shared/assets/icons/toolbar/templates/toolbar-template.png';
 import flagIcon from '../../../shared/assets/icons/toolbar/templates/toolbar-flag.png';
 import previewIcon from '../../../shared/assets/icons/toolbar/templates/toolbar-preview.png';
-import dropdownIcon from '../../../shared/assets/icons/toolbar/templates/toolbar-arrow-dropdown.png';
+// import
+// dropdownIcon from '../../../shared/assets/icons/toolbar/templates/toolbar-arrow-dropdown.png';
 import fullscreenIcon from '../../../shared/assets/icons/toolbar/templates/toolbar-fullscreen.png';
 import settingsIcon from '../../../shared/assets/icons/toolbar/templates/toolbar-settings.png';
 import questionIcon from '../../../shared/assets/icons/toolbar/templates/meta-question.png';
@@ -29,11 +31,15 @@ import addIcon from '../../../shared/assets/icons/toolbar/templates/meta-add.png
 import counterIcon from '../../../shared/assets/icons/toolbar/templates/meta-counter.png';
 import filesIcon from '../../../shared/assets/icons/toolbar/templates/meta-files.png';
 
-import * as graphActions from '../action';
-import * as modalActions from '../../Modals/action';
+import * as constructorActions from '../action';
+import * as mapActions from '../../reducers/map/action';
+import * as metaModalActions from '../../Modals/action';
 
 import styles, {
-  Block, LabTitleItem, LabTitle, LabIcon,
+  Block,
+  LabTitleItem,
+  // LabTitle,
+  // LabIcon,
 } from './styles';
 
 export class Toolbars extends Component<IToolbarsProps, IToolbarsState> {
@@ -205,23 +211,23 @@ export class Toolbars extends Component<IToolbarsProps, IToolbarsState> {
   }
 
   onUndo = () => {
-    const { ACTION_UNDO_GRAPH, isUndoAvailable } = this.props;
+    const { ACTION_UNDO_MAP, isUndoAvailable } = this.props;
 
     if (!isUndoAvailable) {
       return;
     }
 
-    ACTION_UNDO_GRAPH();
+    ACTION_UNDO_MAP();
   }
 
   onRedo = () => {
-    const { ACTION_REDO_GRAPH, isRedoAvailable } = this.props;
+    const { ACTION_REDO_MAP, isRedoAvailable } = this.props;
 
     if (!isRedoAvailable) {
       return;
     }
 
-    ACTION_REDO_GRAPH();
+    ACTION_REDO_MAP();
   }
 
   zoomControlsRef: { current: null | HTMLDivElement };
@@ -255,8 +261,9 @@ export class Toolbars extends Component<IToolbarsProps, IToolbarsState> {
           </Block>
           <Block>
             <LabTitleItem>
-              <LabTitle className="item">Lab name</LabTitle>
-              <LabIcon alt="show" src={dropdownIcon} />
+              <MapTitle />
+              {/* <LabTitle className="item">Lab name</LabTitle>
+              <LabIcon alt="show" src={dropdownIcon} /> */}
             </LabTitleItem>
             <div ref={this.zoomControlsRef} />
             <ToolbarGroup group={right} />
@@ -270,27 +277,27 @@ export class Toolbars extends Component<IToolbarsProps, IToolbarsState> {
   }
 }
 
-const mapStateToProps = ({ constructor: { graph }, modals: { metaModal } }) => ({
-  isUndoAvailable: !!graph.undo.length,
-  isRedoAvailable: !!graph.redo.length,
+const mapStateToProps = ({ map: { undo, redo }, modals: { metaModal } }) => ({
+  isUndoAvailable: !!undo.length,
+  isRedoAvailable: !!redo.length,
   metaModal,
 });
 
 const mapDispatchToProps = dispatch => ({
   ACTION_SET_ZOOM_CONTROLS_REF: (ref: { current: null | HTMLDivElement }) => {
-    dispatch(graphActions.ACTION_SET_ZOOM_CONTROLS_REF(ref));
+    dispatch(constructorActions.ACTION_SET_ZOOM_CONTROLS_REF(ref));
   },
-  ACTION_UNDO_GRAPH: () => {
-    dispatch(graphActions.ACTION_UNDO_GRAPH());
+  ACTION_UNDO_MAP: () => {
+    dispatch(mapActions.ACTION_UNDO_MAP());
   },
-  ACTION_REDO_GRAPH: () => {
-    dispatch(graphActions.ACTION_REDO_GRAPH());
+  ACTION_REDO_MAP: () => {
+    dispatch(mapActions.ACTION_REDO_MAP());
   },
   ACTION_TOGGLE_META_MODAL: () => {
-    dispatch(modalActions.ACTION_TOGGLE_MODAL(ModalsNames.META_MODAL));
+    dispatch(metaModalActions.ACTION_TOGGLE_MODAL(ModalsNames.META_MODAL));
   },
   ACTION_SET_POSITION_META_MODAL: (x: number, y: number) => {
-    dispatch(modalActions.ACTION_SET_POSITION_MODAL(
+    dispatch(metaModalActions.ACTION_SET_POSITION_MODAL(
       ModalsNames.META_MODAL,
       x,
       y,

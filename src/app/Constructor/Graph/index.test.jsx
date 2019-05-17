@@ -15,8 +15,8 @@ describe('<Graph />', () => {
   let isUndoAvailable;
   let isRedoAvailable;
   let layoutEngineType;
-  let ACTION_UNDO_GRAPH;
-  let ACTION_REDO_GRAPH;
+  let ACTION_UNDO_MAP;
+  let ACTION_REDO_MAP;
   let ACTION_SELECT_ITEM;
   let ACTION_CREATE_NODE;
   let ACTION_CREATE_EDGE;
@@ -33,8 +33,8 @@ describe('<Graph />', () => {
     maxZoom = 150;
     layoutEngineType = 'None';
     graph = cloneDeep(sample);
-    ACTION_UNDO_GRAPH = jest.fn();
-    ACTION_REDO_GRAPH = jest.fn();
+    ACTION_UNDO_MAP = jest.fn();
+    ACTION_REDO_MAP = jest.fn();
     ACTION_SELECT_ITEM = jest.fn();
     ACTION_CREATE_NODE = jest.fn();
     ACTION_CREATE_EDGE = jest.fn();
@@ -52,8 +52,8 @@ describe('<Graph />', () => {
         isUndoAvailable={isUndoAvailable}
         isRedoAvailable={isRedoAvailable}
         layoutEngineType={layoutEngineType}
-        ACTION_UNDO_GRAPH={ACTION_UNDO_GRAPH}
-        ACTION_REDO_GRAPH={ACTION_REDO_GRAPH}
+        ACTION_UNDO_MAP={ACTION_UNDO_MAP}
+        ACTION_REDO_MAP={ACTION_REDO_MAP}
         ACTION_SELECT_ITEM={ACTION_SELECT_ITEM}
         ACTION_CREATE_NODE={ACTION_CREATE_NODE}
         ACTION_CREATE_EDGE={ACTION_CREATE_EDGE}
@@ -191,30 +191,30 @@ describe('<Graph />', () => {
   });
 
   describe('onUndo method', () => {
-    it('should not fire ACTION_UNDO_GRAPH redux action', () => {
+    it('should not fire ACTION_UNDO_MAP redux action', () => {
       output.instance().onUndo();
-      expect(ACTION_UNDO_GRAPH).not.toHaveBeenCalled();
+      expect(ACTION_UNDO_MAP).not.toHaveBeenCalled();
     });
-    it('should not fire ACTION_UNDO_GRAPH redux action', () => {
+    it('should not fire ACTION_UNDO_MAP redux action', () => {
       output.setProps({
         isUndoAvailable: true,
       });
       output.instance().onUndo();
-      expect(ACTION_UNDO_GRAPH).toHaveBeenCalled();
+      expect(ACTION_UNDO_MAP).toHaveBeenCalled();
     });
   });
 
   describe('onRedo method', () => {
-    it('should not fire ACTION_REDO_GRAPH redux action', () => {
+    it('should not fire ACTION_REDO_MAP redux action', () => {
       output.instance().onRedo();
-      expect(ACTION_REDO_GRAPH).not.toHaveBeenCalled();
+      expect(ACTION_REDO_MAP).not.toHaveBeenCalled();
     });
-    it('should fire ACTION_REDO_GRAPH redux action', () => {
+    it('should fire ACTION_REDO_MAP redux action', () => {
       output.setProps({
         isRedoAvailable: true,
       });
       output.instance().onRedo();
-      expect(ACTION_REDO_GRAPH).toHaveBeenCalled();
+      expect(ACTION_REDO_MAP).toHaveBeenCalled();
     });
   });
 

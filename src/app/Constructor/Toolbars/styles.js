@@ -36,7 +36,7 @@ const styles = () => ({
   positionRelative: {
     position: 'relative',
     backgroundColor: toolbarColor,
-    height: 40,
+    height: 50,
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -46,9 +46,9 @@ const styles = () => ({
   },
   root: {
     left: 0,
-    top: 77,
-    height: 'calc(100vh - 40px)',
-    width: 48,
+    top: 88,
+    height: 'calc(100vh - 50px)',
+    width: 50,
     background: toolbarColor,
     boxShadow: 'none',
     borderRight: '1px solid #c3c3c3',

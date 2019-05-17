@@ -60,9 +60,9 @@ export type IGraphViewProps = {
   canDeleteNode?: Function;
   onCopySelected?: () => void;
   onCreateEdge: (sourceNode: INode, targetNode: INode) => void;
-  onCreateNode: (x: number, y: number, value: string) => void;
   onCreateNodeWithEdge: (x: number, y: number, sourceNode: INode) => void;
   onDeleteEdge: (selectedEdge: EdgeDataType, edges: Array<EdgeDataType>) => void;
+  onCreateNode: (x: number, y: number) => void;
   onDeleteNode: (selected: any, nodeId: string, nodes: any[]) => void;
   onPasteSelected?: () => void;
   onSelectEdge: (selectedEdge: EdgeDataType) => void;
@@ -86,5 +86,5 @@ export type IGraphViewProps = {
   zoomControlsRef: {
     current: HTMLDivElement | null,
   };
-  ACTION_SAVE_GRAPH_TO_UNDO: () => void;
+  ACTION_SAVE_MAP_TO_UNDO: Function;
 };

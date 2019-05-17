@@ -28,14 +28,14 @@ export class Constructor extends Component<IConstructorProps, IConstructorState>
   };
 
   static getDerivedStateFromProps(nextProps: IConstructorProps, state: IConstructorState) {
-    const selectedNode: NodeDataType | null = Constructor.getSelectedNode(nextProps.graph);
+    const selectedNode: NodeDataType | null = Constructor.getSelectedNode(nextProps.map);
     if (!isEqual(state.selectedNode, selectedNode)) {
       return {
         selectedNode,
       };
     }
 
-    const selectedLink: EdgeDataType | null = Constructor.getSelectedEdge(nextProps.graph);
+    const selectedLink: EdgeDataType | null = Constructor.getSelectedEdge(nextProps.map);
     if (!isEqual(state.selectedLink, selectedLink)) {
       return {
         selectedLink,
@@ -45,8 +45,8 @@ export class Constructor extends Component<IConstructorProps, IConstructorState>
     return null;
   }
 
-  static getSelectedNode(graph: GraphItemType): NodeDataType | null {
-    const selectedNode = graph.nodes.find(node => node.isSelected);
+  static getSelectedNode(map: GraphItemType): NodeDataType | null {
+    const selectedNode = map.nodes.find(node => node.isSelected);
 
     if (selectedNode) {
       return selectedNode.data;
@@ -55,8 +55,8 @@ export class Constructor extends Component<IConstructorProps, IConstructorState>
     return null;
   }
 
-  static getSelectedEdge(graph: GraphItemType): EdgeDataType | null {
-    const selectedLink = graph.edges.find(edge => edge.isSelected);
+  static getSelectedEdge(map: GraphItemType): EdgeDataType | null {
+    const selectedLink = map.edges.find(edge => edge.isSelected);
 
     if (selectedLink) {
       return selectedLink.data;
@@ -97,8 +97,8 @@ export class Constructor extends Component<IConstructorProps, IConstructorState>
   }
 }
 
-const mapStateToProps = ({ constructor: { graph } }) => ({
-  graph: graph.current,
+const mapStateToProps = ({ map }) => ({
+  map,
 });
 
 export default DragDropContext(HTML5Backend)(

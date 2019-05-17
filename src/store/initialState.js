@@ -2,18 +2,12 @@
 import { initialUserState } from '../app/Login/reducer';
 import { initialModalsState } from '../app/Modals/reducer';
 import { initialConstructorState } from '../app/Constructor/reducer';
+import { initialMapState } from '../app/reducers/map/reducer';
 
 import type { User as UserType } from '../app/Login/types';
 import type { Modals as ModalsType } from '../app/Modals/types';
 import type { Constructor as ConstructorType } from '../app/Constructor/types';
-
-export type Map = {
-  id: number | null,
-  name: string,
-  abstract: string,
-  keywords: string,
-  enabled: boolean,
-};
+import type { Map as MapType } from '../app/reducers/map/types';
 
 export type App = {
   loadingState: Array<{
@@ -31,8 +25,8 @@ export type ScopedObjects = Array<{
 export type Store = {
   user: UserType,
   constructor: ConstructorType,
-  maps: Array<Map>,
-  map: Map,
+  maps: Array<MapType>,
+  map: MapType,
   app: App,
   scopedObjects: ScopedObjects,
   modals: ModalsType,
@@ -42,13 +36,7 @@ const initialState: Store = {
   user: initialUserState,
   constructor: initialConstructorState,
   maps: [],
-  map: {
-    id: null,
-    name: '',
-    abstract: '',
-    keywords: '',
-    enabled: false,
-  },
+  map: initialMapState,
   app: {
     loadingState: [],
   },

@@ -1,6 +1,5 @@
 import {
   maps,
-  map,
   app,
   scopedObjects,
 } from '../app/reducers';
@@ -8,6 +7,7 @@ import {
 import user from '../app/Login/reducer';
 import modals from '../app/Modals/reducer';
 import constructor from '../app/Constructor/reducer';
+import map from '../app/reducers/map/reducer';
 
 export default {
   user,

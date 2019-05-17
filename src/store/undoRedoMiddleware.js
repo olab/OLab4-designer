@@ -7,10 +7,10 @@ import {
   UPDATE_EDGE,
   DELETE_EDGE,
   SWAP_EDGE,
-  SAVE_GRAPH_TO_UNDO,
+  SAVE_MAP_TO_UNDO,
   COLLAPSE_NODE,
   LOCK_NODE,
-} from '../app/Constructor/types';
+} from '../app/reducers/map/types';
 
 const undoRedoMiddleware = store => next => (action) => {
   if ([
@@ -25,7 +25,7 @@ const undoRedoMiddleware = store => next => (action) => {
     CREATE_NODE,
     UPDATE_EDGE,
   ].includes(action.type)) {
-    store.dispatch({ type: SAVE_GRAPH_TO_UNDO });
+    store.dispatch({ type: SAVE_MAP_TO_UNDO });
   }
 
   next(action);

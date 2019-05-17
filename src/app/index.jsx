@@ -1,44 +1,43 @@
 // @flow
-import React, { Component } from 'react';
-import {
-  BrowserRouter as Router, Route, Switch, Link,
-} from 'react-router-dom';
+import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
+import { Route, Switch, Link } from 'react-router-dom';
+import { ConnectedRouter } from 'connected-react-router';
 
 import Login from './Login';
+import Home from './Home';
 import Constructor from './Constructor';
-import { Header } from './styles';
+import { Header, Logo } from './styles';
 
 import type {
-  State,
-  Props,
+  IAppProps,
+  IAppState,
 } from './types';
 
-export class App extends Component<Props, State> {
-  state = {
-    appTitle: 'oLab',
-  };
-
+export class App extends PureComponent<IAppProps, IAppState> {
   render() {
-    const { appTitle } = this.state;
-    const { isAuth } = this.props;
+    const { isAuth, history } = this.props;
 
     return (
-      <Router>
+      <ConnectedRouter history={history}>
         <>
           <Header>
-            <span>{appTitle}</span>
+            <Logo href="/">OLab</Logo>
+            {!isAuth && <Link to="/login" className="route-link">Login</Link>}
             <Link to="/" className="route-link">
               Home
             </Link>
-            {!isAuth && <Link to="/login" className="route-link">Login</Link>}
+            <Link to="/constructor" className="route-link">
+              Map Layout Editor
+            </Link>
           </Header>
           <Switch>
-            <Route exact path="/" component={Constructor} />
-            <Route path="/login" component={Login} />
+            <Route exact path="/" component={Home} />
+            <Route exact path="/login" component={Login} />
+            <Route exact path="/constructor" component={Constructor} />
           </Switch>
         </>
-      </Router>
+      </ConnectedRouter>
     );
   }
 }

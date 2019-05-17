@@ -14,7 +14,7 @@ describe('Node component', () => {
   let onNodeMove;
   let onNodeSelected;
   let onNodeUpdate;
-  let ACTION_SAVE_GRAPH_TO_UNDO;
+  let ACTION_SAVE_MAP_TO_UNDO;
   beforeEach(() => {
     nodeData = {
       id: '1',
@@ -29,7 +29,7 @@ describe('Node component', () => {
     onNodeMove = jest.fn();
     onNodeSelected = jest.fn();
     onNodeUpdate = jest.fn();
-    ACTION_SAVE_GRAPH_TO_UNDO = jest.fn();
+    ACTION_SAVE_MAP_TO_UNDO = jest.fn();
 
     jest.spyOn(document, 'querySelector').mockReturnValue({
       getAttribute: jest.fn().mockReturnValue(100),
@@ -63,7 +63,7 @@ describe('Node component', () => {
         onNodeSelected={onNodeSelected}
         onNodeUpdate={onNodeUpdate}
         viewWrapperElem={document.createElement('div')}
-        ACTION_SAVE_GRAPH_TO_UNDO={ACTION_SAVE_GRAPH_TO_UNDO}
+        ACTION_SAVE_MAP_TO_UNDO={ACTION_SAVE_MAP_TO_UNDO}
       />,
     );
   });

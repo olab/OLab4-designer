@@ -6,18 +6,18 @@ import { withStyles } from '@material-ui/core/styles';
 
 import UndoRedoIcon from '../../../../shared/assets/icons/toolbar/templates/undo-redo-icon';
 
-import * as actions from '../../action';
+import * as actions from '../../../reducers/map/action';
 import type { IUndoRedoButtonsProps } from './types';
 import styles, { Wrapper, Container } from './styles';
 
 export const GraphUndoRedoButtons = ({
-  classes, isUndoAvailable, isRedoAvailable, ACTION_REDO_GRAPH, ACTION_UNDO_GRAPH,
+  classes, isUndoAvailable, isRedoAvailable, ACTION_REDO_MAP, ACTION_UNDO_MAP,
 }: IUndoRedoButtonsProps) => (
   <Wrapper>
     <Container>
       <IconButton
         aria-label="Undo Button"
-        onClick={ACTION_UNDO_GRAPH}
+        onClick={ACTION_UNDO_MAP}
         disabled={!isUndoAvailable}
         className={classes.undoRedo}
       >
@@ -25,7 +25,7 @@ export const GraphUndoRedoButtons = ({
       </IconButton>
       <IconButton
         aria-label="Redo Button"
-        onClick={ACTION_REDO_GRAPH}
+        onClick={ACTION_REDO_MAP}
         disabled={!isRedoAvailable}
         className={classes.undoRedo}
       >
@@ -35,17 +35,17 @@ export const GraphUndoRedoButtons = ({
   </Wrapper>
 );
 
-const mapStateToProps = ({ constructor: { graph } }) => ({
-  isUndoAvailable: !!graph.undo.length,
-  isRedoAvailable: !!graph.redo.length,
+const mapStateToProps = ({ map: { undo, redo } }) => ({
+  isUndoAvailable: !!undo.length,
+  isRedoAvailable: !!redo.length,
 });
 
 const mapDispatchToProps = dispatch => ({
-  ACTION_REDO_GRAPH: () => {
-    dispatch(actions.ACTION_REDO_GRAPH());
+  ACTION_REDO_MAP: () => {
+    dispatch(actions.ACTION_REDO_MAP());
   },
-  ACTION_UNDO_GRAPH: () => {
-    dispatch(actions.ACTION_UNDO_GRAPH());
+  ACTION_UNDO_MAP: () => {
+    dispatch(actions.ACTION_UNDO_MAP());
   },
 });
 
