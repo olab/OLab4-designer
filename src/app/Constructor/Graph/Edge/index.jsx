@@ -549,9 +549,7 @@ export class Edge extends React.Component<IEdgeProps> {
 
     const { width: sourceWidth, height: sourceHeight } = sourceNode;
     const { width: targetWidth = 0, height: targetHeight = 0 } = targetNode;
-
-    const minRadius = Math.min(sourceWidth, sourceHeight, targetWidth, targetHeight);
-
+    const minRadius = Math.min(sourceWidth, sourceHeight, targetWidth, targetHeight) / 2;
     const thetaDegrees = Edge.calculateAngle(sourceNode, targetNode);
     const thetaRadians = (90 - thetaDegrees) * (Math.PI / 180);
 

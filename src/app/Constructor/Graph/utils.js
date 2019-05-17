@@ -35,9 +35,13 @@ export const createNewEdge = (sourceNodeID: number, targetNodeID: number) => {
     isSelected: true,
     data: {
       id: newEdgeId,
-      handleText: `Arrow-${newEdgeId}`,
+      label: `Arrow-${newEdgeId}`,
       source: sourceNodeID,
       target: targetNodeID,
+      color: '#D3DAE1',
+      variant: 'Standard',
+      thickness: 5,
+      isHidden: false,
     },
   };
 };

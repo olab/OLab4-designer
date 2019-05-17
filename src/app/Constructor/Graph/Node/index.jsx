@@ -263,7 +263,7 @@ export class Node extends React.Component<INodeProps, INodeState> {
     return (
       <foreignObject
         x={-currentWidth / 2}
-        y={-20}
+        y={-currentHeight / 2}
         width={currentWidth}
         height={currentHeight}
         viewBox={`0 0 ${currentWidth} ${currentHeight}`}

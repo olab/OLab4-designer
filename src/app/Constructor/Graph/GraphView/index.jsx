@@ -1366,7 +1366,6 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
     const {
       edgeArrowSize, gridSpacing, gridDotSize, edgeTypes, renderDefs,
     } = this.props;
-
     return (
       <ViewWrapper ref={this.viewWrapper}>
         <GraphWrapper ref={this.graphSvg}>
