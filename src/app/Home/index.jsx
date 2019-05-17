@@ -105,6 +105,7 @@ class Home extends PureComponent<IHomeProps, IHomeState> {
                 size="small"
                 aria-label="Create"
                 classes={{ root: classes.fab }}
+                onClick={() => this.onTemplateChoose('simple')}
               >
                 Create Map
                 <ArrowForwardIcon

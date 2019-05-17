@@ -9,7 +9,7 @@ const manualTemplate = {
   edges: [],
   nodes: [
     {
-      isSelected: true,
+      isSelected: false,
       data: {
         id,
         map_id: mapId,

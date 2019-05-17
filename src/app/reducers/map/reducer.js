@@ -25,10 +25,11 @@ import {
 
 import sample from '../../../helpers/nodes_sample';
 import manualTemplate from '../../../helpers/templates/manual';
+import simpleTemplate from '../../../helpers/templates/simple';
 
 export const initialMapState: MapType = {
   id: null,
-  name: '',
+  name: 'My Labyrinth',
   abstract: '',
   keywords: '',
   enabled: false,
@@ -306,6 +307,9 @@ const map = (state: MapType = initialMapState, action: MapActions) => {
         case 'manual':
           template = cloneDeep(manualTemplate);
           break;
+        case 'simple':
+          template = cloneDeep(simpleTemplate);
+          break;
         default:
           return state;
       }
@@ -314,6 +318,7 @@ const map = (state: MapType = initialMapState, action: MapActions) => {
 
       return {
         ...cloneDeep(initialMapState),
+        name: '',
         nodes,
         edges,
       };

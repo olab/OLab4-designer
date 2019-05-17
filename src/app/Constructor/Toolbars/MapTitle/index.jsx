@@ -66,13 +66,13 @@ class MapTitle extends PureComponent<IMapTitleProps, IMapTitleState> {
   }
 
   handleGetRef = (instance): void => {
-    const { title } = this.state;
+    // const { title } = this.state;
 
     this.inputRef = instance;
-
-    if (!title) {
-      this.focusInput();
-    }
+    // commented for future fix
+    // if (!title) {
+    //   this.focusInput();
+    // }
   }
 
   handleFocus = (): void => {
