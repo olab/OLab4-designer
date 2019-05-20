@@ -8,6 +8,7 @@ const styles = {
     flexDirection: 'column',
     position: 'relative',
     overflow: 'visible',
+    borderRadius: '8px',
     '&:focus': {
       outline: '2px solid #F78749',
     },
@@ -21,7 +22,7 @@ const styles = {
     letterSpacing: '0.01em',
     padding: 0,
     height: 40,
-    borderRadius: '4px 4px 0 0',
+    borderRadius: '8px 8px 0 0',
   },
   cardContent: {
     resize: 'both',
