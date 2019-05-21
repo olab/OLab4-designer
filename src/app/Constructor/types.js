@@ -1,9 +1,16 @@
 // @flow
+import type {
+  Edge as EdgeData,
+  Node as NodeData,
+} from '../reducers/map/types';
+
 export type IConstructorProps = {
 
 };
 export type IConstructorState = {
   isFullScreen: boolean,
+  selectedLink: EdgeData | null,
+  selectedNode: NodeData | null,
 };
 
 export type Constructor = {

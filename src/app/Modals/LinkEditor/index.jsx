@@ -23,12 +23,11 @@ import * as graphActions from '../../reducers/map/action';
 import { DndContexts, ModalsNames } from '../config';
 
 import {
-  LinkEditorWrapper,
-  LinkEditorHeader,
   LinkEditorBody,
   LinkEditorFooter,
   ActionButton,
 } from './styles';
+import { ModalWrapper, ModalHeader } from '../commonStyles';
 
 class LinkEditor extends Component<ILinkEditorProps, ILinkEditorState> {
   linkVariants: Array<string> = [
@@ -105,14 +104,14 @@ class LinkEditor extends Component<ILinkEditorProps, ILinkEditorState> {
     }
 
     return (
-      <LinkEditorWrapper
+      <ModalWrapper
         ref={instance => connectDragPreview(instance)}
         style={{
           left: `${x}px`,
           top: `${y}px`,
         }}
       >
-        <LinkEditorHeader ref={instance => connectDragSource(instance)}>
+        <ModalHeader ref={instance => connectDragSource(instance)}>
           <h4>Link Editor</h4>
           <button
             type="button"
@@ -120,7 +119,7 @@ class LinkEditor extends Component<ILinkEditorProps, ILinkEditorState> {
           >
             <ScaleIcon />
           </button>
-        </LinkEditorHeader>
+        </ModalHeader>
         <LinkEditorBody>
           <article>
             <OutlinedInput
@@ -174,7 +173,7 @@ class LinkEditor extends Component<ILinkEditorProps, ILinkEditorState> {
             Apply
           </ActionButton>
         </LinkEditorFooter>
-      </LinkEditorWrapper>
+      </ModalWrapper>
     );
   }
 }

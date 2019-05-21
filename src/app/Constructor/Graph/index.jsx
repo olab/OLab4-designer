@@ -10,7 +10,7 @@ import isEqual from 'lodash.isequal';
 
 import GraphView from './GraphView';
 import type { EdgeData as EdgeDataType } from './Edge/types';
-import type { INode } from './Node/types';
+import type { NodeData as NodeDataType } from './Node/types';
 import type {
   IGraphProps,
   IGraphState,
@@ -18,7 +18,6 @@ import type {
 import type {
   Edge as EdgeType,
   Node as NodeType,
-  NodeData as NodeDataType,
 } from '../../reducers/map/types';
 
 import { createNewEdge, createNewNode } from './utils';
@@ -72,17 +71,18 @@ export class Graph extends Component<IGraphProps, IGraphState> {
     return graph.edges.find(edge => edge.isSelected) || null;
   }
 
-  onSelectNode = (item: INode | null) => {
+  onSelectNode = (item: NodeDataType | null, clientX: number, clientY: number) => {
     const itemId = item ? item.id : null;
-    const { ACTION_SELECT_ITEM } = this.props;
+    const {
+      ACTION_SELECT_ITEM,
+      ACTION_SET_POSITION_NODE_EDITOR_MODAL,
+    } = this.props;
 
+    ACTION_SET_POSITION_NODE_EDITOR_MODAL(clientX, clientY);
     ACTION_SELECT_ITEM(itemId);
   };
 
-  onSelectEdge = (
-    item: EdgeDataType | null,
-    { clientX, clientY }: { clientX: number, clientY: number },
-  ) => {
+  onSelectEdge = (item: EdgeDataType | null, clientX: number, clientY: number) => {
     const itemId = item ? item.id : null;
 
     const {
@@ -116,7 +116,7 @@ export class Graph extends Component<IGraphProps, IGraphState> {
     ACTION_CREATE_NODE(newNode);
   }
 
-  onCreateEdge = (sourceNode: INode, targetNode: INode) => {
+  onCreateEdge = (sourceNode: NodeDataType, targetNode: NodeDataType) => {
     if (sourceNode.id === targetNode.id) {
       return;
     }
@@ -128,7 +128,7 @@ export class Graph extends Component<IGraphProps, IGraphState> {
     ACTION_CREATE_EDGE(newEdge);
   }
 
-  onCreateNodeWithEdge = (x: number, y: number, sourceNode: INode) => {
+  onCreateNodeWithEdge = (x: number, y: number, sourceNode: NodeDataType) => {
     const { ACTION_CREATE_NODE_WITH_EDGE } = this.props;
 
     const newNode = createNewNode(x, y);
@@ -137,7 +137,7 @@ export class Graph extends Component<IGraphProps, IGraphState> {
     ACTION_CREATE_NODE_WITH_EDGE(newNode, newEdge);
   }
 
-  onUpdateNode = (node: INode) => {
+  onUpdateNode = (node: NodeDataType) => {
     const { graph, ACTION_UPDATE_NODE } = this.props;
     const foundNode = graph.nodes.find(({ data }) => data.id === node.id);
 
@@ -146,7 +146,7 @@ export class Graph extends Component<IGraphProps, IGraphState> {
     }
   }
 
-  onDeleteNode = (node: INode) => {
+  onDeleteNode = (node: NodeDataType) => {
     const { ACTION_DELETE_NODE } = this.props;
     ACTION_DELETE_NODE(node.id);
   }
@@ -156,7 +156,7 @@ export class Graph extends Component<IGraphProps, IGraphState> {
     ACTION_DELETE_EDGE(edge.id);
   }
 
-  onSwapEdge = (sourceNode: INode, targetNode: INode, edge: EdgeDataType) => {
+  onSwapEdge = (sourceNode: NodeDataType, targetNode: NodeDataType, edge: EdgeDataType) => {
     const { ACTION_SWAP_EDGE } = this.props;
     ACTION_SWAP_EDGE(edge.id, sourceNode.id, targetNode.id);
   }
@@ -294,7 +294,7 @@ const mapDispatchToProps = dispatch => ({
   ACTION_DELETE_NODE: (nodeId: number) => {
     dispatch(graphActions.ACTION_DELETE_NODE(nodeId));
   },
-  ACTION_UPDATE_NODE: (nodeData: INode) => {
+  ACTION_UPDATE_NODE: (nodeData: NodeDataType) => {
     dispatch(graphActions.ACTION_UPDATE_NODE(nodeData));
   },
   ACTION_CREATE_NODE: (nodeData: NodeType) => {
@@ -318,6 +318,13 @@ const mapDispatchToProps = dispatch => ({
   ACTION_SET_POSITION_LINK_EDITOR_MODAL: (x: number, y: number) => {
     dispatch(modalActions.ACTION_SET_POSITION_MODAL(
       ModalsNames.LINK_EDITOR_MODAL,
+      x,
+      y,
+    ));
+  },
+  ACTION_SET_POSITION_NODE_EDITOR_MODAL: (x: number, y: number) => {
+    dispatch(modalActions.ACTION_SET_POSITION_MODAL(
+      ModalsNames.NODE_EDITOR_MODAL,
       x,
       y,
     ));

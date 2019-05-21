@@ -9,14 +9,14 @@ import type {
 } from './types';
 
 import {
-  COLLAPSE_NODE,
-  LOCK_NODE,
-  ADD_NODE,
+  ACTION_COLLAPSE,
+  ACTION_LOCK,
+  ACTION_ADD,
   DEFAULT_HEIGHT,
   DEFAULT_WIDTH,
-  RESIZE_NODE,
   COLLAPSED_HEIGHT,
   DEFAULT_NODE_INDENT,
+  ACTION_RESIZE,
 } from './config';
 
 import NodeComponent from './NodeComponent';
@@ -86,8 +86,8 @@ export class Node extends React.Component<INodeProps, INodeState> {
 
   calculateNewNodePosition = (data: NodeData) => {
     const { x, y, height } = data;
-    const newY = y + height / 2 + DEFAULT_NODE_INDENT;
-    return { x, newY };
+    const newNodeY = y + height / 2 + DEFAULT_NODE_INDENT;
+    return { x, newNodeY };
   }
 
   callElementAction = (action: string) => {
@@ -102,21 +102,20 @@ export class Node extends React.Component<INodeProps, INodeState> {
     } = this.props;
 
     switch (action) {
-      case LOCK_NODE:
+      case ACTION_LOCK:
         onNodeLocked(id);
         break;
 
-      case COLLAPSE_NODE:
+      case ACTION_COLLAPSE:
         onNodeCollapsed(id);
         break;
 
-      case ADD_NODE: {
-        const newCoordinates = this.calculateNewNodePosition(data);
-        const { x, newY } = newCoordinates;
-        onCreateNodeWithEdge(x, newY, data);
+      case ACTION_ADD: {
+        const { x, newNodeY: y } = this.calculateNewNodePosition(data);
+        onCreateNodeWithEdge(x, y, data);
         break;
       }
-      case RESIZE_NODE:
+      case ACTION_RESIZE:
         this.setState({ isResizeStart: true });
         break;
 
@@ -141,7 +140,7 @@ export class Node extends React.Component<INodeProps, INodeState> {
 
     const action = activeElement.getAttribute('data-action');
 
-    if (isLocked && action !== LOCK_NODE) {
+    if (isLocked && action !== ACTION_LOCK) {
       return;
     }
 
@@ -257,15 +256,15 @@ export class Node extends React.Component<INodeProps, INodeState> {
   renderShape() {
     const {
       data: {
-        isCollapsed, isLocked, width, height, type,
+        isCollapsed, isLocked, width, height, type, title, text, color,
       },
     } = this.props;
 
     const currentWidth = width || DEFAULT_WIDTH;
     let currentHeight = height || DEFAULT_HEIGHT;
-    if (isCollapsed) {
-      currentHeight = COLLAPSED_HEIGHT;
-    }
+
+    currentHeight = isCollapsed ? COLLAPSED_HEIGHT : currentHeight;
+
     return (
       <foreignObject
         x={-currentWidth / 2}
@@ -281,6 +280,9 @@ export class Node extends React.Component<INodeProps, INodeState> {
           width={width}
           height={height}
           type={type}
+          title={title}
+          text={text}
+          color={color}
         />
       </foreignObject>
     );

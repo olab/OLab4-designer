@@ -2,18 +2,11 @@
 
 export type INodeProps = {
   classes: {
-    card: {},
-    cardHeader: {},
-    cardHeaderRegular: string,
-    action: {},
-    titleContainer: {},
-    title: {},
-    actionBarButton: {},
-    cardContent: {},
-    cardContentLocked: string,
-    pos: {},
-    cardContentText: {},
+    [props: string]: any,
   },
+  color: string,
+  text: string,
+  title: string,
   width: number,
   height: number,
   type: number,
@@ -21,7 +14,3 @@ export type INodeProps = {
   isLocked: boolean,
   resizeRef: any,
 };
-
-export type INodeState = {
-  isMainNode: boolean,
-}

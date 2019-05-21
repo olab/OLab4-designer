@@ -20,15 +20,12 @@ import Node from '../Node';
 import LayoutEngines from '../utilities/layout-engine/layout-engine-config';
 
 import type {
-  INode,
-  IPoint,
-} from '../Node/types';
-import type {
   INodeMapNode,
   IGraphViewState,
   IGraphViewProps,
 } from './types';
 import type { EdgeData as EdgeDataType } from '../Edge/types';
+import type { NodeData as NodeDataType, IPoint } from '../Node/types';
 
 import GraphUtils from '../utilities/graph-utils';
 
@@ -133,15 +130,15 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
    *
    *
    * @static
-   * @param {INode} sourceNode
-   * @param {(INode | null)} hoveredNode
+   * @param {NodeDataType} sourceNode
+   * @param {(NodeDataType | null)} hoveredNode
    * @param {*} swapEdge
    * @returns
    * @memberof GraphView
    *
    * Checks if edge can be swapped.
    */
-  static canSwap(sourceNode: INode, hoveredNode: INode | null, swapEdge: any) {
+  static canSwap(sourceNode: NodeDataType, hoveredNode: NodeDataType | null, swapEdge: any) {
     return (hoveredNode && sourceNode !== hoveredNode
       && (swapEdge.source !== sourceNode.id
         || swapEdge.target !== hoveredNode.id));
@@ -331,7 +328,7 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
   }
 
   addNewNodes(
-    nodes: Array<INode>,
+    nodes: Array<NodeDataType>,
     oldNodesMap: any,
     selectedNode: any,
     prevSelectedNode: any,
@@ -437,7 +434,7 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
     });
   }
 
-  deleteNode(selectedNode: INode) {
+  deleteNode(selectedNode: NodeDataType) {
     const { nodes } = this.state;
     const { onDeleteNode } = this.props;
     const nodeId = selectedNode.id;
@@ -483,7 +480,7 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
     });
   }
 
-  handleDelete = (selected: EdgeDataType | INode) => {
+  handleDelete = (selected: EdgeDataType | NodeDataType) => {
     const { canDeleteNode, canDeleteEdge, readOnly } = this.props;
     if (readOnly || !selected) {
       return;
@@ -564,7 +561,7 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
         },
       });
 
-      onSelectEdge(edges[edge.originalArrIndex], { clientX, clientY });
+      onSelectEdge(edges[edge.originalArrIndex], clientX, clientY);
     }
 
     this.setState(newState);
@@ -766,12 +763,13 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
     }
   }
 
-  handleNodeSelected = (node: INode, nodeId: string, creatingEdge: boolean) => {
+  handleNodeSelected = (node: NodeDataType, nodeId: string, creatingEdge: boolean) => {
     // const { selectedNodeObj } = this.state;
     // if creatingEdge then de-select nodes and select new edge instead
     // const previousSelection = (selectedNodeObj && selectedNodeObj.node) || null;
     // const previousSelectionIndex = previousSelection ? selectedNodeObj.index : -1;
     const { onSelectNode } = this.props;
+    const { x, y } = d3.event;
 
     this.setState({
       componentUpToDate: false,
@@ -782,7 +780,7 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
     });
 
     if (!creatingEdge) {
-      onSelectNode(node);
+      onSelectNode(node, x, y);
     }
   }
 
@@ -1082,7 +1080,7 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
     );
   }
 
-  getNodeComponent(id: string, node: INode) {
+  getNodeComponent(id: string, node: NodeDataType) {
     const { selectedNodeObj } = this.state;
     const {
       ACTION_SAVE_MAP_TO_UNDO, onCreateNodeWithEdge, onCollapseNode, onLockNode, onResizeNode,
@@ -1143,7 +1141,7 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
       .forEach(edge => this.asyncRenderEdge(edge, nodeMoving));
   }
 
-  asyncRenderNode(node: INode) {
+  asyncRenderNode(node: NodeDataType) {
     const timeoutId = `nodes-${node.id}`;
     cancelAnimationFrame(this.nodeTimeouts[timeoutId]);
 
@@ -1152,7 +1150,7 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
     });
   }
 
-  syncRenderNode(node: INode) {
+  syncRenderNode(node: NodeDataType) {
     const id = `node-${node.id}`;
     const element: any = this.getNodeComponent(id, node);
     const nodesMapNode = this.getNodeById(node.id);

@@ -1,39 +1,15 @@
 // @flow
 import type { EdgeData as EdgeDataType } from '../../Constructor/Graph/Edge/types';
+import type { NodeData as NodeDataType } from '../../Constructor/Graph/Node/types';
 
-export type EdgeData = {
+export type Edge = {
   isSelected: boolean,
   data: EdgeDataType,
 };
 
-export type Edge = {
-  isSelected: boolean,
-  data: EdgeData,
-};
-
-export type NodeData = {
-  id: number,
-  map_id: number,
-  title: string,
-  type_id: number,
-  x: number,
-  y: number,
-  width: number,
-  height: number,
-  color: string,
-  text: string,
-  links: Array<{}>,
-  destination_id: number,
-  style_id: number,
-  type_id: number,
-  isCollapsed: boolean,
-  isLocked: boolean,
-};
-
 export type Node = {
-  id: number,
   isSelected: boolean,
-  data: NodeData,
+  data: NodeDataType,
 };
 
 export type MapItem = {

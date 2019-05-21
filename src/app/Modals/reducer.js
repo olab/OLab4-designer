@@ -20,6 +20,10 @@ export const initialModalsState: ModalsType = {
     x: 0,
     y: 0,
   },
+  nodeEditorModal: {
+    x: 0,
+    y: 0,
+  },
 };
 
 const modals = (state: ModalsType = initialModalsState, action: ModalsActions) => {

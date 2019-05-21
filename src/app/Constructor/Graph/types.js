@@ -18,6 +18,7 @@ export type IGraphProps = {
   layoutEngineType: string,
   connectDropTarget: Function,
   ACTION_SET_POSITION_LINK_EDITOR_MODAL: (x: number, y: number) => void,
+  ACTION_SET_POSITION_NODE_EDITOR_MODAL: (x: number, y: number) => void,
   ACTION_UNDO_MAP: () => void,
   ACTION_REDO_MAP: () => void,
   ACTION_RESET_MAP: () => void,

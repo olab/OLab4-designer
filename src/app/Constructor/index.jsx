@@ -9,10 +9,11 @@ import isEqual from 'lodash.isequal';
 import Graph from './Graph';
 import ToolbarTemplates from './Toolbars';
 import LinkEditor from '../Modals/LinkEditor';
+import NodeEditor from '../Modals/NodeEditor';
 
 import type { EdgeData as EdgeDataType } from './Graph/Edge/types';
+import type { NodeData as NodeDataType } from './Graph/Node/types';
 import type {
-  NodeData as NodeDataType,
   GraphItem as GraphItemType,
   IConstructorProps,
   IConstructorState,
@@ -91,6 +92,7 @@ export class Constructor extends Component<IConstructorProps, IConstructorState>
           <Graph isFullScreen={isFullScreen} />
 
           { !!selectedLink && <LinkEditor link={selectedLink} /> }
+          { !!selectedNode && <NodeEditor node={selectedNode} /> }
         </Fullscreen>
       </ConstructorWrapper>
     );

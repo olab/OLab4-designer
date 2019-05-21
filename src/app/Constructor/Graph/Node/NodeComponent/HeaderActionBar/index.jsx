@@ -1,23 +1,27 @@
 // @flow
 import React from 'react';
-
+import { withStyles } from '@material-ui/core/styles';
 import { Fab } from '@material-ui/core';
 
 import {
   LockIcon, MinimizeIcon,
 } from '../icons';
 
-import { COLLAPSE_NODE, LOCK_NODE } from '../../config';
+import { ACTION_COLLAPSE, ACTION_LOCK } from '../../config';
 
 import type { IHeaderActionBarProps } from './types';
 
-const HeaderActionBar = ({ classes }: IHeaderActionBarProps) => <>
-  <Fab data-active="true" data-action={COLLAPSE_NODE} className={classes.actionBarButton}>
-    <MinimizeIcon />
-  </Fab>
-  <Fab data-active="true" data-action={LOCK_NODE} className={classes.actionBarButton}>
-    <LockIcon />
-  </Fab>
-  </>;
+import styles from './styles';
 
-export default HeaderActionBar;
+const HeaderActionBar = ({ classes }: IHeaderActionBarProps) => (
+  <>
+    <Fab data-active="true" data-action={ACTION_COLLAPSE} className={classes.actionBarButton}>
+      <MinimizeIcon />
+    </Fab>
+    <Fab data-active="true" data-action={ACTION_LOCK} className={classes.actionBarButton}>
+      <LockIcon />
+    </Fab>
+  </>
+);
+
+export default withStyles(styles)(HeaderActionBar);

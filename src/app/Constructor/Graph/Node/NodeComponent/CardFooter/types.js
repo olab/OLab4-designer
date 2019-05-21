@@ -1,8 +1,7 @@
 // @flow
 
-export type Props = {
+export type ICardFooterProps = {
   classes: {
-    fab: {},
-    footer: {},
-  }
-}
+    [props: string]: any,
+  },
+};

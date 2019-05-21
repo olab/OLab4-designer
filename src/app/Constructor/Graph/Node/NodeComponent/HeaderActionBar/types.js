@@ -1,6 +1,6 @@
 // @flow
 export type IHeaderActionBarProps = {
   classes: {
-    actionBarButton: {},
+    [props: string]: any,
   },
 }

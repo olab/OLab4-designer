@@ -1,5 +1,5 @@
 // @flow
-import React from 'react';
+import React, { PureComponent } from 'react';
 import classNames from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
 import {
@@ -11,18 +11,28 @@ import CardFooter from './CardFooter';
 import ActionBar from './HeaderActionBar';
 import HeaderTitle from './HeaderTitle';
 
-import type { INodeState, INodeProps } from './types';
+import type { INodeProps } from './types';
 
-import { RESIZE_NODE } from '../config';
+import { ACTION_RESIZE } from '../config';
 
 import styles from './styles';
 
 
-class Node extends React.Component <INodeProps, INodeState> {
+class NodeComponent extends PureComponent <INodeProps> {
   render() {
     const {
-      classes, isCollapsed, resizeRef, isLocked, width, height, type,
+      classes,
+      isCollapsed,
+      resizeRef,
+      isLocked,
+      width,
+      height,
+      type,
+      text,
+      title,
+      color,
     } = this.props;
+
     const { cardContent, cardContentLocked } = classes;
 
     const cardContentMain = classNames(
@@ -39,19 +49,28 @@ class Node extends React.Component <INodeProps, INodeState> {
           <CardHeader
             className={classes.cardHeader}
             classes={{ action: classes.action }}
-            style={{ width: headerWidth }}
-            title={<HeaderTitle isMainNode={type} isLocked={isLocked} classes={classes} />}
+            style={{ width: headerWidth, backgroundColor: color }}
+            title={(
+              <HeaderTitle
+                type={type}
+                isLocked={isLocked}
+                title={title}
+              />
+            )}
             disableTypography
-            action={<ActionBar classes={classes} />}
+            action={<ActionBar />}
           />
 
           {!isCollapsed && (
           <>
-            <CardContent style={{ width, height: cardContentHeigth }} data-active="true" data-action={RESIZE_NODE} className={cardContentMain}>
+            <CardContent
+              style={{ width, height: cardContentHeigth }}
+              data-active="true"
+              data-action={ACTION_RESIZE}
+              className={cardContentMain}
+            >
               <Typography component="p" className={classes.cardContentText}>
-                This impressive paella is a perfect party dish
-                and a fun meal to cook together with your
-                guests. Add 1 cup of frozen peas along with the mussels, if you like.
+                {text}
               </Typography>
             </CardContent>
             <CardFooter />
@@ -64,4 +83,4 @@ class Node extends React.Component <INodeProps, INodeState> {
 }
 
 
-export default withStyles(styles)(Node);
+export default withStyles(styles)(NodeComponent);

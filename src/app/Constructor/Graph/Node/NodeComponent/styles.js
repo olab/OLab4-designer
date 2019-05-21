@@ -21,13 +21,14 @@ const styles = {
   cardHeader: {
     paddingLeft: 10,
     backgroundColor: mainNodeColor,
-    color: 'white',
+    color: '#fff',
     fontSize: '18px',
     lineHeight: 'normal',
     letterSpacing: '0.01em',
     padding: 0,
     height: COLLAPSED_HEIGHT,
     borderRadius: '8px 8px 0 0',
+    cursor: 'all-scroll',
   },
   cardContent: {
     resize: 'both',
@@ -47,6 +48,10 @@ const styles = {
     '&::-webkit-scrollbar': {
       width: 7,
       backgroundColor: '#F5F5F5',
+      cursor: 'pointer',
+    },
+    '&:hover::-webkit-scrollbar': {
+      width: 10,
     },
     '&::-webkit-scrollbar-thumb': {
       backgroundColor: regularColor,
@@ -70,18 +75,6 @@ const styles = {
   cardHeaderRegular: {
     backgroundColor: regularColor,
   },
-  titleContainer: {
-    display: 'flex',
-    alignItems: 'center',
-    '& svg': {
-      marginRight: 5,
-    },
-  },
-  title: {
-    margin: 0,
-    marginLeft: 5,
-    marginRight: 10,
-  },
   action: {
     display: 'flex',
     margin: 0,
@@ -92,18 +85,6 @@ const styles = {
   },
   pos: {
     marginBottom: 12,
-  },
-  actionBarButton: {
-    color: '#fff',
-    background: 'rgba(255,255,255, 0.3)',
-    height: 24,
-    width: 24,
-    minHeight: 24,
-    marginRight: 6,
-    boxShadow: 'none',
-    '&:hover': {
-      background: 'rgba(255,255,255, 0.6)',
-    },
   },
 };
 

@@ -10,6 +10,11 @@ export type LinkEditorModal = {
   y: number,
 };
 
+export type NodeEditorModal = {
+  x: number,
+  y: number,
+};
+
 export type Modals = {
   metaModal: MetaModal,
   linkEditorModal: LinkEditorModal,

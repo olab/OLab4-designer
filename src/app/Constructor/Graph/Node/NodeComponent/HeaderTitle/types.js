@@ -1,9 +1,6 @@
 // @flow
 export type IHeaderTitleProps = {
-  isMainNode: number,
+  type: number,
   isLocked: boolean,
-  classes: {
-    titleContainer: {},
-    title: {},
-  },
+  title: string,
 }

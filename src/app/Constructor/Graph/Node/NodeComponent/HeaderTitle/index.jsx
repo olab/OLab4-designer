@@ -7,13 +7,17 @@ import {
 
 import type { IHeaderTitleProps } from './types';
 
-const HeaderTitle = ({ classes, isMainNode, isLocked }: IHeaderTitleProps) => (
-  <div className={classes.titleContainer}>
+import { TitleContainer, TitleText } from './styles';
+
+const HeaderTitle = ({
+  type, isLocked, title,
+}: IHeaderTitleProps) => (
+  <TitleContainer>
     <DragableIcon />
-    {isMainNode === 1 && <StarIcon />}
+    {type === 1 && <StarIcon />}
     {isLocked && <NodeLockedIcon />}
-    <p className={classes.title}>Node name</p>
-  </div>
+    <TitleText>{title}</TitleText>
+  </TitleContainer>
 );
 
 export default HeaderTitle;

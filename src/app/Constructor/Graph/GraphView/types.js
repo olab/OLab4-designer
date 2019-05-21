@@ -1,5 +1,5 @@
 // @flow
-import type { INode } from '../Node/types';
+import type { NodeData as NodeDataType } from '../Node/types';
 import type { EdgeData as EdgeDataType } from '../Edge/types';
 
 export type IViewTransform = {
@@ -9,12 +9,12 @@ export type IViewTransform = {
 };
 
 export type INodeMapNode = {
-  node: INode;
+  node: NodeDataType;
   originalArrIndex: number;
   incomingEdges: Array<EdgeDataType>;
   outgoingEdges: Array<EdgeDataType>;
-  parents: Array<INode>;
-  children: Array<INode>;
+  parents: Array<NodeDataType>;
+  children: Array<NodeDataType>;
 };
 
 export type IGraphViewState = {
@@ -25,8 +25,8 @@ export type IGraphViewState = {
   nodes: any[];
   edges: any[];
   selectingNode: boolean;
-  hoveredNodeData: INode | null;
-  edgeEndNode: INode | null;
+  hoveredNodeData: NodeDataType | null;
+  edgeEndNode: NodeDataType | null;
   draggingEdge: boolean;
   draggedEdge: any;
   componentUpToDate: boolean;
@@ -59,21 +59,21 @@ export type IGraphViewProps = {
   canDeleteEdge?: Function;
   canDeleteNode?: Function;
   onCopySelected?: () => void;
-  onCreateEdge: (sourceNode: INode, targetNode: INode) => void;
-  onCreateNodeWithEdge: (x: number, y: number, sourceNode: INode) => void;
+  onCreateEdge: (sourceNode: NodeDataType, targetNode: NodeDataType) => void;
+  onCreateNodeWithEdge: (x: number, y: number, sourceNode: NodeDataType) => void;
   onDeleteEdge: (selectedEdge: EdgeDataType, edges: Array<EdgeDataType>) => void;
   onCreateNode: (x: number, y: number) => void;
   onDeleteNode: (selected: any, nodeId: string, nodes: any[]) => void;
   onPasteSelected?: () => void;
-  onSelectEdge: (selectedEdge: EdgeDataType) => void;
-  onSelectNode: (node: INode | null) => void;
+  onSelectEdge: (selectedEdge: EdgeDataType, clientX: number, clientY: number) => void;
+  onSelectNode: (node: NodeDataType | null, x: number, y: number) => void;
   onCollapseNode: (id: number) => void;
   onResizeNode: (id: number, width: number, height: number) => void;
   onLockNode: (id: number) => void;
-  onSwapEdge: (sourceNode: INode, targetNode: INode, edge: EdgeDataType) => void;
+  onSwapEdge: (sourceNode: NodeDataType, targetNode: NodeDataType, edge: EdgeDataType) => void;
   onUndo?: () => void;
   onRedo?: () => void;
-  onUpdateNode: (node: INode) => void;
+  onUpdateNode: (node: NodeDataType) => void;
   renderBackground?: (gridSize?: number) => any;
   renderDefs?: () => any;
   afterRenderEdge?: (
