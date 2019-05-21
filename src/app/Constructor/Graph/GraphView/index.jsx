@@ -214,8 +214,8 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
       .select(this.viewWrapper.current)
       .on('click', this.handleSvgClicked) // handle element click in the element components
       .select('svg')
+      .on('zoom.dbclick', null)
       .call(this.zoom);
-
     this.selectedView = d3.select(this.view);
 
     // On the initial load, the 'view' <g> doesn't exist until componentDidMount.
@@ -786,26 +786,6 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
     }
   }
 
-  handleNodeCollapsed = (nodeId: number, width: number, height: number) => {
-    const { onCollapseNode } = this.props;
-    onCollapseNode(nodeId, width, height);
-  }
-
-  handleNodeResize = (nodeId: number, width: number, height: number) => {
-    const { onResizeNode } = this.props;
-    onResizeNode(nodeId, width, height);
-  }
-
-  handleNodeResize = (nodeId: number, width: number, height: number) => {
-    const { onResizeNode } = this.props;
-    onResizeNode(nodeId, width, height);
-  }
-
-  handleNodeLocked = (nodeId: number) => {
-    const { onLockNode } = this.props;
-    onLockNode(nodeId);
-  }
-
   // One can't attach handlers to 'markers' or obtain them from the event.target
   // If the click occurs within a certain radius of edge target, assume the click
   // occurred on the arrow
@@ -1104,7 +1084,9 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
 
   getNodeComponent(id: string, node: INode) {
     const { selectedNodeObj } = this.state;
-    const { ACTION_SAVE_MAP_TO_UNDO, onCreateNodeWithEdge } = this.props;
+    const {
+      ACTION_SAVE_MAP_TO_UNDO, onCreateNodeWithEdge, onCollapseNode, onLockNode, onResizeNode,
+    } = this.props;
 
     return (
       <Node
@@ -1116,9 +1098,9 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
         onNodeMove={this.handleNodeMove}
         onNodeUpdate={this.handleNodeUpdate}
         onNodeSelected={this.handleNodeSelected}
-        onNodeCollapsed={this.handleNodeCollapsed}
-        onNodeResize={this.handleNodeResize}
-        onNodeLocked={this.handleNodeLocked}
+        onNodeCollapsed={onCollapseNode}
+        onNodeResize={onResizeNode}
+        onNodeLocked={onLockNode}
         onCreateNodeWithEdge={onCreateNodeWithEdge}
         isSelected={selectedNodeObj.node === node}
         layoutEngine={this.layoutEngine}

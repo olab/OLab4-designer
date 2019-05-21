@@ -5,6 +5,7 @@ import React from 'react';
 import type {
   INodeProps,
   INodeState,
+  NodeData,
 } from './types';
 
 import {
@@ -14,6 +15,8 @@ import {
   DEFAULT_HEIGHT,
   DEFAULT_WIDTH,
   RESIZE_NODE,
+  COLLAPSED_HEIGHT,
+  DEFAULT_NODE_INDENT,
 } from './config';
 
 import NodeComponent from './NodeComponent';
@@ -67,24 +70,30 @@ export class Node extends React.Component<INodeProps, INodeState> {
     if (isCollapsed) {
       return;
     }
-    if (!isResizeStart) {
-      return;
-    }
-    if (this.resizeRef.current !== null) {
-      const newWidth = this.resizeRef.current.offsetWidth;
-      const newHeight = this.resizeRef.current.offsetHeight;
-      if (newWidth !== width || newHeight !== height) {
-        onNodeResize(id, newWidth, newHeight);
-        // eslint-disable-next-line react/no-did-update-set-state
-        this.setState({ isResizeStart: false });
+
+    if (isResizeStart) {
+      if (this.resizeRef.current !== null) {
+        const newWidth = this.resizeRef.current.offsetWidth - 4;
+        const newHeight = this.resizeRef.current.offsetHeight - 2;
+        if (newWidth !== width || newHeight !== height) {
+          onNodeResize(id, newWidth, newHeight);
+          // eslint-disable-next-line react/no-did-update-set-state
+          this.setState({ isResizeStart: false });
+        }
       }
     }
+  }
+
+  calculateNewNodePosition = (data: NodeData) => {
+    const { x, y, height } = data;
+    const newY = y + height / 2 + DEFAULT_NODE_INDENT;
+    return { x, newY };
   }
 
   callElementAction = (action: string) => {
     const {
       data: {
-        id, width, height, isCollapsed,
+        id,
       },
       data,
       onNodeCollapsed,
@@ -98,20 +107,15 @@ export class Node extends React.Component<INodeProps, INodeState> {
         break;
 
       case COLLAPSE_NODE:
-        if (this.resizeRef.current !== null) {
-          const newWidth = this.resizeRef.current.offsetWidth;
-          const newHeight = this.resizeRef.current.offsetHeight;
-          if (!isCollapsed) {
-            onNodeCollapsed(id, newWidth, newHeight);
-          } else onNodeCollapsed(id, width, height);
-        }
+        onNodeCollapsed(id);
         break;
 
-
-      case ADD_NODE:
-        onCreateNodeWithEdge(145, 670, data);
+      case ADD_NODE: {
+        const newCoordinates = this.calculateNewNodePosition(data);
+        const { x, newY } = newCoordinates;
+        onCreateNodeWithEdge(x, newY, data);
         break;
-
+      }
       case RESIZE_NODE:
         this.setState({ isResizeStart: true });
         break;
@@ -258,8 +262,10 @@ export class Node extends React.Component<INodeProps, INodeState> {
     } = this.props;
 
     const currentWidth = width || DEFAULT_WIDTH;
-    const currentHeight = height || DEFAULT_HEIGHT;
-
+    let currentHeight = height || DEFAULT_HEIGHT;
+    if (isCollapsed) {
+      currentHeight = COLLAPSED_HEIGHT;
+    }
     return (
       <foreignObject
         x={-currentWidth / 2}

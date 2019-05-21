@@ -94,9 +94,9 @@ export class Graph extends Component<IGraphProps, IGraphState> {
     ACTION_SELECT_ITEM(itemId);
   };
 
-  onCollapseItem = (id: number, width: number, height: number) => {
+  onCollapseNode = (id: number) => {
     const { ACTION_COLLAPSE_NODE } = this.props;
-    ACTION_COLLAPSE_NODE(id, width, height);
+    ACTION_COLLAPSE_NODE(id);
   };
 
   onResizeNode = (id: number, width: number, height: number) => {
@@ -246,7 +246,7 @@ export class Graph extends Component<IGraphProps, IGraphState> {
           edgeTypes={EdgeTypes}
           onSelectNode={this.onSelectNode}
           onCreateNode={this.onCreateNode}
-          onCollapseNode={this.onCollapseItem}
+          onCollapseNode={this.onCollapseNode}
           onLockNode={this.onLockNode}
           onResizeNode={this.onResizeNode}
           onUpdateNode={this.onUpdateNode}
@@ -306,8 +306,8 @@ const mapDispatchToProps = dispatch => ({
   ACTION_SELECT_ITEM: (id: number) => {
     dispatch(graphActions.ACTION_SELECT_ITEM(id));
   },
-  ACTION_COLLAPSE_NODE: (id: number, width: number, height: number) => {
-    dispatch(graphActions.ACTION_COLLAPSE_NODE(id, width, height));
+  ACTION_COLLAPSE_NODE: (id: number) => {
+    dispatch(graphActions.ACTION_COLLAPSE_NODE(id));
   },
   ACTION_RESIZE_NODE: (id: number, width: number, height: number) => {
     dispatch(graphActions.ACTION_RESIZE_NODE(id, width, height));

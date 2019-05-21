@@ -148,15 +148,12 @@ const map = (state: MapType = initialMapState, action: MapActions) => {
     }
     case COLLAPSE_NODE: {
       const { nodes } = cloneDeep(state);
-      const { id, width, height } = action;
-      nodes
-        .forEach((item) => {
-          if (item.data.id === id) {
-            item.data.isCollapsed = !item.data.isCollapsed;
-            item.data.width = width;
-            item.data.height = height;
-          }
-        });
+      const { id } = action;
+      nodes.forEach((item) => {
+        if (item.data.id === id) {
+          item.data.isCollapsed = !item.data.isCollapsed;
+        }
+      });
 
       return {
         ...state,
@@ -166,13 +163,12 @@ const map = (state: MapType = initialMapState, action: MapActions) => {
     case RESIZE_NODE: {
       const { nodes } = cloneDeep(state);
       const { id, width, height } = action;
-      nodes
-        .forEach((item) => {
-          if (item.data.id === id) {
-            item.data.width = width;
-            item.data.height = height;
-          }
-        });
+      nodes.forEach((item) => {
+        if (item.data.id === id) {
+          item.data.width = width;
+          item.data.height = height;
+        }
+      });
       return {
         ...state,
         nodes,
@@ -181,10 +177,9 @@ const map = (state: MapType = initialMapState, action: MapActions) => {
     case LOCK_NODE: {
       const { nodes } = cloneDeep(state);
       const { id } = action;
-      nodes
-        .forEach((item) => {
-          if (item.data.id === id) { item.data.isLocked = !item.data.isLocked; }
-        });
+      nodes.forEach((item) => {
+        if (item.data.id === id) { item.data.isLocked = !item.data.isLocked; }
+      });
 
       return {
         ...state,

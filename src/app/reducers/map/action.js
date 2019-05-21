@@ -33,11 +33,9 @@ export const ACTION_CREATE_NODE = (nodeData: NodeType) => ({
   nodeData,
 });
 
-export const ACTION_COLLAPSE_NODE = (id: number, width: number, height: number) => ({
+export const ACTION_COLLAPSE_NODE = (id: number) => ({
   type: COLLAPSE_NODE,
   id,
-  width,
-  height,
 });
 
 export const ACTION_LOCK_NODE = (id: number) => ({

@@ -1,3 +1,5 @@
+import { COLLAPSED_HEIGHT } from '../config';
+
 const regularColor = '#7C8FA6';
 const mainNodeColor = '#F78749';
 
@@ -9,9 +11,12 @@ const styles = {
     position: 'relative',
     overflow: 'visible',
     borderRadius: '8px',
-    '&:focus': {
-      outline: '2px solid #F78749',
+    '&:focus [data-action=RESIZE_NODE]': {
+      borderColor: mainNodeColor,
+      borderBottomRightRadius: 8,
+      borderBottomLeftRadius: 8,
     },
+    outline: 'none',
   },
   cardHeader: {
     paddingLeft: 10,
@@ -21,12 +26,13 @@ const styles = {
     lineHeight: 'normal',
     letterSpacing: '0.01em',
     padding: 0,
-    height: 40,
+    height: COLLAPSED_HEIGHT,
     borderRadius: '8px 8px 0 0',
   },
   cardContent: {
     resize: 'both',
     overflow: 'auto',
+    position: 'relative',
     opacity: 0.7,
     fontSize: 16,
     width: '100%',
@@ -36,15 +42,26 @@ const styles = {
     letterSpacing: '0.06em',
     padding: 0,
     paddingBottom: 20,
+    borderTop: 'none',
+    border: '2px solid transparent',
     '&::-webkit-scrollbar': {
-      width: 4,
+      width: 7,
+      backgroundColor: '#F5F5F5',
     },
     '&::-webkit-scrollbar-thumb': {
       backgroundColor: regularColor,
       borderRadius: 4,
     },
-    '&::-webkit-resizer': {
+    '&::-webkit-scrollbar-track': {
+      margin: 5,
+    },
+    '&::-webkit-scrollbar-button': {
+      width: 0,
+      height: 0,
       display: 'none',
+    },
+    '&::-webkit-scrollbar-corner': {
+      backgroundColor: 'transparent',
     },
   },
   cardContentText: {

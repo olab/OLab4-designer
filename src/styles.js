@@ -19,7 +19,7 @@ const GlobalStyle = createGlobalStyle`
   }
 
   foreignObject {
-    overflow: unset;
+    overflow: visible;
   }
 `;
 

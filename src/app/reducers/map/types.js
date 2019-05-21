@@ -70,8 +70,6 @@ type CreateNode = {
 const COLLAPSE_NODE = 'COLLAPSE_NODE';
 type CollapseNode = {
   type: 'COLLAPSE_NODE',
-  width: number,
-  height: number,
   id: number,
 };
 
