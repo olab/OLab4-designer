@@ -2,10 +2,12 @@
 import type {
   Edge as EdgeData,
   Node as NodeData,
+  Map as MapType,
 } from '../reducers/map/types';
 
 export type IConstructorProps = {
-
+  map: MapType,
+  ACTION_CREATE_TEMPLATE_FROM_MAP: Function,
 };
 export type IConstructorState = {
   isFullScreen: boolean,

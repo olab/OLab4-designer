@@ -5,14 +5,14 @@ import type { LayoutEngine as LayoutEngineType } from './utilities/layout-engine
 import type {
   Node as NodeType,
   Edge as EdgeType,
-  GraphItem as GraphItemType,
+  MapItem as MapItemType,
 } from '../types';
 
 export type IGraphProps = {
   isFullScreen: boolean,
   minZoom: number,
   maxZoom: number,
-  graph: GraphItemType,
+  graph: MapItemType,
   isUndoAvailable: boolean,
   isRedoAvailable: boolean,
   layoutEngineType: string,

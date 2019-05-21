@@ -30,6 +30,7 @@ import assetsIcon from '../../../shared/assets/icons/toolbar/templates/meta-asse
 import addIcon from '../../../shared/assets/icons/toolbar/templates/meta-add.png';
 import counterIcon from '../../../shared/assets/icons/toolbar/templates/meta-counter.png';
 import filesIcon from '../../../shared/assets/icons/toolbar/templates/meta-files.png';
+import createTemplateFromMapIcon from '../../../shared/assets/icons/create_template.png';
 
 import * as constructorActions from '../action';
 import * as mapActions from '../../reducers/map/action';
@@ -46,7 +47,7 @@ export class Toolbars extends Component<IToolbarsProps, IToolbarsState> {
   constructor(props: IToolbarsProps) {
     super(props);
 
-    const { fullscreenHandler } = props;
+    const { fullscreenHandler, showCreateTemplateModal } = props;
 
     this.state = {
       expand: '',
@@ -106,7 +107,16 @@ export class Toolbars extends Component<IToolbarsProps, IToolbarsState> {
             icon: flagIcon,
             mouseIcon: 'template_mouse_icon',
             order: 50,
-            label: 'flag',
+            label: 'Flag',
+          },
+          {
+            id: 'createTemplateFromMap',
+            name: 'createTemplateFromMap',
+            icon: createTemplateFromMapIcon,
+            mouseIcon: 'template_mouse_icon',
+            order: 60,
+            label: 'Create Template From Map',
+            onClick: showCreateTemplateModal,
           },
         ],
       },

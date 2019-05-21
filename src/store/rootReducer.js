@@ -8,6 +8,7 @@ import user from '../app/Login/reducer';
 import modals from '../app/Modals/reducer';
 import constructor from '../app/Constructor/reducer';
 import map from '../app/reducers/map/reducer';
+import templates from '../app/reducers/templates/reducer';
 
 export default {
   user,
@@ -17,4 +18,5 @@ export default {
   app,
   scopedObjects,
   modals,
+  templates,
 };

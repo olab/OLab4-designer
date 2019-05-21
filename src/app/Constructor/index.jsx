@@ -1,5 +1,5 @@
 // @flow
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
@@ -10,25 +10,38 @@ import Graph from './Graph';
 import ToolbarTemplates from './Toolbars';
 import LinkEditor from '../Modals/LinkEditor';
 import NodeEditor from '../Modals/NodeEditor';
+import Input from '../../shared/components/Input';
 import TemplateModal from '../../shared/components/ConfirmationModal';
+
+import * as actions from '../reducers/templates/action';
 
 import type { EdgeData as EdgeDataType } from './Graph/Edge/types';
 import type { NodeData as NodeDataType } from './Graph/Node/types';
 import type {
-  GraphItem as GraphItemType,
+  Map as MapType,
+  MapItem as MapItemType,
+} from '../reducers/map/types';
+import type {
   IConstructorProps,
   IConstructorState,
 } from './types';
 
 import { ConstructorWrapper } from './styles';
 
-export class Constructor extends Component<IConstructorProps, IConstructorState> {
-  state: IConstructorState = {
-    isFullScreen: false,
-    selectedLink: null,
-    selectedNode: null,
-    isShowCreateTemplateModal: true,
-  };
+export class Constructor extends PureComponent<IConstructorProps, IConstructorState> {
+  templateInputName: { current: null | React$Element<any> };
+
+  constructor(props: IConstructorProps) {
+    super(props);
+    this.state = {
+      selectedLink: null,
+      selectedNode: null,
+      isFullScreen: false,
+      isShowCreateTemplateModal: false,
+    };
+
+    this.templateInputName = React.createRef();
+  }
 
   static getDerivedStateFromProps(nextProps: IConstructorProps, state: IConstructorState) {
     const selectedNode: NodeDataType | null = Constructor.getSelectedNode(nextProps.map);
@@ -48,7 +61,7 @@ export class Constructor extends Component<IConstructorProps, IConstructorState>
     return null;
   }
 
-  static getSelectedNode(map: GraphItemType): NodeDataType | null {
+  static getSelectedNode(map: MapItemType): NodeDataType | null {
     const selectedNode = map.nodes.find(node => node.isSelected);
 
     if (selectedNode) {
@@ -58,7 +71,7 @@ export class Constructor extends Component<IConstructorProps, IConstructorState>
     return null;
   }
 
-  static getSelectedEdge(map: GraphItemType): EdgeDataType | null {
+  static getSelectedEdge(map: MapItemType): EdgeDataType | null {
     const selectedLink = map.edges.find(edge => edge.isSelected);
 
     if (selectedLink) {
@@ -78,12 +91,6 @@ export class Constructor extends Component<IConstructorProps, IConstructorState>
     }));
   };
 
-  toggleCreateTemplateModal = () => {
-    this.setState(({ isShowCreateTemplateModal }) => ({
-      isShowCreateTemplateModal: !isShowCreateTemplateModal,
-    }));
-  }
-
   showCreateTemplateModal = () => {
     this.setState({
       isShowCreateTemplateModal: true,
@@ -96,7 +103,19 @@ export class Constructor extends Component<IConstructorProps, IConstructorState>
     });
   }
 
-  saveTemplateFromMap = () => {}
+  saveTemplateFromMap = () => {
+    if (this.templateInputName && this.templateInputName.current) {
+      const { value } = this.templateInputName.current.state;
+
+      if (value) {
+        const { map, ACTION_CREATE_TEMPLATE_FROM_MAP } = this.props;
+
+        ACTION_CREATE_TEMPLATE_FROM_MAP(value, map);
+      }
+    }
+
+    this.closeCreateTemplateModal();
+  }
 
   render() {
     const {
@@ -112,6 +131,7 @@ export class Constructor extends Component<IConstructorProps, IConstructorState>
         >
           <ToolbarTemplates
             fullscreenHandler={this.toggleFullScreen}
+            showCreateTemplateModal={this.showCreateTemplateModal}
             isFullScreen={isFullScreen}
           />
 
@@ -121,24 +141,35 @@ export class Constructor extends Component<IConstructorProps, IConstructorState>
           { !!selectedLink && <LinkEditor link={selectedLink} /> }
           { !!selectedNode && <NodeEditor node={selectedNode} /> }
 
-          { isShowCreateTemplateModal && (
+          {isShowCreateTemplateModal && (
             <TemplateModal
               label="Create template"
               text="Please enter name of template:"
               onClose={this.closeCreateTemplateModal}
               onSave={this.saveTemplateFromMap}
-            />
-          ) }
+            >
+              <Input
+                ref={this.templateInputName}
+                label="Template Name"
+                autoFocus
+                fullWidth
+              />
+            </TemplateModal>
+          )}
         </Fullscreen>
       </ConstructorWrapper>
     );
   }
 }
 
-const mapStateToProps = ({ map }) => ({
-  map,
+const mapStateToProps = ({ map }) => ({ map });
+
+const mapDispatchToProps = dispatch => ({
+  ACTION_CREATE_TEMPLATE_FROM_MAP: (templateName: string, map: MapType) => {
+    dispatch(actions.ACTION_CREATE_TEMPLATE_FROM_MAP(templateName, map));
+  },
 });
 
 export default DragDropContext(HTML5Backend)(
-  connect(mapStateToProps)(Constructor),
+  connect(mapStateToProps, mapDispatchToProps)(Constructor),
 );
