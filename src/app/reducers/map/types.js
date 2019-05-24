@@ -73,7 +73,7 @@ type CreateNodeWithEdge = {
 const UPDATE_NODE = 'UPDATE_NODE';
 type UpdateNode = {
   type: 'UPDATE_NODE',
-  nodeData: Node,
+  nodeData: NodeDataType,
 };
 
 const DELETE_NODE = 'DELETE_NODE';

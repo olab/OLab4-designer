@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { setCursorCSS } from './utils';
 
 const backgroundColor = '#f9f9f9';
 
@@ -20,6 +21,10 @@ export const GraphWrapper = styled.svg`
   flex: 1;
   width: 100%;
   height: 100%;
+`;
+
+export const View = styled.g`
+  cursor: ${({ cursor }) => setCursorCSS(cursor)}
 `;
 
 export default ViewWrapper;

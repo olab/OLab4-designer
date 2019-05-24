@@ -1,26 +1,37 @@
 // @flow
 import React from 'react';
+import classNames from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
 import { Fab } from '@material-ui/core';
 
-import type { ICardFooterProps } from './types';
-
+import { LinkIcon, AddIcon } from '../icons';
 import { ACTION_ADD, ACTION_LINK } from '../../config';
 
-import { LinkIcon, AddIcon } from '../icons';
+import type { ICardFooterProps } from './types';
 
-import styles from './styles';
+import styles, { Wrapper } from './styles';
 
-
-const CardFooter = ({ classes }: ICardFooterProps) => (
-  <div className={classes.footer}>
-    <Fab data-active="true" data-action={ACTION_ADD} className={classes.fab}>
+const CardFooter = ({ classes, isLinked }: ICardFooterProps) => (
+  <Wrapper className="card-footer">
+    <Fab
+      data-active="true"
+      data-action={ACTION_ADD}
+      className={classes.fab}
+    >
       <AddIcon />
     </Fab>
-    <Fab data-active="true" data-action={ACTION_LINK} className={classes.fab}>
+    <Fab
+      data-active="true"
+      data-action={ACTION_LINK}
+      className={classNames(
+        classes.fab,
+        { [classes.linkIcon]: isLinked },
+      )}
+      disableRipple
+    >
       <LinkIcon />
     </Fab>
-  </div>
+  </Wrapper>
 );
 
 export default withStyles(styles)(CardFooter);

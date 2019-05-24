@@ -12,5 +12,6 @@ export type INodeProps = {
   type: number,
   isCollapsed: boolean,
   isLocked: boolean,
+  isLinked: boolean,
   resizeRef: any,
 };

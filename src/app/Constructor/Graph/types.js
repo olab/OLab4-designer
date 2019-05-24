@@ -31,7 +31,7 @@ export type IGraphProps = {
   ACTION_CREATE_EDGE: (edgeData: EdgeType) => void,
   ACTION_UPDATE_NODE: (nodeData: INode) => void,
   ACTION_DELETE_NODE: (nodeId: number) => void,
-  ACTION_DELETE_EDGE: (edges: Array<EdgeDataType>) => void,
+  ACTION_DELETE_EDGE: (edgeId: number) => void,
   ACTION_SWAP_EDGE: (edge: EdgeDataType, edge: EdgeDataType, edge: EdgeDataType) => void,
 };
 

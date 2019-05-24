@@ -11,7 +11,7 @@ const styles = {
     position: 'relative',
     overflow: 'visible',
     borderRadius: '8px',
-    '&:focus [data-action=RESIZE_NODE]': {
+    '&:focus [data-action=ACTION_RESIZE]': {
       borderColor: mainNodeColor,
       borderBottomRightRadius: 8,
       borderBottomLeftRadius: 8,

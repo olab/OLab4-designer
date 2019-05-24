@@ -62,10 +62,8 @@ class NodeEditor extends Component<INodeEditorProps, INodeEditorState> {
     return (
       <ModalWrapper
         ref={instance => connectDragPreview(instance)}
-        style={{
-          left: `${x}px`,
-          top: `${y}px`,
-        }}
+        x={x}
+        y={y}
       >
         <ModalHeader ref={instance => connectDragSource(instance)}>
           <NodeEditorTitle>Node Editor</NodeEditorTitle>

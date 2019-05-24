@@ -2,10 +2,15 @@
 import type { NodeData as NodeDataType } from '../Node/types';
 import type { EdgeData as EdgeDataType } from '../Edge/types';
 
+export type ITargetPosition = {
+  clientX: number;
+  clientY: number;
+};
+
 export type IViewTransform = {
+  x: number;
+  y: number;
   k: number,
-  x: number,
-  y: number
 };
 
 export type INodeMapNode = {
@@ -18,26 +23,25 @@ export type INodeMapNode = {
 };
 
 export type IGraphViewState = {
-  viewTransform?: IViewTransform;
-  hoveredNode: boolean;
-  nodesMap: any;
+  edges: any[];
   edgesMap: any;
   nodes: any[];
-  edges: any[];
-  selectingNode: boolean;
-  hoveredNodeData: NodeDataType | null;
-  edgeEndNode: NodeDataType | null;
-  draggingEdge: boolean;
+  nodesMap: any;
   draggedEdge: any;
-  componentUpToDate: boolean;
+  draggingEdge: boolean;
   selectedEdgeObj: any;
   selectedNodeObj: any;
-  documentClicked: boolean;
-  svgClicked: boolean;
+  sourceNode: any;
   focused: boolean;
+  svgClicked: boolean;
+  documentClicked: boolean;
+  isLinkingStarted: boolean;
+  componentUpToDate: boolean;
+  viewTransform?: IViewTransform;
 };
 
 export type IGraphViewProps = {
+  cursor: string;
   backgroundFillId?: string;
   edges: any[];
   edgeArrowSize?: number;
@@ -47,7 +51,6 @@ export type IGraphViewProps = {
   gridSize?: number;
   gridSpacing?: number;
   layoutEngineType?: string;
-  maxTitleChars?: number;
   maxZoom?: number;
   minZoom?: number;
   nodes: any[];
@@ -55,22 +58,18 @@ export type IGraphViewProps = {
   selected: any;
   zoomDelay?: number;
   zoomDur?: number;
-  canCreateEdge?: Function;
-  canDeleteEdge?: Function;
-  canDeleteNode?: Function;
   onCopySelected?: () => void;
   onCreateEdge: (sourceNode: NodeDataType, targetNode: NodeDataType) => void;
   onCreateNodeWithEdge: (x: number, y: number, sourceNode: NodeDataType) => void;
-  onDeleteEdge: (selectedEdge: EdgeDataType, edges: Array<EdgeDataType>) => void;
+  onDeleteEdge: (selectedEdge: EdgeDataType) => void;
   onCreateNode: (x: number, y: number) => void;
-  onDeleteNode: (selected: any, nodeId: string, nodes: any[]) => void;
+  onDeleteNode: (selected: NodeDataType) => void;
   onPasteSelected?: () => void;
-  onSelectEdge: (selectedEdge: EdgeDataType, clientX: number, clientY: number) => void;
-  onSelectNode: (node: NodeDataType | null, x: number, y: number) => void;
+  onSelectEdge: (selectedEdge: EdgeDataType | null, x?: number, y?: number) => void;
+  onSelectNode: (node: NodeDataType | null, x?: number, y?: number) => void;
   onCollapseNode: (id: number) => void;
   onResizeNode: (id: number, width: number, height: number) => void;
   onLockNode: (id: number) => void;
-  onSwapEdge: (sourceNode: NodeDataType, targetNode: NodeDataType, edge: EdgeDataType) => void;
   onUndo?: () => void;
   onRedo?: () => void;
   onUpdateNode: (node: NodeDataType) => void;
@@ -87,4 +86,5 @@ export type IGraphViewProps = {
     current: HTMLDivElement | null,
   };
   ACTION_SAVE_MAP_TO_UNDO: Function;
+  ACTION_SET_CURSOR: Function;
 };

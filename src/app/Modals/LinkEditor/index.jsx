@@ -105,11 +105,9 @@ class LinkEditor extends Component<ILinkEditorProps, ILinkEditorState> {
 
     return (
       <ModalWrapper
+        x={x}
+        y={y}
         ref={instance => connectDragPreview(instance)}
-        style={{
-          left: `${x}px`,
-          top: `${y}px`,
-        }}
       >
         <ModalHeader ref={instance => connectDragSource(instance)}>
           <h4>Link Editor</h4>

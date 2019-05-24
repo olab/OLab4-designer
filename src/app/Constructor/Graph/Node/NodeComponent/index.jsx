@@ -3,20 +3,22 @@ import React, { PureComponent } from 'react';
 import classNames from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
 import {
-  CardHeader, Typography, Card, CardContent, RootRef,
+  Card,
+  CardHeader,
+  CardContent,
+  Typography,
+  RootRef,
 } from '@material-ui/core';
-
 
 import CardFooter from './CardFooter';
 import ActionBar from './HeaderActionBar';
 import HeaderTitle from './HeaderTitle';
 
-import type { INodeProps } from './types';
-
 import { ACTION_RESIZE } from '../config';
 
-import styles from './styles';
+import type { INodeProps } from './types';
 
+import styles from './styles';
 
 class NodeComponent extends PureComponent <INodeProps> {
   render() {
@@ -31,13 +33,12 @@ class NodeComponent extends PureComponent <INodeProps> {
       text,
       title,
       color,
+      isLinked,
     } = this.props;
 
-    const { cardContent, cardContentLocked } = classes;
-
     const cardContentMain = classNames(
-      cardContent,
-      { [cardContentLocked]: isLocked },
+      classes.cardContent,
+      { [classes.cardContentLocked]: isLocked },
     );
 
     const headerWidth = isCollapsed ? width - 10 : '';
@@ -73,7 +74,7 @@ class NodeComponent extends PureComponent <INodeProps> {
                 {text}
               </Typography>
             </CardContent>
-            <CardFooter />
+            <CardFooter isLinked={isLinked} />
           </>
           )}
         </Card>

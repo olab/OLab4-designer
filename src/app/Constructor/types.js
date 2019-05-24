@@ -17,7 +17,7 @@ export type IConstructorState = {
 };
 
 export type Constructor = {
-  currentTool: string,
+  cursor: string,
   layoutEngineType: 'None' | 'SnapToGrid' | 'VerticalTree',
   zoom: {
     index: number,
@@ -40,8 +40,15 @@ type SetZoomControlsRef = {
   ref: { current: null | HTMLDivElement },
 };
 
-export type ConstructorActions = SetZoomControlsRef;
+export const SET_CURSOR = 'SET_CURSOR';
+type SetCursor = {
+  type: 'SET_CURSOR',
+  cursor: string,
+};
+
+export type ConstructorActions = SetZoomControlsRef | SetCursor;
 
 export default {
   SET_ZOOM_CONTROLS_REF,
+  SET_CURSOR,
 };

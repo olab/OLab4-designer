@@ -23,6 +23,7 @@ export type IEdgeProps = {
   edgeHandleSize?: number;
   sourceNode: INode | null;
   targetNode: INode | ITargetPosition;
+  isLinkingStarted: boolean;
   isSelected: boolean;
   hasSibling: boolean;
   viewWrapperElem: HTMLDivElement;

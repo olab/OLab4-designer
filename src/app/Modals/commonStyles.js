@@ -6,6 +6,8 @@ const colorLightGrayWOpacity = 'rgb(168,168,168,0.3)';
 const colorBlackBlue = '#24446A';
 
 export const ModalWrapper = styled.div`
+  left: ${({ x }) => x || 0}px;
+  top: ${({ y }) => y || 0}px;
   width: 20rem;
   height: 25rem;
   background-color: ${colorWhite};

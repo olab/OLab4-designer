@@ -2,33 +2,32 @@
 import * as d3 from 'd3';
 import React from 'react';
 
-import type {
-  INodeProps,
-  INodeState,
-  NodeData,
-} from './types';
+import NodeComponent from './NodeComponent';
 
 import {
   ACTION_COLLAPSE,
   ACTION_LOCK,
   ACTION_ADD,
+  ACTION_RESIZE,
+  ACTION_LINK,
   DEFAULT_HEIGHT,
   DEFAULT_WIDTH,
   COLLAPSED_HEIGHT,
   DEFAULT_NODE_INDENT,
-  ACTION_RESIZE,
 } from './config';
 
-import NodeComponent from './NodeComponent';
+import type {
+  NodeData,
+  INodeProps,
+  INodeState,
+} from './types';
 
 export class Node extends React.Component<INodeProps, INodeState> {
   constructor(props: INodeProps) {
     super(props);
     this.state = {
-      drawingEdge: false,
-      // hovered: false,
-      // selected: false,
       isResizeStart: false,
+      isEdgeDrawing: false,
       x: props.data.x || 0,
       y: props.data.y || 0,
     };
@@ -48,38 +47,36 @@ export class Node extends React.Component<INodeProps, INodeState> {
   componentDidMount() {
     const dragFunction = d3
       .drag()
-      .on('drag', this.handleMouseMove)
       .on('start', this.handleDragStart)
+      .on('drag', this.handleMouseMove)
       .on('end', this.handleDragEnd);
+
     d3
       .select(this.nodeRef.current)
       .on('mousedown', this.handleMouseDown)
-      .on('mouseout', this.handleMouseOut)
       .call(dragFunction);
   }
 
   componentDidUpdate() {
+    const { isResizeStart } = this.state;
     const {
       onNodeResize,
       data: {
         id, width, height, isCollapsed,
       },
     } = this.props;
-    const { isResizeStart } = this.state;
 
-    if (isCollapsed) {
+    if (isCollapsed || !isResizeStart) {
       return;
     }
 
-    if (isResizeStart) {
-      if (this.resizeRef.current !== null) {
-        const newWidth = this.resizeRef.current.offsetWidth - 4;
-        const newHeight = this.resizeRef.current.offsetHeight - 2;
-        if (newWidth !== width || newHeight !== height) {
-          onNodeResize(id, newWidth, newHeight);
-          // eslint-disable-next-line react/no-did-update-set-state
-          this.setState({ isResizeStart: false });
-        }
+    if (this.resizeRef.current !== null) {
+      const newWidth = this.resizeRef.current.offsetWidth - 4;
+      const newHeight = this.resizeRef.current.offsetHeight - 2;
+      if (newWidth !== width || newHeight !== height) {
+        onNodeResize(id, newWidth, newHeight);
+        // eslint-disable-next-line react/no-did-update-set-state
+        this.setState({ isResizeStart: false });
       }
     }
   }
@@ -98,6 +95,7 @@ export class Node extends React.Component<INodeProps, INodeState> {
       data,
       onNodeCollapsed,
       onNodeLocked,
+      onNodeLink,
       onCreateNodeWithEdge,
     } = this.props;
 
@@ -119,28 +117,39 @@ export class Node extends React.Component<INodeProps, INodeState> {
         this.setState({ isResizeStart: true });
         break;
 
+      case ACTION_LINK:
+        onNodeLink(data);
+        break;
       default:
         break;
     }
   }
 
-  handleMouseDown = () => {
-    const { target, shiftKey } = d3.event;
-    const { data: { isLocked } } = this.props;
+  getClickedItemAction = () => {
+    const { isLinkingStarted } = this.props;
+    const { sourceEvent: sourceEventD3, target: targetD3, shiftKey } = d3.event;
+    const target = sourceEventD3 ? sourceEventD3.target : targetD3;
 
     const activeElement = target.closest('[data-active="true"]');
 
     if (!activeElement) {
-      return;
+      return null;
     }
 
-    if (!shiftKey) {
+    if (!shiftKey && !isLinkingStarted && d3.event.stopImmediatePropagation) {
       d3.event.stopImmediatePropagation();
     }
 
     const action = activeElement.getAttribute('data-action');
 
-    if (isLocked && action !== ACTION_LOCK) {
+    return action;
+  }
+
+  handleMouseDown = () => {
+    const { data: { isLocked } } = this.props;
+    const action = this.getClickedItemAction();
+
+    if (!action || (isLocked && action !== ACTION_LOCK)) {
       return;
     }
 
@@ -148,20 +157,14 @@ export class Node extends React.Component<INodeProps, INodeState> {
   }
 
   handleMouseMove = () => {
-    const { drawingEdge } = this.state;
-    const { data: { isLocked } } = this.props;
+    const { isEdgeDrawing } = this.state;
     const {
-      layoutEngine, data, onNodeMove,
+      layoutEngine, data, data: { isLocked }, onNodeMove, isLinkingStarted,
     } = this.props;
     const { buttons, shiftKey } = d3.event.sourceEvent;
     const mouseButtonDown = buttons === 1;
 
-
-    if (!mouseButtonDown) {
-      return;
-    }
-
-    if (isLocked && !shiftKey) {
+    if (!mouseButtonDown || (isLocked && !shiftKey) || isLinkingStarted) {
       return;
     }
     // While the mouse is down, this function handles all mouse movement
@@ -170,31 +173,30 @@ export class Node extends React.Component<INodeProps, INodeState> {
       y: d3.event.y,
     };
 
-
-    if (shiftKey) {
-      this.setState({ drawingEdge: true });
-      // draw edge
-      // undo the target offset subtraction done by Edge
-      // const off = Edge.calculateOffset(data, newState, viewWrapperElem);
-      // newState.x += off.xOff;
-      // newState.y += off.yOff;
-      // now tell the graph that we're actually drawing an edge
-    } else if (!drawingEdge && layoutEngine) {
-      // move node using the layout engine
-      Object.assign(newState, layoutEngine.calculatePosition(newState));
+    if (!isEdgeDrawing) {
+      if (shiftKey) {
+        this.setState({
+          isEdgeDrawing: true,
+        });
+      } else if (layoutEngine) {
+        // move node using the layout engine
+        Object.assign(newState, layoutEngine.calculatePosition(newState));
+      }
     }
-    this.setState(newState);
+
     // Never use this.props.index because if the nodes array changes order
     // then this function could move the wrong node.
     onNodeMove(newState, data.id, shiftKey);
+
+    this.setState(newState);
   }
 
   handleDragStart = () => {
-    const { ACTION_SAVE_MAP_TO_UNDO, data: { isLocked } } = this.props;
+    const { ACTION_SAVE_MAP_TO_UNDO, data: { isLocked }, isLinkingStarted } = this.props;
     const { current: currentNodeRef } = this.nodeRef;
     const { parentElement: currentNodeRefParent } = currentNodeRef;
 
-    if (!currentNodeRef || isLocked) {
+    if (!currentNodeRef || isLocked || isLinkingStarted) {
       return;
     }
 
@@ -205,48 +207,25 @@ export class Node extends React.Component<INodeProps, INodeState> {
   }
 
   handleDragEnd = () => {
+    const { isLinkingStarted } = this.props;
     const { current: currentNodeRef } = this.nodeRef;
 
     if (!currentNodeRef) {
       return;
     }
 
-    const { x, y, drawingEdge } = this.state;
+    const { x, y } = this.state;
     const { data, onNodeUpdate, onNodeSelected } = this.props;
     const { shiftKey } = d3.event.sourceEvent;
 
-    this.setState({ drawingEdge: false });
+    const action = this.getClickedItemAction();
 
-    onNodeUpdate(
-      { x, y },
-      data.id,
-      shiftKey || drawingEdge,
-    );
-
-    onNodeSelected(data, data.id, shiftKey || drawingEdge);
-  }
-
-  handleMouseOver = (event: any) => {
-    // Detect if mouse is already down and do nothing.
-    let hovered = false;
-
-    const { data, onNodeMouseEnter } = this.props;
-    if ((d3.event && d3.event.buttons !== 1) || (event && event.buttons !== 1)) {
-      hovered = true;
-      // this.setState({ hovered });
+    if (!isLinkingStarted || (isLinkingStarted && (!action || action === ACTION_RESIZE))) {
+      onNodeUpdate({ x, y }, data.id, shiftKey || isLinkingStarted);
+      onNodeSelected(data, shiftKey);
     }
 
-    onNodeMouseEnter(event, data, hovered);
-  }
-
-  handleMouseOut = (event: any) => {
-    // Detect if mouse is already down and do nothing. Sometimes the system lags on
-    // drag and we don't want the mouseOut to fire while the user is moving the
-    // node around
-    const { data, onNodeMouseLeave } = this.props;
-
-    // this.setState({ hovered: false });
-    onNodeMouseLeave(event, data);
+    this.setState({ isEdgeDrawing: false });
   }
 
   nodeRef: any;
@@ -255,6 +234,7 @@ export class Node extends React.Component<INodeProps, INodeState> {
 
   renderShape() {
     const {
+      isLinkSource,
       data: {
         isCollapsed, isLocked, width, height, type, title, text, color,
       },
@@ -274,6 +254,7 @@ export class Node extends React.Component<INodeProps, INodeState> {
         viewBox={`0 0 ${currentWidth} ${currentHeight}`}
       >
         <NodeComponent
+          isLinked={isLinkSource}
           isLocked={isLocked}
           isCollapsed={isCollapsed}
           resizeRef={this.resizeRef}
@@ -296,10 +277,6 @@ export class Node extends React.Component<INodeProps, INodeState> {
 
     return (
       <g
-        onMouseOver={this.handleMouseOver}
-        onMouseOut={this.handleMouseOut}
-        onFocus={() => undefined}
-        onBlur={() => undefined}
         id={id}
         ref={this.nodeRef}
         transform={`translate(${x}, ${y})`}

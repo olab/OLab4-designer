@@ -3,10 +3,11 @@ import {
   type ConstructorActions,
   type Constructor as ConstructorType,
   SET_ZOOM_CONTROLS_REF,
+  SET_CURSOR,
 } from './types';
 
 export const initialConstructorState: ConstructorType = {
-  currentTool: 'arrow',
+  cursor: 'default',
   layoutEngineType: 'VerticalTree',
   zoom: {
     index: 50,
@@ -41,7 +42,14 @@ const constructor = (
         },
       };
     }
+    case SET_CURSOR: {
+      const { cursor } = action;
 
+      return {
+        ...state,
+        cursor,
+      };
+    }
     default:
       return state;
   }

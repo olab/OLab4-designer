@@ -28,25 +28,24 @@ export type INodeProps = {
   data: NodeData;
   id: string;
   isSelected: boolean;
-  onNodeMouseEnter: (event: any, data: any, hovered: boolean) => void;
-  onNodeMouseLeave: (event: any, data: any) => void;
-  onNodeMove: (point: IPoint, id: string, shiftKey: boolean) => void;
-  onNodeSelected: (data: any, id: string, shiftKey: boolean) => void;
-  onNodeUpdate: (point: IPoint, id: string, shiftKey: boolean) => void;
+  isLinkingStarted: boolean;
+  isLinkSource: boolean;
+  onNodeMove: (point: IPoint, id: number, shiftKey: boolean) => void;
+  onNodeSelected: (data: any, shiftKey: boolean) => void;
+  onNodeUpdate: (point: IPoint, id: number, shiftKey: boolean) => void;
   onCreateNodeWithEdge: (x: number, y: number, sourceNode: NodeData) => void;
   onNodeCollapsed: (id: number) => void;
   onNodeResize: (id: number, width: number, height: number) => void;
   onNodeLocked: (id: number) => void;
+  onNodeLink: (data: any) => void;
   ACTION_SAVE_MAP_TO_UNDO: () => void;
   layoutEngine?: any;
   viewWrapperElem: HTMLDivElement;
 };
 
 export type INodeState = {
-  // hovered: boolean;
   x: number;
   y: number;
+  isEdgeDrawing: boolean,
   isResizeStart: boolean,
-  // selected: boolean;
-  drawingEdge: boolean;
 };

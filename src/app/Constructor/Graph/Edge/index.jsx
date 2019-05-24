@@ -10,6 +10,7 @@ import { Intersection } from 'kld-intersections';
 
 import type {
   IEdgeProps,
+  ITargetPosition,
   EdgeData as EdgeDataType,
 } from './types';
 
@@ -38,9 +39,9 @@ export class Edge extends React.Component<IEdgeProps> {
    *
    * Calculates angle between 2 dots.
    */
-  static calculateAngle(pt1: any, pt2: any) {
-    const xComp = (pt2.x || 0) - (pt1.x || 0);
-    const yComp = (pt2.y || 0) - (pt1.y || 0);
+  static calculateAngle(src: any, trg: any) {
+    const xComp = (trg.x || 0) - (src.x || 0);
+    const yComp = (trg.y || 0) - (src.y || 0);
 
     const theta = Math.atan2(yComp, xComp);
     return theta * 180 / Math.PI;
@@ -74,7 +75,7 @@ export class Edge extends React.Component<IEdgeProps> {
    */
   static getEdgePathElement(
     edge: EdgeDataType,
-    viewWrapperElem: HTMLDivElement | HTMLDocument = document,
+    viewWrapperElem: HTMLDivElement,
   ) {
     return viewWrapperElem.querySelector(`#edge-${edge.source}-${edge.target}-container>.edge-container>.edge>.edge-path`);
   }
@@ -393,7 +394,7 @@ export class Edge extends React.Component<IEdgeProps> {
   static calculateOffset(
     src: any,
     trg: any,
-    viewWrapperElem?: HTMLDivElement | HTMLDocument = document,
+    viewWrapperElem: HTMLDivElement,
   ) {
     const response = Edge.getDefaultIntersectResponse();
 
@@ -518,7 +519,11 @@ export class Edge extends React.Component<IEdgeProps> {
     return `${translation} ${rotation} ${offset}`;
   }
 
-  static getOffset = (sourceNodeXY, targetNodeXY, offset) => {
+  static getOffset = (
+    sourceNodeXY: ITargetPosition,
+    targetNodeXY: ITargetPosition,
+    offset: number,
+  ) => {
     const { x: sourceX, y: sourceY } = sourceNodeXY;
     const { x: targetX, y: targetY } = targetNodeXY;
 
@@ -532,20 +537,12 @@ export class Edge extends React.Component<IEdgeProps> {
   }
 
   getPathDescription() {
-    const { sourceNode, targetNode, hasSibling } = this.props;
+    const { sourceNode = {}, targetNode = {}, hasSibling } = this.props;
 
     const trgX = (targetNode && targetNode.x) ? targetNode.x : 0;
     const trgY = (targetNode && targetNode.y) ? targetNode.y : 0;
     const srcX = (sourceNode && sourceNode.x) ? sourceNode.x : 0;
     const srcY = (sourceNode && sourceNode.y) ? sourceNode.y : 0;
-
-    // To calculate the offset for a specific node we use that node as the third parameter
-    // and the accompanying node as the second parameter, representing where the line
-    // comes from and where it's going to. Don't think of a line as a one-way arrow, but rather
-    // a connection between two points. In this case, to obtain the offsets for the src we
-    // write trg first, then src second. Vice versa to get the offsets for trg.
-    // const srcOff = Edge.calculateOffset(targetNode, sourceNode, viewWrapperElem);
-    // const trgOff = Edge.calculateOffset(sourceNode, targetNode, viewWrapperElem);
 
     const { width: sourceWidth, height: sourceHeight } = sourceNode;
     const { width: targetWidth = 0, height: targetHeight = 0 } = targetNode;
@@ -601,7 +598,12 @@ export class Edge extends React.Component<IEdgeProps> {
 
   render() {
     const {
-      data, edgeTypes, edgeHandleSize, viewWrapperElem, isSelected: selected,
+      data,
+      edgeTypes,
+      edgeHandleSize,
+      viewWrapperElem,
+      isSelected: selected,
+      isLinkingStarted,
     } = this.props;
 
     if (!viewWrapperElem) {
@@ -612,7 +614,10 @@ export class Edge extends React.Component<IEdgeProps> {
 
     return (
       <g className="edge-container" data-source={data.source} data-target={data.target}>
-        <EdgeWrapper selected={selected}>
+        <EdgeWrapper
+          selected={selected}
+          isLinkingStarted={isLinkingStarted}
+        >
           <path
             stroke={data.color}
             strokeWidth={`${data.thickness}px`}

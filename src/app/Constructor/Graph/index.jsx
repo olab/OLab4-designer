@@ -9,23 +9,18 @@ import { DropTarget } from 'react-dnd';
 import isEqual from 'lodash.isequal';
 
 import GraphView from './GraphView';
-import type { EdgeData as EdgeDataType } from './Edge/types';
-import type { NodeData as NodeDataType } from './Node/types';
-import type {
-  IGraphProps,
-  IGraphState,
-} from './types';
-import type {
-  Edge as EdgeType,
-  Node as NodeType,
-} from '../../reducers/map/types';
 
 import { createNewEdge, createNewNode } from './utils';
-import { EdgeTypes } from './config';
+import { EdgeTypes, TINY_MODAL_OFFSET } from './config';
 import { DndContexts, ModalsNames } from '../../Modals/config';
 
 import * as graphActions from '../../reducers/map/action';
 import * as modalActions from '../../Modals/action';
+
+import type { IGraphProps, IGraphState } from './types';
+import type { EdgeData as EdgeDataType } from './Edge/types';
+import type { NodeData as NodeDataType } from './Node/types';
+import type { Edge as EdgeType, Node as NodeType } from '../../reducers/map/types';
 
 import { Wrapper } from './styles';
 
@@ -71,7 +66,7 @@ export class Graph extends Component<IGraphProps, IGraphState> {
     return graph.edges.find(edge => edge.isSelected) || null;
   }
 
-  onSelectNode = (item: NodeDataType | null, clientX: number, clientY: number) => {
+  onSelectNode = (item: NodeDataType | null, clientX?: number = 0, clientY?: number = 0) => {
     const itemId = item ? item.id : null;
     const {
       ACTION_SELECT_ITEM,
@@ -82,7 +77,7 @@ export class Graph extends Component<IGraphProps, IGraphState> {
     ACTION_SELECT_ITEM(itemId);
   };
 
-  onSelectEdge = (item: EdgeDataType | null, clientX: number, clientY: number) => {
+  onSelectEdge = (item: EdgeDataType | null, clientX?: number = 0, clientY?: number = 0) => {
     const itemId = item ? item.id : null;
 
     const {
@@ -121,9 +116,15 @@ export class Graph extends Component<IGraphProps, IGraphState> {
       return;
     }
 
-    const { ACTION_CREATE_EDGE } = this.props;
-
+    const { ACTION_CREATE_EDGE, ACTION_SET_POSITION_LINK_EDITOR_MODAL } = this.props;
+    const [viewWrapperRect] = this.graphViewWrapperRef.current.getClientRects();
+    const { x: offsetX, y: offsetY } = viewWrapperRect;
     const newEdge = createNewEdge(sourceNode.id, targetNode.id);
+
+    ACTION_SET_POSITION_LINK_EDITOR_MODAL(
+      offsetX + TINY_MODAL_OFFSET,
+      offsetY + TINY_MODAL_OFFSET,
+    );
 
     ACTION_CREATE_EDGE(newEdge);
   }
@@ -154,11 +155,6 @@ export class Graph extends Component<IGraphProps, IGraphState> {
   onDeleteEdge = (edge: EdgeDataType) => {
     const { ACTION_DELETE_EDGE } = this.props;
     ACTION_DELETE_EDGE(edge.id);
-  }
-
-  onSwapEdge = (sourceNode: NodeDataType, targetNode: NodeDataType, edge: EdgeDataType) => {
-    const { ACTION_SWAP_EDGE } = this.props;
-    ACTION_SWAP_EDGE(edge.id, sourceNode.id, targetNode.id);
   }
 
   onUndo = () => {
@@ -253,7 +249,6 @@ export class Graph extends Component<IGraphProps, IGraphState> {
           onDeleteNode={this.onDeleteNode}
           onSelectEdge={this.onSelectEdge}
           onCreateEdge={this.onCreateEdge}
-          onSwapEdge={this.onSwapEdge}
           onDeleteEdge={this.onDeleteEdge}
           onUndo={this.onUndo}
           onRedo={this.onRedo}
@@ -367,4 +362,11 @@ export default DropTarget(
   DndContexts.VIEWPORT,
   spec,
   collect,
-)(connect(mapStateToProps, mapDispatchToProps)(Graph));
+)(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps,
+    null,
+    { forwardRef: true },
+  )(Graph),
+);

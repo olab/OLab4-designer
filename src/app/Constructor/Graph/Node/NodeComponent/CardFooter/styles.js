@@ -1,19 +1,41 @@
+import styled from 'styled-components';
+
+import { FOOTER_WIDTH, LINK_ICON_SIZE } from '../../config';
+
+const colorBlack = '#000';
+const colorWhite = '#fff';
+const colorGreen = '#03B595';
+
+export const Wrapper = styled.div`
+  position: absolute;
+  display: flex;
+  justify-content: flex-end;
+  width: ${FOOTER_WIDTH}px;
+  bottom: -16px;
+
+  & > button:first-of-type {
+    margin-right: 8px;
+  }
+`;
+
 const styles = {
-  footer: {
-    display: 'flex',
-    position: 'absolute',
-    bottom: -16,
-  },
   fab: {
-    color: 'black',
-    backgroundColor: 'white',
-    left: 20,
-    height: 32,
-    width: 32,
-    padding: 8,
-    marginRight: 8,
+    color: colorBlack,
+    backgroundColor: colorWhite,
+    height: LINK_ICON_SIZE,
+    width: LINK_ICON_SIZE,
     boxShadow: '0px 4px 8px rgba(36, 68, 106, 0.2)',
-    minHeight: 32,
+    minHeight: LINK_ICON_SIZE,
+  },
+  linkIcon: {
+    backgroundColor: colorGreen,
+    cursor: 'inherit',
+    '&:hover': {
+      backgroundColor: colorGreen,
+    },
+    '& path': {
+      stroke: colorWhite,
+    },
   },
 };
 

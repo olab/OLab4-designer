@@ -1,5 +1,6 @@
 // @flow
-import type { INode } from '../../Constructor/Graph/Node/types';
+import type { NodeData as NodeDataType } from '../../Constructor/Graph/Node/types';
+import type { EdgeData as EdgeDataType } from '../../Constructor/Graph/Edge/types';
 import {
   type Node as NodeType,
   type Edge as EdgeType,
@@ -56,7 +57,7 @@ export const ACTION_CREATE_NODE_WITH_EDGE = (nodeData: NodeType, edgeData: EdgeT
   edgeData,
 });
 
-export const ACTION_UPDATE_NODE = (nodeData: INode) => ({
+export const ACTION_UPDATE_NODE = (nodeData: NodeDataType) => ({
   type: UPDATE_NODE,
   nodeData,
 });
