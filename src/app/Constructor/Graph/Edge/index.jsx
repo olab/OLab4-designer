@@ -15,6 +15,7 @@ import type {
 } from './types';
 
 import { getStringVariant } from './utils';
+import { COLLAPSED_HEIGHT } from '../Node/config';
 
 import { EdgeWrapper } from './styles';
 
@@ -544,9 +545,16 @@ export class Edge extends React.Component<IEdgeProps> {
     const srcX = (sourceNode && sourceNode.x) ? sourceNode.x : 0;
     const srcY = (sourceNode && sourceNode.y) ? sourceNode.y : 0;
 
-    const { width: sourceWidth, height: sourceHeight } = sourceNode;
-    const { width: targetWidth = 0, height: targetHeight = 0 } = targetNode;
-    const minRadius = Math.min(sourceWidth, sourceHeight, targetWidth, targetHeight) / 2;
+    const {
+      width: sourceWidth, height: sourceHeight, isCollapsed: isSourceCollapsed,
+    } = sourceNode;
+    const {
+      width: targetWidth = 0, height: targetHeight = 0, isCollapsed: isTargetCollapsed,
+    } = targetNode;
+    const isCollapsed = isSourceCollapsed || isTargetCollapsed;
+    const minRadius = isCollapsed
+      ? COLLAPSED_HEIGHT / 2
+      : Math.min(sourceWidth, sourceHeight, targetWidth, targetHeight) / 2;
     const thetaDegrees = Edge.calculateAngle(sourceNode, targetNode);
     const thetaRadians = (90 - thetaDegrees) * (Math.PI / 180);
 

@@ -1,5 +1,5 @@
 // @flow
-import type { INode } from '../Node/types';
+import type { NodeData as NodeDataType } from '../Node/types';
 
 export type EdgeData = {
   id: number,
@@ -21,8 +21,8 @@ export type IEdgeProps = {
   data: EdgeData;
   edgeTypes: any;
   edgeHandleSize?: number;
-  sourceNode: INode | null;
-  targetNode: INode | ITargetPosition;
+  sourceNode: NodeDataType | null;
+  targetNode: NodeDataType | ITargetPosition;
   isLinkingStarted: boolean;
   isSelected: boolean;
   hasSibling: boolean;
