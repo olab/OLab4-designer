@@ -20,12 +20,12 @@ import {
   UNDO_MAP,
   REDO_MAP,
   SAVE_MAP_TO_UNDO,
-  CREATE_MAP_FROM_TEMPLATE,
+  CREATE_MAP_FAILED,
+  CREATE_MAP_SUCCEEDED,
+  CREATE_MAP_REQUESTED,
 } from './types';
 
 import sample from '../../../helpers/nodes_sample';
-import manualTemplate from '../../../helpers/templates/manual';
-import simpleTemplate from '../../../helpers/templates/simple';
 
 export const initialMapState: MapType = {
   id: null,
@@ -33,6 +33,7 @@ export const initialMapState: MapType = {
   abstract: '',
   keywords: '',
   enabled: false,
+  isFetching: false,
   nodes: sample.nodes,
   edges: sample.edges,
   undo: [],
@@ -294,30 +295,25 @@ const map = (state: MapType = initialMapState, action: MapActions) => {
         edges,
       };
     }
-    case CREATE_MAP_FROM_TEMPLATE: {
-      let template;
-      const { templateName } = action;
-
-      switch (templateName) {
-        case 'manual':
-          template = cloneDeep(manualTemplate);
-          break;
-        case 'simple':
-          template = cloneDeep(simpleTemplate);
-          break;
-        default:
-          return state;
-      }
-
-      const { nodes, edges } = template;
+    case CREATE_MAP_SUCCEEDED: {
+      const { map: newMap } = action;
 
       return {
-        ...cloneDeep(initialMapState),
-        name: '',
-        nodes,
-        edges,
+        ...newMap,
+        isFetching: false,
       };
     }
+    case CREATE_MAP_FAILED: {
+      return {
+        ...state,
+        isFetching: false,
+      };
+    }
+    case CREATE_MAP_REQUESTED:
+      return {
+        ...state,
+        isFetching: true,
+      };
     default:
       return state;
   }

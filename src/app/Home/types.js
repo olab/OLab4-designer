@@ -1,12 +1,15 @@
 // @flow
 export type IHomeProps = {
   classes: {
-    [props: string]: any;
-  };
-  ACTION_CREATE_MAP_FROM_TEMPLATE: Function;
-  history: any;
+    [props: string]: any,
+  },
+  history: any,
+  mapId: number | null,
+  isMapFetching: boolean,
+  ACTION_CREATE_MAP_REQUESTED: Function,
 };
 
 export type IHomeState = {
-  expanded: string | null;
+  expanded: string | null,
+  isButtonsDisabled: boolean,
 };

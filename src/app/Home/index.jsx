@@ -28,7 +28,23 @@ import styles, {
 class Home extends PureComponent<IHomeProps, IHomeState> {
   state: IHomeState = {
     expanded: null,
+    isButtonsDisabled: false,
   };
+
+  componentDidUpdate(prevProps: IHomeProps) {
+    const { mapId, isMapFetching, history } = this.props;
+
+    const isFetchingStopped = prevProps.isMapFetching && !isMapFetching;
+    const isMapRetrieved = isFetchingStopped && mapId;
+
+    if (isFetchingStopped) {
+      this.toggleDisableButtons();
+    }
+
+    if (isMapRetrieved) {
+      history.push('/constructor');
+    }
+  }
 
   handleChange = (panelName: string): Function => (event: Event, expanded: boolean): void => {
     this.setState({
@@ -38,15 +54,21 @@ class Home extends PureComponent<IHomeProps, IHomeState> {
     });
   }
 
-  onTemplateChoose = (templateName: string): void => {
-    const { history, ACTION_CREATE_MAP_FROM_TEMPLATE } = this.props;
-    ACTION_CREATE_MAP_FROM_TEMPLATE(templateName);
+  onTemplateChoose = (templateId?: number): void => {
+    const { ACTION_CREATE_MAP_REQUESTED } = this.props;
+    ACTION_CREATE_MAP_REQUESTED(templateId);
 
-    history.push('/constructor');
+    this.toggleDisableButtons();
+  }
+
+  toggleDisableButtons = () => {
+    this.setState(({ isButtonsDisabled }) => ({
+      isButtonsDisabled: !isButtonsDisabled,
+    }));
   }
 
   render() {
-    const { expanded } = this.state;
+    const { expanded, isButtonsDisabled } = this.state;
     const { classes } = this.props;
 
     return (
@@ -72,7 +94,8 @@ class Home extends PureComponent<IHomeProps, IHomeState> {
                 size="small"
                 aria-label="Create"
                 classes={{ root: classes.fab }}
-                onClick={() => this.onTemplateChoose('manual')}
+                onClick={() => this.onTemplateChoose()}
+                disabled={isButtonsDisabled}
               >
                 Create Map
                 <ArrowForwardIcon
@@ -105,7 +128,7 @@ class Home extends PureComponent<IHomeProps, IHomeState> {
                 size="small"
                 aria-label="Create"
                 classes={{ root: classes.fab }}
-                onClick={() => this.onTemplateChoose('simple')}
+                disabled={isButtonsDisabled}
               >
                 Create Map
                 <ArrowForwardIcon
@@ -121,14 +144,19 @@ class Home extends PureComponent<IHomeProps, IHomeState> {
   }
 }
 
+const mapStateToProps = ({ map: { id, isFetching } }) => ({
+  mapId: id,
+  isMapFetching: isFetching,
+});
+
 const mapDispatchToProps = dispatch => ({
-  ACTION_CREATE_MAP_FROM_TEMPLATE: (templateName: string) => {
-    dispatch(actions.ACTION_CREATE_MAP_FROM_TEMPLATE(templateName));
+  ACTION_CREATE_MAP_REQUESTED: (templateId?: number) => {
+    dispatch(actions.ACTION_CREATE_MAP_REQUESTED(templateId));
   },
 });
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps,
 )(
   withStyles(styles)(

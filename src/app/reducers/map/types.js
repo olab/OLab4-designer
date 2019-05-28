@@ -23,6 +23,7 @@ export type Map = {
   abstract: string,
   keywords: string,
   enabled: boolean,
+  isFetching: boolean,
   nodes: Array<Node>,
   edges: Array<Edge>,
   undo: Array<MapItem>,
@@ -134,19 +135,31 @@ type RedoMap = {
   type: 'REDO_MAP',
 };
 
-const CREATE_MAP_FROM_TEMPLATE = 'CREATE_MAP_FROM_TEMPLATE';
-type CreateMapFromTemplate = {
-  type: 'CREATE_MAP_FROM_TEMPLATE',
-  templateName: string,
+const CREATE_MAP_SUCCEEDED = 'CREATE_MAP_SUCCEEDED';
+type CreateMapFromTemplateSucceeded = {
+  type: 'CREATE_MAP_SUCCEEDED',
+  map: Map,
+};
+
+const CREATE_MAP_FAILED = 'CREATE_MAP_FAILED';
+type CreateMapFromTemplateFailed = {
+  type: 'CREATE_MAP_FAILED',
+};
+
+const CREATE_MAP_REQUESTED = 'CREATE_MAP_REQUESTED';
+type CreateMapFromTemplateRequested = {
+  type: 'CREATE_MAP_REQUESTED',
+  templateId?: number,
 };
 
 export type MapActions = SelectItem |
   CreateNode | UpdateNode | DeleteNode |
   CreateEdge | DeleteEdge | SwapEdge |
   ResetMap | RenameMap | MapToUndo |
-  UndoMap | RedoMap | CreateMapFromTemplate |
-  CreateNodeWithEdge | ResizeNode | UpdateEdge |
-  CollapseNode | LockNode;
+  UndoMap | RedoMap | CreateNodeWithEdge |
+  ResizeNode | UpdateEdge | CollapseNode |
+  LockNode | CreateMapFromTemplateRequested |
+  CreateMapFromTemplateSucceeded | CreateMapFromTemplateFailed;
 
 export {
   SELECT_ITEM,
@@ -166,5 +179,7 @@ export {
   SAVE_MAP_TO_UNDO,
   UNDO_MAP,
   REDO_MAP,
-  CREATE_MAP_FROM_TEMPLATE,
+  CREATE_MAP_FAILED,
+  CREATE_MAP_SUCCEEDED,
+  CREATE_MAP_REQUESTED,
 };

@@ -18,7 +18,6 @@ function* authUser(action) {
     });
 
     yield put(ACTION_NOTIFICATION_ERROR(errorMessage));
-    // TODO: handling of errors
   }
 }
 

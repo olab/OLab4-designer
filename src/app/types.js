@@ -1,7 +1,8 @@
 // @flow
 export type IAppProps = {
-  isAuth: boolean,
   history: any;
+  isAuth: boolean,
+  isDataFetching: boolean,
   notifications: Array<any>,
 };
 

@@ -4,6 +4,7 @@ import type { EdgeData as EdgeDataType } from '../../Constructor/Graph/Edge/type
 import {
   type Node as NodeType,
   type Edge as EdgeType,
+  type Map as MapType,
   SELECT_ITEM,
   CREATE_NODE,
   UPDATE_NODE,
@@ -21,7 +22,9 @@ import {
   SAVE_MAP_TO_UNDO,
   UNDO_MAP,
   REDO_MAP,
-  CREATE_MAP_FROM_TEMPLATE,
+  CREATE_MAP_FAILED,
+  CREATE_MAP_SUCCEEDED,
+  CREATE_MAP_REQUESTED,
 } from './types';
 
 export const ACTION_SELECT_ITEM = (id: number | null) => ({
@@ -110,7 +113,16 @@ export const ACTION_REDO_MAP = () => ({
   type: REDO_MAP,
 });
 
-export const ACTION_CREATE_MAP_FROM_TEMPLATE = (templateName: string) => ({
-  type: CREATE_MAP_FROM_TEMPLATE,
-  templateName,
+export const ACTION_CREATE_MAP_FAILED = () => ({
+  type: CREATE_MAP_FAILED,
+});
+
+export const ACTION_CREATE_MAP_SUCCEEDED = (map: MapType) => ({
+  type: CREATE_MAP_SUCCEEDED,
+  map,
+});
+
+export const ACTION_CREATE_MAP_REQUESTED = (templateId?: number) => ({
+  type: CREATE_MAP_REQUESTED,
+  templateId,
 });

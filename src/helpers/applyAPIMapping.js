@@ -34,10 +34,50 @@ export const edgeFromServer = (edgeData) => {
 };
 
 export const nodeToServer = nodeData => nodeData;
-export const nodeFromServer = nodeData => nodeData;
+export const nodeFromServer = (nodeData) => {
+  const FEMapping = {
+    isSelected: false,
+    data: {
+      id: nodeData.id,
+      map_id: nodeData.map_id,
+      title: nodeData.title,
+      type_id: nodeData.type_id,
+      x: nodeData.x,
+      y: nodeData.y,
+      width: nodeData.width,
+      height: nodeData.height,
+      color: nodeData.color || nodeData.rgb,
+      type: nodeData.type_id,
+      text: nodeData.text,
+      isCollapsed: Boolean(nodeData.collapsed),
+      isLocked: Boolean(nodeData.locked),
+    },
+  };
+
+  return FEMapping;
+};
 
 export const mapToServer = mapData => mapData;
-export const mapFromServer = nodeData => nodeData;
+export const mapFromServer = (mapData) => {
+  const FEMapping = {
+    id: mapData.id,
+    name: mapData.name,
+    abstract: mapData.abstract,
+    keywords: mapData.keywords,
+    enabled: Boolean(mapData.enabled),
+    isFetching: false,
+    nodes: mapData.nodes
+      ? mapData.nodes.map(node => nodeFromServer(node))
+      : [],
+    edges: mapData.edges
+      ? mapData.edges.map(edge => edgeFromServer(edge))
+      : [],
+    undo: [],
+    redo: [],
+  };
+
+  return FEMapping;
+};
 
 export default {
   edgeToServer,
