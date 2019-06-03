@@ -3,8 +3,8 @@ import createInstance from '../createCustomInstance';
 const API = createInstance();
 
 export const getTemplates = () => API
-  .get('/templates')
-  .then(({ data }) => data)
+  .get('/olab/templates')
+  .then(({ data: { data: templates } }) => templates)
   .catch((error) => {
     throw error;
   });

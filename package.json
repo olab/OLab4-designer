@@ -28,6 +28,7 @@
     "kld-affine": "^2.0.4",
     "kld-intersections": "^0.4.3",
     "lodash.clonedeep": "^4.5.0",
+    "lodash.differencewith": "^4.5.0",
     "lodash.isequal": "^4.5.0",
     "lodash.merge": "^4.6.1",
     "lodash.omit": "^4.5.0",

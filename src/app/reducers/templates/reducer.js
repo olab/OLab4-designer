@@ -2,29 +2,52 @@
 import {
   type Templates as TemplatesType,
   type TemplatesActions,
-  SET_TEMPLATES,
+  TEMPLATES_REQUESTED,
+  TEMPLATES_REQUEST_FAILED,
+  TEMPLATES_REQUEST_SUCCEEDED,
   CREATE_TEMPLATE_FROM_MAP,
 } from './types';
 
-export const initialTemplatesState: TemplatesType = [];
+export const initialTemplatesState: TemplatesType = {
+  list: [],
+  isFetching: false,
+};
 
 const templates = (state: TemplatesType = initialTemplatesState, action: TemplatesActions) => {
   switch (action.type) {
-    case SET_TEMPLATES: {
-      const { newTemplates } = action;
-
-      return [
+    case TEMPLATES_REQUESTED: {
+      return {
         ...state,
-        ...newTemplates,
-      ];
+        isFetching: true,
+      };
+    }
+    case TEMPLATES_REQUEST_FAILED: {
+      return {
+        ...state,
+        isFetching: false,
+      };
+    }
+    case TEMPLATES_REQUEST_SUCCEEDED: {
+      const { templates: diffTemplates } = action;
+
+      return {
+        isFetching: false,
+        list: [
+          ...state.list,
+          ...diffTemplates,
+        ],
+      };
     }
     case CREATE_TEMPLATE_FROM_MAP: {
       const { template } = action;
 
-      return [
+      return {
         ...state,
-        template,
-      ];
+        list: [
+          ...state.list,
+          template,
+        ],
+      };
     }
     default:
       return state;

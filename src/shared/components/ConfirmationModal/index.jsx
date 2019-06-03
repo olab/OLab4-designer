@@ -17,13 +17,21 @@ import {
 } from './styles';
 
 class ConfirmationModal extends PureComponent<IConfirmationModalProps> {
+  static deafultProps = {
+    cancelBttnLabel: 'Cancel',
+    saveBttnLabel: 'Save',
+    showFooterButtons: false,
+  };
+
   handleSubmit = (e: Event): void => {
     if (e.preventDefault) {
       e.preventDefault();
     }
 
     const { onSave } = this.props;
-    onSave();
+    if (onSave) {
+      onSave();
+    }
   }
 
   render() {
@@ -32,8 +40,9 @@ class ConfirmationModal extends PureComponent<IConfirmationModalProps> {
       text,
       onClose,
       onSave,
-      cancelBttnLabel = 'Cancel',
-      saveBttnLabel = 'Save',
+      cancelBttnLabel,
+      saveBttnLabel,
+      showFooterButtons,
       children,
     } = this.props;
 
@@ -60,22 +69,24 @@ class ConfirmationModal extends PureComponent<IConfirmationModalProps> {
                 {children}
               </form>
             )}
-            <ModalFooter>
-              <Button
-                variant="outlined"
-                color="secondary"
-                onClick={onClose}
-              >
-                {cancelBttnLabel}
-              </Button>
-              <Button
-                variant="outlined"
-                color="primary"
-                onClick={onSave}
-              >
-                {saveBttnLabel}
-              </Button>
-            </ModalFooter>
+            {showFooterButtons && (
+              <ModalFooter>
+                <Button
+                  variant="outlined"
+                  color="secondary"
+                  onClick={onClose}
+                >
+                  {cancelBttnLabel}
+                </Button>
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  onClick={onSave}
+                >
+                  {saveBttnLabel}
+                </Button>
+              </ModalFooter>
+            )}
           </ModalWrapper>
         </ModalContainer>
       </Modal>

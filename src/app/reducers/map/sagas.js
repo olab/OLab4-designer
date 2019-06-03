@@ -1,6 +1,4 @@
-import {
-  call, put, select, takeLatest,
-} from 'redux-saga/effects';
+import { call, put, takeLatest } from 'redux-saga/effects';
 import { createMap } from '../../../services/api/map';
 
 import { CREATE_MAP_REQUESTED } from './types';
@@ -10,8 +8,7 @@ import { ACTION_CREATE_MAP_FAILED, ACTION_CREATE_MAP_SUCCEEDED } from './action'
 
 function* createMapSaga(action) {
   try {
-    const token = yield select(({ user }) => user.authData.token);
-    const newMap = yield call(createMap, token, action.templateId);
+    const newMap = yield call(createMap, action.templateId);
 
     yield put(ACTION_CREATE_MAP_SUCCEEDED(newMap));
   } catch (error) {

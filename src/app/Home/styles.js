@@ -34,6 +34,14 @@ const styles = theme => ({
     fontSize: theme.typography.pxToRem(15),
     color: theme.palette.text.secondary,
   },
+  list: {
+    maxHeight: '40vh',
+    overflowY: 'auto',
+  },
+  listButton: {
+    textTransform: 'initial',
+    textAlign: 'initial',
+  },
 });
 
 export default styles;

@@ -6,16 +6,26 @@ import { withStyles } from '@material-ui/core/styles';
 import {
   ExpandMore as ExpandMoreIcon,
   ArrowForward as ArrowForwardIcon,
+  Dashboard as TemplateIcon,
+  DashboardOutlined as TemplateOutlinedIcon,
 } from '@material-ui/icons';
 import {
+  List,
+  ListItem,
+  ListItemText,
   Button,
   Typography,
   ExpansionPanel,
   ExpansionPanelDetails,
   ExpansionPanelSummary,
+  LinearProgress,
 } from '@material-ui/core';
 
-import * as actions from '../reducers/map/action';
+import TemplatesModal from '../../shared/components/ConfirmationModal';
+
+import * as mapActions from '../reducers/map/action';
+import * as templatesActions from '../reducers/templates/action';
+import removeHTMLTags from '../../helpers/removeHTMLTags';
 
 import type { IHomeProps, IHomeState } from './types';
 
@@ -29,6 +39,7 @@ class Home extends PureComponent<IHomeProps, IHomeState> {
   state: IHomeState = {
     expanded: null,
     isButtonsDisabled: false,
+    isShowTemplatesListModal: false,
   };
 
   componentDidUpdate(prevProps: IHomeProps) {
@@ -61,15 +72,35 @@ class Home extends PureComponent<IHomeProps, IHomeState> {
     this.toggleDisableButtons();
   }
 
-  toggleDisableButtons = () => {
+  toggleDisableButtons = (): void => {
     this.setState(({ isButtonsDisabled }) => ({
       isButtonsDisabled: !isButtonsDisabled,
     }));
   }
 
+  showTemplatesListModal = (): void => {
+    const { ACTION_TEMPLATES_REQUESTED } = this.props;
+
+    ACTION_TEMPLATES_REQUESTED();
+
+    this.setState({
+      isShowTemplatesListModal: true,
+    });
+  }
+
+  closeTemplatesListModal = (): void => {
+    this.setState({
+      isShowTemplatesListModal: false,
+    });
+  }
+
   render() {
-    const { expanded, isButtonsDisabled } = this.state;
-    const { classes } = this.props;
+    const {
+      expanded, isButtonsDisabled, isShowTemplatesListModal,
+    } = this.state;
+    const {
+      classes, templates, isTemplatesFetching,
+    } = this.props;
 
     return (
       <HomeWrapper>
@@ -128,9 +159,10 @@ class Home extends PureComponent<IHomeProps, IHomeState> {
                 size="small"
                 aria-label="Create"
                 classes={{ root: classes.fab }}
+                onClick={this.showTemplatesListModal}
                 disabled={isButtonsDisabled}
               >
-                Create Map
+                Choose Template
                 <ArrowForwardIcon
                   fontSize="small"
                   classes={{ root: classes.icon }}
@@ -139,19 +171,65 @@ class Home extends PureComponent<IHomeProps, IHomeState> {
             </ExpansionPanelDetails>
           </ExpansionPanel>
         </ExpansionPanelWrapper>
+
+        {isShowTemplatesListModal && (
+          <TemplatesModal
+            label="Choose template"
+            text="Please take template from the following:"
+            onClose={this.closeTemplatesListModal}
+          >
+            <List
+              classes={{ root: classes.list }}
+              disablePadding
+            >
+              {templates.map((template, i) => (
+                <ListItem key={template.id}>
+                  <Button
+                    classes={{ text: classes.listButton }}
+                    onClick={() => this.onTemplateChoose(template.id)}
+                  >
+                    {i % 2 === 0 ? <TemplateIcon /> : <TemplateOutlinedIcon />}
+                    <ListItemText
+                      primary={template.name}
+                      secondary={removeHTMLTags(template.description)}
+                    />
+                  </Button>
+                </ListItem>
+              ))}
+            </List>
+
+            {!isTemplatesFetching && !templates.length && (
+              <Typography align="right" variant="caption">
+                Empty list...
+              </Typography>
+            )}
+
+            <div style={{ visibility: isTemplatesFetching ? '' : 'hidden' }}>
+              <LinearProgress />
+              <Typography align="right" variant="caption">
+                Updating list from the server...
+              </Typography>
+            </div>
+          </TemplatesModal>
+        )}
       </HomeWrapper>
     );
   }
 }
 
-const mapStateToProps = ({ map: { id, isFetching } }) => ({
+const mapStateToProps = ({ map: { id, isFetching }, templates }) => ({
   mapId: id,
   isMapFetching: isFetching,
+  templates: templates.list,
+  isTemplatesFetching: templates.isFetching,
 });
 
 const mapDispatchToProps = dispatch => ({
   ACTION_CREATE_MAP_REQUESTED: (templateId?: number) => {
-    dispatch(actions.ACTION_CREATE_MAP_REQUESTED(templateId));
+    dispatch(mapActions.ACTION_CREATE_MAP_REQUESTED(templateId));
+  },
+  ACTION_TEMPLATES_REQUESTED: () => {
+    dispatch(templatesActions.ACTION_TEMPLATES_REQUESTED());
   },
 });
 

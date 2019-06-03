@@ -1,23 +1,43 @@
 // @flow
-import type { Map as MapType } from '../map/types';
+export type Template = {
+  id: number | null,
+  name: string,
+  description: string,
+};
 
-export type Templates = Array<MapType>;
+export type Templates = {
+  list: Array<Template>,
+  isFetching: boolean,
+};
 
-const SET_TEMPLATES = 'SET_TEMPLATES';
-type SetTemplates = {
-  type: 'SET_TEMPLATES',
-  newTemplates: Array<MapType>,
+const TEMPLATES_REQUESTED = 'TEMPLATES_REQUESTED';
+type TemplatesRequested = {
+  type: 'TEMPLATES_REQUESTED',
+};
+
+const TEMPLATES_REQUEST_FAILED = 'TEMPLATES_REQUEST_FAILED';
+type TemplatesRequestFailed = {
+  type: 'TEMPLATES_REQUEST_FAILED',
+};
+
+const TEMPLATES_REQUEST_SUCCEEDED = 'TEMPLATES_REQUEST_SUCCEEDED';
+type TemplatesRequestSucceeded = {
+  type: 'TEMPLATES_REQUEST_SUCCEEDED',
+  templates: Array<Template>,
 };
 
 const CREATE_TEMPLATE_FROM_MAP = 'CREATE_TEMPLATE_FROM_MAP';
 type CreateTemplateFromMap = {
   type: 'CREATE_TEMPLATE_FROM_MAP',
-  template: MapType,
+  template: Template,
 };
 
-export type TemplatesActions = SetTemplates | CreateTemplateFromMap;
+export type TemplatesActions = TemplatesRequestSucceeded | TemplatesRequested |
+  TemplatesRequestFailed | CreateTemplateFromMap;
 
 export {
-  SET_TEMPLATES,
+  TEMPLATES_REQUESTED,
+  TEMPLATES_REQUEST_FAILED,
+  TEMPLATES_REQUEST_SUCCEEDED,
   CREATE_TEMPLATE_FROM_MAP,
 };

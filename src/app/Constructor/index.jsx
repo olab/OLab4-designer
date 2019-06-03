@@ -147,6 +147,7 @@ export class Constructor extends PureComponent<IConstructorProps, IConstructorSt
               text="Please enter name of template:"
               onClose={this.closeCreateTemplateModal}
               onSave={this.saveTemplateFromMap}
+              showFooterButtons
             >
               <Input
                 ref={this.templateInputName}

@@ -1,11 +1,11 @@
 import createInstance from '../createCustomInstance';
 import { mapFromServer } from '../../helpers/applyAPIMapping';
 
-const createAPI = createInstance();
+const API = createInstance();
 
-export const createMap = templateId => createAPI
+export const createMap = templateId => API
   .post('/olab/maps', {
-    map_id: templateId || null,
+    template_id: templateId || null,
   })
   .then(({ data: { data: map } }) => mapFromServer(map))
   .catch((error) => {
