@@ -2,7 +2,7 @@ import createInstance from '../createCustomInstance';
 
 const API = createInstance();
 
-export const postUser = userLoginData => API
+export const loginUser = userLoginData => API
   .post(
     '/auth/client',
     userLoginData,
@@ -13,5 +13,5 @@ export const postUser = userLoginData => API
   });
 
 export default {
-  postUser,
+  loginUser,
 };

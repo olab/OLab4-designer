@@ -5,11 +5,11 @@ import {
   USER_AUTH_FAILED,
   USER_AUTH_SUCCEEDED,
   USER_AUTH_REQUESTED,
+  USER_AUTH_LOGOUT,
 } from './types';
 
 export const initialUserState: UserType = {
   isAuth: false,
-  errorMessage: '',
   data: {
     id: null,
     name: '',
@@ -29,22 +29,33 @@ const user = (state: UserType = initialUserState, action: UserActions) => {
         isFetching: true,
       };
 
-    case USER_AUTH_SUCCEEDED:
+    case USER_AUTH_SUCCEEDED: {
+      const { token } = action;
+
       return {
         ...state,
         isAuth: true,
         isFetching: false,
         authData: {
-          token: action.token,
+          token,
         },
       };
+    }
 
     case USER_AUTH_FAILED:
       return {
         ...state,
         isAuth: false,
         isFetching: false,
-        errorMessage: action.errorMessage,
+      };
+
+    case USER_AUTH_LOGOUT:
+      return {
+        ...state,
+        isAuth: false,
+        authData: {
+          token: '',
+        },
       };
 
     default:

@@ -16,7 +16,6 @@ export type AuthData = {
 
 export type User = {
   isAuth: boolean,
-  errorMessage: string,
   data: UserData,
   authData: AuthData,
   isFetching: boolean,
@@ -24,27 +23,20 @@ export type User = {
 
 export type Props = {
   classes: {
-    main: {},
-    paper: {},
-    avatar: {},
-    form: {},
-    submit: {},
-    progress: {},
+    [props: string]: any,
   },
   handleChange: (e: Event) => void,
   isAuth: boolean,
-  errorMessage: string,
   isFetching: boolean,
   values: UserLoginData,
 };
 
 export type PropsAuthAction = {
   props: {
-    authorize: ({ username: string, password: string }) => void,
+    ACTION_USER_AUTH_REQUESTED: ({ username: string, password: string }) => void,
   },
 };
 
-// reducer types
 const USER_AUTH_SUCCEEDED = 'USER_AUTH_SUCCEEDED';
 type UserAuthActionSucceeded = {
   type: 'USER_AUTH_SUCCEEDED',
@@ -54,14 +46,25 @@ type UserAuthActionSucceeded = {
 const USER_AUTH_FAILED = 'USER_AUTH_FAILED';
 type UserAuthActionFailed = {
   type: 'USER_AUTH_FAILED',
-  errorMessage: string,
-}; // temporary
+};
 
 const USER_AUTH_REQUESTED = 'USER_AUTH_REQUESTED';
 type UserAuthActionRequested = {
   type: 'USER_AUTH_REQUESTED'
 };
 
-export type UserActions = UserAuthActionSucceeded | UserAuthActionFailed | UserAuthActionRequested;
+const USER_AUTH_LOGOUT = 'USER_AUTH_LOGOUT';
+type UserAuthLogout = {
+  type: 'USER_AUTH_LOGOUT',
+}
 
-export { USER_AUTH_FAILED, USER_AUTH_REQUESTED, USER_AUTH_SUCCEEDED };
+export type UserActions =
+  UserAuthActionSucceeded | UserAuthActionFailed |
+  UserAuthActionRequested | UserAuthLogout;
+
+export {
+  USER_AUTH_FAILED,
+  USER_AUTH_REQUESTED,
+  USER_AUTH_SUCCEEDED,
+  USER_AUTH_LOGOUT,
+};

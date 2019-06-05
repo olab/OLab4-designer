@@ -3,9 +3,15 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import store, { history } from './store/store';
 import * as serviceWorker from './serviceWorker';
+import { ACTION_USER_AUTH_SUCCEEDED } from './app/Login/action';
 
 import App from './app';
 import GlobalStyles from './styles';
+
+const token = localStorage.getItem('token');
+if (token) {
+  store.dispatch(ACTION_USER_AUTH_SUCCEEDED(token));
+}
 
 const target = document.getElementById('root');
 

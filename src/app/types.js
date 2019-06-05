@@ -1,4 +1,6 @@
 // @flow
+import React from 'react';
+
 export type IAppProps = {
   history: any;
   isAuth: boolean,
@@ -6,5 +8,10 @@ export type IAppProps = {
   notifications: Array<any>,
 };
 
-export type IAppState = {
+export type IProtectedRouteProps = {
+  component: React.Node,
+  path: string,
+  isAuth: boolean,
+  [props: string]: any,
+
 };

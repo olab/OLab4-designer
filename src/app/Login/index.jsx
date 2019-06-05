@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
-import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 import { withFormik, Form } from 'formik';
 import {
   Button,
@@ -13,17 +13,15 @@ import {
   InputLabel,
   Paper,
   Typography,
-  CircularProgress,
 } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 
-import authorizeUser from './action';
+import * as authActions from './action';
 import type { UserLoginData, Props, PropsAuthAction } from './types';
 import styles from './styles';
 
-
 const Login = ({
-  classes, isAuth, values, handleChange, errorMessage, isFetching,
+  classes, isAuth, values, handleChange,
 }: Props) => {
   if (isAuth) {
     return <Redirect to="/" />;
@@ -42,7 +40,6 @@ const Login = ({
             <Input
               name="username"
               type="username"
-              id="username"
               value={values.username}
               onChange={handleChange}
             />
@@ -52,7 +49,6 @@ const Login = ({
             <Input
               name="password"
               type="password"
-              id="password"
               autoComplete="current-password"
               value={values.password}
               onChange={handleChange}
@@ -72,9 +68,7 @@ const Login = ({
             Sign in
           </Button>
         </Form>
-        {errorMessage && <p>{errorMessage}</p>}
       </Paper>
-      {isFetching && <CircularProgress className={classes.progress} />}
     </main>
   );
 };
@@ -84,20 +78,23 @@ const loginFormikWrapper = withFormik({
     username,
     password,
   }),
-  handleSubmit: (values: UserLoginData, { props: { authorize } }: PropsAuthAction) => {
-    authorize(values);
+  handleSubmit: (
+    values: UserLoginData, {
+      props: { ACTION_USER_AUTH_REQUESTED },
+    }: PropsAuthAction,
+  ) => {
+    ACTION_USER_AUTH_REQUESTED(values);
   },
 })(Login);
 
 const mapDispatchToProps = dispatch => ({
-  authorize: (userLoginData: UserLoginData) => {
-    dispatch(authorizeUser(userLoginData));
+  ACTION_USER_AUTH_REQUESTED: (userLoginData: UserLoginData) => {
+    dispatch(authActions.ACTION_USER_AUTH_REQUESTED(userLoginData));
   },
 });
 
-const mapStateToProps = ({ user: { isAuth, errorMessage, isFetching } }) => ({
+const mapStateToProps = ({ user: { isAuth, isFetching } }) => ({
   isAuth,
-  errorMessage,
   isFetching,
 });
 

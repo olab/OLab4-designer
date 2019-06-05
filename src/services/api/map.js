@@ -1,13 +1,9 @@
 import createInstance from '../createCustomInstance';
 import { mapFromServer } from '../../helpers/applyAPIMapping';
 
-const createAPI = token => createInstance({
-  headers: {
-    Authorization: `Bearer ${token}`,
-  },
-});
+const createAPI = createInstance();
 
-export const createMap = (token, templateId) => createAPI(token)
+export const createMap = templateId => createAPI
   .post('/olab/maps', {
     map_id: templateId || null,
   })

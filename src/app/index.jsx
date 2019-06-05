@@ -1,7 +1,9 @@
 // @flow
-import React, { PureComponent } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
-import { Route, Switch, Link } from 'react-router-dom';
+import {
+  Route, Switch, Link, Redirect,
+} from 'react-router-dom';
 import { ConnectedRouter } from 'connected-react-router';
 import { Notify } from 'react-redux-notify';
 import LinearProgress from '@material-ui/core/LinearProgress';
@@ -9,40 +11,52 @@ import LinearProgress from '@material-ui/core/LinearProgress';
 import Login from './Login';
 import Home from './Home';
 import Constructor from './Constructor';
+
+import type {
+  IAppProps,
+  IProtectedRouteProps,
+} from './types';
+
 import {
   Logo,
   Header,
   FakeProgress,
 } from './styles';
 
-import type {
-  IAppProps,
-  IAppState,
-} from './types';
-
 import 'react-redux-notify/dist/ReactReduxNotify.css';
 
-export class App extends PureComponent<IAppProps, IAppState> {
-  render() {
-    const { isAuth, isDataFetching, history } = this.props;
+const ProtectedRoute = ({
+  component: Component, isAuth, path, ...rest
+}: IProtectedRouteProps) => (
+  <Route
+    path={path}
+    {...rest}
+    render={props => (isAuth ? (
+      <Component {...props} />
+    ) : (
+      <Redirect
+        to={{
+          pathname: '/login',
+        }}
+      />
+    ))}
+  />
+);
 
-    return (
-      <ConnectedRouter history={history}>
+export const App = ({ isAuth, isDataFetching, history }: IAppProps) => (
+  <ConnectedRouter history={history}>
         <>
           <Header>
             <div>
               <Logo href="/">OLab</Logo>
               <nav>
                 {!isAuth && <Link to="/login" className="route-link">Login</Link>}
-                <Link to="/" className="route-link">
-                  Home
-                </Link>
+                <Link to="/" className="route-link">Home</Link>
                 <Link to="/constructor" className="route-link">
                   Map Layout Editor
                 </Link>
               </nav>
             </div>
-
             {isDataFetching ? (
               <LinearProgress />
             ) : (
@@ -50,23 +64,21 @@ export class App extends PureComponent<IAppProps, IAppState> {
             )}
           </Header>
           <Switch>
-            <Route exact path="/" component={Home} />
             <Route exact path="/login" component={Login} />
-            <Route exact path="/constructor" component={Constructor} />
+            <ProtectedRoute exact isAuth={isAuth} path="/" component={Home} />
+            <ProtectedRoute exact isAuth={isAuth} path="/constructor" component={Constructor} />
           </Switch>
           <Notify />
         </>
-      </ConnectedRouter>
-    );
-  }
-}
+  </ConnectedRouter>
+);
 
 const mapStateToProps = ({
-  user: { isAuth },
-  map: { isFetching },
+  user: { isAuth, isFetching: isAuthFething },
+  map: { isFetching: isMapFetching },
 }) => ({
   isAuth,
-  isDataFetching: isFetching,
+  isDataFetching: isAuthFething || isMapFetching,
 });
 
 export default connect(mapStateToProps)(App);

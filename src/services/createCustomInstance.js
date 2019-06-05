@@ -1,11 +1,13 @@
 import axios from 'axios';
 import merge from 'lodash.merge';
-
 import defaultConfig from './apiConfig';
+import addInterceptors from './createInterceptors';
 
 const createInstance = (customConfig = {}) => {
-  const config = merge(customConfig, defaultConfig);
-  return axios.create(config);
+  const newConfig = merge(customConfig, defaultConfig);
+  const instance = axios.create(newConfig);
+
+  return addInterceptors(instance);
 };
 
 export default createInstance;
