@@ -24,7 +24,6 @@ const simpleTemplate = {
   nodes: [
     {
       isSelected: false,
-      expand: false,
       locked: false,
       data: {
         id: ids[0],
@@ -47,7 +46,6 @@ const simpleTemplate = {
     },
     {
       isSelected: false,
-      expand: false,
       locked: false,
       data: {
         id: ids[1],

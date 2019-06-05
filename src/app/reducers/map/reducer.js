@@ -9,8 +9,8 @@ import {
   DELETE_NODE,
   CREATE_EDGE,
   DELETE_EDGE,
-  SWAP_EDGE,
   RESET_MAP,
+  EXCHANGE_NODE_ID,
   COLLAPSE_NODE,
   RESIZE_NODE,
   LOCK_NODE,
@@ -129,22 +129,11 @@ const map = (state: MapType = initialMapState, action: MapActions) => {
       };
     }
     case CREATE_NODE: {
-      const graph = cloneDeep([state.nodes, state.edges]);
-      const { nodeData } = action;
-
-      graph.forEach((items) => {
-        items.forEach((item) => {
-          item.isSelected = false;
-        });
-      });
-
-      const [nodes, edges] = graph;
-      nodes.push(nodeData);
+      const { nodes } = action;
 
       return {
         ...state,
         nodes,
-        edges,
       };
     }
     case COLLAPSE_NODE: {
@@ -187,18 +176,17 @@ const map = (state: MapType = initialMapState, action: MapActions) => {
         nodes,
       };
     }
+    case EXCHANGE_NODE_ID: {
+      const { nodes, edges } = action;
+
+      return {
+        ...state,
+        nodes,
+        edges,
+      };
+    }
     case CREATE_NODE_WITH_EDGE: {
-      const { nodes, edges } = cloneDeep(state);
-      const { nodeData, edgeData } = action;
-
-      [nodes, edges]
-        .forEach(items => items
-          .forEach((item) => {
-            item.isSelected = false;
-          }));
-
-      nodes.push(nodeData);
-      edges.push(edgeData);
+      const { nodes, edges } = action;
 
       return {
         ...state,
@@ -270,29 +258,6 @@ const map = (state: MapType = initialMapState, action: MapActions) => {
       return {
         ...state,
         edges: [...edges],
-      };
-    }
-    case SWAP_EDGE: {
-      const graph = cloneDeep([state.nodes, state.edges]);
-      const { edgeId, sourceNodeId, targetNodeId } = action;
-
-      graph.forEach((items) => {
-        items.forEach((item) => {
-          item.isSelected = false;
-        });
-      });
-
-      const [nodes, edges] = graph;
-      const i = edges.findIndex(({ data }) => data.id === edgeId);
-
-      edges[i].isSelected = true;
-      edges[i].data.source = sourceNodeId;
-      edges[i].data.target = targetNodeId;
-
-      return {
-        ...state,
-        nodes,
-        edges,
       };
     }
     case CREATE_MAP_SUCCEEDED: {

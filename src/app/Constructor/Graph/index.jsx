@@ -55,15 +55,15 @@ export class Graph extends Component<IGraphProps, IGraphState> {
   }
 
   get getSelectedNode(): NodeType | null {
-    const { graph } = this.props;
+    const { map: { nodes } } = this.props;
 
-    return graph.nodes.find(node => node.isSelected) || null;
+    return nodes.find(node => node.isSelected) || null;
   }
 
   get getSelectedEdge(): EdgeType | null {
-    const { graph } = this.props;
+    const { map: { edges } } = this.props;
 
-    return graph.edges.find(edge => edge.isSelected) || null;
+    return edges.find(edge => edge.isSelected) || null;
   }
 
   onSelectNode = (item: NodeDataType | null, clientX?: number = 0, clientY?: number = 0) => {
@@ -105,8 +105,8 @@ export class Graph extends Component<IGraphProps, IGraphState> {
   };
 
   onCreateNode = (x: number, y: number) => {
-    const { ACTION_CREATE_NODE } = this.props;
-    const newNode = createNewNode(x, y);
+    const { map, ACTION_CREATE_NODE } = this.props;
+    const newNode = createNewNode(map.id, x, y);
 
     ACTION_CREATE_NODE(newNode);
   }
@@ -130,17 +130,17 @@ export class Graph extends Component<IGraphProps, IGraphState> {
   }
 
   onCreateNodeWithEdge = (x: number, y: number, sourceNode: NodeDataType) => {
-    const { ACTION_CREATE_NODE_WITH_EDGE } = this.props;
+    const { map, ACTION_CREATE_NODE_WITH_EDGE } = this.props;
 
-    const newNode = createNewNode(x, y);
-    const newEdge = createNewEdge(sourceNode.id, newNode.id);
+    const newNode = createNewNode(map.id, x, y);
+    const newEdge = createNewEdge(sourceNode.id, newNode.data.id);
 
     ACTION_CREATE_NODE_WITH_EDGE(newNode, newEdge);
   }
 
   onUpdateNode = (node: NodeDataType) => {
-    const { graph, ACTION_UPDATE_NODE } = this.props;
-    const foundNode = graph.nodes.find(({ data }) => data.id === node.id);
+    const { map: { nodes }, ACTION_UPDATE_NODE } = this.props;
+    const foundNode = nodes.find(({ data }) => data.id === node.id);
 
     if (foundNode && !isEqual(foundNode.data, node)) {
       ACTION_UPDATE_NODE(node);
@@ -222,9 +222,8 @@ export class Graph extends Component<IGraphProps, IGraphState> {
 
   render() {
     const {
-      isFullScreen, graph, minZoom, maxZoom, layoutEngineType,
+      isFullScreen, map: { nodes, edges }, minZoom, maxZoom, layoutEngineType,
     } = this.props;
-
 
     return (
       <Wrapper
@@ -236,8 +235,8 @@ export class Graph extends Component<IGraphProps, IGraphState> {
           ref={this.graphViewRef}
           minZoom={minZoom / 100}
           maxZoom={maxZoom / 100}
-          nodes={graph.nodes.map(({ data }) => data)}
-          edges={graph.edges.map(({ data }) => data)}
+          nodes={nodes.map(({ data }) => data)}
+          edges={edges.map(({ data }) => data)}
           selected={this.getSelectedItem}
           edgeTypes={EdgeTypes}
           onSelectNode={this.onSelectNode}
@@ -263,23 +262,18 @@ export class Graph extends Component<IGraphProps, IGraphState> {
 }
 
 const mapStateToProps = ({
-  map: {
-    nodes, edges, undo, redo,
-  },
+  map,
   constructor: { zoom, layoutEngineType },
 }) => ({
   minZoom: zoom.minZoom,
   maxZoom: zoom.maxZoom,
-  graph: { nodes, edges },
+  map,
   layoutEngineType,
-  isUndoAvailable: !!undo.length,
-  isRedoAvailable: !!redo.length,
+  isUndoAvailable: !!map.undo.length,
+  isRedoAvailable: !!map.redo.length,
 });
 
 const mapDispatchToProps = dispatch => ({
-  ACTION_SWAP_EDGE: (edgeId: number, sourceNodeId: number, targetNodeId: number) => {
-    dispatch(graphActions.ACTION_SWAP_EDGE(edgeId, sourceNodeId, targetNodeId));
-  },
   ACTION_DELETE_EDGE: (edgeId: number) => {
     dispatch(graphActions.ACTION_DELETE_EDGE(edgeId));
   },

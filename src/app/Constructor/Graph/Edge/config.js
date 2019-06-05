@@ -1,0 +1,16 @@
+const DEFAULT_COLOR = '#D3DAE1';
+const DEFAULT_THICKNESS = 5;
+const DEFAULT_LABEL = 'New Link';
+const DEFAULT_VARIANT = 'Standard';
+const DEFAULT_IS_HIDDEN = false;
+
+const SALT = 'tmp-edge';
+
+export {
+  DEFAULT_COLOR,
+  DEFAULT_THICKNESS,
+  DEFAULT_LABEL,
+  DEFAULT_VARIANT,
+  DEFAULT_IS_HIDDEN,
+  SALT,
+};

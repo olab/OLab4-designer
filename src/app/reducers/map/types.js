@@ -30,8 +30,6 @@ export type Map = {
   redo: Array<MapItem>,
 };
 
-
-// reducer types
 const SELECT_ITEM = 'SELECT_ITEM';
 type SelectItem = {
   type: 'SELECT_ITEM',
@@ -41,7 +39,8 @@ type SelectItem = {
 const CREATE_NODE = 'CREATE_NODE';
 type CreateNode = {
   type: 'CREATE_NODE',
-  nodeData: Node,
+  nodes: Array<Node>,
+  oldId: string,
 };
 
 const COLLAPSE_NODE = 'COLLAPSE_NODE';
@@ -83,6 +82,13 @@ type DeleteNode = {
   nodeId: number,
 };
 
+const EXCHANGE_NODE_ID = 'EXCHANGE_NODE_ID';
+type ExchangeNodeId = {
+  type: 'EXCHANGE_NODE_ID',
+  nodes: Array<Node>,
+  edges: Array<Edge>,
+};
+
 const CREATE_EDGE = 'CREATE_EDGE';
 type CreateEdge = {
   type: 'CREATE_EDGE',
@@ -99,14 +105,6 @@ const UPDATE_EDGE = 'UPDATE_EDGE';
 type UpdateEdge = {
   type: 'UPDATE_EDGE',
   edgeData: EdgeDataType,
-};
-
-const SWAP_EDGE = 'SWAP_EDGE';
-type SwapEdge = {
-  type: 'SWAP_EDGE',
-  edgeId: number,
-  sourceNodeId: number,
-  targetNodeId: number,
 };
 
 const RESET_MAP = 'RESET_MAP';
@@ -154,7 +152,7 @@ type CreateMapFromTemplateRequested = {
 
 export type MapActions = SelectItem |
   CreateNode | UpdateNode | DeleteNode |
-  CreateEdge | DeleteEdge | SwapEdge |
+  CreateEdge | DeleteEdge | ExchangeNodeId |
   ResetMap | RenameMap | MapToUndo |
   UndoMap | RedoMap | CreateNodeWithEdge |
   ResizeNode | UpdateEdge | CollapseNode |
@@ -169,10 +167,10 @@ export {
   COLLAPSE_NODE,
   LOCK_NODE,
   RESIZE_NODE,
+  EXCHANGE_NODE_ID,
   CREATE_EDGE,
   DELETE_EDGE,
   UPDATE_EDGE,
-  SWAP_EDGE,
   CREATE_NODE_WITH_EDGE,
   RESET_MAP,
   RENAME_MAP,

@@ -135,24 +135,6 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
    *
    *
    * @static
-   * @param {NodeDataType} sourceNode
-   * @param {(NodeDataType | null)} targetNode
-   * @param {*} swapEdge
-   * @returns
-   * @memberof GraphView
-   *
-   * Checks if edge can be swapped.
-   */
-  static canSwap(sourceNode: NodeDataType, targetNode: NodeDataType | null, swapEdge: any) {
-    return (targetNode && sourceNode !== targetNode
-      && (swapEdge.source !== sourceNode.id
-        || swapEdge.target !== targetNode.id));
-  }
-
-  /**
-   *
-   *
-   * @static
    * @param {string} source
    * @param {string} target
    * @memberof GraphView

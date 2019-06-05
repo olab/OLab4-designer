@@ -6,7 +6,6 @@ import {
   CREATE_NODE_WITH_EDGE,
   UPDATE_EDGE,
   DELETE_EDGE,
-  SWAP_EDGE,
   SAVE_MAP_TO_UNDO,
   COLLAPSE_NODE,
   LOCK_NODE,
@@ -14,7 +13,6 @@ import {
 
 const undoRedoMiddleware = store => next => (action) => {
   if ([
-    SWAP_EDGE,
     DELETE_EDGE,
     COLLAPSE_NODE,
     LOCK_NODE,
