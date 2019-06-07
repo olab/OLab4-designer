@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { AppBar } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 
-import MetaModal from '../../Modals/Meta-Modal';
 import ToolbarGroup from '../../../shared/components/ToolbarGroup';
 import GraphUndoRedoButtons from '../Graph/UndoRedo';
 import MapTitle from './MapTitle';
@@ -21,8 +20,6 @@ import addNewIcon from '../../../shared/assets/icons/toolbar/templates/toolbar-a
 import templateIcon from '../../../shared/assets/icons/toolbar/templates/toolbar-template.png';
 import flagIcon from '../../../shared/assets/icons/toolbar/templates/toolbar-flag.png';
 import previewIcon from '../../../shared/assets/icons/toolbar/templates/toolbar-preview.png';
-// import
-// dropdownIcon from '../../../shared/assets/icons/toolbar/templates/toolbar-arrow-dropdown.png';
 import fullscreenIcon from '../../../shared/assets/icons/toolbar/templates/toolbar-fullscreen.png';
 import settingsIcon from '../../../shared/assets/icons/toolbar/templates/toolbar-settings.png';
 import questionIcon from '../../../shared/assets/icons/toolbar/templates/meta-question.png';
@@ -34,13 +31,11 @@ import createTemplateFromMapIcon from '../../../shared/assets/icons/create_templ
 
 import * as constructorActions from '../action';
 import * as mapActions from '../../reducers/map/action';
-import * as metaModalActions from '../../Modals/action';
+import * as modalActions from '../../Modals/action';
 
 import styles, {
   Block,
   LabTitleItem,
-  // LabTitle,
-  // LabIcon,
 } from './styles';
 
 export class Toolbars extends Component<IToolbarsProps, IToolbarsState> {
@@ -188,7 +183,7 @@ export class Toolbars extends Component<IToolbarsProps, IToolbarsState> {
             label: 'add',
           },
         ],
-        onClick: this.toggleShowMetaModal,
+        onClick: this.toggleShowSOPickerModal,
       },
     };
 
@@ -200,12 +195,12 @@ export class Toolbars extends Component<IToolbarsProps, IToolbarsState> {
     ACTION_SET_ZOOM_CONTROLS_REF(this.zoomControlsRef);
   }
 
-  toggleShowMetaModal = (e: Event) => {
+  toggleShowSOPickerModal = (e: Event) => {
     const {
-      ACTION_TOGGLE_META_MODAL, ACTION_SET_POSITION_META_MODAL, metaModal,
+      SOPickerModal, ACTION_TOGGLE_MODAL, ACTION_SET_POSITION_MODAL,
     } = this.props;
 
-    if (!metaModal.isShow && !metaModal.x && !metaModal.y) {
+    if (!SOPickerModal.isShow && !SOPickerModal.x && !SOPickerModal.y) {
       const toolbarItem = (e.target: window.HTMLInputElement).closest('.toolbar-item');
       const [{
         x: rectsX, y: rectsY, width: rectsWidth, height: rectsHeight,
@@ -214,10 +209,10 @@ export class Toolbars extends Component<IToolbarsProps, IToolbarsState> {
       const x = rectsX + rectsWidth;
       const y = rectsY - rectsHeight;
 
-      ACTION_SET_POSITION_META_MODAL(x, y);
+      ACTION_SET_POSITION_MODAL(x, y);
     }
 
-    ACTION_TOGGLE_META_MODAL();
+    ACTION_TOGGLE_MODAL();
   }
 
   onUndo = () => {
@@ -247,7 +242,7 @@ export class Toolbars extends Component<IToolbarsProps, IToolbarsState> {
       expand, toolbars, right, meta, preview,
     } = this.state;
     const {
-      isUndoAvailable, isRedoAvailable, metaModal, classes,
+      isUndoAvailable, isRedoAvailable, classes,
     } = this.props;
 
     return (
@@ -260,7 +255,6 @@ export class Toolbars extends Component<IToolbarsProps, IToolbarsState> {
                 group={toolbars}
                 expand={expand}
               />
-              { metaModal.isShow && <MetaModal /> }
             </>
             <GraphUndoRedoButtons
               isUndoAvailable={isUndoAvailable}
@@ -287,10 +281,13 @@ export class Toolbars extends Component<IToolbarsProps, IToolbarsState> {
   }
 }
 
-const mapStateToProps = ({ map: { undo, redo }, modals: { metaModal } }) => ({
+const mapStateToProps = ({
+  map: { undo, redo },
+  modals: { SOPickerModal },
+}) => ({
   isUndoAvailable: !!undo.length,
   isRedoAvailable: !!redo.length,
-  metaModal,
+  SOPickerModal,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -303,12 +300,14 @@ const mapDispatchToProps = dispatch => ({
   ACTION_REDO_MAP: () => {
     dispatch(mapActions.ACTION_REDO_MAP());
   },
-  ACTION_TOGGLE_META_MODAL: () => {
-    dispatch(metaModalActions.ACTION_TOGGLE_MODAL(ModalsNames.META_MODAL));
+  ACTION_TOGGLE_MODAL: () => {
+    dispatch(modalActions.ACTION_TOGGLE_MODAL(
+      ModalsNames.SO_PICKER_MODAL,
+    ));
   },
-  ACTION_SET_POSITION_META_MODAL: (x: number, y: number) => {
-    dispatch(metaModalActions.ACTION_SET_POSITION_MODAL(
-      ModalsNames.META_MODAL,
+  ACTION_SET_POSITION_MODAL: (x: number, y: number) => {
+    dispatch(modalActions.ACTION_SET_POSITION_MODAL(
+      ModalsNames.SO_PICKER_MODAL,
       x,
       y,
     ));

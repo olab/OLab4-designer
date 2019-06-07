@@ -1,57 +1,37 @@
 // @flow
-export type MetaModal = {
-  isShow: boolean,
+export type ModalPosition = {
   x: number,
   y: number,
 };
 
 export type LinkEditorModal = {
-  x: number,
-  y: number,
+  ...ModalPosition,
 };
 
 export type NodeEditorModal = {
-  x: number,
-  y: number,
+  ...ModalPosition,
+};
+
+export type SOPickerModal = {
+  isShow: boolean,
+  ...ModalPosition,
 };
 
 export type Modals = {
-  metaModal: MetaModal,
+  SOPickerModal: SOPickerModal,
   linkEditorModal: LinkEditorModal,
+  nodeEditorModal: NodeEditorModal,
 };
 
-const CLOSE_MODAL = 'CLOSE_MODAL';
-type CloseModal = {
-  type: 'CLOSE_MODAL',
-  name: string,
+export const UPDATE_MODAL = 'UPDATE_MODAL';
+type UpdateModal = {
+  type: 'UPDATE_MODAL',
+  modalName: string,
+  modalValue: SOPickerModal | NodeEditorModal | LinkEditorModal,
 };
 
-const OPEN_MODAL = 'OPEN_MODAL';
-type OpenModal = {
-  type: 'OPEN_MODAL',
-  name: string,
-};
+export type ModalsActions = UpdateModal;
 
-const TOGGLE_MODAL = 'TOGGLE_MODAL';
-type ToggleModal = {
-  type: 'TOGGLE_MODAL',
-  name: string,
-};
-
-const SET_POSITION_MODAL = 'SET_POSITION_MODAL';
-type SetPosModal = {
-  type: 'SET_POSITION_MODAL',
-  name: string,
-  x: number,
-  y: number,
-};
-
-export type ModalsActions = OpenModal | CloseModal
-  | ToggleModal | SetPosModal;
-
-export {
-  OPEN_MODAL,
-  CLOSE_MODAL,
-  TOGGLE_MODAL,
-  SET_POSITION_MODAL,
+export default {
+  UPDATE_MODAL,
 };

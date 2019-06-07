@@ -8,6 +8,7 @@ import isEqual from 'lodash.isequal';
 
 import Graph from './Graph';
 import ToolbarTemplates from './Toolbars';
+import SOPicker from '../Modals/SOPicker';
 import LinkEditor from '../Modals/LinkEditor';
 import NodeEditor from '../Modals/NodeEditor';
 import Input from '../../shared/components/Input';
@@ -119,9 +120,9 @@ export class Constructor extends PureComponent<IConstructorProps, IConstructorSt
 
   render() {
     const {
-      // eslint-disable-next-line no-unused-vars
       isFullScreen, selectedNode, selectedLink, isShowCreateTemplateModal,
     } = this.state;
+    const { isShowSOPicker } = this.props;
 
     return (
       <ConstructorWrapper>
@@ -140,6 +141,7 @@ export class Constructor extends PureComponent<IConstructorProps, IConstructorSt
           />
           { !!selectedLink && <LinkEditor link={selectedLink} /> }
           { !!selectedNode && <NodeEditor node={selectedNode} /> }
+          { isShowSOPicker && <SOPicker /> }
 
           {isShowCreateTemplateModal && (
             <TemplateModal
@@ -163,7 +165,10 @@ export class Constructor extends PureComponent<IConstructorProps, IConstructorSt
   }
 }
 
-const mapStateToProps = ({ map }) => ({ map });
+const mapStateToProps = ({ map, modals }) => ({
+  map,
+  isShowSOPicker: modals.SOPickerModal.isShow,
+});
 
 const mapDispatchToProps = dispatch => ({
   ACTION_CREATE_TEMPLATE_FROM_MAP: (templateName: string, map: MapType) => {
@@ -172,5 +177,8 @@ const mapDispatchToProps = dispatch => ({
 });
 
 export default DragDropContext(HTML5Backend)(
-  connect(mapStateToProps, mapDispatchToProps)(Constructor),
+  connect(
+    mapStateToProps,
+    mapDispatchToProps,
+  )(Constructor),
 );

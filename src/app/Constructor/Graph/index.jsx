@@ -70,22 +70,21 @@ export class Graph extends Component<IGraphProps, IGraphState> {
     const itemId = item ? item.id : null;
     const {
       ACTION_SELECT_ITEM,
-      ACTION_SET_POSITION_NODE_EDITOR_MODAL,
+      ACTION_SET_POSITION_MODAL,
     } = this.props;
 
-    ACTION_SET_POSITION_NODE_EDITOR_MODAL(clientX, clientY);
+    ACTION_SET_POSITION_MODAL(ModalsNames.NODE_EDITOR_MODAL, clientX, clientY);
     ACTION_SELECT_ITEM(itemId);
   };
 
   onSelectEdge = (item: EdgeDataType | null, clientX?: number = 0, clientY?: number = 0) => {
     const itemId = item ? item.id : null;
-
     const {
       ACTION_SELECT_ITEM,
-      ACTION_SET_POSITION_LINK_EDITOR_MODAL,
+      ACTION_SET_POSITION_MODAL,
     } = this.props;
 
-    ACTION_SET_POSITION_LINK_EDITOR_MODAL(clientX, clientY);
+    ACTION_SET_POSITION_MODAL(ModalsNames.LINK_EDITOR_MODAL, clientX, clientY);
     ACTION_SELECT_ITEM(itemId);
   };
 
@@ -116,12 +115,13 @@ export class Graph extends Component<IGraphProps, IGraphState> {
       return;
     }
 
-    const { ACTION_CREATE_EDGE, ACTION_SET_POSITION_LINK_EDITOR_MODAL } = this.props;
+    const { ACTION_CREATE_EDGE, ACTION_SET_POSITION_MODAL } = this.props;
     const [viewWrapperRect] = this.graphViewWrapperRef.current.getClientRects();
     const { x: offsetX, y: offsetY } = viewWrapperRect;
     const newEdge = createNewEdge(sourceNode.id, targetNode.id);
 
-    ACTION_SET_POSITION_LINK_EDITOR_MODAL(
+    ACTION_SET_POSITION_MODAL(
+      ModalsNames.LINK_EDITOR_MODAL,
       offsetX + TINY_MODAL_OFFSET,
       offsetY + TINY_MODAL_OFFSET,
     );
@@ -304,19 +304,8 @@ const mapDispatchToProps = dispatch => ({
   ACTION_UPDATE_NODE_LOCK: (nodeId: number) => {
     dispatch(graphActions.ACTION_UPDATE_NODE_LOCK(nodeId));
   },
-  ACTION_SET_POSITION_LINK_EDITOR_MODAL: (x: number, y: number) => {
-    dispatch(modalActions.ACTION_SET_POSITION_MODAL(
-      ModalsNames.LINK_EDITOR_MODAL,
-      x,
-      y,
-    ));
-  },
-  ACTION_SET_POSITION_NODE_EDITOR_MODAL: (x: number, y: number) => {
-    dispatch(modalActions.ACTION_SET_POSITION_MODAL(
-      ModalsNames.NODE_EDITOR_MODAL,
-      x,
-      y,
-    ));
+  ACTION_SET_POSITION_MODAL: (modalName: string, x: number, y: number) => {
+    dispatch(modalActions.ACTION_SET_POSITION_MODAL(modalName, x, y));
   },
   ACTION_REDO_MAP: () => {
     dispatch(graphActions.ACTION_REDO_MAP());

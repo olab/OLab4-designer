@@ -4,7 +4,7 @@ export const DndContexts = {
 };
 
 export const ModalsNames = {
-  META_MODAL: 'metaModal',
+  SO_PICKER_MODAL: 'SOPickerModal',
   LINK_EDITOR_MODAL: 'linkEditorModal',
   NODE_EDITOR_MODAL: 'nodeEditorModal',
 };

@@ -3,65 +3,70 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { DragSource } from 'react-dnd';
 
-import type { IMetaModalProps } from './types';
+import CrossIcon from '../../../shared/assets/icons/cross.svg';
+
+import type { ISOPickerProps } from './types';
 import { DndContexts, ModalsNames } from '../config';
 
 import * as actions from '../action';
 
-import './styles.scss';
+import { ModalWrapper, ModalHeader } from '../commonStyles';
 
-export class MetaModal extends Component<IMetaModalProps> {
+export class SOPicker extends Component<ISOPickerProps> {
   handleCloseModal = () => {
-    const { ACTION_CLOSE_META_MODAL, ACTION_SET_POSITION_META_MODAL } = this.props;
-    ACTION_SET_POSITION_META_MODAL(0, 0);
-    ACTION_CLOSE_META_MODAL();
+    const { ACTION_CLOSE_MODAL, ACTION_SET_POSITION_MODAL } = this.props;
+    ACTION_SET_POSITION_MODAL(0, 0);
+    ACTION_CLOSE_MODAL();
   }
 
   handleModalMove(x: number, y: number) {
-    const { ACTION_SET_POSITION_META_MODAL } = this.props;
-    ACTION_SET_POSITION_META_MODAL(x, y);
+    const { ACTION_SET_POSITION_MODAL } = this.props;
+    ACTION_SET_POSITION_MODAL(x, y);
   }
 
   render() {
     const {
-      connectDragSource, isDragging, x, y,
+      x, y, isDragging, connectDragSource, connectDragPreview,
     } = this.props;
 
     if (isDragging) {
       return null;
     }
 
-    return connectDragSource(
-      <div
-        className="meta-modal"
-        style={{
-          left: `${x}px`,
-          top: `${y}px`,
-        }}
+    return (
+      <ModalWrapper
+        x={x}
+        y={y}
+        ref={instance => connectDragPreview(instance)}
       >
-        <div>
-          <span>---aka Modal---</span>
+        <ModalHeader ref={instance => connectDragSource(instance)}>
+          <h4>SO Picker</h4>
           <button
             type="button"
             onClick={this.handleCloseModal}
           >
-            X
+            <CrossIcon />
           </button>
-        </div>
-      </div>,
+        </ModalHeader>
+        {/* <ModalBody>
+
+        </ModalBody> */}
+      </ModalWrapper>
     );
   }
 }
 
-const mapStateToProps = ({ modals: { metaModal } }) => ({ ...metaModal });
+const mapStateToProps = ({ modals }) => ({ ...modals.SOPickerModal });
 
 const mapDispatchToProps = dispatch => ({
-  ACTION_CLOSE_META_MODAL: () => {
-    dispatch(actions.ACTION_CLOSE_MODAL(ModalsNames.META_MODAL));
+  ACTION_CLOSE_MODAL: () => {
+    dispatch(actions.ACTION_CLOSE_MODAL(
+      ModalsNames.SO_PICKER_MODAL,
+    ));
   },
-  ACTION_SET_POSITION_META_MODAL: (x: number, y: number) => {
+  ACTION_SET_POSITION_MODAL: (x: number, y: number) => {
     dispatch(actions.ACTION_SET_POSITION_MODAL(
-      ModalsNames.META_MODAL,
+      ModalsNames.SO_PICKER_MODAL,
       x,
       y,
     ));
@@ -100,6 +105,7 @@ const spec = {
 */
 const collect = (conn, monitor) => ({
   connectDragSource: conn.dragSource(),
+  connectDragPreview: conn.dragPreview(),
   isDragging: monitor.isDragging(),
 });
 
@@ -110,4 +116,4 @@ export default connect(
   DndContexts.VIEWPORT,
   spec,
   collect,
-)(MetaModal));
+)(SOPicker));

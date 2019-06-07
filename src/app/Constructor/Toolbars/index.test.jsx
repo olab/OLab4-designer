@@ -8,7 +8,7 @@ import { initialModalsState } from '../../Modals/reducer';
 
 describe('<Toolbars />', () => {
   let output = {};
-  let metaModal;
+  let SOPicker;
   let fullscreenHandler;
   let isFullScreen;
   let isUndoAvailable;
@@ -16,10 +16,10 @@ describe('<Toolbars />', () => {
   let ACTION_UNDO_MAP;
   let ACTION_REDO_MAP;
   let ACTION_SET_ZOOM_CONTROLS_REF;
-  let ACTION_TOGGLE_META_MODAL;
-  let ACTION_SET_POSITION_META_MODAL;
+  let ACTION_TOGGLE_MODAL;
+  let ACTION_SET_POSITION_MODAL;
   beforeEach(() => {
-    metaModal = initialModalsState;
+    SOPicker = initialModalsState;
     isFullScreen = false;
     isUndoAvailable = false;
     isRedoAvailable = false;
@@ -27,22 +27,22 @@ describe('<Toolbars />', () => {
     ACTION_UNDO_MAP = jest.fn();
     ACTION_REDO_MAP = jest.fn();
     ACTION_SET_ZOOM_CONTROLS_REF = jest.fn();
-    ACTION_TOGGLE_META_MODAL = jest.fn();
-    ACTION_SET_POSITION_META_MODAL = jest.fn();
+    ACTION_TOGGLE_MODAL = jest.fn();
+    ACTION_SET_POSITION_MODAL = jest.fn();
 
     output = shallow(
       <Toolbars
         classes={{}}
         fullscreenHandler={fullscreenHandler}
-        metaModal={metaModal}
+        SOPicker={SOPicker}
         isFullScreen={isFullScreen}
         isUndoAvailable={isUndoAvailable}
         isRedoAvailable={isRedoAvailable}
         ACTION_UNDO_MAP={ACTION_UNDO_MAP}
         ACTION_REDO_MAP={ACTION_REDO_MAP}
         ACTION_SET_ZOOM_CONTROLS_REF={ACTION_SET_ZOOM_CONTROLS_REF}
-        ACTION_TOGGLE_META_MODAL={ACTION_TOGGLE_META_MODAL}
-        ACTION_SET_POSITION_META_MODAL={ACTION_SET_POSITION_META_MODAL}
+        ACTION_TOGGLE_MODAL={ACTION_TOGGLE_MODAL}
+        ACTION_SET_POSITION_MODAL={ACTION_SET_POSITION_MODAL}
       />,
     );
   });
@@ -70,21 +70,21 @@ describe('<Toolbars />', () => {
       };
     });
 
-    it('should fire ACTION_SET_POSITION_META_MODAL redux action', () => {
+    it('should fire ACTION_SET_POSITION_MODAL redux action', () => {
       output.instance().toggleShowMetaModal(e);
-      expect(ACTION_SET_POSITION_META_MODAL).toHaveBeenCalled();
-      expect(ACTION_TOGGLE_META_MODAL).toHaveBeenCalled();
+      expect(ACTION_SET_POSITION_MODAL).toHaveBeenCalled();
+      expect(ACTION_TOGGLE_MODAL).toHaveBeenCalled();
     });
 
-    it('should not fire ACTION_SET_POSITION_META_MODAL redux action', () => {
+    it('should not fire ACTION_SET_POSITION_MODAL redux action', () => {
       const metaM = cloneDeep(initialModalsState);
       metaM.isShow = true;
       output.setProps({
-        metaModal: metaM,
+        SOPicker: metaM,
       });
       output.instance().toggleShowMetaModal(e);
-      expect(ACTION_SET_POSITION_META_MODAL).not.toHaveBeenCalled();
-      expect(ACTION_TOGGLE_META_MODAL).toHaveBeenCalled();
+      expect(ACTION_SET_POSITION_MODAL).not.toHaveBeenCalled();
+      expect(ACTION_TOGGLE_MODAL).toHaveBeenCalled();
     });
   });
 

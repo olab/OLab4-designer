@@ -1,5 +1,5 @@
 // @flow
-import type { MetaModal as MetaModalType } from '../../Modals/types';
+import type { SOPickerModal as SOPickerType } from '../../Modals/types';
 
 export type ToolbarItem = {
   id: string,
@@ -25,14 +25,14 @@ export type IToolbarsProps = {
   isFullScreen: boolean,
   isUndoAvailable: boolean,
   isRedoAvailable: boolean,
-  metaModal: MetaModalType,
+  SOPickerModal: SOPickerType,
   ACTION_UNDO_MAP: Function,
   ACTION_REDO_MAP: Function,
   ACTION_SET_ZOOM_CONTROLS_REF: (
     ref: { current: null | HTMLDivElement },
   ) => void,
-  ACTION_TOGGLE_META_MODAL: Function,
-  ACTION_SET_POSITION_META_MODAL: Function,
+  ACTION_TOGGLE_MODAL: Function,
+  ACTION_SET_POSITION_MODAL: Function,
 };
 
 export type IToolbarsState = {

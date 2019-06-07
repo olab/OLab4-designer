@@ -2,34 +2,31 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 
-import { MetaModal } from '.';
+import { SOPicker } from '.';
 
-describe('<MetaModal />', () => {
+describe('<SOPicker />', () => {
   let output = {};
   let x;
   let y;
   let isDragging;
   let connectDragSource;
-  let ACTION_CLOSE_META_MODAL;
-  let ACTION_SET_POSITION_META_MODAL;
-  let ACTION_SET_INIT_POSITION_META_MODAL;
+  let ACTION_CLOSE_MODAL;
+  let ACTION_SET_POSITION_MODAL;
 
   beforeEach(() => {
     x = 0;
     y = 0;
     isDragging = true;
-    ACTION_CLOSE_META_MODAL = jest.fn();
-    ACTION_SET_POSITION_META_MODAL = jest.fn();
-    ACTION_SET_INIT_POSITION_META_MODAL = jest.fn();
+    ACTION_CLOSE_MODAL = jest.fn();
+    ACTION_SET_POSITION_MODAL = jest.fn();
     connectDragSource = jest.fn().mockReturnValue(<div />);
     output = shallow(
-      <MetaModal
+      <SOPicker
         x={x}
         y={y}
         isDragging={isDragging}
-        ACTION_CLOSE_META_MODAL={ACTION_CLOSE_META_MODAL}
-        ACTION_SET_POSITION_META_MODAL={ACTION_SET_POSITION_META_MODAL}
-        ACTION_SET_INIT_POSITION_META_MODAL={ACTION_SET_INIT_POSITION_META_MODAL}
+        ACTION_CLOSE_MODAL={ACTION_CLOSE_MODAL}
+        ACTION_SET_POSITION_MODAL={ACTION_SET_POSITION_MODAL}
         connectDragSource={connectDragSource}
       />,
     );
@@ -49,17 +46,15 @@ describe('<MetaModal />', () => {
   });
 
   describe('handleCloseModal method', () => {
-    it('should fire ACTION_SET_INIT_POSITION_META_MODAL & ACTION_CLOSE_META_MODAL reducer actions', () => {
       output.instance().handleCloseModal();
-      expect(ACTION_SET_INIT_POSITION_META_MODAL).toBeCalled();
-      expect(ACTION_CLOSE_META_MODAL).toBeCalled();
+      expect(ACTION_CLOSE_MODAL).toBeCalled();
     });
   });
 
   describe('handleModalMove method', () => {
-    it('should fire ACTION_SET_POSITION_META_MODAL reducer action', () => {
+    it('should fire ACTION_SET_POSITION_MODAL reducer action', () => {
       output.instance().handleModalMove(5, 5);
-      expect(ACTION_SET_POSITION_META_MODAL).toBeCalled();
+      expect(ACTION_SET_POSITION_MODAL).toBeCalled();
     });
   });
 });

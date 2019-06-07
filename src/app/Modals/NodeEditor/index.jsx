@@ -21,9 +21,8 @@ class NodeEditor extends Component<INodeEditorProps, INodeEditorState> {
   constructor(props: INodeEditorProps) {
     super(props);
 
-    const { node } = this.props;
     this.state = {
-      ...node,
+      ...props.node,
     };
   }
 
@@ -46,8 +45,8 @@ class NodeEditor extends Component<INodeEditorProps, INodeEditorState> {
   }
 
   handleModalMove = (x: number, y: number): void => {
-    const { ACTION_SET_POSITION_NODE_EDITOR_MODAL } = this.props;
-    ACTION_SET_POSITION_NODE_EDITOR_MODAL(x, y);
+    const { ACTION_SET_POSITION_MODAL } = this.props;
+    ACTION_SET_POSITION_MODAL(x, y);
   }
 
   render() {
@@ -80,13 +79,13 @@ class NodeEditor extends Component<INodeEditorProps, INodeEditorState> {
   }
 }
 
-const mapStateToProps = ({ modals: { nodeEditorModal } }) => ({ ...nodeEditorModal });
+const mapStateToProps = ({ modals }) => ({ ...modals.nodeEditorModal });
 
 const mapDispatchToProps = dispatch => ({
   ACTION_DESELECT_ITEM: () => {
     dispatch(mapActions.ACTION_SELECT_ITEM(null));
   },
-  ACTION_SET_POSITION_NODE_EDITOR_MODAL: (x: number, y: number) => {
+  ACTION_SET_POSITION_MODAL: (x: number, y: number) => {
     dispatch(modalActions.ACTION_SET_POSITION_MODAL(
       ModalsNames.NODE_EDITOR_MODAL,
       x,

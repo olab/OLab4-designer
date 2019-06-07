@@ -10,13 +10,8 @@ import OutlinedInput from './OutlinedInput';
 import OutlinedSelect from './OutlinedSelect';
 import ScaleIcon from '../../../shared/assets/icons/cross.svg';
 
-import type {
-  EdgeData as EdgeDataType,
-} from '../../Constructor/Graph/Edge/types';
-import type {
-  ILinkEditorProps,
-  ILinkEditorState,
-} from './types';
+import type { EdgeData as EdgeDataType } from '../../Constructor/Graph/Edge/types';
+import type { ILinkEditorProps, ILinkEditorState } from './types';
 
 import * as modalActions from '../action';
 import * as graphActions from '../../reducers/map/action';
@@ -39,9 +34,8 @@ class LinkEditor extends Component<ILinkEditorProps, ILinkEditorState> {
   constructor(props: ILinkEditorProps) {
     super(props);
 
-    const { link } = this.props;
     this.state = {
-      ...link,
+      ...props.link,
     };
   }
 
@@ -64,8 +58,8 @@ class LinkEditor extends Component<ILinkEditorProps, ILinkEditorState> {
   }
 
   handleModalMove = (x: number, y: number): void => {
-    const { ACTION_SET_POSITION_LINK_EDITOR_MODAL } = this.props;
-    ACTION_SET_POSITION_LINK_EDITOR_MODAL(x, y);
+    const { ACTION_SET_POSITION_MODAL } = this.props;
+    ACTION_SET_POSITION_MODAL(x, y);
   }
 
   handleHiddenChange = (e: Event): void => {
@@ -176,7 +170,7 @@ class LinkEditor extends Component<ILinkEditorProps, ILinkEditorState> {
   }
 }
 
-const mapStateToProps = ({ modals: { linkEditorModal } }) => ({ ...linkEditorModal });
+const mapStateToProps = ({ modals }) => ({ ...modals.linkEditorModal });
 
 const mapDispatchToProps = dispatch => ({
   ACTION_UPDATE_EDGE: (edgeData: EdgeDataType) => {
@@ -185,7 +179,7 @@ const mapDispatchToProps = dispatch => ({
   ACTION_DESELECT_ITEM: () => {
     dispatch(graphActions.ACTION_SELECT_ITEM(null));
   },
-  ACTION_SET_POSITION_LINK_EDITOR_MODAL: (x: number, y: number) => {
+  ACTION_SET_POSITION_MODAL: (x: number, y: number) => {
     dispatch(modalActions.ACTION_SET_POSITION_MODAL(
       ModalsNames.LINK_EDITOR_MODAL,
       x,

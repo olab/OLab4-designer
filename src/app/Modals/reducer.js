@@ -1,17 +1,12 @@
 // @flow
-import cloneDeep from 'lodash.clonedeep';
-
 import {
   type ModalsActions,
   type Modals as ModalsType,
-  OPEN_MODAL,
-  CLOSE_MODAL,
-  TOGGLE_MODAL,
-  SET_POSITION_MODAL,
+  UPDATE_MODAL,
 } from './types';
 
 export const initialModalsState: ModalsType = {
-  metaModal: {
+  SOPickerModal: {
     isShow: false,
     x: 0,
     y: 0,
@@ -28,49 +23,12 @@ export const initialModalsState: ModalsType = {
 
 const modals = (state: ModalsType = initialModalsState, action: ModalsActions) => {
   switch (action.type) {
-    case OPEN_MODAL: {
-      const { name: modalName } = action;
-      const clonedState = cloneDeep(state);
-      const modal = clonedState[modalName];
-
-      modal.isShow = true;
+    case UPDATE_MODAL: {
+      const { modalName, modalValue } = action;
 
       return {
-        ...clonedState,
-      };
-    }
-    case CLOSE_MODAL: {
-      const { name: modalName } = action;
-      const clonedState = cloneDeep(state);
-      const modal = clonedState[modalName];
-
-      modal.isShow = false;
-
-      return {
-        ...clonedState,
-      };
-    }
-    case TOGGLE_MODAL: {
-      const { name: modalName } = action;
-      const clonedState = cloneDeep(state);
-      const modal = clonedState[modalName];
-
-      modal.isShow = !modal.isShow;
-
-      return {
-        ...clonedState,
-      };
-    }
-    case SET_POSITION_MODAL: {
-      const { name: modalName, x, y } = action;
-      const clonedState = cloneDeep(state);
-      const modal = clonedState[modalName];
-
-      modal.x = x;
-      modal.y = y;
-
-      return {
-        ...clonedState,
+        ...state,
+        [modalName]: modalValue,
       };
     }
     default:
