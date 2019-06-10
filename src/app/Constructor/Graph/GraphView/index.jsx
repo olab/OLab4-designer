@@ -547,11 +547,15 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
 
   handleWrapperKeydown: KeyboardEventListener = (d) => {
     const {
-      selectedNodeObj, isLinkingStarted,
+      selectedNodeObj, isLinkingStarted, focused,
     } = this.state;
     const {
       selected, onUndo, onRedo, onCopySelected, onPasteSelected,
     } = this.props;
+
+    if (!focused) {
+      return;
+    }
 
     const isCtrlKeyPressed = d.metaKey || d.ctrlKey;
 

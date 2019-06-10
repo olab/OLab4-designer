@@ -1,11 +1,21 @@
 // @flow
 import type { ModalPosition as ModalPositionType } from '../types';
+import type { ScopedObjects as ScopedObjectsType } from '../../reducers/scopedObjects/types';
 
 export type ISOPickerProps = {
   ...ModalPositionType,
-  ACTION_CLOSE_MODAL: Function;
-  ACTION_SET_POSITION_MODAL: Function;
-  connectDragSource: Function;
-  connectDragPreview: Function;
-  isDragging: boolean;
+  classes: {
+    [props: string]: any,
+  },
+  ACTION_CLOSE_MODAL: Function,
+  ACTION_SET_POSITION_MODAL: Function,
+  connectDragSource: Function,
+  connectDragPreview: Function,
+  isDragging: boolean,
+  scopedObjects: ScopedObjectsType,
+};
+
+export type ISOPickerState = {
+  type: string,
+  level: string,
 };

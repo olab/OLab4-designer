@@ -14,8 +14,7 @@ import * as modalActions from '../action';
 import * as mapActions from '../../reducers/map/action';
 import { DndContexts, ModalsNames } from '../config';
 
-import { NodeEditorTitle } from './styles';
-import { ModalWrapper, ModalHeader } from '../commonStyles';
+import { ModalWrapper, ModalHeader } from '../styles';
 
 class NodeEditor extends Component<INodeEditorProps, INodeEditorState> {
   constructor(props: INodeEditorProps) {
@@ -65,7 +64,7 @@ class NodeEditor extends Component<INodeEditorProps, INodeEditorState> {
         y={y}
       >
         <ModalHeader ref={instance => connectDragSource(instance)}>
-          <NodeEditorTitle>Node Editor</NodeEditorTitle>
+          <h4>Node Editor</h4>
           <button
             type="button"
             onClick={this.handleCloseModal}

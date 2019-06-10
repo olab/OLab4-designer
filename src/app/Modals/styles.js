@@ -34,6 +34,7 @@ export const ModalHeader = styled.div`
 
   > h4 {
     margin: 0;
+    font-size: 20px;
   }
 
   > button {

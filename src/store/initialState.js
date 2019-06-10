@@ -4,12 +4,14 @@ import { initialModalsState } from '../app/Modals/reducer';
 import { initialConstructorState } from '../app/Constructor/reducer';
 import { initialMapState } from '../app/reducers/map/reducer';
 import { initialTemplatesState } from '../app/reducers/templates/reducer';
+import { initialScopedObjectsState } from '../app/reducers/scopedObjects/reducer';
 
 import type { User as UserType } from '../app/Login/types';
 import type { Modals as ModalsType } from '../app/Modals/types';
 import type { Constructor as ConstructorType } from '../app/Constructor/types';
 import type { Map as MapType } from '../app/reducers/map/types';
 import type { Templates as TemplatesType } from '../app/reducers/templates/types';
+import type { ScopedObjectsState as ScopedObjectsType } from '../app/reducers/scopedObjects/types';
 
 export type App = {
   loadingState: Array<{
@@ -18,12 +20,6 @@ export type App = {
   }>,
 };
 
-export type ScopedObjects = Array<{
-  id: number,
-  name: string,
-  type: string,
-}>;
-
 export type Store = {
   user: UserType,
   constructor: ConstructorType,
@@ -31,7 +27,7 @@ export type Store = {
   maps: Array<MapType>,
   templates: TemplatesType,
   app: App,
-  scopedObjects: ScopedObjects,
+  scopedObjects: ScopedObjectsType,
   modals: ModalsType,
 };
 
@@ -44,7 +40,7 @@ const initialState: Store = {
   app: {
     loadingState: [],
   },
-  scopedObjects: [],
+  scopedObjects: initialScopedObjectsState,
   modals: initialModalsState,
 };
 

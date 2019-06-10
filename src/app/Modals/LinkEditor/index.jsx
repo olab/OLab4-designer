@@ -7,7 +7,7 @@ import Slider from './Slider';
 import Switch from './Switch';
 import ColorPicker from './ColorPicker';
 import OutlinedInput from './OutlinedInput';
-import OutlinedSelect from './OutlinedSelect';
+import OutlinedSelect from '../../../shared/components/OutlinedSelect';
 import ScaleIcon from '../../../shared/assets/icons/cross.svg';
 
 import type { EdgeData as EdgeDataType } from '../../Constructor/Graph/Edge/types';
@@ -16,21 +16,16 @@ import type { ILinkEditorProps, ILinkEditorState } from './types';
 import * as modalActions from '../action';
 import * as graphActions from '../../reducers/map/action';
 import { DndContexts, ModalsNames } from '../config';
+import { LINK_VARIANTS } from './config';
 
 import {
   LinkEditorBody,
   LinkEditorFooter,
   ActionButton,
 } from './styles';
-import { ModalWrapper, ModalHeader } from '../commonStyles';
+import { ModalWrapper, ModalHeader } from '../styles';
 
 class LinkEditor extends Component<ILinkEditorProps, ILinkEditorState> {
-  linkVariants: Array<string> = [
-    'Standard',
-    'Dashed',
-    'Dotted',
-  ];
-
   constructor(props: ILinkEditorProps) {
     super(props);
 
@@ -128,7 +123,7 @@ class LinkEditor extends Component<ILinkEditorProps, ILinkEditorState> {
               name="variant"
               labelWidth={55}
               value={variant}
-              values={this.linkVariants}
+              values={LINK_VARIANTS}
               onChange={this.handleInputChange}
             />
           </article>
