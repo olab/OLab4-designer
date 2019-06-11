@@ -187,10 +187,27 @@ export const ACTION_EXCHANGE_EDGE_ID = (oldEdgeId: number | string, newEdgeId: n
   };
 };
 
-export const ACTION_CREATE_EDGE = (edgeData: EdgeType) => ({
-  type: CREATE_EDGE,
-  edgeData,
-});
+export const ACTION_CREATE_EDGE = (
+  edgeData: EdgeType,
+) => {
+  const { map: { nodes: newNodes, edges: newEdges } } = store.getState();
+  const graph = cloneDeep([newNodes, newEdges]);
+  graph.forEach((items) => {
+    items.forEach((item) => {
+      item.isSelected = false;
+    });
+  });
+
+  const [nodes, edges] = graph;
+  edges.push(edgeData);
+
+  return {
+    type: CREATE_EDGE,
+    nodes,
+    edges,
+    edgeData,
+  };
+};
 
 export const ACTION_UPDATE_EDGE = (edgeData: EdgeDataType) => ({
   type: UPDATE_EDGE,

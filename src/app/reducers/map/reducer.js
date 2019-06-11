@@ -162,17 +162,7 @@ const map = (state: MapType = initialMapState, action: MapActions) => {
       };
     }
     case CREATE_EDGE: {
-      const graph = cloneDeep([state.nodes, state.edges]);
-      const { edgeData } = action;
-
-      graph.forEach((items) => {
-        items.forEach((item) => {
-          item.isSelected = false;
-        });
-      });
-
-      const [nodes, edges] = graph;
-      edges.push(edgeData);
+      const { nodes, edges } = action;
 
       return {
         ...state,

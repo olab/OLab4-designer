@@ -2,7 +2,7 @@
 import { all } from 'redux-saga/effects';
 
 import authUserSaga from '../app/Login/sagas';
-import edgeSaga from '../app/Modals/LinkEditor/sagas';
+import edgeSaga from '../app/Constructor/Graph/Edge/sagas';
 import nodeSaga from '../app/Constructor/Graph/Node/sagas';
 import mapSaga from '../app/reducers/map/sagas';
 import defaultsSaga from '../app/reducers/defaults/sagas';
