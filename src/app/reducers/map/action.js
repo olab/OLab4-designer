@@ -209,10 +209,18 @@ export const ACTION_CREATE_EDGE = (
   };
 };
 
-export const ACTION_UPDATE_EDGE = (edgeData: EdgeDataType) => ({
-  type: UPDATE_EDGE,
-  edgeData,
-});
+export const ACTION_UPDATE_EDGE = (edgeData: EdgeDataType) => {
+  const { map: { edges } } = store.getState();
+  const clonedEdges = cloneDeep(edges);
+  const edge = clonedEdges.find(({ data }) => data.id === edgeData.id);
+  Object.assign(edge.data, edgeData);
+
+  return {
+    type: UPDATE_EDGE,
+    edges: clonedEdges,
+    updatedEdge: edgeData,
+  };
+};
 
 export const ACTION_DELETE_EDGE = (edgeId: number, nodeId: number) => {
   const { map: { edges } } = store.getState();

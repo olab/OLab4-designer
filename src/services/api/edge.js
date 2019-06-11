@@ -3,11 +3,12 @@ import { edgeToServer } from '../../helpers/applyAPIMapping';
 
 const API = createInstance();
 
-const getEdgebody = id => ({ data: { destinationId: id } });
+const createEdgeBody = id => ({ data: { destinationId: id } });
 
 export const createEdge = (mapId, edgeData) => API
   .post(
-    `/olab/maps/${mapId}/nodes/${edgeData.source}/links`, getEdgebody(edgeData.target),
+    `/olab/maps/${mapId}/nodes/${edgeData.source}/links`,
+    createEdgeBody(edgeData.target),
   )
   .then(({ data: { data: { id } } }) => id)
   .catch((error) => {
@@ -24,9 +25,8 @@ export const deleteEdge = (mapId, edgeId, nodeId) => API
 export const updateEdge = (mapId, updatedEdgeData) => API
   .put(
     `/olab/maps/${mapId}/nodes/${updatedEdgeData.source}/links/${updatedEdgeData.id}`,
-    edgeToServer(updatedEdgeData),
+    { data: edgeToServer(updatedEdgeData) },
   )
-  .then(({ data: { data: { id } } }) => id)
   .catch((error) => {
     throw error;
   });

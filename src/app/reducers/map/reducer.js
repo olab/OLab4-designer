@@ -171,11 +171,7 @@ const map = (state: MapType = initialMapState, action: MapActions) => {
       };
     }
     case UPDATE_EDGE: {
-      const { edges } = cloneDeep(state);
-      const { edgeData } = action;
-
-      const edge = edges.find(({ data }) => data.id === edgeData.id);
-      Object.assign(edge.data, edgeData);
+      const { edges } = action;
 
       return {
         ...state,

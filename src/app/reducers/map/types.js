@@ -104,7 +104,7 @@ type DeleteEdge = {
 const UPDATE_EDGE = 'UPDATE_EDGE';
 type UpdateEdge = {
   type: 'UPDATE_EDGE',
-  edgeData: EdgeDataType,
+  edges: Array<Edge>,
 };
 
 const RESET_MAP = 'RESET_MAP';
