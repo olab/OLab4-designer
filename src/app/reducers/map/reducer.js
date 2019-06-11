@@ -200,12 +200,11 @@ const map = (state: MapType = initialMapState, action: MapActions) => {
       };
     }
     case DELETE_EDGE: {
-      const { edgeId } = action;
-      const edges = state.edges.filter(({ data }) => data.id !== edgeId);
+      const { edges } = action;
 
       return {
         ...state,
-        edges: [...edges],
+        edges,
       };
     }
     case CREATE_MAP_SUCCEEDED: {

@@ -14,12 +14,19 @@ export const createEdge = (mapId, edgeData) => API
     throw error;
   });
 
+export const deleteEdge = (mapId, edgeId, nodeId) => API
+  .delete(`/olab/maps/${mapId}/nodes/${nodeId}/links/${edgeId}`)
+  .catch((error) => {
+    throw error;
+  });
+
+
 export const updateEdge = (mapId, updatedEdgeData) => API
   .put(
     `/olab/maps/${mapId}/nodes/${updatedEdgeData.source}/links/${updatedEdgeData.id}`,
     edgeToServer(updatedEdgeData),
   )
-  .then(({ data }) => data)
+  .then(({ data: { data: { id } } }) => id)
   .catch((error) => {
     throw error;
   });

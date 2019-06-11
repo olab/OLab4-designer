@@ -90,13 +90,15 @@ type ExchangeEdgeId = {
 const CREATE_EDGE = 'CREATE_EDGE';
 type CreateEdge = {
   type: 'CREATE_EDGE',
+  nodes: Array<Node>,
+  edges: Array<Edge>,
   edgeData: Edge,
 };
 
 const DELETE_EDGE = 'DELETE_EDGE';
 type DeleteEdge = {
   type: 'DELETE_EDGE',
-  edgeId: number,
+  edges: Array<Edge>,
 };
 
 const UPDATE_EDGE = 'UPDATE_EDGE';

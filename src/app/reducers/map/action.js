@@ -214,10 +214,18 @@ export const ACTION_UPDATE_EDGE = (edgeData: EdgeDataType) => ({
   edgeData,
 });
 
-export const ACTION_DELETE_EDGE = (edgeId: number) => ({
-  type: DELETE_EDGE,
-  edgeId,
-});
+export const ACTION_DELETE_EDGE = (edgeId: number, nodeId: number) => {
+  const { map: { edges } } = store.getState();
+  const clonedEdges = cloneDeep(edges);
+  const newEdges = clonedEdges.filter(({ data }) => data.id !== edgeId);
+
+  return {
+    type: DELETE_EDGE,
+    edges: newEdges,
+    edgeId,
+    nodeId,
+  };
+};
 
 export const ACTION_RESET_MAP = () => ({
   type: RESET_MAP,

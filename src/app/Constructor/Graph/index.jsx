@@ -147,9 +147,9 @@ export class Graph extends Component<IGraphProps, IGraphState> {
     ACTION_DELETE_NODE(nodeId);
   }
 
-  onDeleteEdge = (edgeId: number) => {
+  onDeleteEdge = (edge: EdgeDataType) => {
     const { ACTION_DELETE_EDGE } = this.props;
-    ACTION_DELETE_EDGE(edgeId);
+    ACTION_DELETE_EDGE(edge.id, edge.source);
   }
 
   onUndo = () => {
@@ -270,8 +270,8 @@ const mapStateToProps = ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  ACTION_DELETE_EDGE: (edgeId: number) => {
-    dispatch(graphActions.ACTION_DELETE_EDGE(edgeId));
+  ACTION_DELETE_EDGE: (edgeId: number, nodeId: number) => {
+    dispatch(graphActions.ACTION_DELETE_EDGE(edgeId, nodeId));
   },
   ACTION_CREATE_EDGE: (edgeData: EdgeType) => {
     dispatch(graphActions.ACTION_CREATE_EDGE(edgeData));

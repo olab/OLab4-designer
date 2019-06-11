@@ -529,7 +529,7 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
       `${selectedEdge.source}_${selectedEdge.target}`,
     );
 
-    onDeleteEdge(selectedEdge.id);
+    onDeleteEdge(selectedEdge);
 
     this.setState({
       componentUpToDate: false,
