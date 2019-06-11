@@ -66,6 +66,8 @@ type ResizeNode = {
 const CREATE_NODE_WITH_EDGE = 'CREATE_NODE_WITH_EDGE';
 type CreateNodeWithEdge = {
   type: 'CREATE_NODE_WITH_EDGE',
+  nodes: Array<Node>,
+  edges: Array<Edge>,
   nodeData: Node,
   edgeData: Edge,
 };
@@ -79,6 +81,8 @@ type UpdateNode = {
 const DELETE_NODE = 'DELETE_NODE';
 type DeleteNode = {
   type: 'DELETE_NODE',
+  nodes: Array<Node>,
+  edges: Array<Edge>,
   nodeId: number,
 };
 
@@ -152,12 +156,13 @@ type CreateMapFromTemplateRequested = {
 
 export type MapActions = SelectItem |
   CreateNode | UpdateNode | DeleteNode |
-  CreateEdge | DeleteEdge | ExchangeNodeId |
+  CreateEdge | DeleteEdge | SwapEdge |
   ResetMap | RenameMap | MapToUndo |
   UndoMap | RedoMap | CreateNodeWithEdge |
   ResizeNode | UpdateEdge | CollapseNode |
   LockNode | CreateMapFromTemplateRequested |
-  CreateMapFromTemplateSucceeded | CreateMapFromTemplateFailed;
+  CreateMapFromTemplateSucceeded | CreateMapFromTemplateFailed |
+  ExchangeNodeId;
 
 export {
   SELECT_ITEM,

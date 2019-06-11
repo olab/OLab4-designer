@@ -1,5 +1,5 @@
 import createInstance from '../createCustomInstance';
-import { nodeToServer, nodeFromServer, edgeFromServer } from '../../helpers/applyAPIMapping';
+import { nodeFromServer, edgeFromServer } from '../../helpers/applyAPIMapping';
 
 const API = createInstance();
 
@@ -27,16 +27,6 @@ export const createNode = mapId => API
     throw error;
   });
 
-export const updateNode = (mapId, nodeId, updatedNode) => API
-  .put(
-    `/olab/maps/${mapId}/nodes/${nodeId}`,
-    nodeToServer(updatedNode),
-  )
-  .then(({ data: { data: node } }) => node.id)
-  .catch((error) => {
-    throw error;
-  });
-
 export const deleteNode = (mapId, nodeId) => API
   .delete(`/olab/maps/${mapId}/nodes/${nodeId}`)
   .catch((error) => {
@@ -47,6 +37,5 @@ export default {
   getNode,
   getNodes,
   createNode,
-  updateNode,
   deleteNode,
 };

@@ -147,14 +147,14 @@ export class Graph extends Component<IGraphProps, IGraphState> {
     }
   }
 
-  onDeleteNode = (node: NodeDataType) => {
+  onDeleteNode = (nodeId: number) => {
     const { ACTION_DELETE_NODE } = this.props;
-    ACTION_DELETE_NODE(node.id);
+    ACTION_DELETE_NODE(nodeId);
   }
 
-  onDeleteEdge = (edge: EdgeDataType) => {
+  onDeleteEdge = (edgeId: number) => {
     const { ACTION_DELETE_EDGE } = this.props;
-    ACTION_DELETE_EDGE(edge.id);
+    ACTION_DELETE_EDGE(edgeId);
   }
 
   onUndo = () => {

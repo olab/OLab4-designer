@@ -238,17 +238,12 @@ const map = (state: MapType = initialMapState, action: MapActions) => {
       };
     }
     case DELETE_NODE: {
-      const [nodes, edges] = cloneDeep([state.nodes, state.edges]);
-      const { nodeId } = action;
-
-      const newNodes = nodes.filter(({ data }) => data.id !== nodeId);
-      const newEdges = edges.filter(({ data }) => data.source !== nodeId
-        && data.target !== nodeId);
+      const { nodes, edges } = action;
 
       return {
         ...state,
-        nodes: newNodes,
-        edges: newEdges,
+        nodes,
+        edges,
       };
     }
     case DELETE_EDGE: {

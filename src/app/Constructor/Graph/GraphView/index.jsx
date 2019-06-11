@@ -404,6 +404,7 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
     GraphUtils.yieldingLoop(nodes.length, 50, (i: number) => {
       node = nodes[i];
       prevNode = this.getNodeById(node.id, oldNodesMap);
+
       // if there was a previous node and it changed
       if (prevNode != null
         && (prevNode.node !== node
@@ -414,7 +415,7 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
         this.syncRenderNode(node);
       } else if (forceRender || !prevNode) {
         // New node
-        this.syncRenderNode(node);
+        this.asyncRenderNode(node);
       }
     });
   }
@@ -439,9 +440,9 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
 
         // remove node
         // The timeout avoids a race condition
-        // setTimeout(() => {
-        GraphUtils.removeElementFromDom(`node-${nodeId}-container`);
-        // });
+        setTimeout(() => {
+          GraphUtils.removeElementFromDom(`node-${nodeId}-container`);
+        });
       }
     });
   }
@@ -495,7 +496,7 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
   deleteNode(selectedNode: NodeDataType) {
     const { onDeleteNode } = this.props;
 
-    onDeleteNode(selectedNode);
+    onDeleteNode(selectedNode.id);
 
     this.setState({
       componentUpToDate: false,
@@ -520,7 +521,7 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
       `${selectedEdge.source}_${selectedEdge.target}`,
     );
 
-    onDeleteEdge(selectedEdge);
+    onDeleteEdge(selectedEdge.id);
 
     this.setState({
       componentUpToDate: false,
@@ -556,11 +557,13 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
 
     switch (d.key) {
       case 'Delete':
-      case 'Backspace':
-        if (selectedNodeObj) {
+      case 'Backspace': {
+        const isMapItemSelected = (selectedNodeObj && selectedNodeObj.node) || selected;
+
+        if (isMapItemSelected) {
           this.handleDelete(selectedNodeObj.node || selected);
         }
-        break;
+      } break;
       case 'Escape':
         if (isLinkingStarted) {
           this.toggleDraggingEdgeByIcon();

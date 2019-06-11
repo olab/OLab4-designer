@@ -24,7 +24,20 @@ export const edgeFromServer = edgeData => ({
   isHidden: Boolean(edgeData.hidden),
 });
 
-export const nodeToServer = nodeData => nodeData;
+export const nodeToServer = nodeData => ({
+  id: nodeData.id,
+  map_id: nodeData.map_id,
+  title: nodeData.title,
+  text: nodeData.text,
+  type_id: nodeData.type_id,
+  x: nodeData.x,
+  y: nodeData.y,
+  height: nodeData.width,
+  width: nodeData.height,
+  locked: Number(nodeData.isLocked),
+  collapsed: Number(nodeData.isCollapsed),
+  color: nodeData.color,
+});
 export const nodeFromServer = nodeData => ({
   isSelected: false,
   data: {
