@@ -89,19 +89,19 @@ export class Graph extends Component<IGraphProps, IGraphState> {
     ACTION_SELECT_ITEM(itemId);
   };
 
-  onCollapseNode = (id: number) => {
-    const { ACTION_COLLAPSE_NODE } = this.props;
-    ACTION_COLLAPSE_NODE(id);
+  onCollapseNode = (nodeId: number) => {
+    const { ACTION_UPDATE_NODE_COLLAPSE } = this.props;
+    ACTION_UPDATE_NODE_COLLAPSE(nodeId);
   };
 
-  onResizeNode = (id: number, width: number, height: number) => {
-    const { ACTION_RESIZE_NODE } = this.props;
-    ACTION_RESIZE_NODE(id, width, height);
+  onResizeNode = (nodeId: number, width: number, height: number) => {
+    const { ACTION_UPDATE_NODE_RESIZE } = this.props;
+    ACTION_UPDATE_NODE_RESIZE(nodeId, width, height);
   }
 
-  onLockNode = (id: number) => {
-    const { ACTION_LOCK_NODE } = this.props;
-    ACTION_LOCK_NODE(id);
+  onLockNode = (nodeId: number) => {
+    const { ACTION_UPDATE_NODE_LOCK } = this.props;
+    ACTION_UPDATE_NODE_LOCK(nodeId);
   };
 
   onCreateNode = (x: number, y: number) => {
@@ -295,14 +295,14 @@ const mapDispatchToProps = dispatch => ({
   ACTION_SELECT_ITEM: (id: number) => {
     dispatch(graphActions.ACTION_SELECT_ITEM(id));
   },
-  ACTION_COLLAPSE_NODE: (id: number) => {
-    dispatch(graphActions.ACTION_COLLAPSE_NODE(id));
+  ACTION_UPDATE_NODE_COLLAPSE: (nodeId: number) => {
+    dispatch(graphActions.ACTION_UPDATE_NODE_COLLAPSE(nodeId));
   },
-  ACTION_RESIZE_NODE: (id: number, width: number, height: number) => {
-    dispatch(graphActions.ACTION_RESIZE_NODE(id, width, height));
+  ACTION_UPDATE_NODE_RESIZE: (nodeId: number, width: number, height: number) => {
+    dispatch(graphActions.ACTION_UPDATE_NODE_RESIZE(nodeId, width, height));
   },
-  ACTION_LOCK_NODE: (id: number) => {
-    dispatch(graphActions.ACTION_LOCK_NODE(id));
+  ACTION_UPDATE_NODE_LOCK: (nodeId: number) => {
+    dispatch(graphActions.ACTION_UPDATE_NODE_LOCK(nodeId));
   },
   ACTION_SET_POSITION_LINK_EDITOR_MODAL: (x: number, y: number) => {
     dispatch(modalActions.ACTION_SET_POSITION_MODAL(

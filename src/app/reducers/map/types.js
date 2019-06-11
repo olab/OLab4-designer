@@ -43,26 +43,6 @@ type CreateNode = {
   oldId: string,
 };
 
-const COLLAPSE_NODE = 'COLLAPSE_NODE';
-type CollapseNode = {
-  type: 'COLLAPSE_NODE',
-  id: number,
-};
-
-const LOCK_NODE = 'LOCK_NODE';
-type LockNode = {
-  type: 'LOCK_NODE',
-  id: number,
-};
-
-const RESIZE_NODE = 'RESIZE_NODE';
-type ResizeNode = {
-  type: 'RESIZE_NODE',
-  width: number,
-  height: number,
-  id: number,
-}
-
 const CREATE_NODE_WITH_EDGE = 'CREATE_NODE_WITH_EDGE';
 type CreateNodeWithEdge = {
   type: 'CREATE_NODE_WITH_EDGE',
@@ -75,7 +55,8 @@ type CreateNodeWithEdge = {
 const UPDATE_NODE = 'UPDATE_NODE';
 type UpdateNode = {
   type: 'UPDATE_NODE',
-  nodeData: NodeDataType,
+  nodes: Array<Node>,
+  updatedNode: NodeDataType,
 };
 
 const DELETE_NODE = 'DELETE_NODE';
@@ -156,22 +137,17 @@ type CreateMapFromTemplateRequested = {
 
 export type MapActions = SelectItem |
   CreateNode | UpdateNode | DeleteNode |
-  CreateEdge | DeleteEdge | SwapEdge |
+  CreateEdge | DeleteEdge | UpdateEdge |
   ResetMap | RenameMap | MapToUndo |
-  UndoMap | RedoMap | CreateNodeWithEdge |
-  ResizeNode | UpdateEdge | CollapseNode |
-  LockNode | CreateMapFromTemplateRequested |
-  CreateMapFromTemplateSucceeded | CreateMapFromTemplateFailed |
-  ExchangeNodeId;
+  UndoMap | RedoMap | ExchangeNodeId |
+  CreateMapFromTemplateRequested | CreateMapFromTemplateSucceeded |
+  CreateMapFromTemplateFailed | CreateNodeWithEdge;
 
 export {
   SELECT_ITEM,
   CREATE_NODE,
   UPDATE_NODE,
   DELETE_NODE,
-  COLLAPSE_NODE,
-  LOCK_NODE,
-  RESIZE_NODE,
   EXCHANGE_NODE_ID,
   CREATE_EDGE,
   DELETE_EDGE,

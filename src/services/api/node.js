@@ -1,5 +1,5 @@
 import createInstance from '../createCustomInstance';
-import { nodeFromServer, edgeFromServer } from '../../helpers/applyAPIMapping';
+import { nodeToServer, nodeFromServer, edgeFromServer } from '../../helpers/applyAPIMapping';
 
 const API = createInstance();
 
@@ -23,6 +23,14 @@ export const getNodes = mapId => API
 export const createNode = mapId => API
   .post(`/olab/maps/${mapId}/nodes`)
   .then(({ data: { data: node } }) => node.id)
+  .catch((error) => {
+    throw error;
+  });
+
+export const updateNode = (mapId, updatedNode) => API
+  .put(`/olab/maps/${mapId}/nodes/${updatedNode.id}`, {
+    data: nodeToServer(updatedNode),
+  })
   .catch((error) => {
     throw error;
   });

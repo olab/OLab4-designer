@@ -11,9 +11,6 @@ import {
   DELETE_EDGE,
   RESET_MAP,
   EXCHANGE_NODE_ID,
-  COLLAPSE_NODE,
-  RESIZE_NODE,
-  LOCK_NODE,
   CREATE_NODE_WITH_EDGE,
   UPDATE_EDGE,
   RENAME_MAP,
@@ -136,46 +133,6 @@ const map = (state: MapType = initialMapState, action: MapActions) => {
         nodes,
       };
     }
-    case COLLAPSE_NODE: {
-      const { nodes } = cloneDeep(state);
-      const { id } = action;
-      nodes.forEach((item) => {
-        if (item.data.id === id) {
-          item.data.isCollapsed = !item.data.isCollapsed;
-        }
-      });
-
-      return {
-        ...state,
-        nodes,
-      };
-    }
-    case RESIZE_NODE: {
-      const { nodes } = cloneDeep(state);
-      const { id, width, height } = action;
-      nodes.forEach((item) => {
-        if (item.data.id === id) {
-          item.data.width = width;
-          item.data.height = height;
-        }
-      });
-      return {
-        ...state,
-        nodes,
-      };
-    }
-    case LOCK_NODE: {
-      const { nodes } = cloneDeep(state);
-      const { id } = action;
-      nodes.forEach((item) => {
-        if (item.data.id === id) { item.data.isLocked = !item.data.isLocked; }
-      });
-
-      return {
-        ...state,
-        nodes,
-      };
-    }
     case EXCHANGE_NODE_ID: {
       const { nodes, edges } = action;
 
@@ -226,11 +183,7 @@ const map = (state: MapType = initialMapState, action: MapActions) => {
       };
     }
     case UPDATE_NODE: {
-      const nodes = cloneDeep(state.nodes);
-      const { nodeData } = action;
-      const i = state.nodes.findIndex(({ data }) => data.id === nodeData.id);
-
-      nodes[i].data = nodeData;
+      const { nodes } = action;
 
       return {
         ...state,

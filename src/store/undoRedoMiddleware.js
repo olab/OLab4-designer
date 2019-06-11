@@ -7,16 +7,10 @@ import {
   UPDATE_EDGE,
   DELETE_EDGE,
   SAVE_MAP_TO_UNDO,
-  COLLAPSE_NODE,
-  LOCK_NODE,
-  RESIZE_NODE,
 } from '../app/reducers/map/types';
 
 const undoRedoMiddleware = store => next => (action) => {
   if ([
-    COLLAPSE_NODE,
-    LOCK_NODE,
-    RESIZE_NODE,
     CREATE_NODE,
     UPDATE_NODE,
     DELETE_NODE,

@@ -14,9 +14,6 @@ import {
   DELETE_NODE,
   CREATE_EDGE,
   DELETE_EDGE,
-  COLLAPSE_NODE,
-  RESIZE_NODE,
-  LOCK_NODE,
   EXCHANGE_NODE_ID,
   CREATE_NODE_WITH_EDGE,
   UPDATE_EDGE,
@@ -47,22 +44,31 @@ export const ACTION_CREATE_NODE = (nodeData: NodeType) => {
   };
 };
 
-export const ACTION_COLLAPSE_NODE = (id: number) => ({
-  type: COLLAPSE_NODE,
-  id,
-});
+export const ACTION_UPDATE_NODE_COLLAPSE = (nodeId: number) => {
+  const { nodes } = store.getState().map;
+  const clonedNodes = cloneDeep(nodes);
+  const node = clonedNodes.find(({ data }) => data.id === nodeId);
+  node.data.isCollapsed = !node.data.isCollapsed;
 
-export const ACTION_LOCK_NODE = (id: number) => ({
-  type: LOCK_NODE,
-  id,
-});
+  return {
+    type: UPDATE_NODE,
+    nodes: clonedNodes,
+    updatedNode: node.data,
+  };
+};
 
-export const ACTION_RESIZE_NODE = (id: number, width: number, height: number) => ({
-  type: RESIZE_NODE,
-  width,
-  height,
-  id,
-});
+export const ACTION_UPDATE_NODE_LOCK = (nodeId: number) => {
+  const { nodes } = store.getState().map;
+  const clonedNodes = cloneDeep(nodes);
+  const node = clonedNodes.find(({ data }) => data.id === nodeId);
+  node.data.isLocked = !node.data.isLocked;
+
+  return {
+    type: UPDATE_NODE,
+    nodes: clonedNodes,
+    updatedNode: node.data,
+  };
+};
 
 export const ACTION_CREATE_NODE_WITH_EDGE = (nodeData: NodeType, edgeData: EdgeType) => {
   const { nodes, edges } = store.getState().map;
@@ -83,10 +89,33 @@ export const ACTION_CREATE_NODE_WITH_EDGE = (nodeData: NodeType, edgeData: EdgeT
   };
 };
 
-export const ACTION_UPDATE_NODE = (nodeData: NodeDataType) => ({
-  type: UPDATE_NODE,
-  nodeData,
-});
+export const ACTION_UPDATE_NODE_RESIZE = (nodeId: number, width: number, height: number) => {
+  const { nodes } = store.getState().map;
+  const clonedNodes = cloneDeep(nodes);
+  const node = clonedNodes.find(({ data }) => data.id === nodeId);
+  node.data.width = width;
+  node.data.height = height;
+
+  return {
+    type: UPDATE_NODE,
+    nodes: clonedNodes,
+    updatedNode: node.data,
+  };
+};
+
+export const ACTION_UPDATE_NODE = (nodeData: NodeDataType) => {
+  const { nodes } = store.getState().map;
+  const clonedNodes = cloneDeep(nodes);
+  const i = clonedNodes.findIndex(({ data }) => data.id === nodeData.id);
+
+  Object.assign(clonedNodes[i].data, nodeData);
+
+  return {
+    type: UPDATE_NODE,
+    nodes: clonedNodes,
+    updatedNode: nodeData,
+  };
+};
 
 export const ACTION_DELETE_NODE = (nodeId: number) => {
   const { nodes, edges } = store.getState().map;
