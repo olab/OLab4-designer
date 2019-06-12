@@ -6,6 +6,7 @@ import { withStyles } from '@material-ui/core/styles';
 import { IconButton } from '@material-ui/core';
 
 import OutlinedSelect from '../../../shared/components/OutlinedSelect';
+import CopyToClipboard from './CopyToClipboard';
 import CrossIcon from '../../../shared/assets/icons/cross.svg';
 import UploadIcon from '../../../shared/assets/icons/add.svg';
 import SearchIcon from '../../../shared/assets/icons/search.svg';
@@ -101,6 +102,7 @@ export class SOPicker extends Component<ISOPickerProps, ISOPickerState> {
               <SOItem key={SO.id}>
                 <SOItemHeader>
                   <span>{SO.shortCode}</span>
+                  <CopyToClipboard text={SO.shortCode} />
                   <IconButton
                     size="small"
                     classes={{ root: classes.iconButton }}

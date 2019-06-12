@@ -70,7 +70,6 @@ export const SOItem = styled.li`
 
 export const SOItemHeader = styled.div`
   display: flex;
-  justify-content: space-between;
   align-items: center;
 `;
 
@@ -161,6 +160,7 @@ export const ConfigArticle = styled.article`
 const styles = () => ({
   iconButton: {
     padding: '4px',
+    marginLeft: 'auto',
   },
 });
 
