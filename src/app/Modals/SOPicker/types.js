@@ -1,6 +1,9 @@
 // @flow
 import type { ModalPosition as ModalPositionType } from '../types';
-import type { ScopedObjects as ScopedObjectsType } from '../../reducers/scopedObjects/types';
+import type {
+  ScopedObject as ScopedObjectType,
+  ScopedObjects as ScopedObjectsType,
+} from '../../reducers/scopedObjects/types';
 
 export type ISOPickerProps = {
   ...ModalPositionType,
@@ -18,4 +21,5 @@ export type ISOPickerProps = {
 export type ISOPickerState = {
   type: string,
   level: string,
+  scopedObjectsFiltered: Array<ScopedObjectType>,
 };

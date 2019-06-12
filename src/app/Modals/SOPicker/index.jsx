@@ -7,32 +7,37 @@ import { IconButton } from '@material-ui/core';
 
 import OutlinedSelect from '../../../shared/components/OutlinedSelect';
 import CopyToClipboard from './CopyToClipboard';
+import SearchBox from './SearchBox';
+
 import CrossIcon from '../../../shared/assets/icons/cross.svg';
 import UploadIcon from '../../../shared/assets/icons/add.svg';
-import SearchIcon from '../../../shared/assets/icons/search.svg';
 import EyeIcon from '../../../shared/assets/icons/eye.svg';
 
 import type { ISOPickerProps, ISOPickerState } from './types';
 import { DndContexts, ModalsNames } from '../config';
-import { SOTypes, SOLevels } from './config';
+import { SOTypes, SOLevels, SOItemsLimit } from './config';
 
 import * as actions from '../action';
 
 import styles, {
   ModalBody, ModalFooter, UploadButton,
-  SearchBox, SearchIconWrapper, ConfigArticle,
-  SOList, SOItem, SOItemTitle, SOItemHeader,
-  SOItemSubTitle,
+  ConfigArticle, SOList, SOItem,
+  SOItemTitle, SOItemHeader, SOItemSubTitle,
 } from './styles';
 import { ModalWrapper, ModalHeader } from '../styles';
 
 export class SOPicker extends Component<ISOPickerProps, ISOPickerState> {
+  searchBoxRef: { current: null | Element };
+
   constructor(props: ISOPickerProps) {
     super(props);
     this.state = {
       type: SOTypes[0],
       level: SOLevels[0],
+      scopedObjectsFiltered: props.scopedObjects[SOTypes[0]],
     };
+
+    this.searchBoxRef = React.createRef();
   }
 
   handleCloseModal = () => {
@@ -46,15 +51,38 @@ export class SOPicker extends Component<ISOPickerProps, ISOPickerState> {
     ACTION_SET_POSITION_MODAL(x, y);
   }
 
-  handleInputChange = (e: Event): void => {
-    const { value, name } = (e.target: window.HTMLInputElement);
-    this.setState({ [name]: value });
+  handleTypeChange = (e: Event): void => {
+    const { scopedObjects } = this.props;
+    const { value } = (e.target: window.HTMLInputElement);
+
+    if (this.searchBoxRef && this.searchBoxRef.current) {
+      this.searchBoxRef.current.resetValue();
+    }
+
+    this.setState({
+      type: value,
+      scopedObjectsFiltered: scopedObjects[value],
+    });
+  }
+
+  handleLevelChange = (e: Event): void => {
+    const { value } = (e.target: window.HTMLInputElement);
+    this.setState({ level: value });
+  }
+
+  handleSearch = (value: string): void => {
+    const { type } = this.state;
+    const { scopedObjects: SOs } = this.props;
+    const queryStr = value.trim().toLowerCase();
+    const SOsFiltered = SOs[type].filter(({ title }) => title.toLowerCase().includes(queryStr));
+
+    this.setState({ scopedObjectsFiltered: SOsFiltered });
   }
 
   render() {
-    const { type, level } = this.state;
+    const { type, level, scopedObjectsFiltered } = this.state;
     const {
-      x, y, isDragging, connectDragSource, connectDragPreview, scopedObjects, classes,
+      x, y, isDragging, connectDragSource, connectDragPreview, classes,
     } = this.props;
 
     if (isDragging) {
@@ -83,7 +111,7 @@ export class SOPicker extends Component<ISOPickerProps, ISOPickerState> {
             labelWidth={65}
             value={type}
             values={SOTypes}
-            onChange={this.handleInputChange}
+            onChange={this.handleTypeChange}
             fullWidth
           />
           <OutlinedSelect
@@ -92,13 +120,13 @@ export class SOPicker extends Component<ISOPickerProps, ISOPickerState> {
             labelWidth={100}
             value={level}
             values={SOLevels}
-            onChange={this.handleInputChange}
+            onChange={this.handleLevelChange}
             fullWidth
           />
         </ConfigArticle>
         <ModalBody>
           <SOList>
-            {scopedObjects[type].map(SO => (
+            {scopedObjectsFiltered.slice(0, SOItemsLimit).map(SO => (
               <SOItem key={SO.id}>
                 <SOItemHeader>
                   <span>{SO.shortCode}</span>
@@ -117,17 +145,10 @@ export class SOPicker extends Component<ISOPickerProps, ISOPickerState> {
           </SOList>
         </ModalBody>
         <ModalFooter>
-          <SearchBox>
-            <SearchIconWrapper>
-              <SearchIcon />
-            </SearchIconWrapper>
-            <input
-              name="search"
-              type="search"
-              placeholder="Search files"
-              autoComplete="off"
-            />
-          </SearchBox>
+          <SearchBox
+            innerRef={this.searchBoxRef}
+            onSearch={this.handleSearch}
+          />
           <label htmlFor="upload_file">
             <input
               type="file"
