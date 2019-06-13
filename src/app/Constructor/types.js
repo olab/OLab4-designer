@@ -8,6 +8,9 @@ import type {
 export type IConstructorProps = {
   map: MapType,
   isShowSOPicker: boolean,
+  match: any,
+  history: any,
+  ACTION_GET_MAP_REQUESTED: Function,
   ACTION_CREATE_TEMPLATE_FROM_MAP: Function,
 };
 export type IConstructorState = {

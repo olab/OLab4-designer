@@ -17,12 +17,13 @@ import {
   UNDO_MAP,
   REDO_MAP,
   SAVE_MAP_TO_UNDO,
+  GET_MAP_FAILED,
+  GET_MAP_SUCCEEDED,
+  GET_MAP_REQUESTED,
   CREATE_MAP_FAILED,
   CREATE_MAP_SUCCEEDED,
   CREATE_MAP_REQUESTED,
 } from './types';
-
-import sample from '../../../helpers/nodes_sample';
 
 export const initialMapState: MapType = {
   id: null,
@@ -31,8 +32,8 @@ export const initialMapState: MapType = {
   keywords: '',
   enabled: false,
   isFetching: false,
-  nodes: sample.nodes,
-  edges: sample.edges,
+  nodes: [],
+  edges: [],
   undo: [],
   redo: [],
 };
@@ -216,16 +217,33 @@ const map = (state: MapType = initialMapState, action: MapActions) => {
         isFetching: false,
       };
     }
-    case CREATE_MAP_FAILED: {
+    case CREATE_MAP_FAILED:
       return {
         ...state,
         isFetching: false,
       };
-    }
     case CREATE_MAP_REQUESTED:
       return {
         ...state,
         isFetching: true,
+      };
+    case GET_MAP_SUCCEEDED: {
+      const { map: newMap } = action;
+
+      return {
+        ...newMap,
+        isFetching: false,
+      };
+    }
+    case GET_MAP_REQUESTED:
+      return {
+        ...state,
+        isFetching: true,
+      };
+    case GET_MAP_FAILED:
+      return {
+        ...state,
+        isFetching: false,
       };
     default:
       return state;

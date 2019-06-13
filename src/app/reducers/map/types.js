@@ -118,6 +118,23 @@ type RedoMap = {
   type: 'REDO_MAP',
 };
 
+const GET_MAP_SUCCEEDED = 'GET_MAP_SUCCEEDED';
+type GetMapSucceeded = {
+  type: 'GET_MAP_SUCCEEDED',
+  map: Map,
+};
+
+const GET_MAP_FAILED = 'GET_MAP_FAILED';
+type GetMapFailed = {
+  type: 'GET_MAP_FAILED',
+};
+
+const GET_MAP_REQUESTED = 'GET_MAP_REQUESTED';
+type GetMapRequested = {
+  type: 'GET_MAP_REQUESTED',
+  mapId: string,
+};
+
 const CREATE_MAP_SUCCEEDED = 'CREATE_MAP_SUCCEEDED';
 type CreateMapFromTemplateSucceeded = {
   type: 'CREATE_MAP_SUCCEEDED',
@@ -140,6 +157,7 @@ export type MapActions = SelectItem |
   CreateEdge | DeleteEdge | UpdateEdge |
   ResetMap | RenameMap | MapToUndo |
   UndoMap | RedoMap | ExchangeNodeId |
+  GetMapSucceeded | GetMapFailed | GetMapRequested |
   CreateMapFromTemplateRequested | CreateMapFromTemplateSucceeded |
   CreateMapFromTemplateFailed | CreateNodeWithEdge;
 
@@ -158,6 +176,9 @@ export {
   SAVE_MAP_TO_UNDO,
   UNDO_MAP,
   REDO_MAP,
+  GET_MAP_FAILED,
+  GET_MAP_SUCCEEDED,
+  GET_MAP_REQUESTED,
   CREATE_MAP_FAILED,
   CREATE_MAP_SUCCEEDED,
   CREATE_MAP_REQUESTED,

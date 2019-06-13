@@ -12,6 +12,8 @@ import Login from './Login';
 import Home from './Home';
 import Constructor from './Constructor';
 
+import LogoIcon from '../shared/assets/icons/logo.svg';
+
 import type {
   IAppProps,
   IProtectedRouteProps,
@@ -48,25 +50,22 @@ export const App = ({ isAuth, isDataFetching, history }: IAppProps) => (
     <>
       <Header>
         <div>
-          <Logo href="/">OLab</Logo>
-          <nav>
-            {!isAuth && <Link to="/login" className="route-link">Login</Link>}
-            <Link to="/" className="route-link">Home</Link>
-            <Link to="/constructor" className="route-link">
-              Map Layout Editor
-            </Link>
-          </nav>
+          <Link to="/" className="route-link">
+            <Logo>
+              <LogoIcon />
+              <h1>
+                Open
+                <span>Labyrinth</span>
+              </h1>
+            </Logo>
+          </Link>
         </div>
-        {isDataFetching ? (
-          <LinearProgress />
-        ) : (
-          <FakeProgress />
-        )}
+        {isDataFetching ? <LinearProgress /> : <FakeProgress />}
       </Header>
       <Switch>
         <Route exact path="/login" component={Login} />
         <ProtectedRoute exact isAuth={isAuth} path="/" component={Home} />
-        <ProtectedRoute exact isAuth={isAuth} path="/constructor" component={Constructor} />
+        <ProtectedRoute exact isAuth={isAuth} path="/constructor/:mapId" component={Constructor} />
       </Switch>
       <Notify />
     </>

@@ -1,6 +1,7 @@
 // @flow
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 import Fullscreen from 'react-full-screen';
@@ -14,7 +15,8 @@ import NodeEditor from '../Modals/NodeEditor';
 import Input from '../../shared/components/Input';
 import TemplateModal from '../../shared/components/ConfirmationModal';
 
-import * as actions from '../reducers/templates/action';
+import * as mapActions from '../reducers/map/action';
+import * as templatesActions from '../reducers/templates/action';
 
 import type { EdgeData as EdgeDataType } from './Graph/Edge/types';
 import type { NodeData as NodeDataType } from './Graph/Node/types';
@@ -42,6 +44,8 @@ export class Constructor extends PureComponent<IConstructorProps, IConstructorSt
     };
 
     this.templateInputName = React.createRef();
+
+    this.validateUrl();
   }
 
   static getDerivedStateFromProps(nextProps: IConstructorProps, state: IConstructorState) {
@@ -82,29 +86,43 @@ export class Constructor extends PureComponent<IConstructorProps, IConstructorSt
     return null;
   }
 
-  changeIfFullScreen = (isFullScreen: boolean) => {
+  validateUrl = (): void => {
+    const {
+      map, match, history, ACTION_GET_MAP_REQUESTED,
+    } = this.props;
+    const mapIdUrl = match.params.mapId;
+    const pageRefreshed = !map.id && mapIdUrl;
+
+    if (pageRefreshed) {
+      ACTION_GET_MAP_REQUESTED(mapIdUrl);
+    } else if (!mapIdUrl) {
+      history.push('/login');
+    }
+  }
+
+  changeIfFullScreen = (isFullScreen: boolean): void => {
     this.setState({ isFullScreen });
   };
 
-  toggleFullScreen = () => {
+  toggleFullScreen = (): void => {
     this.setState(({ isFullScreen }) => ({
       isFullScreen: !isFullScreen,
     }));
   };
 
-  showCreateTemplateModal = () => {
+  showCreateTemplateModal = (): void => {
     this.setState({
       isShowCreateTemplateModal: true,
     });
   }
 
-  closeCreateTemplateModal = () => {
+  closeCreateTemplateModal = (): void => {
     this.setState({
       isShowCreateTemplateModal: false,
     });
   }
 
-  saveTemplateFromMap = () => {
+  saveTemplateFromMap = (): void => {
     if (this.templateInputName && this.templateInputName.current) {
       const { value } = this.templateInputName.current.state;
 
@@ -172,7 +190,10 @@ const mapStateToProps = ({ map, modals }) => ({
 
 const mapDispatchToProps = dispatch => ({
   ACTION_CREATE_TEMPLATE_FROM_MAP: (templateName: string, map: MapType) => {
-    dispatch(actions.ACTION_CREATE_TEMPLATE_FROM_MAP(templateName, map));
+    dispatch(templatesActions.ACTION_CREATE_TEMPLATE_FROM_MAP(templateName, map));
+  },
+  ACTION_GET_MAP_REQUESTED: (mapId: string) => {
+    dispatch(mapActions.ACTION_GET_MAP_REQUESTED(mapId));
   },
 });
 
@@ -180,5 +201,5 @@ export default DragDropContext(HTML5Backend)(
   connect(
     mapStateToProps,
     mapDispatchToProps,
-  )(Constructor),
+  )(withRouter(Constructor)),
 );

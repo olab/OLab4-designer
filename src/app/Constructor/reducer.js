@@ -8,7 +8,7 @@ import {
 
 export const initialConstructorState: ConstructorType = {
   cursor: 'default',
-  layoutEngineType: 'None',
+  layoutEngineType: 'VerticalTree',
   zoom: {
     index: 50,
     zoomStep: 1,

@@ -14,14 +14,17 @@ export const edgeToServer = edgeData => ({
   destination_id: edgeData.target,
 });
 export const edgeFromServer = edgeData => ({
-  id: edgeData.id,
-  label: edgeData.text,
-  color: edgeData.color,
-  variant: edgeData.line_type,
-  thickness: edgeData.thickness,
-  source: edgeData.source_id,
-  target: edgeData.destination_id,
-  isHidden: Boolean(edgeData.hidden),
+  isSelected: false,
+  data: {
+    id: edgeData.id,
+    label: edgeData.text || '',
+    color: edgeData.color,
+    variant: edgeData.lineType,
+    thickness: edgeData.thickness,
+    source: edgeData.node_id_1,
+    target: edgeData.node_id_2,
+    isHidden: Boolean(edgeData.hidden),
+  },
 });
 
 export const nodeToServer = nodeData => ({
@@ -32,8 +35,8 @@ export const nodeToServer = nodeData => ({
   type_id: nodeData.type_id,
   x: nodeData.x,
   y: nodeData.y,
-  height: nodeData.width,
-  width: nodeData.height,
+  height: nodeData.height,
+  width: nodeData.width,
   locked: Number(nodeData.isLocked),
   collapsed: Number(nodeData.isCollapsed),
   color: nodeData.color,
@@ -42,15 +45,15 @@ export const nodeFromServer = nodeData => ({
   isSelected: false,
   data: {
     id: nodeData.id,
-    map_id: nodeData.map_id || null,
+    map_id: nodeData.mapId || null,
     title: nodeData.title,
-    type_id: nodeData.type_id,
+    type_id: nodeData.typeId,
     x: nodeData.x,
     y: nodeData.y,
     width: nodeData.width || 0,
     height: nodeData.height || 0,
-    color: nodeData.color || nodeData.rgb,
-    type: nodeData.type_id,
+    color: nodeData.color,
+    type: nodeData.typeId,
     text: nodeData.text,
     isCollapsed: Boolean(nodeData.collapsed),
     isLocked: Boolean(nodeData.locked),
@@ -67,8 +70,8 @@ export const mapFromServer = mapData => ({
   nodes: mapData.nodes
     ? mapData.nodes.map(node => nodeFromServer(node))
     : [],
-  edges: mapData.edges
-    ? mapData.edges.map(edge => edgeFromServer(edge))
+  edges: mapData.links
+    ? mapData.links.map(edge => edgeFromServer(edge))
     : [],
   undo: [],
   redo: [],

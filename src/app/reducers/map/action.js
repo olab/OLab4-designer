@@ -22,6 +22,9 @@ import {
   SAVE_MAP_TO_UNDO,
   UNDO_MAP,
   REDO_MAP,
+  GET_MAP_FAILED,
+  GET_MAP_SUCCEEDED,
+  GET_MAP_REQUESTED,
   CREATE_MAP_FAILED,
   CREATE_MAP_SUCCEEDED,
   CREATE_MAP_REQUESTED,
@@ -196,6 +199,20 @@ export const ACTION_UNDO_MAP = () => ({
 
 export const ACTION_REDO_MAP = () => ({
   type: REDO_MAP,
+});
+
+export const ACTION_GET_MAP_FAILED = () => ({
+  type: GET_MAP_FAILED,
+});
+
+export const ACTION_GET_MAP_SUCCEEDED = (map: MapType) => ({
+  type: GET_MAP_SUCCEEDED,
+  map,
+});
+
+export const ACTION_GET_MAP_REQUESTED = (mapId: string) => ({
+  type: GET_MAP_REQUESTED,
+  mapId,
 });
 
 export const ACTION_CREATE_MAP_FAILED = () => ({

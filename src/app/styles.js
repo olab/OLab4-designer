@@ -1,32 +1,47 @@
 import styled from 'styled-components';
 
-const colorDark = '#282c34';
+const colorDark = '#24446A';
 const colorWhite = '#fff';
-const colorBlue = '#61dafb';
+const colorBlue = '#0089EC';
 const colorGray = '#C9CEEA';
 
 export const Header = styled.header`
-  background-color: ${colorDark};
+  background-color: ${colorWhite};
   min-height: 4vh;
   font-size: calc(10px + 2vmin);
-  color: white;
+  color: ${colorBlue};
   .route-link {
-    margin-left: 2rem;
     font-size: 1rem;
     color: ${colorBlue};
+    text-decoration: none;
   }
 
   > div:first-of-type {
     display: flex;
     align-items: center;
-    padding: 0 10%;
-    margin-bottom: 5px;
+    padding: 5px 10px;
   }
 `;
 
-export const Logo = styled.a`
+export const Navigation = styled.nav`
+  display: flex;
+  align-items: center;
+  margin-left: 30px;
+`;
+
+export const Logo = styled.div`
   text-decoration: none;
-  color: ${colorWhite};
+  display: flex;
+  align-items: center;
+
+  h1 {
+    margin: 0;
+    margin-left: 10px;
+  }
+
+  span {
+    color: ${colorDark};
+  }
 `;
 
 export const FakeProgress = styled.div`

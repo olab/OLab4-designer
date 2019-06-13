@@ -53,7 +53,7 @@ class Home extends PureComponent<IHomeProps, IHomeState> {
     }
 
     if (isMapRetrieved) {
-      history.push('/constructor');
+      history.push(`/constructor/${mapId}`);
     }
   }
 
