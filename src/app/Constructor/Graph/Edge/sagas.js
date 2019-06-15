@@ -17,10 +17,9 @@ import {
 
 function* createEdgeSaga({ edgeData }) {
   try {
-    const { data: { id: prevEdgeId } } = edgeData;
+    const { id: prevEdgeId } = edgeData;
     const mapId = yield select(({ map }) => map.id);
-
-    const newEdgeId = yield call(createEdge, mapId, edgeData.data);
+    const newEdgeId = yield call(createEdge, mapId, edgeData);
 
     yield put(ACTION_EXCHANGE_EDGE_ID(prevEdgeId, newEdgeId));
   } catch (error) {

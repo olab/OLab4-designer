@@ -12,7 +12,7 @@ const StandardEdgeShape = (
   </symbol>
 );
 
-export const EdgeTypes = {
+export const EDGE_TYPES = {
   standardEdge: {
     shape: StandardEdgeShape,
     shapeId: `#${standardEdge}`,
@@ -22,10 +22,12 @@ export const EdgeTypes = {
 export const VIEWPORT_OFFSET_X = 50;
 export const VIEWPORT_OFFSET_Y = 103;
 export const VIEWPORT_FULL_SCREEN_OFFSET_Y = 42;
+export const NODE_CREATION_OFFSET = 50;
 
 export default {
-  EdgeTypes,
+  EDGE_TYPES,
   VIEWPORT_OFFSET_X,
   VIEWPORT_OFFSET_Y,
   VIEWPORT_FULL_SCREEN_OFFSET_Y,
+  NODE_CREATION_OFFSET,
 };

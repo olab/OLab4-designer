@@ -1,6 +1,5 @@
 // @flow
-import type { Edge as EdgeType } from '../../reducers/map/types';
-import type { EdgeData as EdgeDataType } from '../../Constructor/Graph/Edge/types';
+import type { Edge as EdgeType } from '../../Constructor/Graph/Edge/types';
 import type { ModalPosition as ModalPositionType } from '../types';
 
 export type ILinkEditorProps = {
@@ -8,7 +7,7 @@ export type ILinkEditorProps = {
     [props: string]: any,
   },
   ...ModalPositionType,
-  link: EdgeDataType,
+  link: EdgeType,
   edges: Array<EdgeType>,
   isDragging: boolean;
   connectDragSource: Function;
@@ -21,6 +20,6 @@ export type ILinkEditorProps = {
 };
 
 export type ILinkEditorState = {
-  ...EdgeDataType,
+  ...EdgeType,
   shouldUpdateVisual: boolean,
 };

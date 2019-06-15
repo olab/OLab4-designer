@@ -2,6 +2,7 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+import * as d3 from 'd3';
 import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 import Fullscreen from 'react-full-screen';
@@ -19,8 +20,8 @@ import TemplatesModal from '../../shared/components/TemplatesModal';
 import * as mapActions from '../reducers/map/action';
 import * as templatesActions from '../reducers/templates/action';
 
-import type { EdgeData as EdgeDataType } from './Graph/Edge/types';
-import type { NodeData as NodeDataType } from './Graph/Node/types';
+import type { Edge as EdgeType } from './Graph/Edge/types';
+import type { Node as NodeType } from './Graph/Node/types';
 import type { MapItem as MapItemType } from '../reducers/map/types';
 import type { IConstructorProps, IConstructorState } from './types';
 
@@ -47,14 +48,14 @@ export class Constructor extends PureComponent<IConstructorProps, IConstructorSt
   }
 
   static getDerivedStateFromProps(nextProps: IConstructorProps, state: IConstructorState) {
-    const selectedNode: NodeDataType | null = Constructor.getSelectedNode(nextProps.map);
+    const selectedNode: NodeType | null = Constructor.getSelectedNode(nextProps.map);
     if (!isEqual(state.selectedNode, selectedNode)) {
       return {
         selectedNode,
       };
     }
 
-    const selectedLink: EdgeDataType | null = Constructor.getSelectedEdge(nextProps.map);
+    const selectedLink: EdgeType | null = Constructor.getSelectedEdge(nextProps.map);
     if (!isEqual(state.selectedLink, selectedLink)) {
       return {
         selectedLink,
@@ -64,21 +65,24 @@ export class Constructor extends PureComponent<IConstructorProps, IConstructorSt
     return null;
   }
 
-  static getSelectedNode(map: MapItemType): NodeDataType | null {
+  static getSelectedNode(map: MapItemType): NodeType | null {
     const selectedNode = map.nodes.find(node => node.isSelected);
-
+    if (d3.event) {
+      if (d3.event.type !== 'mousedown') {
+        return null;
+      }
+    }
     if (selectedNode) {
-      return selectedNode.data;
+      return selectedNode;
     }
 
     return null;
   }
 
-  static getSelectedEdge(map: MapItemType): EdgeDataType | null {
+  static getSelectedEdge(map: MapItemType): EdgeType | null {
     const selectedLink = map.edges.find(edge => edge.isSelected);
-
     if (selectedLink) {
-      return selectedLink.data;
+      return selectedLink;
     }
 
     return null;

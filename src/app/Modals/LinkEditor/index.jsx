@@ -13,7 +13,7 @@ import OutlinedInput from '../../../shared/components/OutlinedInput';
 import OutlinedSelect from '../../../shared/components/OutlinedSelect';
 import ScaleIcon from '../../../shared/assets/icons/cross.svg';
 
-import type { EdgeData as LinkDataType } from '../../Constructor/Graph/Edge/types';
+import type { Edge as LinkType } from '../../Constructor/Graph/Edge/types';
 import type { ILinkEditorProps, ILinkEditorState } from './types';
 
 import * as modalActions from '../action';
@@ -35,7 +35,7 @@ import styles, {
 import { ModalWrapper, ModalHeader } from '../styles';
 
 class LinkEditor extends PureComponent<ILinkEditorProps, ILinkEditorState> {
-  defaultLinkProps: LinkDataType | null;
+  defaultLinkProps: LinkType | null;
 
   isLinkHasSibling: boolean = false;
 
@@ -160,11 +160,11 @@ class LinkEditor extends PureComponent<ILinkEditorProps, ILinkEditorState> {
     };
   }
 
-  checkIfLinkHasSibling = ({ source: linkSource, target: linkTarget }: LinkDataType) => {
+  checkIfLinkHasSibling = ({ source: linkSource, target: linkTarget }: LinkType) => {
     const { links } = this.props;
 
     return links
-      .some(({ data: { source, target } }) => source === linkTarget && target === linkSource);
+      .some(({ source, target }) => source === linkTarget && target === linkSource);
   }
 
   render() {
@@ -272,10 +272,10 @@ const mapStateToProps = ({ map, modals, constructor }) => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  ACTION_UPDATE_EDGE: (edgeData: LinkDataType) => {
+  ACTION_UPDATE_EDGE: (edgeData: LinkType) => {
     dispatch(graphActions.ACTION_UPDATE_EDGE(edgeData));
   },
-  ACTION_UPDATE_EDGE_VISUAL: (edgeData: LinkDataType) => {
+  ACTION_UPDATE_EDGE_VISUAL: (edgeData: LinkType) => {
     dispatch(graphActions.ACTION_UPDATE_EDGE_VISUAL(edgeData));
   },
   ACTION_DESELECT_ITEM: () => {

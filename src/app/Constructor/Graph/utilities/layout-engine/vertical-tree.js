@@ -1,6 +1,6 @@
 // @flow
 import * as dagre from 'dagre';
-import type { INode } from '../../Node/types';
+import type { Node as NodeType } from '../../Node/types';
 import SnapToGrid from './snap-to-grid';
 
 type MapNodes = {
@@ -8,7 +8,7 @@ type MapNodes = {
 }
 class VerticalTree extends SnapToGrid {
   // eslint-disable-next-line class-methods-use-this
-  adjustNodes(nodes: Array<INode>, nodesMap?: MapNodes): Array<INode> {
+  adjustNodes(nodes: Array<NodeType>, nodesMap?: MapNodes): Array<NodeType> {
     const size = 300 * 1.7;
     const g = new dagre.graphlib.Graph();
     g.setGraph({});

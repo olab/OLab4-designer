@@ -1,6 +1,6 @@
 // @flow
-import type { NodeData as NodeDataType } from '../Node/types';
-import type { EdgeData as EdgeDataType } from '../Edge/types';
+import type { Node as NodeType } from '../Node/types';
+import type { Edge as EdgeType } from '../Edge/types';
 
 export type ITargetPosition = {
   clientX: number;
@@ -14,12 +14,12 @@ export type IViewTransform = {
 };
 
 export type INodeMapNode = {
-  node: NodeDataType;
+  node: NodeType;
   originalArrIndex: number;
-  incomingEdges: Array<EdgeDataType>;
-  outgoingEdges: Array<EdgeDataType>;
-  parents: Array<NodeDataType>;
-  children: Array<NodeDataType>;
+  incomingEdges: Array<EdgeType>;
+  outgoingEdges: Array<EdgeType>;
+  parents: Array<NodeType>;
+  children: Array<NodeType>;
 };
 
 export type IGraphViewState = {
@@ -59,26 +59,26 @@ export type IGraphViewProps = {
   zoomDelay?: number;
   zoomDur?: number;
   onCopySelected?: () => void;
-  onCreateEdge: (sourceNode: NodeDataType, targetNode: NodeDataType) => void;
-  onCreateNodeWithEdge: (x: number, y: number, sourceNode: NodeDataType) => void;
+  onCreateEdge: (sourceNode: NodeType, targetNode: NodeType) => void;
+  onCreateNodeWithEdge: (x: number, y: number, sourceNode: NodeType) => void;
   onDeleteEdge: (edgeId: number) => void;
   onCreateNode: (x: number, y: number) => void;
   onDeleteNode: (nodeId: number) => void;
   onPasteSelected?: () => void;
-  onSelectEdge: (selectedEdge: EdgeDataType | null, x?: number, y?: number) => void;
-  onSelectNode: (node: NodeDataType | null, x?: number, y?: number) => void;
+  onSelectEdge: (selectedEdge: EdgeType | null, x?: number, y?: number) => void;
+  onSelectNode: (node: NodeType | null, x?: number, y?: number) => void;
   onCollapseNode: (id: number) => void;
   onResizeNode: (id: number, width: number, height: number) => void;
   onLockNode: (id: number) => void;
   onUndo?: () => void;
   onRedo?: () => void;
-  onUpdateNode: (node: NodeDataType) => void;
+  onUpdateNode: (node: NodeType) => void;
   renderBackground?: (gridSize?: number) => any;
   renderDefs?: () => any;
   afterRenderEdge?: (
     id: string,
     element: any,
-    edge: EdgeDataType,
+    edge: EdgeType,
     edgeContainer: any,
     isEdgeSelected: boolean,
   ) => void;

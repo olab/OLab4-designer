@@ -33,8 +33,8 @@ function* createNodeSaga({ position, oldNodeId }) {
 
 function* createNodeWithEdgeSaga({ sourceNodeId, nodeData, edgeData }) {
   try {
-    const oldEdgeId = edgeData.data.id;
-    const { x, y, id: oldNodeId } = nodeData.data;
+    const { x, y, id: oldNodeId } = nodeData;
+    const { id: oldEdgeId } = edgeData;
     const mapId = yield select(({ map }) => map.id);
     const { newNodeId, newEdgeId } = yield call(createNode, mapId, { x, y }, sourceNodeId);
 

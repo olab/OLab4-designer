@@ -1,25 +1,15 @@
 // @flow
-import type { EdgeData as EdgeDataType } from '../../Constructor/Graph/Edge/types';
-import type { NodeData as NodeDataType } from '../../Constructor/Graph/Node/types';
+import type { Edge as EdgeType } from '../../Constructor/Graph/Edge/types';
+import type { Node as NodeType } from '../../Constructor/Graph/Node/types';
 
 export type Position = {
   x: number,
   y: number,
 };
 
-export type Edge = {
-  isSelected: boolean,
-  data: EdgeDataType,
-};
-
-export type Node = {
-  isSelected: boolean,
-  data: NodeDataType,
-};
-
 export type MapItem = {
-  nodes: Array<Node>,
-  edges: Array<Edge>,
+  nodes: Array<NodeType>,
+  edges: Array<EdgeType>,
 };
 
 export type Map = {
@@ -29,8 +19,8 @@ export type Map = {
   keywords: string,
   enabled: boolean,
   isFetching: boolean,
-  nodes: Array<Node>,
-  edges: Array<Edge>,
+  nodes: Array<NodeType>,
+  edges: Array<EdgeType>,
   undo: Array<MapItem>,
   redo: Array<MapItem>,
 };
@@ -38,13 +28,14 @@ export type Map = {
 const SELECT_ITEM = 'SELECT_ITEM';
 type SelectItem = {
   type: 'SELECT_ITEM',
-  id?: number,
+  nodes: Array<NodeType>,
+  edges: Array<EdgeType>,
 };
 
 const CREATE_NODE = 'CREATE_NODE';
 type CreateNode = {
   type: 'CREATE_NODE',
-  nodes: Array<Node>,
+  nodes: Array<NodeType>,
   oldNodeId: string,
   position: Position,
 };
@@ -52,71 +43,66 @@ type CreateNode = {
 const CREATE_NODE_WITH_EDGE = 'CREATE_NODE_WITH_EDGE';
 type CreateNodeWithEdge = {
   type: 'CREATE_NODE_WITH_EDGE',
-  nodes: Array<Node>,
-  edges: Array<Edge>,
-  nodeData: Node,
-  edgeData: Edge,
+  nodes: Array<NodeType>,
+  edges: Array<EdgeType>,
+  nodeData: NodeType,
+  edgeData: EdgeType,
   sourceNodeId: number,
 };
 
 const UPDATE_NODE = 'UPDATE_NODE';
 type UpdateNode = {
   type: 'UPDATE_NODE',
-  nodes: Array<Node>,
-  updatedNode: NodeDataType,
+  nodes: Array<NodeType>,
+  updatedNode: NodeType,
 };
 
 const DELETE_NODE = 'DELETE_NODE';
 type DeleteNode = {
   type: 'DELETE_NODE',
-  nodes: Array<Node>,
-  edges: Array<Edge>,
+  nodes: Array<NodeType>,
+  edges: Array<EdgeType>,
   nodeId: number,
 };
 
 const EXCHANGE_NODE_ID = 'EXCHANGE_NODE_ID';
 type ExchangeNodeId = {
   type: 'EXCHANGE_NODE_ID',
-  nodes: Array<Node>,
-  edges: Array<Edge>,
+  nodes: Array<NodeType>,
+  edges: Array<EdgeType>,
 };
 
 const EXCHANGE_EDGE_ID = 'EXCHANGE_EDGE_ID';
 type ExchangeEdgeId = {
   type: 'EXCHANGE_EDGE_ID',
-  edges: Array<Edge>,
+  edges: Array<EdgeType>,
 };
 
 const CREATE_EDGE = 'CREATE_EDGE';
 type CreateEdge = {
   type: 'CREATE_EDGE',
-  nodes: Array<Node>,
-  edges: Array<Edge>,
-  edgeData: Edge,
+  nodes: Array<NodeType>,
+  edges: Array<EdgeType>,
+  edgeData: EdgeType,
 };
 
 const DELETE_EDGE = 'DELETE_EDGE';
 type DeleteEdge = {
   type: 'DELETE_EDGE',
-  edges: Array<Edge>,
+  edges: Array<EdgeType>,
 };
 
 const UPDATE_EDGE = 'UPDATE_EDGE';
 type UpdateEdge = {
   type: 'UPDATE_EDGE',
-  edges: Array<Edge>,
-  updatedEdge: EdgeDataType,
+  edges: Array<EdgeType>,
+  updatedEdge: EdgeType,
 };
 
 const UPDATE_EDGE_VISUAL = 'UPDATE_EDGE_VISUAL';
 type UpdateEdgeVisual = {
   type: 'UPDATE_EDGE_VISUAL',
-  edges: Array<Edge>,
-};
-
-const RESET_MAP = 'RESET_MAP';
-type ResetMap = {
-  type: 'RESET_MAP',
+  edges: Array<EdgeType>,
 };
 
 const RENAME_MAP = 'RENAME_MAP';
@@ -139,23 +125,28 @@ type ExtendMapFailed = {
 const EXTEND_MAP_SUCCEEDED = 'EXTEND_MAP_SUCCEEDED';
 type ExtendMapSucceeded = {
   type: 'EXTEND_MAP_SUCCEEDED',
-  nodes: Array<Node>,
-  edges: Array<Edge>,
+  nodes: Array<NodeType>,
+  edges: Array<EdgeType>,
 };
 
 const SAVE_MAP_TO_UNDO = 'SAVE_MAP_TO_UNDO';
 type MapToUndo = {
   type: 'SAVE_MAP_TO_UNDO',
+  currentMap: MapItem,
 };
 
 const UNDO_MAP = 'UNDO_MAP';
 type UndoMap = {
   type: 'UNDO_MAP',
+  currentMap: MapItem,
+  prev: MapItem
 };
 
 const REDO_MAP = 'REDO_MAP';
 type RedoMap = {
   type: 'REDO_MAP',
+  currentMap: MapItem,
+  next: MapItem
 };
 
 const GET_MAP_SUCCEEDED = 'GET_MAP_SUCCEEDED';
@@ -195,8 +186,7 @@ type CreateMapFromTemplateRequested = {
 export type MapActions = SelectItem |
   CreateNode | UpdateNode | DeleteNode |
   CreateEdge | DeleteEdge | UpdateEdge |
-  ResetMap | RenameMap | MapToUndo |
-  UndoMap | RedoMap | ExchangeNodeId |
+  RenameMap | MapToUndo | UndoMap | RedoMap | ExchangeNodeId |
   GetMapSucceeded | GetMapFailed | GetMapRequested |
   CreateMapFromTemplateRequested | CreateMapFromTemplateSucceeded |
   CreateMapFromTemplateFailed | CreateNodeWithEdge | ExchangeEdgeId |
@@ -215,7 +205,6 @@ export {
   UPDATE_EDGE,
   UPDATE_EDGE_VISUAL,
   CREATE_NODE_WITH_EDGE,
-  RESET_MAP,
   RENAME_MAP,
   EXTEND_MAP_REQUESTED,
   EXTEND_MAP_FAILED,

@@ -1,12 +1,8 @@
 // @flow
-import type {
-  Edge as EdgeData,
-  Node as NodeData,
-  Map as MapType,
-} from '../reducers/map/types';
-import type {
-  Template as TemplateType,
-} from '../reducers/templates/types';
+import type { Map as MapType } from '../reducers/map/types';
+import type { Node as NodeType } from './Graph/Node/types';
+import type { Edge as EdgeType } from './Graph/Edge/types';
+import type { Template as TemplateType } from '../reducers/templates/types';
 
 export type IConstructorProps = {
   map: MapType,
@@ -22,8 +18,8 @@ export type IConstructorProps = {
 };
 export type IConstructorState = {
   isFullScreen: boolean,
-  selectedLink: EdgeData | null,
-  selectedNode: NodeData | null,
+  selectedLink: EdgeType | null,
+  selectedNode: NodeType | null,
   isShowCreateTemplateModal: boolean,
   isShowPreBuiltTemplatesModal: boolean,
 };

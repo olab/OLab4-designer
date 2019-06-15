@@ -1,5 +1,5 @@
 // @flow
-import type { INode } from '../../Node/types';
+import type { Node as NodeType } from '../../Node/types';
 import type { IGraphViewProps } from '../../GraphView/types';
 
 export type IPosition = {
@@ -21,7 +21,7 @@ class LayoutEngine {
   }
 
   // eslint-disable-next-line class-methods-use-this
-  adjustNodes(nodes: Array<INode>): Array<INode> {
+  adjustNodes(nodes: Array<NodeType>): Array<NodeType> {
     for (let i = 0; i < nodes.length; i += 1) {
       const node = nodes[i];
       const position = this.calculatePosition({

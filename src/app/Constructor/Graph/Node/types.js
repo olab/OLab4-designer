@@ -4,7 +4,7 @@ export type IPoint = {
   y: number;
 };
 
-export type NodeData = {
+export type Node = {
   id: number,
   mapId: number,
   title: string,
@@ -21,7 +21,7 @@ export type NodeData = {
 };
 
 export type INodeProps = {
-  data: NodeData;
+  data: Node;
   id: string;
   isSelected: boolean;
   isLinkingStarted: boolean;
@@ -29,7 +29,7 @@ export type INodeProps = {
   onNodeMove: (point: IPoint, id: number) => void;
   onNodeSelected: (data: any) => void;
   onNodeUpdate: (point: IPoint, nodeId: number) => void;
-  onCreateNodeWithEdge: (x: number, y: number, sourceNode: NodeData) => void;
+  onCreateNodeWithEdge: (x: number, y: number, sourceNode: Node) => void;
   onNodeCollapsed: (id: number) => void;
   onNodeResize: (id: number, width: number, height: number) => void;
   onNodeLocked: (id: number) => void;

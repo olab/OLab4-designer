@@ -2,11 +2,9 @@
 import cloneDeep from 'lodash.clonedeep';
 import store from '../../../store/store';
 
-import type { NodeData as NodeDataType } from '../../Constructor/Graph/Node/types';
-import type { EdgeData as EdgeDataType } from '../../Constructor/Graph/Edge/types';
+import type { Node as NodeType } from '../../Constructor/Graph/Node/types';
+import type { Edge as EdgeType } from '../../Constructor/Graph/Edge/types';
 import {
-  type Node as NodeType,
-  type Edge as EdgeType,
   type Map as MapType,
   SELECT_ITEM,
   CREATE_NODE,
@@ -19,7 +17,6 @@ import {
   CREATE_NODE_WITH_EDGE,
   UPDATE_EDGE,
   UPDATE_EDGE_VISUAL,
-  RESET_MAP,
   RENAME_MAP,
   EXTEND_MAP_REQUESTED,
   EXTEND_MAP_FAILED,
@@ -35,17 +32,34 @@ import {
   CREATE_MAP_REQUESTED,
 } from './types';
 
-export const ACTION_SELECT_ITEM = (id: number | null) => ({
-  type: SELECT_ITEM,
-  id,
-});
+export const ACTION_SELECT_ITEM = (id: number | null) => {
+  const { map: { nodes, edges } } = store.getState();
+  const clonedEdges = cloneDeep(edges);
+  const clonedNodes = cloneDeep(nodes);
+
+  [...clonedNodes, ...clonedEdges].map((item) => {
+    if (id) {
+      item.isSelected = item.id === id;
+    } else {
+      item.isSelected = false;
+    }
+
+    return item;
+  });
+
+  return {
+    type: SELECT_ITEM,
+    id,
+    nodes: clonedNodes,
+    edges: clonedEdges,
+  };
+};
 
 export const ACTION_CREATE_NODE = (nodeData: NodeType) => {
-  const { nodes } = store.getState().map;
+  const { map: { nodes } } = store.getState();
+  const { id: oldNodeId, x, y } = nodeData;
   const clonedNodes = cloneDeep(nodes);
   clonedNodes.push(nodeData);
-
-  const { id: oldNodeId, x, y } = nodeData.data;
 
   return {
     type: CREATE_NODE,
@@ -56,28 +70,39 @@ export const ACTION_CREATE_NODE = (nodeData: NodeType) => {
 };
 
 export const ACTION_UPDATE_NODE_COLLAPSE = (nodeId: number) => {
-  const { nodes } = store.getState().map;
+  const { map: { nodes } } = store.getState();
   const clonedNodes = cloneDeep(nodes);
-  const node = clonedNodes.find(({ data }) => data.id === nodeId);
-  node.data.isCollapsed = !node.data.isCollapsed;
+  const node = clonedNodes.find(({ id }) => id === nodeId);
+  node.isCollapsed = !node.isCollapsed;
 
   return {
     type: UPDATE_NODE,
     nodes: clonedNodes,
-    updatedNode: node.data,
+    updatedNode: node,
   };
 };
 
 export const ACTION_UPDATE_NODE_LOCK = (nodeId: number) => {
-  const { nodes } = store.getState().map;
-  const clonedNodes = cloneDeep(nodes);
-  const node = clonedNodes.find(({ data }) => data.id === nodeId);
-  node.data.isLocked = !node.data.isLocked;
+  const { map: { nodes } } = store.getState();
+
+  let updatedNode;
+  const newNodes = nodes.map((node) => {
+    if (node.id !== nodeId) {
+      return node;
+    }
+
+    updatedNode = {
+      ...node,
+      isLocked: !node.isLocked,
+    };
+
+    return updatedNode;
+  });
 
   return {
     type: UPDATE_NODE,
-    nodes: clonedNodes,
-    updatedNode: node.data,
+    nodes: newNodes,
+    updatedNode,
   };
 };
 
@@ -86,7 +111,7 @@ export const ACTION_CREATE_NODE_WITH_EDGE = (
   edgeData: EdgeType,
   sourceNodeId: number,
 ) => {
-  const { nodes, edges } = store.getState().map;
+  const { map: { nodes, edges } } = store.getState();
   const {
     nodes: clonedNodes,
     edges: clonedEdges,
@@ -106,25 +131,36 @@ export const ACTION_CREATE_NODE_WITH_EDGE = (
 };
 
 export const ACTION_UPDATE_NODE_RESIZE = (nodeId: number, width: number, height: number) => {
-  const { nodes } = store.getState().map;
-  const clonedNodes = cloneDeep(nodes);
-  const node = clonedNodes.find(({ data }) => data.id === nodeId);
-  node.data.width = width;
-  node.data.height = height;
+  const { map: { nodes } } = store.getState();
+
+  let updatedNode;
+  const newNodes = nodes.map((node) => {
+    if (node.id !== nodeId) {
+      return node;
+    }
+
+    updatedNode = {
+      ...node,
+      width,
+      height,
+    };
+
+    return updatedNode;
+  });
 
   return {
     type: UPDATE_NODE,
-    nodes: clonedNodes,
-    updatedNode: node.data,
+    nodes: newNodes,
+    updatedNode,
   };
 };
 
-export const ACTION_UPDATE_NODE = (nodeData: NodeDataType) => {
-  const { nodes } = store.getState().map;
+export const ACTION_UPDATE_NODE = (nodeData: NodeType) => {
+  const { map: { nodes } } = store.getState();
   const clonedNodes = cloneDeep(nodes);
-  const i = clonedNodes.findIndex(({ data }) => data.id === nodeData.id);
+  const i = clonedNodes.findIndex(({ id }) => id === nodeData.id);
 
-  clonedNodes[i].data = nodeData;
+  clonedNodes[i] = nodeData;
 
   return {
     type: UPDATE_NODE,
@@ -134,15 +170,11 @@ export const ACTION_UPDATE_NODE = (nodeData: NodeDataType) => {
 };
 
 export const ACTION_DELETE_NODE = (nodeId: number) => {
-  const { nodes, edges } = store.getState().map;
-  const {
-    nodes: clonedNodes,
-    edges: clonedEdges,
-  } = cloneDeep({ nodes, edges });
+  const { map: { nodes, edges } } = store.getState();
 
-  const newNodes = clonedNodes.filter(({ data }) => data.id !== nodeId);
-  const newEdges = clonedEdges.filter(({ data }) => (
-    data.source !== nodeId && data.target !== nodeId
+  const newNodes = nodes.filter(({ id }) => id !== nodeId);
+  const newEdges = edges.filter(({ source, target }) => (
+    source !== nodeId && target !== nodeId
   ));
 
   return {
@@ -154,20 +186,20 @@ export const ACTION_DELETE_NODE = (nodeId: number) => {
 };
 
 export const ACTION_EXCHANGE_NODE_ID = (oldNodeId: number | string, newNodeId: number) => {
-  const { nodes, edges } = store.getState().map;
+  const { map: { nodes, edges } } = store.getState();
   const { clonedNodes, clonedEdges } = cloneDeep({
     clonedNodes: nodes,
     clonedEdges: edges,
   });
 
-  const node = clonedNodes.find(({ data }) => data.id === oldNodeId);
-  node.data.id = newNodeId;
+  const node = clonedNodes.find(({ id }) => id === oldNodeId);
+  node.id = newNodeId;
 
-  clonedEdges.forEach(({ data }) => {
-    if (data.target === oldNodeId) {
-      data.target = newNodeId;
-    } else if (data.source === oldNodeId) {
-      data.source = newNodeId;
+  clonedEdges.forEach(({ target, source }) => {
+    if (target === oldNodeId) {
+      target = newNodeId;
+    } else if (source === oldNodeId) {
+      source = newNodeId;
     }
   });
 
@@ -182,8 +214,8 @@ export const ACTION_EXCHANGE_EDGE_ID = (oldEdgeId: number | string, newEdgeId: n
   const { map: { edges } } = store.getState();
   const clonedEdges = cloneDeep(edges);
 
-  const edge = clonedEdges.find(({ data }) => data.id === oldEdgeId);
-  edge.data.id = newEdgeId;
+  const edge = clonedEdges.find(({ id }) => id === oldEdgeId);
+  edge.id = newEdgeId;
 
   return {
     type: EXCHANGE_EDGE_ID,
@@ -213,11 +245,11 @@ export const ACTION_CREATE_EDGE = (
   };
 };
 
-export const ACTION_UPDATE_EDGE = (edgeData: EdgeDataType) => {
+export const ACTION_UPDATE_EDGE = (edgeData: EdgeType) => {
   const { map: { edges } } = store.getState();
   const clonedEdges = cloneDeep(edges);
-  const edge = clonedEdges.find(({ data }) => data.id === edgeData.id);
-  Object.assign(edge.data, edgeData);
+  const edge = clonedEdges.find(({ id }) => id === edgeData.id);
+  Object.assign(edge, edgeData);
 
   return {
     type: UPDATE_EDGE,
@@ -226,11 +258,11 @@ export const ACTION_UPDATE_EDGE = (edgeData: EdgeDataType) => {
   };
 };
 
-export const ACTION_UPDATE_EDGE_VISUAL = (edgeData: EdgeDataType) => {
+export const ACTION_UPDATE_EDGE_VISUAL = (edgeData: EdgeType) => {
   const { map: { edges } } = store.getState();
   const clonedEdges = cloneDeep(edges);
-  const edge = clonedEdges.find(({ data }) => data.id === edgeData.id);
-  Object.assign(edge.data, edgeData);
+  const edge = clonedEdges.find(({ id }) => id === edgeData.id);
+  Object.assign(edge, edgeData);
 
   return {
     type: UPDATE_EDGE_VISUAL,
@@ -241,7 +273,7 @@ export const ACTION_UPDATE_EDGE_VISUAL = (edgeData: EdgeDataType) => {
 export const ACTION_DELETE_EDGE = (edgeId: number, nodeId: number) => {
   const { map: { edges } } = store.getState();
   const clonedEdges = cloneDeep(edges);
-  const newEdges = clonedEdges.filter(({ data }) => data.id !== edgeId);
+  const newEdges = clonedEdges.filter(({ id }) => id !== edgeId);
 
   return {
     type: DELETE_EDGE,
@@ -251,26 +283,45 @@ export const ACTION_DELETE_EDGE = (edgeId: number, nodeId: number) => {
   };
 };
 
-export const ACTION_RESET_MAP = () => ({
-  type: RESET_MAP,
-});
 
 export const ACTION_RENAME_MAP = (name: string) => ({
   type: RENAME_MAP,
   name,
 });
 
-export const ACTION_SAVE_MAP_TO_UNDO = () => ({
-  type: SAVE_MAP_TO_UNDO,
-});
+export const ACTION_SAVE_MAP_TO_UNDO = () => {
+  const { map: { nodes, edges } } = store.getState();
+  const currentMap = cloneDeep({ nodes, edges });
 
-export const ACTION_UNDO_MAP = () => ({
-  type: UNDO_MAP,
-});
+  return {
+    type: SAVE_MAP_TO_UNDO,
+    currentMap,
+  };
+};
 
-export const ACTION_REDO_MAP = () => ({
-  type: REDO_MAP,
-});
+export const ACTION_UNDO_MAP = () => {
+  const { map: { undo, nodes, edges } } = store.getState();
+  const prev = cloneDeep(undo[undo.length - 1]);
+  const currentMap = cloneDeep({ nodes, edges });
+
+  return {
+    type: UNDO_MAP,
+    currentMap,
+    prev,
+  };
+};
+
+export const ACTION_REDO_MAP = () => {
+  const { map: { redo, nodes, edges } } = store.getState();
+  const next = cloneDeep(redo[redo.length - 1]);
+  const currentMap = cloneDeep({ nodes, edges });
+
+  return {
+    type: REDO_MAP,
+    currentMap,
+    next,
+  };
+};
 
 export const ACTION_GET_MAP_FAILED = () => ({
   type: GET_MAP_FAILED,

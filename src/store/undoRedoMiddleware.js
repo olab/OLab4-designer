@@ -6,8 +6,9 @@ import {
   CREATE_NODE_WITH_EDGE,
   UPDATE_EDGE,
   DELETE_EDGE,
-  SAVE_MAP_TO_UNDO,
 } from '../app/reducers/map/types';
+
+import { ACTION_SAVE_MAP_TO_UNDO } from '../app/reducers/map/action';
 
 const undoRedoMiddleware = store => next => (action) => {
   if ([
@@ -19,7 +20,7 @@ const undoRedoMiddleware = store => next => (action) => {
     UPDATE_EDGE,
     DELETE_EDGE,
   ].includes(action.type)) {
-    store.dispatch({ type: SAVE_MAP_TO_UNDO });
+    store.dispatch(ACTION_SAVE_MAP_TO_UNDO());
   }
 
   next(action);

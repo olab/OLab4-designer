@@ -26,11 +26,11 @@ import GraphUtils from '../utilities/graph-utils';
 import LayoutEngines from '../utilities/layout-engine/layout-engine-config';
 
 import type {
-  EdgeData as EdgeDataType,
+  Edge as EdgeType,
 } from '../Edge/types';
 import type {
   IPoint,
-  NodeData as NodeDataType,
+  Node as NodeType,
 } from '../Node/types';
 import type {
   INodeMapNode,
@@ -359,7 +359,7 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
     });
   }
 
-  toggleDraggingEdgeByIcon = (newSourceNode?: NodeDataType) => {
+  toggleDraggingEdgeByIcon = (newSourceNode?: NodeType) => {
     const { isLinkingStarted, sourceNode } = this.state;
     const isNodesEqual = isEqual(sourceNode, newSourceNode);
 
@@ -385,14 +385,14 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
     return nodesMapVar ? nodesMapVar[`key-${id || ''}`] : null;
   }
 
-  getEdgeBySourceTarget(source: string, target: string): EdgeDataType | null {
+  getEdgeBySourceTarget(source: string, target: string): EdgeType | null {
     const { edgesMap } = this.state;
 
     return edgesMap ? edgesMap[`${source}_${target}`] : null;
   }
 
   addNewNodes(
-    nodes: Array<NodeDataType>,
+    nodes: Array<NodeType>,
     oldNodesMap: any,
     selectedNode: any,
     prevSelectedNode: any,
@@ -454,7 +454,7 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
   }
 
   addNewEdges(
-    edges: Array<EdgeDataType>,
+    edges: Array<EdgeType>,
     oldEdgesMap: any,
     selectedEdge: any,
     prevSelectedEdge: any,
@@ -489,9 +489,9 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
     }
   }
 
-  removeOldEdges = (prevEdges: Array<EdgeDataType>, edgesMap: any) => {
+  removeOldEdges = (prevEdges: Array<EdgeType>, edgesMap: any) => {
     // remove old edges
-    prevEdges.forEach((edge: EdgeDataType) => {
+    prevEdges.forEach((edge: EdgeType) => {
       if (!edge.source || !edge.target || !edgesMap[`${edge.source}_${edge.target}`]) {
         // remove edge
         GraphView.removeEdgeElement(edge.source, edge.target);
@@ -499,7 +499,7 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
     });
   }
 
-  deleteNode(selectedNode: NodeDataType) {
+  deleteNode(selectedNode: NodeType) {
     const { onDeleteNode } = this.props;
 
     onDeleteNode(selectedNode.id);
@@ -509,7 +509,7 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
     });
   }
 
-  deleteEdge(selectedEdge: EdgeDataType) {
+  deleteEdge(selectedEdge: EdgeType) {
     const { edges, edgesMap } = this.state;
     const { onDeleteEdge } = this.props;
 
@@ -536,7 +536,7 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
     });
   }
 
-  handleDelete = (selected: EdgeDataType | NodeDataType) => {
+  handleDelete = (selected: EdgeType | NodeType) => {
     const { readOnly } = this.props;
     const isEdge = !!selected.source;
 
@@ -616,7 +616,7 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
     };
 
     if (source && target) {
-      const edge: EdgeDataType | null = this.getEdgeBySourceTarget(source, target);
+      const edge: EdgeType | null = this.getEdgeBySourceTarget(source, target);
 
       Object.assign(newState, {
         selectedEdgeObj: {
@@ -781,7 +781,7 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
     });
   }
 
-  handleNodeSelected = (node: NodeDataType) => {
+  handleNodeSelected = (node: NodeType) => {
     const { onSelectNode } = this.props;
     const { x, y } = d3.event;
 
@@ -799,7 +799,7 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
   // One can't attach handlers to 'markers' or obtain them from the event.target
   // If the click occurs within a certain radius of edge target, assume the click
   // occurred on the arrow
-  isArrowClicked(edge: EdgeDataType | null) {
+  isArrowClicked(edge: EdgeType | null) {
     const { edgeArrowSize = 0 } = this.props;
     const { target: eventTarget } = d3.event.sourceEvent;
     if (!edge || !edge.target || eventTarget.tagName !== 'path') {
@@ -871,7 +871,7 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
     return mouseCoordinates;
   }
 
-  dragEdge(draggedEdge?: EdgeDataType) {
+  dragEdge(draggedEdge?: EdgeType) {
     const { draggedEdge: draggedEdgeState } = this.state;
 
     draggedEdge = draggedEdge || draggedEdgeState;
@@ -1077,7 +1077,7 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
     );
   }
 
-  getNodeComponent(id: string, node: NodeDataType) {
+  getNodeComponent(id: string, node: NodeType) {
     const { selectedNodeObj, sourceNode, isLinkingStarted } = this.state;
     const {
       ACTION_SAVE_MAP_TO_UNDO, onCreateNodeWithEdge, onCollapseNode, onLockNode, onResizeNode,
@@ -1139,7 +1139,7 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
       .forEach(edge => this.syncRenderEdge(edge, nodeMoving));
   }
 
-  asyncRenderNode(node: NodeDataType) {
+  asyncRenderNode(node: NodeType) {
     const timeoutId = `nodes-${node.id}`;
     cancelAnimationFrame(this.nodeTimeouts[timeoutId]);
 
@@ -1148,7 +1148,7 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
     });
   }
 
-  syncRenderNode(node: NodeDataType) {
+  syncRenderNode(node: NodeType) {
     const id = `node-${node.id}`;
     const element: any = this.getNodeComponent(id, node);
     const nodesMapNode = this.getNodeById(node.id);
@@ -1168,7 +1168,7 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
     nodes.forEach(node => this.asyncRenderNode(node));
   }
 
-  isEdgeSelected = (edge: EdgeDataType) => {
+  isEdgeSelected = (edge: EdgeType) => {
     const { selectedEdgeObj } = this.state;
 
     return !!selectedEdgeObj
@@ -1177,7 +1177,7 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
       && selectedEdgeObj.edge.target === edge.target;
   }
 
-  getEdgeComponent = (edge: EdgeDataType | any) => {
+  getEdgeComponent = (edge: EdgeType | any) => {
     const { isLinkingStarted } = this.state;
     const { edgeTypes, edgeHandleSize } = this.props;
     const srcNodeMap = this.getNodeById(edge.source);
@@ -1200,14 +1200,14 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
     );
   }
 
-  checkIfEdgeHasSibling = (edge: EdgeDataType | any) => {
+  checkIfEdgeHasSibling = (edge: EdgeType | any) => {
     const { edges } = this.props;
     const { source: edgeSource, target: edgeTarget } = edge;
 
     return edges.some(({ source, target }) => source === edgeTarget && target === edgeSource);
   }
 
-  renderEdge(id: string, element: any, edge: EdgeDataType, nodeMoving: boolean = false) {
+  renderEdge(id: string, element: any, edge: EdgeType, nodeMoving: boolean = false) {
     if (!this.entities) {
       return;
     }
@@ -1252,7 +1252,7 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
     }
   }
 
-  asyncRenderEdge = (edge: EdgeDataType | any, nodeMoving: boolean = false) => {
+  asyncRenderEdge = (edge: EdgeType | any, nodeMoving: boolean = false) => {
     const isEdgeIncomplete = !edge.source || (!edge.target && !edge.targetPosition);
 
     if (isEdgeIncomplete) {
@@ -1267,7 +1267,7 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
     });
   }
 
-  syncRenderEdge(edge: EdgeDataType | any, nodeMoving: boolean = false) {
+  syncRenderEdge(edge: EdgeType | any, nodeMoving: boolean = false) {
     if (!edge.source) {
       return;
     }

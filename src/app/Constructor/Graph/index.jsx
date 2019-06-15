@@ -10,16 +10,15 @@ import { DropTarget } from 'react-dnd';
 import GraphView from './GraphView';
 
 import { createNewEdge, createNewNode } from './utils';
-import { EdgeTypes } from './config';
+import { EDGE_TYPES, NODE_CREATION_OFFSET } from './config';
 import { DndContexts, ModalsNames } from '../../Modals/config';
 
 import * as graphActions from '../../reducers/map/action';
 import * as modalActions from '../../Modals/action';
 
 import type { IGraphProps, IGraphState } from './types';
-import type { EdgeData as EdgeDataType } from './Edge/types';
-import type { NodeData as NodeDataType } from './Node/types';
-import type { Edge as EdgeType, Node as NodeType } from '../../reducers/map/types';
+import type { Edge as EdgeType } from './Edge/types';
+import type { Node as NodeType } from './Node/types';
 
 import { Wrapper } from './styles';
 
@@ -38,16 +37,15 @@ export class Graph extends Component<IGraphProps, IGraphState> {
     connectDropTarget(graphViewWrapperRef);
   }
 
-  get getSelectedItem(): NodeDataType | EdgeDataType | null {
+  get getSelectedItem(): NodeType | EdgeType | null {
     const nodeItem = this.getSelectedNode;
     if (nodeItem) {
-      return nodeItem.data;
+      return nodeItem;
     }
 
     const edgeItem = this.getSelectedEdge;
-
     if (edgeItem) {
-      return edgeItem.data;
+      return edgeItem;
     }
 
     return null;
@@ -65,7 +63,7 @@ export class Graph extends Component<IGraphProps, IGraphState> {
     return edges.find(edge => edge.isSelected) || null;
   }
 
-  onSelectNode = (item: NodeDataType | null, clientX?: number = 0, clientY?: number = 0) => {
+  onSelectNode = (item: NodeType | null, clientX?: number = 0, clientY?: number = 0) => {
     const itemId = item ? item.id : null;
     const {
       ACTION_SELECT_ITEM,
@@ -79,7 +77,7 @@ export class Graph extends Component<IGraphProps, IGraphState> {
     ACTION_SELECT_ITEM(itemId);
   };
 
-  onSelectEdge = (item: EdgeDataType | null, clientX?: number = 0, clientY?: number = 0) => {
+  onSelectEdge = (item: EdgeType | null, clientX?: number = 0, clientY?: number = 0) => {
     const itemId = item ? item.id : null;
     const {
       ACTION_SELECT_ITEM,
@@ -115,7 +113,7 @@ export class Graph extends Component<IGraphProps, IGraphState> {
     ACTION_CREATE_NODE(newNode);
   }
 
-  onCreateEdge = (sourceNode: NodeDataType, targetNode: NodeDataType) => {
+  onCreateEdge = (sourceNode: NodeType, targetNode: NodeType) => {
     if (sourceNode.id === targetNode.id) {
       return;
     }
@@ -126,18 +124,18 @@ export class Graph extends Component<IGraphProps, IGraphState> {
     ACTION_CREATE_EDGE(newEdge);
   }
 
-  onCreateNodeWithEdge = (x: number, y: number, sourceNode: NodeDataType) => {
+  onCreateNodeWithEdge = (x: number, y: number, sourceNode: NodeType) => {
     const {
       map, defaults: { edgeBody, nodeBody }, ACTION_CREATE_NODE_WITH_EDGE,
     } = this.props;
 
     const newNode = createNewNode(map.id, x, y, nodeBody);
-    const newEdge = createNewEdge(sourceNode.id, newNode.data.id, edgeBody);
+    const newEdge = createNewEdge(sourceNode.id, newNode.id, edgeBody);
 
     ACTION_CREATE_NODE_WITH_EDGE(newNode, newEdge, sourceNode.id);
   }
 
-  onUpdateNode = (node: NodeDataType) => {
+  onUpdateNode = (node: NodeType) => {
     const { ACTION_UPDATE_NODE } = this.props;
     ACTION_UPDATE_NODE(node);
   }
@@ -147,7 +145,7 @@ export class Graph extends Component<IGraphProps, IGraphState> {
     ACTION_DELETE_NODE(nodeId);
   }
 
-  onDeleteEdge = (edge: EdgeDataType) => {
+  onDeleteEdge = (edge: EdgeType) => {
     const { ACTION_DELETE_EDGE } = this.props;
     ACTION_DELETE_EDGE(edge.id, edge.source);
   }
@@ -179,17 +177,14 @@ export class Graph extends Component<IGraphProps, IGraphState> {
       return;
     }
 
-    const x = selectedNode.data.x + 10;
-    const y = selectedNode.data.y + 10;
+    const x = selectedNode.x + NODE_CREATION_OFFSET;
+    const y = selectedNode.y + NODE_CREATION_OFFSET;
 
     this.setState({
       copiedNode: {
         ...selectedNode,
-        data: {
-          ...selectedNode.data,
-          x,
-          y,
-        },
+        x,
+        y,
       },
     });
   }
@@ -201,10 +196,7 @@ export class Graph extends Component<IGraphProps, IGraphState> {
     const newNodeId = Date.now();
     const newNode = {
       ...copiedNode,
-      data: {
-        ...copiedNode.data,
-        id: newNodeId,
-      },
+      id: newNodeId,
     };
 
     ACTION_CREATE_NODE(newNode);
@@ -229,10 +221,10 @@ export class Graph extends Component<IGraphProps, IGraphState> {
           ref={this.graphViewRef}
           minZoom={minZoom / 100}
           maxZoom={maxZoom / 100}
-          nodes={nodes.map(({ data }) => data)}
-          edges={edges.map(({ data }) => data)}
+          nodes={nodes}
+          edges={edges}
           selected={this.getSelectedItem}
-          edgeTypes={EdgeTypes}
+          edgeTypes={EDGE_TYPES}
           onSelectNode={this.onSelectNode}
           onCreateNode={this.onCreateNode}
           onCollapseNode={this.onCollapseNode}
@@ -279,7 +271,7 @@ const mapDispatchToProps = dispatch => ({
   ACTION_DELETE_NODE: (nodeId: number) => {
     dispatch(graphActions.ACTION_DELETE_NODE(nodeId));
   },
-  ACTION_UPDATE_NODE: (nodeData: NodeDataType) => {
+  ACTION_UPDATE_NODE: (nodeData: NodeType) => {
     dispatch(graphActions.ACTION_UPDATE_NODE(nodeData));
   },
   ACTION_CREATE_NODE: (nodeData: NodeType) => {
@@ -308,9 +300,6 @@ const mapDispatchToProps = dispatch => ({
   },
   ACTION_UNDO_MAP: () => {
     dispatch(graphActions.ACTION_UNDO_MAP());
-  },
-  ACTION_RESET_MAP: () => {
-    dispatch(graphActions.ACTION_RESET_MAP());
   },
 });
 

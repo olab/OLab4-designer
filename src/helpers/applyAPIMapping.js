@@ -15,17 +15,15 @@ export const edgeToServer = edgeData => ({
 });
 
 export const edgeFromServer = edgeData => ({
+  id: edgeData.id,
+  label: edgeData.text || '',
+  color: edgeData.color,
+  variant: edgeData.lineType,
+  thickness: edgeData.thickness,
+  source: edgeData.sourceId,
+  target: edgeData.destinationId,
+  isHidden: Boolean(edgeData.hidden),
   isSelected: false,
-  data: {
-    id: edgeData.id,
-    label: edgeData.text || '',
-    color: edgeData.color,
-    variant: edgeData.lineType,
-    thickness: edgeData.thickness,
-    source: edgeData.sourceId,
-    target: edgeData.destinationId,
-    isHidden: Boolean(edgeData.hidden),
-  },
 });
 
 export const edgeDefaultsFromServer = edgeDefault => ({
@@ -54,23 +52,21 @@ export const nodeToServer = nodeData => ({
 });
 
 export const nodeFromServer = nodeData => ({
+  id: nodeData.id,
+  mapId: nodeData.mapId,
+  title: nodeData.title,
+  x: nodeData.x,
+  y: nodeData.y,
+  width: nodeData.width || 0,
+  height: nodeData.height || 0,
+  color: nodeData.color,
+  type: nodeData.typeId,
+  text: nodeData.text,
+  linkStyle: nodeData.linkStyleId,
+  linkType: nodeData.linkTypeId,
+  isCollapsed: Boolean(nodeData.collapsed),
+  isLocked: Boolean(nodeData.locked),
   isSelected: false,
-  data: {
-    id: nodeData.id,
-    mapId: nodeData.mapId || null,
-    title: nodeData.title,
-    x: nodeData.x,
-    y: nodeData.y,
-    width: nodeData.width || 0,
-    height: nodeData.height || 0,
-    color: nodeData.color,
-    type: nodeData.typeId,
-    text: nodeData.text,
-    linkStyle: nodeData.linkStyleId,
-    linkType: nodeData.linkTypeId,
-    isCollapsed: Boolean(nodeData.collapsed),
-    isLocked: Boolean(nodeData.locked),
-  },
 });
 
 export const nodeDefaultsFromServer = nodeDefault => ({

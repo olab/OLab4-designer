@@ -16,7 +16,7 @@ import {
 } from './config';
 
 import type {
-  NodeData,
+  Node as NodeType,
   INodeProps,
   INodeState,
 } from './types';
@@ -81,7 +81,7 @@ export class Node extends React.Component<INodeProps, INodeState> {
     }
   }
 
-  calculateNewNodePosition = (data: NodeData) => {
+  calculateNewNodePosition = (data: NodeType) => {
     const { x, y, height } = data;
     const newNodeY = y + height / 2 + DEFAULT_NODE_INDENT;
 

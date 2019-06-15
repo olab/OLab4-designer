@@ -1,5 +1,4 @@
 // @flow
-import cloneDeep from 'lodash.clonedeep';
 import {
   type MapActions,
   type Map as MapType,
@@ -9,7 +8,6 @@ import {
   DELETE_NODE,
   CREATE_EDGE,
   DELETE_EDGE,
-  RESET_MAP,
   EXCHANGE_NODE_ID,
   EXCHANGE_EDGE_ID,
   CREATE_NODE_WITH_EDGE,
@@ -46,59 +44,50 @@ export const initialMapState: MapType = {
 const map = (state: MapType = initialMapState, action: MapActions) => {
   switch (action.type) {
     case SAVE_MAP_TO_UNDO: {
-      const { undo, ...rest } = state;
-      undo.push(cloneDeep({
-        nodes: state.nodes,
-        edges: state.edges,
-      }));
+      const { undo, ...restState } = state;
+      const { currentMap } = action;
 
       return {
-        ...rest,
-        undo,
+        ...restState,
+        undo: [
+          ...undo,
+          currentMap,
+        ],
         redo: [],
       };
     }
     case UNDO_MAP: {
-      const { undo, redo, ...rest } = state;
-      const prev = undo.pop();
-
-      redo.push(cloneDeep({
-        nodes: state.nodes,
-        edges: state.edges,
-      }));
+      const { currentMap, prev } = action;
+      const { undo, redo, ...restState } = state;
 
       return {
-        ...rest,
+        ...restState,
         nodes: prev.nodes,
         edges: prev.edges,
-        undo,
-        redo,
+        undo: [
+          ...undo.slice(0, undo.length - 1),
+        ],
+        redo: [
+          ...redo,
+          currentMap,
+        ],
       };
     }
     case REDO_MAP: {
-      const { undo, redo, ...rest } = state;
-      const next = redo.pop();
-
-      undo.push(cloneDeep({
-        nodes: state.nodes,
-        edges: state.edges,
-      }));
+      const { currentMap, next } = action;
+      const { undo, redo, ...restState } = state;
 
       return {
-        ...rest,
+        ...restState,
         nodes: next.nodes,
         edges: next.edges,
-        undo,
-        redo,
-      };
-    }
-    case RESET_MAP: {
-      const mapState = cloneDeep(initialMapState);
-      mapState.nodes = [];
-      mapState.edges = [];
-
-      return {
-        ...mapState,
+        redo: [
+          ...redo.slice(0, redo.length - 1),
+        ],
+        undo: [
+          ...undo,
+          currentMap,
+        ],
       };
     }
     case RENAME_MAP: {
@@ -130,20 +119,7 @@ const map = (state: MapType = initialMapState, action: MapActions) => {
         isFetching: false,
       };
     case SELECT_ITEM: {
-      const graph = cloneDeep([state.nodes, state.edges]);
-      const { id } = action;
-
-      graph.forEach((items) => {
-        items.forEach((item) => {
-          if (id) {
-            item.isSelected = item.data.id === id;
-          } else {
-            item.isSelected = false;
-          }
-        });
-      });
-
-      const [nodes, edges] = graph;
+      const { nodes, edges } = action;
 
       return {
         ...state,

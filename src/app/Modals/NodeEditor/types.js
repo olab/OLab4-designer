@@ -1,10 +1,10 @@
 // @flow
-import type { NodeData as NodeDataType } from '../../Constructor/Graph/Node/types';
+import type { Node as NodeType } from '../../Constructor/Graph/Node/types';
 import type { ModalPosition as ModalPositionType } from '../types';
 
 export type INodeEditorProps = {
   ...ModalPositionType,
-  node: NodeDataType,
+  node: NodeType,
   isDragging: boolean;
   connectDragSource: Function;
   connectDragPreview: Function;
@@ -13,4 +13,4 @@ export type INodeEditorProps = {
   ACTION_SET_POSITION_MODAL: Function;
 };
 
-export type INodeEditorState = NodeDataType;
+export type INodeEditorState = NodeType;

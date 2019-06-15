@@ -2,21 +2,21 @@
 /*
 Utils class for Graph functionality.
 */
-import type { EdgeData as EdgeDataType } from '../../Edge/types';
-import type { INode } from '../../Node/types';
+import type { Edge as EdgeType } from '../../Edge/types';
+import type { Node as NodeType } from '../../Node/types';
 
 class GraphUtils {
   /**
    *
    *
    * @static
-   * @param {Array<INode>} arr
+   * @param {Array<NodeType>} arr
    * @returns
    * @memberof GraphUtils
    *
    * Converts an array of nodes to a hash map.
    */
-  static getNodesMap(arr: Array<INode>) {
+  static getNodesMap(arr: Array<NodeType>) {
     const map = {};
     let item = null;
     for (let i = 0; i < arr.length; i += 1) {
@@ -37,13 +37,13 @@ class GraphUtils {
    *
    *
    * @static
-   * @param {Array<EdgeDataType>} arr
+   * @param {Array<EdgeType>} arr
    * @returns
    * @memberof GraphUtils
    *
    * Converts an array of edges to a hash map.
    */
-  static getEdgesMap(arr: Array<EdgeDataType>) {
+  static getEdgesMap(arr: Array<EdgeType>) {
     const map = {};
     let item = null;
     for (let i = 0; i < arr.length; i += 1) {
@@ -63,12 +63,12 @@ class GraphUtils {
    *
    * @static
    * @param {*} nodesMap
-   * @param {Array<EdgeDataType>} edges
+   * @param {Array<EdgeType>} edges
    * @memberof GraphUtils
    *
    * Not a pure method that fills various properties of a nodesMap.
    */
-  static linkNodesAndEdges(nodesMap: any, edges: Array<EdgeDataType>) {
+  static linkNodesAndEdges(nodesMap: any, edges: Array<EdgeType>) {
     let nodeMapSourceNode = null;
     let nodeMapTargetNode = null;
     let edge = null;
@@ -159,7 +159,7 @@ class GraphUtils {
    *
    * Finds shallow differences in 2 objects.
    */
-  static hasNodeShallowChanged(prevNode: INode, newNode: INode) {
+  static hasNodeShallowChanged(prevNode: NodeType, newNode: NodeType) {
     const prevNodeKeys = Object.keys(prevNode);
     const newNodeKeys = Object.keys(prevNode);
     const checkedKeys = {};

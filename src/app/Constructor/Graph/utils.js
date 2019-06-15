@@ -18,14 +18,12 @@ export const createNewNode = (
   const newNodeId = generateTmpId(NODE_SALT);
 
   return {
+    id: newNodeId,
+    mapId,
+    ...defaultNodeBody,
+    x,
+    y,
     isSelected: false,
-    data: {
-      id: newNodeId,
-      mapId,
-      ...defaultNodeBody,
-      x,
-      y,
-    },
   };
 };
 
@@ -37,12 +35,10 @@ export const createNewEdge = (
   const newEdgeId = generateTmpId(EDGE_SALT);
 
   return {
+    id: newEdgeId,
+    source: sourceId,
+    target: targetId,
+    ...defaultEdgeBody,
     isSelected: false,
-    data: {
-      id: newEdgeId,
-      source: sourceId,
-      target: targetId,
-      ...defaultEdgeBody,
-    },
   };
 };

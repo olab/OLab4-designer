@@ -11,7 +11,7 @@ import { Intersection } from 'kld-intersections';
 import type {
   IEdgeProps,
   ITargetPosition,
-  EdgeData as EdgeDataType,
+  Edge as EdgeType,
 } from './types';
 
 import { getVariantValueDOM, getMinRadius } from './utils';
@@ -66,7 +66,7 @@ export class Edge extends React.Component<IEdgeProps> {
    *
    *
    * @static
-   * @param {EdgeDataType} edge
+   * @param {EdgeType} edge
    * @param {(HTMLDivElement | HTMLDocument)} [viewWrapperElem=document]
    * @returns
    * @memberof Edge
@@ -74,7 +74,7 @@ export class Edge extends React.Component<IEdgeProps> {
    * Returns the edge element from the viewWrapper.
    */
   static getEdgePathElement(
-    edge: EdgeDataType,
+    edge: EdgeType,
     viewWrapperElem: HTMLDivElement,
   ) {
     return viewWrapperElem.querySelector(`#edge-${edge.source}-${edge.target}-container>.edge-container>.edge>.edge-path`);

@@ -2,7 +2,7 @@
 import { COLLAPSED_HEIGHT } from '../Node/config';
 import { VARIANT } from './config';
 
-import type { NodeData as NodeDataType } from '../Node/types';
+import type { Node as NodeType } from '../Node/types';
 
 export const getVariantValueDOM = (variant: number): string => {
   switch (variant) {
@@ -17,7 +17,7 @@ export const getVariantValueDOM = (variant: number): string => {
   }
 };
 
-export const getMinRadius = (sourceNode: NodeDataType, targetNode: NodeDataType): number => {
+export const getMinRadius = (sourceNode: NodeType, targetNode: NodeType): number => {
   const {
     width: sourceWidth, height: sourceHeight, isCollapsed: isSourceCollapsed,
   } = sourceNode;
