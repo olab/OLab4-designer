@@ -7,7 +7,7 @@ export type IOutlinedSelectProps = {
   name: string,
   labelWidth: number,
   value: string,
+  fullWidth: boolean,
   onChange: Function,
   values: Array<string>,
-  fullWidth: boolean,
 };

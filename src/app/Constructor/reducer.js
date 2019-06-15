@@ -40,6 +40,7 @@ const constructor = (
         zoom: {
           ...state.zoom,
           zoomControlsRef: {
+            ...state.zoom.zoomControlsRef,
             current: ref.current,
           },
         },

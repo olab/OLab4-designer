@@ -176,7 +176,7 @@ const map = (state: MapType = initialMapState, action: MapActions) => {
 
       return {
         ...state,
-        edges,
+        edges: [...edges],
       };
     }
     case UPDATE_NODE: {

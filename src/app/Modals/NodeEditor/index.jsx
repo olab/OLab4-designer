@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { DragSource } from 'react-dnd';
 import { Button } from '@material-ui/core';
 
+import TextEditor from './TextEditor';
 import OutlinedInput from '../../../shared/components/OutlinedInput';
 import ColorPicker from '../../../shared/components/ColorPicker';
 import Switch from '../../../shared/components/Switch';
@@ -20,6 +21,7 @@ import { DND_CONTEXTS, MODALS_NAMES, LINK_STYLES } from '../config';
 import {
   ModalWrapper, ModalHeader, ModalBody, ModalFooter,
 } from '../styles';
+import { ItemsBox } from './styles';
 
 class NodeEditor extends PureComponent<INodeEditorProps, INodeEditorState> {
   constructor(props: INodeEditorProps) {
@@ -53,6 +55,10 @@ class NodeEditor extends PureComponent<INodeEditorProps, INodeEditorState> {
     this.setState({ [name]: value });
   }
 
+  handleTextChange = (text: string): void => {
+    this.setState({ text });
+  }
+
   handleStyleChange = (e: Event): void => {
     const { value, name } = (e.target: window.HTMLInputElement);
     const index = LINK_STYLES.findIndex(style => style === value);
@@ -80,7 +86,7 @@ class NodeEditor extends PureComponent<INodeEditorProps, INodeEditorState> {
 
   render() {
     const {
-      color, title, isVisitOnce, linkStyle,
+      color, title, isVisitOnce, linkStyle, text,
     } = this.state;
     const {
       x, y, isDragging, connectDragSource, connectDragPreview,
@@ -115,7 +121,7 @@ class NodeEditor extends PureComponent<INodeEditorProps, INodeEditorState> {
               fullWidth
             />
           </article>
-          <article>
+          <ItemsBox>
             <OutlinedSelect
               label="Links Style"
               name="linkStyle"
@@ -124,12 +130,16 @@ class NodeEditor extends PureComponent<INodeEditorProps, INodeEditorState> {
               values={LINK_STYLES}
               onChange={this.handleStyleChange}
             />
-          </article>
-          <article>
             <ColorPicker
               label="Color"
               color={color}
               onChange={this.handleColorChange}
+            />
+          </ItemsBox>
+          <article>
+            <TextEditor
+              text={text}
+              onChange={this.handleTextChange}
             />
           </article>
           <article>

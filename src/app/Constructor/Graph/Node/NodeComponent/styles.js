@@ -44,6 +44,9 @@ const styles = {
     padding: 0,
     borderTop: 'none',
     border: '2px solid transparent',
+    '& p, ul': {
+      margin: 0,
+    },
     '&::-webkit-scrollbar': {
       width: 7,
       cursor: 'pointer',

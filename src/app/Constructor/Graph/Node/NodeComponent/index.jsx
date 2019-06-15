@@ -1,9 +1,10 @@
 // @flow
 import React from 'react';
 import classNames from 'classnames';
+import { sanitize } from 'dompurify';
 import { withStyles } from '@material-ui/core/styles';
 import {
-  Card, CardHeader, CardContent, Typography, RootRef,
+  Card, CardHeader, CardContent, RootRef,
 } from '@material-ui/core';
 
 import CardFooter from './CardFooter';
@@ -73,15 +74,13 @@ const NodeComponent = ({
               data-action={ACTION_RESIZE}
               className={cardContentMain}
             >
-              <Typography
-                component="p"
+              <div
                 data-active="true"
                 data-action={ACTION_EDITOR}
                 style={{ minHeight: cardTextHeight }}
                 className={classes.cardContentText}
-              >
-                {text}
-              </Typography>
+                dangerouslySetInnerHTML={{ __html: sanitize(text) }}
+              />
             </CardContent>
             <div className={classes.resizer}>
               <ResizeIcon />

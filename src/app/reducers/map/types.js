@@ -139,14 +139,14 @@ const UNDO_MAP = 'UNDO_MAP';
 type UndoMap = {
   type: 'UNDO_MAP',
   currentMap: MapItem,
-  prev: MapItem
-};
+  next: MapItem,
+}
 
 const REDO_MAP = 'REDO_MAP';
 type RedoMap = {
   type: 'REDO_MAP',
   currentMap: MapItem,
-  next: MapItem
+  next: MapItem,
 };
 
 const GET_MAP_SUCCEEDED = 'GET_MAP_SUCCEEDED';

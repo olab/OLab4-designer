@@ -25,7 +25,10 @@ const OutlinedSelect = ({
         <OutlinedInput
           labelWidth={labelWidth}
           name={name}
-          classes={{ input: classes.inputSelect }}
+          classes={{
+            input: classes.inputSelect,
+            root: classes.root,
+          }}
         />
       )}
     >
