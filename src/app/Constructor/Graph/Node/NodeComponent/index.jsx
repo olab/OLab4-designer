@@ -38,6 +38,11 @@ const NodeComponent = ({
     { [classes.cardContentLocked]: isLocked },
   );
 
+  const cardHeader = classNames(
+    classes.cardHeader,
+    { [classes.cardHeaderCollapsed]: isCollapsed },
+  );
+
   const headerWidth = isCollapsed ? width : '';
   const cardContentHeigth = height - COLLAPSED_HEIGHT;
   const cardTextHeight = cardContentHeigth - EXTRA_PADDINGS;
@@ -46,7 +51,7 @@ const NodeComponent = ({
     <RootRef rootRef={resizeRef}>
       <Card className={classes.card} tabIndex={0}>
         <CardHeader
-          className={classes.cardHeader}
+          className={cardHeader}
           classes={{
             action: classes.action,
             content: classes.title,
@@ -85,9 +90,9 @@ const NodeComponent = ({
             <div className={classes.resizer}>
               <ResizeIcon />
             </div>
-            <CardFooter isLinked={isLinked} />
           </>
         )}
+        <CardFooter isLinked={isLinked} />
       </Card>
     </RootRef>
   );

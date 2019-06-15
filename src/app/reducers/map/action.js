@@ -84,7 +84,6 @@ export const ACTION_UPDATE_NODE_COLLAPSE = (nodeId: number) => {
 
 export const ACTION_UPDATE_NODE_LOCK = (nodeId: number) => {
   const { map: { nodes } } = store.getState();
-
   let updatedNode;
   const newNodes = nodes.map((node) => {
     if (node.id !== nodeId) {

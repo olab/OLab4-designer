@@ -1,4 +1,4 @@
-import { COLLAPSED_HEIGHT, ACTION_RESIZE } from '../config';
+import { ACTION_RESIZE, HEADER_PADDING, HEADER_HEIGHT } from '../config';
 import { WHITE, ORANGE, DARK_GREY } from '../../../../../shared/colors';
 
 const nodeFocus = `&:focus [data-action=${ACTION_RESIZE}]`;
@@ -26,9 +26,17 @@ const styles = {
     lineHeight: 'normal',
     letterSpacing: '0.01em',
     padding: 0,
-    height: COLLAPSED_HEIGHT,
+    height: HEADER_HEIGHT,
     borderRadius: '8px 8px 0 0',
     cursor: 'all-scroll',
+    display: 'flex',
+    alignItems: 'center',
+  },
+  cardHeaderCollapsed: {
+    alignItems: 'end',
+    paddingTop: HEADER_PADDING,
+    paddingBottom: HEADER_PADDING,
+    borderRadius: '8px',
   },
   cardContent: {
     resize: 'both',
@@ -83,12 +91,15 @@ const styles = {
     backgroundColor: DARK_GREY,
   },
   action: {
-    display: 'flex',
-    margin: 0,
-    alignSelf: 'center',
+    marginTop: 0,
+    marginRight: 0,
+    alignSelf: 'unset',
   },
   title: {
     width: 80,
+    '& p': {
+      margin: 0,
+    },
   },
   cardContentLocked: {
     resize: 'none',

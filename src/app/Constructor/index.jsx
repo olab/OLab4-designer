@@ -75,6 +75,7 @@ export class Constructor extends PureComponent<IConstructorProps, IConstructorSt
 
   static getSelectedEdge(map: MapItemType): EdgeType | null {
     const selectedLink = map.edges.find(({ isSelected }) => isSelected);
+
     if (selectedLink) {
       return selectedLink;
     }

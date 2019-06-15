@@ -5,7 +5,9 @@ export const ACTION_RESIZE = 'ACTION_RESIZE';
 export const ACTION_LINK = 'ACTION_LINK';
 export const ACTION_EDITOR = 'ACTION_EDITOR';
 
-export const COLLAPSED_HEIGHT = 40;
+export const HEADER_PADDING = 7;
+export const HEADER_HEIGHT = 40;
+export const COLLAPSED_HEIGHT = HEADER_HEIGHT + HEADER_PADDING * 2;
 export const EXTRA_PADDINGS = 20;
 export const DEFAULT_NODE_INDENT = 400;
 export const FOOTER_WIDTH = 105;
