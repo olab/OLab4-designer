@@ -2,7 +2,6 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import * as d3 from 'd3';
 import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 import Fullscreen from 'react-full-screen';
@@ -66,11 +65,7 @@ export class Constructor extends PureComponent<IConstructorProps, IConstructorSt
 
   static getSelectedNode(map: MapItemType): NodeType | null {
     const selectedNode = map.nodes.find(({ isSelected }) => isSelected);
-    if (d3.event) {
-      if (d3.event.type !== 'mousedown') {
-        return null;
-      }
-    }
+
     if (selectedNode) {
       return selectedNode;
     }

@@ -47,6 +47,7 @@ export const nodeToServer = nodeData => ({
   locked: Number(nodeData.isLocked),
   collapsed: Number(nodeData.isCollapsed),
   color: nodeData.color,
+  visitOnce: Number(nodeData.isVisitOnce),
   linkStyleId: nodeData.linkStyle,
   linkTypeId: nodeData.linkType,
 });
@@ -66,6 +67,7 @@ export const nodeFromServer = nodeData => ({
   linkType: nodeData.linkTypeId,
   isCollapsed: Boolean(nodeData.collapsed),
   isLocked: Boolean(nodeData.locked),
+  isVisitOnce: Boolean(nodeData.visitOnce),
   isSelected: false,
 });
 

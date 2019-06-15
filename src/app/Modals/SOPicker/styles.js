@@ -1,7 +1,7 @@
 import styled, { css, keyframes } from 'styled-components';
 
 import {
-  BRIGHT, GREEN, LIGHT_BLUE, DARK_GREY,
+  GREY, GREEN, LIGHT_BLUE, DARK_GREY,
 } from '../../../shared/colors';
 
 const colorDark = 'rgba(36,68,106, 1)';
@@ -27,7 +27,7 @@ export const ModalBody = styled.div`
 
   &::-webkit-scrollbar {
     width: 0;
-    background-color: ${BRIGHT};
+    background-color: ${GREY};
   }
   &::-webkit-scrollbar-thumb {
     background-color: ${DARK_GREY};

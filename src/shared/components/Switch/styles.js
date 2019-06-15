@@ -1,3 +1,5 @@
+import { GREEN } from '../../colors';
+
 const styles = theme => ({
   formControlRoot: {
     margin: '0',
@@ -6,7 +8,7 @@ const styles = theme => ({
     '&$iOSChecked': {
       color: theme.palette.common.white,
       '& + $iOSBar': {
-        backgroundColor: '#52d869',
+        backgroundColor: GREEN,
       },
     },
     transition: theme.transitions.create('transform', {

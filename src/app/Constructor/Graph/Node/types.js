@@ -18,6 +18,7 @@ export type Node = {
   isLocked: boolean,
   linkStyle: number,
   linkType: number,
+  isVisitOnce: boolean,
 };
 
 export type INodeProps = {

@@ -1,19 +1,27 @@
 // @flow
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { DragSource } from 'react-dnd';
+import { Button } from '@material-ui/core';
 
+import OutlinedInput from '../../../shared/components/OutlinedInput';
+import ColorPicker from '../../../shared/components/ColorPicker';
+import Switch from '../../../shared/components/Switch';
+import OutlinedSelect from '../../../shared/components/OutlinedSelect';
 import ScaleIcon from '../../../shared/assets/icons/cross.svg';
 
+import type { Node as NodeType } from '../../Constructor/Graph/Node/types';
 import type { INodeEditorProps, INodeEditorState } from './types';
 
 import * as modalActions from '../action';
 import * as mapActions from '../../reducers/map/action';
-import { DND_CONTEXTS, MODALS_NAMES } from '../config';
+import { DND_CONTEXTS, MODALS_NAMES, LINK_STYLES } from '../config';
 
-import { ModalWrapper, ModalHeader } from '../styles';
+import {
+  ModalWrapper, ModalHeader, ModalBody, ModalFooter,
+} from '../styles';
 
-class NodeEditor extends Component<INodeEditorProps, INodeEditorState> {
+class NodeEditor extends PureComponent<INodeEditorProps, INodeEditorState> {
   constructor(props: INodeEditorProps) {
     super(props);
 
@@ -40,12 +48,40 @@ class NodeEditor extends Component<INodeEditorProps, INodeEditorState> {
     ACTION_DESELECT_ITEM();
   }
 
+  handleInputChange = (e: Event): void => {
+    const { value, name } = (e.target: window.HTMLInputElement);
+    this.setState({ [name]: value });
+  }
+
+  handleStyleChange = (e: Event): void => {
+    const { value, name } = (e.target: window.HTMLInputElement);
+    const index = LINK_STYLES.findIndex(style => style === value);
+    this.setState({ [name]: index + 1 });
+  }
+
+  handleColorChange = (color: string): void => {
+    this.setState({ color });
+  }
+
+  handleVisitOnceChange = (e: Event): void => {
+    const { checked: isVisitOnce } = (e.target: window.HTMLInputElement);
+    this.setState({ isVisitOnce });
+  }
+
   handleModalMove = (x: number, y: number): void => {
     const { ACTION_SET_POSITION_MODAL } = this.props;
     ACTION_SET_POSITION_MODAL(x, y);
   }
 
+  applyChanges = (): void => {
+    const { ACTION_UPDATE_NODE } = this.props;
+    ACTION_UPDATE_NODE(this.state);
+  }
+
   render() {
+    const {
+      color, title, isVisitOnce, linkStyle,
+    } = this.state;
     const {
       x, y, isDragging, connectDragSource, connectDragPreview,
     } = this.props;
@@ -67,9 +103,53 @@ class NodeEditor extends Component<INodeEditorProps, INodeEditorState> {
             onClick={this.handleCloseModal}
           >
             <ScaleIcon />
-
           </button>
         </ModalHeader>
+        <ModalBody>
+          <article>
+            <OutlinedInput
+              name="title"
+              label="Title"
+              value={title}
+              onChange={this.handleInputChange}
+              fullWidth
+            />
+          </article>
+          <article>
+            <OutlinedSelect
+              label="Links Style"
+              name="linkStyle"
+              labelWidth={80}
+              value={LINK_STYLES[linkStyle - 1]}
+              values={LINK_STYLES}
+              onChange={this.handleStyleChange}
+            />
+          </article>
+          <article>
+            <ColorPicker
+              label="Color"
+              color={color}
+              onChange={this.handleColorChange}
+            />
+          </article>
+          <article>
+            <Switch
+              label="Visit Once"
+              labelPlacement="start"
+              checked={isVisitOnce}
+              onChange={this.handleVisitOnceChange}
+            />
+          </article>
+        </ModalBody>
+        <ModalFooter>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={this.applyChanges}
+          >
+            Save
+          </Button>
+        </ModalFooter>
       </ModalWrapper>
     );
   }
@@ -78,6 +158,9 @@ class NodeEditor extends Component<INodeEditorProps, INodeEditorState> {
 const mapStateToProps = ({ modals }) => ({ ...modals[MODALS_NAMES.NODE_EDITOR_MODAL] });
 
 const mapDispatchToProps = dispatch => ({
+  ACTION_UPDATE_NODE: (nodeData: NodeType) => {
+    dispatch(mapActions.ACTION_UPDATE_NODE(nodeData));
+  },
   ACTION_DESELECT_ITEM: () => {
     dispatch(mapActions.ACTION_SELECT_ITEM(null));
   },

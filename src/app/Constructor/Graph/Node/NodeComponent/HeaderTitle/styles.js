@@ -9,7 +9,7 @@ export const TitleContainer = styled.div`
 `;
 
 export const TitleText = styled.p`
-  margin: 0px,
-  margin-left: 5px,
-  margin-right: 10px,
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 `;

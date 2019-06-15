@@ -1,11 +1,7 @@
 // @flow
 import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
-import {
-  Switch as MaterialSwitch,
-  FormControlLabel,
-  InputLabel,
-} from '@material-ui/core';
+import { Switch as MaterialSwitch, FormControlLabel, InputLabel } from '@material-ui/core';
 
 import type { ISwitchProps } from './types';
 

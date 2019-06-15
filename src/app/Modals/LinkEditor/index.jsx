@@ -3,12 +3,12 @@ import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { DragSource } from 'react-dnd';
 import { withStyles } from '@material-ui/core/styles';
-import { IconButton, InputLabel } from '@material-ui/core';
+import { IconButton, InputLabel, Button } from '@material-ui/core';
 import { SwapVertRounded as ReverseIcon } from '@material-ui/icons';
 
 import Slider from './Slider';
-import Switch from './Switch';
-import ColorPicker from './ColorPicker';
+import Switch from '../../../shared/components/Switch';
+import ColorPicker from '../../../shared/components/ColorPicker';
 import OutlinedInput from '../../../shared/components/OutlinedInput';
 import OutlinedSelect from '../../../shared/components/OutlinedSelect';
 import ScaleIcon from '../../../shared/assets/icons/cross.svg';
@@ -18,16 +18,15 @@ import type { ILinkEditorProps, ILinkEditorState } from './types';
 
 import * as modalActions from '../action';
 import * as graphActions from '../../reducers/map/action';
-
 import {
   LINK_VARIANTS, THICKNESS_MIN, THICKNESS_MAX, THICKNESS_STEP,
 } from './config';
 import { DND_CONTEXTS, MODALS_NAMES } from '../config';
 
-import { ModalWrapper, ModalHeader } from '../styles';
-import styles, {
-  LinkEditorBody, LinkEditorFooter, ActionButton, ChangeDirectionWrapper,
-} from './styles';
+import {
+  ModalWrapper, ModalHeader, ModalBody, ModalFooter,
+} from '../styles';
+import styles, { ChangeDirectionWrapper } from './styles';
 
 class LinkEditor extends PureComponent<ILinkEditorProps, ILinkEditorState> {
   defaultLinkProps: LinkType | null;
@@ -189,7 +188,7 @@ class LinkEditor extends PureComponent<ILinkEditorProps, ILinkEditorState> {
             <ScaleIcon />
           </button>
         </ModalHeader>
-        <LinkEditorBody>
+        <ModalBody>
           <article>
             <OutlinedInput
               name="label"
@@ -249,12 +248,16 @@ class LinkEditor extends PureComponent<ILinkEditorProps, ILinkEditorState> {
               onChange={this.handleColorChange}
             />
           </article>
-        </LinkEditorBody>
-        <LinkEditorFooter>
-          <ActionButton onClick={this.applyChanges}>
+        </ModalBody>
+        <ModalFooter>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={this.applyChanges}
+          >
             Save
-          </ActionButton>
-        </LinkEditorFooter>
+          </Button>
+        </ModalFooter>
       </ModalWrapper>
     );
   }

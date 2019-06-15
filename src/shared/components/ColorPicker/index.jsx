@@ -41,7 +41,7 @@ class ColorPicker extends PureComponent<IColorPickerProps, IColorPickerState> {
 
   render() {
     const { isOpen } = this.state;
-    const { label, color = '#000' } = this.props;
+    const { label, color } = this.props;
 
     return (
       <ColorPickerWrapper>

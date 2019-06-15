@@ -12,6 +12,6 @@ export type IProtectedRouteProps = {
   component: React.Node,
   path: string,
   isAuth: boolean,
-  [props: string]: any,
-
+  exact?: boolean,
+  scopedObject?: string,
 };

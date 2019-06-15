@@ -9,11 +9,10 @@ import { Point2D, Matrix2D } from 'kld-affine';
 import { Intersection } from 'kld-intersections';
 
 import type {
-  IEdgeProps,
-  ITargetPosition,
-  Edge as EdgeType,
+  IEdgeProps, ITargetPosition, Edge as EdgeType,
 } from './types';
 
+import { BLUE_GREY } from '../../../../shared/colors';
 import { getVariantValueDOM, getMinRadius } from './utils';
 
 import { EdgeWrapper } from './styles';
@@ -633,7 +632,7 @@ export class Edge extends React.Component<IEdgeProps> {
             transform={this.getEdgeHandleTransformation()}
             data-source={data.source}
             data-target={data.target}
-            fill={data.color}
+            fill={data.color || BLUE_GREY}
           />
         </EdgeWrapper>
       </g>

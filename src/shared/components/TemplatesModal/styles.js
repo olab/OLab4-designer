@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import { BRIGHT, DARK_GREY } from '../../colors';
+import { GREY, DARK_GREY } from '../../colors';
 
 const colorGray = 'rgba(0, 0, 0, 0.42)';
 
@@ -25,7 +25,7 @@ const styles = () => ({
     marginBottom: 10,
     '&::-webkit-scrollbar': {
       width: 7,
-      backgroundColor: BRIGHT,
+      backgroundColor: GREY,
     },
     '&::-webkit-scrollbar-thumb': {
       backgroundColor: DARK_GREY,

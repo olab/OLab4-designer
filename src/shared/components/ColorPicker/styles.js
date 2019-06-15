@@ -1,27 +1,24 @@
 import styled from 'styled-components';
 
-const colorLightGray = 'rgb(168,168,168)';
+import { GREY, BLUE_GREY } from '../../colors';
 
 export const ColorPickerWrapper = styled.div`
   display: flex;
-  
   > label {
     margin-right: 0.5rem;
     align-self: center;
   }
-  
   > div {
     position: relative;
   }
 `;
 
-
 export const LinkColorItem = styled.div`
   width: 1.5rem;
   height: 1.5rem;
-  background: ${({ color }) => color};
+  background: ${({ color }) => color || BLUE_GREY};
   border-radius: 50%;
-  box-shadow: 0 0 5px 0 ${colorLightGray};
+  box-shadow: 0 0 5px 0 ${GREY};
   cursor: pointer;
 `;
 

@@ -1,7 +1,7 @@
 // @flow
+import React, { PureComponent } from 'react';
 import * as d3 from 'd3';
 import debounce from 'lodash.debounce';
-import React from 'react';
 
 import NodeComponent from './NodeComponent';
 
@@ -13,6 +13,7 @@ import {
   ACTION_LINK,
   COLLAPSED_HEIGHT,
   DEFAULT_NODE_INDENT,
+  ACTION_EDITOR,
 } from './config';
 
 import type {
@@ -21,7 +22,7 @@ import type {
   INodeState,
 } from './types';
 
-export class Node extends React.Component<INodeProps, INodeState> {
+export class Node extends PureComponent<INodeProps, INodeState> {
   constructor(props: INodeProps) {
     super(props);
     this.state = {
@@ -36,7 +37,6 @@ export class Node extends React.Component<INodeProps, INodeState> {
 
   static getDerivedStateFromProps(nextProps: INodeProps) {
     return {
-      selected: nextProps.isSelected,
       x: nextProps.data.x,
       y: nextProps.data.y,
     };
@@ -51,6 +51,7 @@ export class Node extends React.Component<INodeProps, INodeState> {
 
     d3
       .select(this.nodeRef.current)
+      .on('wheel', this.stopImmediatePropagation)
       .on('mousedown', this.handleMouseDown)
       .call(dragFunction);
   }
@@ -94,10 +95,14 @@ export class Node extends React.Component<INodeProps, INodeState> {
       onNodeCollapsed,
       onNodeLocked,
       onNodeLink,
+      onNodeSelected,
       onCreateNodeWithEdge,
     } = this.props;
 
     switch (action) {
+      case ACTION_EDITOR:
+        onNodeSelected(data);
+        break;
       case ACTION_LOCK:
         onNodeLocked(data.id);
         break;
@@ -105,7 +110,7 @@ export class Node extends React.Component<INodeProps, INodeState> {
         onNodeCollapsed(data.id);
         break;
       case ACTION_ADD: {
-        const { x, newNodeY: y } = this.calculateNewNodePosition(data);
+        const { x, y } = this.calculateNewNodePosition(data);
         onCreateNodeWithEdge(x, y, data);
       } break;
       case ACTION_RESIZE:
@@ -122,6 +127,7 @@ export class Node extends React.Component<INodeProps, INodeState> {
     const { isLinkingStarted } = this.props;
     const { sourceEvent: sourceEventD3, target: targetD3, shiftKey } = d3.event;
     const target = sourceEventD3 ? sourceEventD3.target : targetD3;
+    const shouldStopPropagation = !shiftKey && !isLinkingStarted;
 
     const activeElement = target.closest('[data-active="true"]');
 
@@ -129,21 +135,25 @@ export class Node extends React.Component<INodeProps, INodeState> {
       return null;
     }
 
-    if (!shiftKey && !isLinkingStarted && d3.event.stopImmediatePropagation) {
-      d3.event.stopImmediatePropagation();
+    const action = activeElement.getAttribute('data-action');
+
+    if (shouldStopPropagation) {
+      this.stopImmediatePropagation();
     }
 
-    const action = activeElement.getAttribute('data-action');
     return action;
   }
 
   handleMouseDown = () => {
-    const { data: { isLocked } } = this.props;
+    const { data: { isLocked }, isLinkingStarted } = this.props;
+    const { shiftKey } = d3.event;
     const action = this.getClickedItemAction();
     const isActionClickedAndAvailable = (!isLocked && action)
       || (isLocked && action === ACTION_LOCK);
+    const isLinking = (shiftKey && action === ACTION_EDITOR)
+      || (isLinkingStarted && action === ACTION_EDITOR);
 
-    if (isActionClickedAndAvailable) {
+    if (isActionClickedAndAvailable && !isLinking) {
       this.callElementAction(action);
     }
   }
@@ -204,9 +214,7 @@ export class Node extends React.Component<INodeProps, INodeState> {
 
   handleDragEnd = () => {
     const { x, y } = this.state;
-    const {
-      data, onNodeUpdate, isLinkingStarted, onNodeSelected,
-    } = this.props;
+    const { data, onNodeUpdate, isLinkingStarted } = this.props;
     const { current: currentNodeRef } = this.nodeRef;
 
     if (!currentNodeRef) {
@@ -215,12 +223,17 @@ export class Node extends React.Component<INodeProps, INodeState> {
 
     const action = this.getClickedItemAction();
 
-    if (!isLinkingStarted || (isLinkingStarted && (!action || action === ACTION_RESIZE))) {
+    const isInappropriateAction = !action || action === ACTION_RESIZE || action === ACTION_EDITOR;
+    const shouldUpdateNode = !isLinkingStarted || (isLinkingStarted && isInappropriateAction);
+
+    if (shouldUpdateNode) {
       onNodeUpdate({ x, y }, data.id);
     }
+  }
 
-    if (!action && !isLinkingStarted) {
-      onNodeSelected(data);
+  stopImmediatePropagation = () => {
+    if (d3.event.stopImmediatePropagation) {
+      d3.event.stopImmediatePropagation();
     }
   }
 

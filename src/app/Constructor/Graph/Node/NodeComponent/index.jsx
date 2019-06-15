@@ -1,68 +1,71 @@
 // @flow
-import React, { PureComponent } from 'react';
+import React from 'react';
 import classNames from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
 import {
-  Card,
-  CardHeader,
-  CardContent,
-  Typography,
-  RootRef,
+  Card, CardHeader, CardContent, Typography, RootRef,
 } from '@material-ui/core';
 
 import CardFooter from './CardFooter';
 import ActionBar from './HeaderActionBar';
 import HeaderTitle from './HeaderTitle';
+import ResizeIcon from '../../../../../shared/assets/icons/resizer.svg';
 
-import { ACTION_RESIZE } from '../config';
+import {
+  ACTION_RESIZE, ACTION_EDITOR, COLLAPSED_HEIGHT, EXTRA_PADDINGS,
+} from '../config';
 
 import type { INodeProps } from './types';
 
 import styles from './styles';
 
-class NodeComponent extends PureComponent <INodeProps> {
-  render() {
-    const {
-      classes,
-      isCollapsed,
-      resizeRef,
-      isLocked,
-      width,
-      height,
-      type,
-      text,
-      title,
-      color,
-      isLinked,
-    } = this.props;
+const NodeComponent = ({
+  classes,
+  isCollapsed,
+  resizeRef,
+  isLocked,
+  width,
+  height,
+  type,
+  text,
+  title,
+  color,
+  isLinked,
+}: INodeProps) => {
+  const cardContentMain = classNames(
+    classes.cardContent,
+    { [classes.cardContentLocked]: isLocked },
+  );
 
-    const cardContentMain = classNames(
-      classes.cardContent,
-      { [classes.cardContentLocked]: isLocked },
-    );
+  const headerWidth = isCollapsed ? width : '';
+  const cardContentHeigth = height - COLLAPSED_HEIGHT;
+  const cardTextHeight = cardContentHeigth - EXTRA_PADDINGS;
 
-    const headerWidth = isCollapsed ? width - 10 : '';
-    const cardContentHeigth = height - 60;
-
-    return (
-      <RootRef rootRef={resizeRef}>
-        <Card className={classes.card} tabIndex={0}>
-          <CardHeader
-            className={classes.cardHeader}
-            classes={{ action: classes.action }}
-            style={{ width: headerWidth, backgroundColor: color }}
-            title={(
-              <HeaderTitle
-                type={type}
-                isLocked={isLocked}
-                title={title}
-              />
+  return (
+    <RootRef rootRef={resizeRef}>
+      <Card className={classes.card} tabIndex={0}>
+        <CardHeader
+          className={classes.cardHeader}
+          classes={{
+            action: classes.action,
+            content: classes.title,
+          }}
+          style={{
+            width: headerWidth,
+            backgroundColor: color,
+          }}
+          title={(
+            <HeaderTitle
+              type={type}
+              isLocked={isLocked}
+              title={title}
+            />
             )}
-            disableTypography
-            action={<ActionBar />}
-          />
+          disableTypography
+          action={<ActionBar />}
+        />
 
-          {!isCollapsed && (
+        {!isCollapsed && (
           <>
             <CardContent
               style={{ width, height: cardContentHeigth }}
@@ -70,18 +73,25 @@ class NodeComponent extends PureComponent <INodeProps> {
               data-action={ACTION_RESIZE}
               className={cardContentMain}
             >
-              <Typography component="p" className={classes.cardContentText}>
+              <Typography
+                component="p"
+                data-active="true"
+                data-action={ACTION_EDITOR}
+                style={{ minHeight: cardTextHeight }}
+                className={classes.cardContentText}
+              >
                 {text}
               </Typography>
             </CardContent>
+            <div className={classes.resizer}>
+              <ResizeIcon />
+            </div>
             <CardFooter isLinked={isLinked} />
           </>
-          )}
-        </Card>
-      </RootRef>
-    );
-  }
-}
-
+        )}
+      </Card>
+    </RootRef>
+  );
+};
 
 export default withStyles(styles)(NodeComponent);

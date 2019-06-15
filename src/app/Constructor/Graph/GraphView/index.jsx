@@ -783,7 +783,7 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
 
   handleNodeSelected = (node: NodeType) => {
     const { onSelectNode } = this.props;
-    const { x, y } = d3.event;
+    const { clientX: x, clientY: y } = d3.event.sourceEvent || d3.event;
 
     onSelectNode(node, x, y);
 

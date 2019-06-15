@@ -8,7 +8,7 @@ export type INodeEditorProps = {
   isDragging: boolean;
   connectDragSource: Function;
   connectDragPreview: Function;
-  ACTION_UPDATE_EDGE: Function;
+  ACTION_UPDATE_NODE: Function;
   ACTION_DESELECT_ITEM: Function;
   ACTION_SET_POSITION_MODAL: Function;
 };
