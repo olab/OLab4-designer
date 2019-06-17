@@ -30,9 +30,9 @@ export type INodeProps = {
   isSelected: boolean;
   isLinkingStarted: boolean;
   isLinkSource: boolean;
-  onNodeMove: (point: IPoint, id: number, shiftKey: boolean) => void;
-  onNodeSelected: (data: any, shiftKey: boolean) => void;
-  onNodeUpdate: (point: IPoint, id: number, shiftKey: boolean) => void;
+  onNodeMove: (point: IPoint, id: number) => void;
+  onNodeSelected: (data: any) => void;
+  onNodeUpdate: (point: IPoint, nodeId: number) => void;
   onCreateNodeWithEdge: (x: number, y: number, sourceNode: NodeData) => void;
   onNodeCollapsed: (id: number) => void;
   onNodeResize: (id: number, width: number, height: number) => void;
@@ -46,6 +46,5 @@ export type INodeProps = {
 export type INodeState = {
   x: number;
   y: number;
-  isEdgeDrawing: boolean,
   isResizeStart: boolean,
 };

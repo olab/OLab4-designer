@@ -22,12 +22,10 @@ export const EdgeTypes = {
 export const VIEWPORT_OFFSET_X = 50;
 export const VIEWPORT_OFFSET_Y = 101;
 export const VIEWPORT_FULL_SCREEN_OFFSET_Y = 42;
-export const TINY_MODAL_OFFSET = 5;
 
 export default {
   EdgeTypes,
   VIEWPORT_OFFSET_X,
   VIEWPORT_OFFSET_Y,
   VIEWPORT_FULL_SCREEN_OFFSET_Y,
-  TINY_MODAL_OFFSET,
 };

@@ -6,12 +6,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { DropTarget } from 'react-dnd';
-import isEqual from 'lodash.isequal';
 
 import GraphView from './GraphView';
 
 import { createNewEdge, createNewNode } from './utils';
-import { EdgeTypes, TINY_MODAL_OFFSET } from './config';
+import { EdgeTypes } from './config';
 import { DndContexts, ModalsNames } from '../../Modals/config';
 
 import * as graphActions from '../../reducers/map/action';
@@ -73,7 +72,10 @@ export class Graph extends Component<IGraphProps, IGraphState> {
       ACTION_SET_POSITION_MODAL,
     } = this.props;
 
-    ACTION_SET_POSITION_MODAL(ModalsNames.NODE_EDITOR_MODAL, clientX, clientY);
+    if (item) {
+      ACTION_SET_POSITION_MODAL(ModalsNames.NODE_EDITOR_MODAL, clientX, clientY);
+    }
+
     ACTION_SELECT_ITEM(itemId);
   };
 
@@ -84,7 +86,10 @@ export class Graph extends Component<IGraphProps, IGraphState> {
       ACTION_SET_POSITION_MODAL,
     } = this.props;
 
-    ACTION_SET_POSITION_MODAL(ModalsNames.LINK_EDITOR_MODAL, clientX, clientY);
+    if (item) {
+      ACTION_SET_POSITION_MODAL(ModalsNames.LINK_EDITOR_MODAL, clientX, clientY);
+    }
+
     ACTION_SELECT_ITEM(itemId);
   };
 
@@ -115,16 +120,8 @@ export class Graph extends Component<IGraphProps, IGraphState> {
       return;
     }
 
-    const { ACTION_CREATE_EDGE, ACTION_SET_POSITION_MODAL } = this.props;
-    const [viewWrapperRect] = this.graphViewWrapperRef.current.getClientRects();
-    const { x: offsetX, y: offsetY } = viewWrapperRect;
+    const { ACTION_CREATE_EDGE } = this.props;
     const newEdge = createNewEdge(sourceNode.id, targetNode.id);
-
-    ACTION_SET_POSITION_MODAL(
-      ModalsNames.LINK_EDITOR_MODAL,
-      offsetX + TINY_MODAL_OFFSET,
-      offsetY + TINY_MODAL_OFFSET,
-    );
 
     ACTION_CREATE_EDGE(newEdge);
   }
@@ -139,12 +136,8 @@ export class Graph extends Component<IGraphProps, IGraphState> {
   }
 
   onUpdateNode = (node: NodeDataType) => {
-    const { map: { nodes }, ACTION_UPDATE_NODE } = this.props;
-    const foundNode = nodes.find(({ data }) => data.id === node.id);
-
-    if (foundNode && !isEqual(foundNode.data, node)) {
-      ACTION_UPDATE_NODE(node);
-    }
+    const { ACTION_UPDATE_NODE } = this.props;
+    ACTION_UPDATE_NODE(node);
   }
 
   onDeleteNode = (nodeId: number) => {

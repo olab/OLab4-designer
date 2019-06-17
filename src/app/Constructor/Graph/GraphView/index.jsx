@@ -223,9 +223,9 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
   }
 
   shouldComponentUpdate(nextProps: IGraphViewProps, nextState: IGraphViewState) {
-    const { isLinkingStarted } = this.state;
+    const { sourceNode, isLinkingStarted } = this.state;
     const {
-      nodes, edges, selected, readOnly, layoutEngineType,
+      nodes, edges, selected, readOnly, layoutEngineType, cursor,
     } = this.props;
 
     if (nextProps.nodes !== nodes
@@ -234,7 +234,10 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
       || nextProps.selected !== selected
       || nextProps.readOnly !== readOnly
       || nextProps.layoutEngineType !== layoutEngineType
-      || nextState.isLinkingStarted !== isLinkingStarted) {
+      || nextState.isLinkingStarted !== isLinkingStarted
+      || nextState.sourceNode !== sourceNode
+      || nextProps.cursor !== cursor
+    ) {
       return true;
     }
 
@@ -250,6 +253,7 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
       selectedNodeObj,
       selectedEdgeObj,
       componentUpToDate,
+      sourceNode,
       isLinkingStarted,
     } = this.state;
     const {
@@ -287,7 +291,11 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
       }
     }
 
-    const forceReRender = propsNodes !== prevProps.nodes || propsEdges !== prevProps.edges;
+    const forceReRender = propsNodes !== prevProps.nodes
+      || propsEdges !== prevProps.edges
+      || !componentUpToDate
+      || sourceNode !== prevState.sourceNode
+      || isLinkingStarted !== prevState.isLinkingStarted;
     const isMapItemsCountChanged = propsEdges.length !== prevProps.edges.length
       || propsNodes.length !== prevProps.nodes.length;
 
@@ -415,7 +423,7 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
         this.syncRenderNode(node);
       } else if (forceRender || !prevNode) {
         // New node
-        this.asyncRenderNode(node);
+        this.syncRenderNode(node);
       }
     });
   }
@@ -628,7 +636,6 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
   handleSvgClicked = () => {
     const { event } = d3;
     const { target, shiftKey } = event;
-    // eslint-disable-next-line no-unused-vars
     const { selectedNodeObj, isLinkingStarted } = this.state;
 
     if (isLinkingStarted) {
@@ -660,7 +667,9 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
       onCreateNode(x, y);
     }
 
-    onSelectNode(null);
+    if (!isLinkingStarted) {
+      onSelectNode(null);
+    }
 
     this.setState({
       selectedNodeObj: null,
@@ -685,8 +694,7 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
     });
   }
 
-  handleNodeMove = (position: IPoint, nodeId: number, shiftKey: boolean) => {
-    const { draggingEdge } = this.state;
+  handleNodeMove = (position: IPoint, nodeId: number) => {
     const { readOnly } = this.props;
     const nodeMapNode = this.getNodeById(nodeId);
 
@@ -694,25 +702,13 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
       return;
     }
 
-    if (!shiftKey && !draggingEdge) {
-      // node moved
-      nodeMapNode.node.x = position.x;
-      nodeMapNode.node.y = position.y;
+    // node moved
+    nodeMapNode.node.x = position.x;
+    nodeMapNode.node.y = position.y;
 
-      // Update edges for node
-      this.renderConnectedEdgesFromNode(nodeMapNode, true);
-      this.asyncRenderNode(nodeMapNode.node);
-    } else {
-      // render new edge
-      this.syncRenderEdge({
-        source: nodeId,
-        targetPosition: position,
-      });
-      this.setState({
-        draggingEdge: true,
-        sourceNode: nodeMapNode.node,
-      });
-    }
+    // Update edges for node
+    this.renderConnectedEdgesFromNode(nodeMapNode, true);
+    this.syncRenderNode(nodeMapNode.node);
   }
 
   createNewEdge() {
@@ -756,7 +752,8 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
     this.setState(newState);
   }
 
-  handleNodeUpdate = (position: any, nodeId: number, shiftKey: boolean) => {
+  handleNodeUpdate = (position: any, nodeId: number) => {
+    const { isLinkingStarted } = this.state;
     const { onUpdateNode, readOnly } = this.props;
 
     if (readOnly) {
@@ -765,7 +762,7 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
 
     // Detect if edge is being drawn and link to hovered node
     // This will handle a new edge
-    if (shiftKey) {
+    if (isLinkingStarted) {
       this.createNewEdge();
     } else {
       const nodeMap = this.getNodeById(nodeId);
@@ -785,13 +782,11 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
     });
   }
 
-  handleNodeSelected = (node: NodeDataType, creatingEdge: boolean) => {
+  handleNodeSelected = (node: NodeDataType) => {
     const { onSelectNode } = this.props;
     const { x, y } = d3.event;
 
-    if (!creatingEdge) {
-      onSelectNode(node, x, y);
-    }
+    onSelectNode(node, x, y);
 
     this.setState({
       componentUpToDate: false,
@@ -1140,9 +1135,9 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
     }
 
     node.incomingEdges
-      .forEach(edge => this.asyncRenderEdge(edge, nodeMoving));
+      .forEach(edge => this.syncRenderEdge(edge, nodeMoving));
     node.outgoingEdges
-      .forEach(edge => this.asyncRenderEdge(edge, nodeMoving));
+      .forEach(edge => this.syncRenderEdge(edge, nodeMoving));
   }
 
   asyncRenderNode(node: NodeDataType) {

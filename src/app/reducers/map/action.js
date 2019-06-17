@@ -111,7 +111,7 @@ export const ACTION_UPDATE_NODE = (nodeData: NodeDataType) => {
   const clonedNodes = cloneDeep(nodes);
   const i = clonedNodes.findIndex(({ data }) => data.id === nodeData.id);
 
-  Object.assign(clonedNodes[i].data, nodeData);
+  clonedNodes[i].data = nodeData;
 
   return {
     type: UPDATE_NODE,
