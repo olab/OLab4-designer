@@ -109,8 +109,8 @@ export class Graph extends Component<IGraphProps, IGraphState> {
   };
 
   onCreateNode = (x: number, y: number) => {
-    const { map, ACTION_CREATE_NODE } = this.props;
-    const newNode = createNewNode(map.id, x, y);
+    const { map, defaults: { nodeBody }, ACTION_CREATE_NODE } = this.props;
+    const newNode = createNewNode(map.id, x, y, nodeBody);
 
     ACTION_CREATE_NODE(newNode);
   }
@@ -120,17 +120,19 @@ export class Graph extends Component<IGraphProps, IGraphState> {
       return;
     }
 
-    const { ACTION_CREATE_EDGE } = this.props;
-    const newEdge = createNewEdge(sourceNode.id, targetNode.id);
+    const { defaults: { edgeBody }, ACTION_CREATE_EDGE } = this.props;
+    const newEdge = createNewEdge(sourceNode.id, targetNode.id, edgeBody);
 
     ACTION_CREATE_EDGE(newEdge);
   }
 
   onCreateNodeWithEdge = (x: number, y: number, sourceNode: NodeDataType) => {
-    const { map, ACTION_CREATE_NODE_WITH_EDGE } = this.props;
+    const {
+      map, defaults: { edgeBody, nodeBody }, ACTION_CREATE_NODE_WITH_EDGE,
+    } = this.props;
 
-    const newNode = createNewNode(map.id, x, y);
-    const newEdge = createNewEdge(sourceNode.id, newNode.data.id);
+    const newNode = createNewNode(map.id, x, y, nodeBody);
+    const newEdge = createNewEdge(sourceNode.id, newNode.data.id, edgeBody);
 
     ACTION_CREATE_NODE_WITH_EDGE(newNode, newEdge);
   }
@@ -202,7 +204,6 @@ export class Graph extends Component<IGraphProps, IGraphState> {
       data: {
         ...copiedNode.data,
         id: newNodeId,
-        links: [],
       },
     };
 
@@ -257,6 +258,7 @@ export class Graph extends Component<IGraphProps, IGraphState> {
 const mapStateToProps = ({
   map,
   constructor: { zoom, layoutEngineType },
+  defaults,
 }) => ({
   minZoom: zoom.minZoom,
   maxZoom: zoom.maxZoom,
@@ -264,6 +266,7 @@ const mapStateToProps = ({
   layoutEngineType,
   isUndoAvailable: !!map.undo.length,
   isRedoAvailable: !!map.redo.length,
+  defaults,
 });
 
 const mapDispatchToProps = dispatch => ({

@@ -6,6 +6,7 @@ import constructor from '../app/Constructor/reducer';
 import map from '../app/reducers/map/reducer';
 import templates from '../app/reducers/templates/reducer';
 import scopedObjects from '../app/reducers/scopedObjects/reducer';
+import defaults from '../app/reducers/defaults/reducer';
 
 export default {
   user,
@@ -16,4 +17,5 @@ export default {
   scopedObjects,
   modals,
   templates,
+  defaults,
 };

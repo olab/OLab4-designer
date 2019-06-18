@@ -1,17 +1,17 @@
 export const edgeToServer = edgeData => ({
   id: edgeData.id,
   text: edgeData.label,
-  type_id: 1,
-  style_id: 5,
+  typeId: 1,
+  styleId: 5,
   hidden: Number(edgeData.isHidden),
   order: 0,
   probability: 0,
-  image_id: 0,
+  imageId: 0,
   thickness: edgeData.thickness,
   color: edgeData.color,
-  line_type: edgeData.variant,
-  source_id: edgeData.source,
-  destination_id: edgeData.target,
+  lineIype: edgeData.variant,
+  sourceId: edgeData.source,
+  destinationId: edgeData.target,
 });
 export const edgeFromServer = edgeData => ({
   isSelected: false,
@@ -27,12 +27,20 @@ export const edgeFromServer = edgeData => ({
   },
 });
 
+export const edgeDefaultsFromServer = edgeDefault => ({
+  label: edgeDefault.text,
+  color: edgeDefault.color,
+  variant: edgeDefault.lineType,
+  thickness: edgeDefault.thickness,
+  isHidden: Boolean(edgeDefault.hidden),
+});
+
 export const nodeToServer = nodeData => ({
   id: nodeData.id,
-  map_id: nodeData.map_id,
+  mapId: nodeData.mapId,
   title: nodeData.title,
   text: nodeData.text,
-  type_id: nodeData.type_id,
+  typeId: nodeData.type,
   x: nodeData.x,
   y: nodeData.y,
   height: nodeData.height,
@@ -40,14 +48,15 @@ export const nodeToServer = nodeData => ({
   locked: Number(nodeData.isLocked),
   collapsed: Number(nodeData.isCollapsed),
   color: nodeData.color,
+  linkStyleId: nodeData.linkStyle,
+  linkTypeId: nodeData.linkType,
 });
 export const nodeFromServer = nodeData => ({
   isSelected: false,
   data: {
     id: nodeData.id,
-    map_id: nodeData.mapId || null,
+    mapId: nodeData.mapId || null,
     title: nodeData.title,
-    type_id: nodeData.typeId,
     x: nodeData.x,
     y: nodeData.y,
     width: nodeData.width || 0,
@@ -55,9 +64,26 @@ export const nodeFromServer = nodeData => ({
     color: nodeData.color,
     type: nodeData.typeId,
     text: nodeData.text,
+    linkStyle: nodeData.linkStyleId,
+    linkType: nodeData.linkTypeId,
     isCollapsed: Boolean(nodeData.collapsed),
     isLocked: Boolean(nodeData.locked),
   },
+});
+
+export const nodeDefaultsFromServer = nodeDefault => ({
+  title: nodeDefault.title,
+  text: nodeDefault.text,
+  x: nodeDefault.x,
+  y: nodeDefault.y,
+  isLocked: Boolean(nodeDefault.locked),
+  isCollapsed: Boolean(nodeDefault.collapsed),
+  height: nodeDefault.height,
+  width: nodeDefault.width,
+  linkStyle: nodeDefault.linkStyleId,
+  linkType: nodeDefault.linkTypeId,
+  type: nodeDefault.typeId,
+  color: nodeDefault.color,
 });
 
 export const mapToServer = mapData => mapData;

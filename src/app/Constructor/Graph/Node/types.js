@@ -6,22 +6,18 @@ export type IPoint = {
 
 export type NodeData = {
   id: number,
-  map_id: number,
+  mapId: number,
   title: string,
-  type_id: number,
-  x: number,
-  y: number,
+  type: number,
+  ...IPoint,
   width: number,
   height: number,
   color: string,
-  type: number,
   text: string,
-  links: Array<{}>,
-  destination_id: number,
-  style_id: number,
-  type_id: number,
   isCollapsed: boolean,
   isLocked: boolean,
+  linkStyle: number,
+  linkType: number,
 };
 
 export type INodeProps = {
@@ -44,7 +40,6 @@ export type INodeProps = {
 };
 
 export type INodeState = {
-  x: number;
-  y: number;
+  ...IPoint,
   isResizeStart: boolean,
 };

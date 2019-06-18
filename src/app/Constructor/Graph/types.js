@@ -1,6 +1,7 @@
 // @flow
 import type { NodeData as NodeDataType } from './Node/types';
 import type { LayoutEngine as LayoutEngineType } from './utilities/layout-engine/layout-engine-config';
+import type { Defaults as DefaultsType } from '../../reducers/defaults/types';
 import type {
   Node as NodeType,
   Edge as EdgeType,
@@ -30,6 +31,7 @@ export type IGraphProps = {
   ACTION_UPDATE_NODE_COLLAPSE: (nodeId: number) => void,
   ACTION_UPDATE_NODE_RESIZE: (nodeId: number, width: number, height: number) => void,
   ACTION_UPDATE_NODE_LOCK: (nodeId: number) => void,
+  defaults: DefaultsType,
 };
 
 export type IGraphState = {

@@ -11,8 +11,6 @@ import {
   ACTION_ADD,
   ACTION_RESIZE,
   ACTION_LINK,
-  DEFAULT_HEIGHT,
-  DEFAULT_WIDTH,
   COLLAPSED_HEIGHT,
   DEFAULT_NODE_INDENT,
 } from './config';
@@ -233,20 +231,17 @@ export class Node extends React.Component<INodeProps, INodeState> {
     const {
       isLinkSource,
       data: {
-        isCollapsed, isLocked, width, height, type, title, text, color,
+        isCollapsed, isLocked, width: currentWidth, height, type, title, text, color,
       },
     } = this.props;
 
-    const currentWidth = width || DEFAULT_WIDTH;
-    let currentHeight = height || DEFAULT_HEIGHT;
-
-    currentHeight = isCollapsed ? COLLAPSED_HEIGHT : currentHeight;
+    const currentHeight = isCollapsed ? COLLAPSED_HEIGHT : height;
 
     return (
       <foreignObject
         x={-currentWidth / 2}
         y={-currentHeight / 2}
-        width={currentWidth}
+        current={currentWidth}
         height={currentHeight}
         viewBox={`0 0 ${currentWidth} ${currentHeight}`}
       >
@@ -255,7 +250,7 @@ export class Node extends React.Component<INodeProps, INodeState> {
           isLocked={isLocked}
           isCollapsed={isCollapsed}
           resizeRef={this.resizeRef}
-          width={width}
+          current={currentWidth}
           height={height}
           type={type}
           title={title}
