@@ -21,8 +21,8 @@ export const edgeFromServer = edgeData => ({
     color: edgeData.color,
     variant: edgeData.lineType,
     thickness: edgeData.thickness,
-    source: edgeData.node_id_1,
-    target: edgeData.node_id_2,
+    source: edgeData.sourceId,
+    target: edgeData.destinationId,
     isHidden: Boolean(edgeData.hidden),
   },
 });

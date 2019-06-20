@@ -11,6 +11,7 @@ import {
   DELETE_EDGE,
   RESET_MAP,
   EXCHANGE_NODE_ID,
+  EXCHANGE_EDGE_ID,
   CREATE_NODE_WITH_EDGE,
   UPDATE_EDGE,
   RENAME_MAP,
@@ -140,6 +141,14 @@ const map = (state: MapType = initialMapState, action: MapActions) => {
       return {
         ...state,
         nodes,
+        edges,
+      };
+    }
+    case EXCHANGE_EDGE_ID: {
+      const { edges } = action;
+
+      return {
+        ...state,
         edges,
       };
     }

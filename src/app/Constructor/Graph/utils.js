@@ -23,6 +23,8 @@ export const createNewNode = (
       id: newNodeId,
       mapId,
       ...defaultNodeBody,
+      x,
+      y,
     },
   };
 };

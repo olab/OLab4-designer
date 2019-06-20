@@ -2,6 +2,11 @@
 import type { EdgeData as EdgeDataType } from '../../Constructor/Graph/Edge/types';
 import type { NodeData as NodeDataType } from '../../Constructor/Graph/Node/types';
 
+export type Position = {
+  x: number,
+  y: number,
+};
+
 export type Edge = {
   isSelected: boolean,
   data: EdgeDataType,
@@ -40,7 +45,8 @@ const CREATE_NODE = 'CREATE_NODE';
 type CreateNode = {
   type: 'CREATE_NODE',
   nodes: Array<Node>,
-  oldId: string,
+  oldNodeId: string,
+  position: Position,
 };
 
 const CREATE_NODE_WITH_EDGE = 'CREATE_NODE_WITH_EDGE';
@@ -50,6 +56,7 @@ type CreateNodeWithEdge = {
   edges: Array<Edge>,
   nodeData: Node,
   edgeData: Edge,
+  sourceNodeId: number,
 };
 
 const UPDATE_NODE = 'UPDATE_NODE';
@@ -71,6 +78,12 @@ const EXCHANGE_NODE_ID = 'EXCHANGE_NODE_ID';
 type ExchangeNodeId = {
   type: 'EXCHANGE_NODE_ID',
   nodes: Array<Node>,
+  edges: Array<Edge>,
+};
+
+const EXCHANGE_EDGE_ID = 'EXCHANGE_EDGE_ID';
+type ExchangeEdgeId = {
+  type: 'EXCHANGE_EDGE_ID',
   edges: Array<Edge>,
 };
 
@@ -159,7 +172,7 @@ export type MapActions = SelectItem |
   UndoMap | RedoMap | ExchangeNodeId |
   GetMapSucceeded | GetMapFailed | GetMapRequested |
   CreateMapFromTemplateRequested | CreateMapFromTemplateSucceeded |
-  CreateMapFromTemplateFailed | CreateNodeWithEdge;
+  CreateMapFromTemplateFailed | CreateNodeWithEdge | ExchangeEdgeId;
 
 export {
   SELECT_ITEM,
@@ -167,6 +180,7 @@ export {
   UPDATE_NODE,
   DELETE_NODE,
   EXCHANGE_NODE_ID,
+  EXCHANGE_EDGE_ID,
   CREATE_EDGE,
   DELETE_EDGE,
   UPDATE_EDGE,

@@ -11,9 +11,9 @@ import {
   ACTION_CREATE_MAP_SUCCEEDED,
 } from './action';
 
-function* getMapSaga(action) {
+function* getMapSaga({ mapId }) {
   try {
-    const map = yield call(getMap, action.mapId);
+    const map = yield call(getMap, mapId);
 
     yield put(ACTION_GET_MAP_SUCCEEDED(map));
   } catch (error) {
@@ -25,9 +25,9 @@ function* getMapSaga(action) {
   }
 }
 
-function* createMapSaga(action) {
+function* createMapSaga({ templateId }) {
   try {
-    const newMap = yield call(createMap, action.templateId);
+    const newMap = yield call(createMap, templateId);
 
     yield put(ACTION_CREATE_MAP_SUCCEEDED(newMap));
   } catch (error) {

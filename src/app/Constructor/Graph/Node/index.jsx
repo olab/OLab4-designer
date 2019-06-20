@@ -241,7 +241,7 @@ export class Node extends React.Component<INodeProps, INodeState> {
       <foreignObject
         x={-currentWidth / 2}
         y={-currentHeight / 2}
-        current={currentWidth}
+        width={currentWidth}
         height={currentHeight}
         viewBox={`0 0 ${currentWidth} ${currentHeight}`}
       >
@@ -250,7 +250,7 @@ export class Node extends React.Component<INodeProps, INodeState> {
           isLocked={isLocked}
           isCollapsed={isCollapsed}
           resizeRef={this.resizeRef}
-          current={currentWidth}
+          width={currentWidth}
           height={height}
           type={type}
           title={title}

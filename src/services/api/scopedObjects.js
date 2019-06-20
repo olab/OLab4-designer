@@ -2,8 +2,8 @@ import createInstance from '../createCustomInstance';
 
 const API = createInstance();
 
-export const getScopedObjects = () => API
-  .get('/olab/scopedObjects')
+export const getScopedObjects = mapId => API
+  .get(`/olab/scopedObjects/${mapId}`)
   .then(({ data: { data: scopedObjects } }) => scopedObjects)
   .catch((error) => {
     throw error;

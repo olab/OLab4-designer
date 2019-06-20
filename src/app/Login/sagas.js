@@ -5,9 +5,9 @@ import { ACTION_NOTIFICATION_ERROR } from '../reducers/notifications/action';
 import { USER_AUTH_REQUESTED } from './types';
 import { ACTION_USER_AUTH_SUCCEEDED, ACTION_USER_AUTH_FAILED } from './action';
 
-function* loginUserSaga(action) {
+function* loginUserSaga({ userLoginData }) {
   try {
-    const { token } = yield call(loginUser, action.userLoginData);
+    const { token } = yield call(loginUser, userLoginData);
     localStorage.setItem('token', token);
 
     yield put(ACTION_USER_AUTH_SUCCEEDED(token));

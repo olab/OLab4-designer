@@ -14,14 +14,13 @@ import {
   DELETE_NODE,
   CREATE_NODE_WITH_EDGE,
 } from '../../../reducers/map/types';
-import { ACTION_EXCHANGE_NODE_ID } from '../../../reducers/map/action';
+import { ACTION_EXCHANGE_NODE_ID, ACTION_EXCHANGE_EDGE_ID } from '../../../reducers/map/action';
 import { ACTION_NOTIFICATION_ERROR } from '../../../reducers/notifications/action';
 
-function* createNodeSaga(action) {
+function* createNodeSaga({ position, oldNodeId }) {
   try {
     const mapId = yield select(({ map }) => map.id);
-    const newNodeId = yield call(createNode, mapId);
-    const oldNodeId = action.oldId || action.nodeData.data.id;
+    const newNodeId = yield call(createNode, mapId, position);
 
     yield put(ACTION_EXCHANGE_NODE_ID(oldNodeId, newNodeId));
   } catch (error) {
@@ -32,10 +31,15 @@ function* createNodeSaga(action) {
   }
 }
 
-function* updateNodeSaga(action) {
+function* createNodeWithEdgeSaga({ sourceNodeId, nodeData, edgeData }) {
   try {
+    const oldEdgeId = edgeData.data.id;
+    const { x, y, id: oldNodeId } = nodeData.data;
     const mapId = yield select(({ map }) => map.id);
-    yield call(updateNode, mapId, action.updatedNode);
+    const { newNodeId, newEdgeId } = yield call(createNode, mapId, { x, y }, sourceNodeId);
+
+    yield put(ACTION_EXCHANGE_NODE_ID(oldNodeId, newNodeId));
+    yield put(ACTION_EXCHANGE_EDGE_ID(oldEdgeId, newEdgeId));
   } catch (error) {
     const { response, message } = error;
     const errorMessage = response ? response.statusText : message;
@@ -44,10 +48,22 @@ function* updateNodeSaga(action) {
   }
 }
 
-function* deleteNodeSaga(action) {
+function* updateNodeSaga({ updatedNode }) {
   try {
     const mapId = yield select(({ map }) => map.id);
-    yield call(deleteNode, mapId, action.nodeId);
+    yield call(updateNode, mapId, updatedNode);
+  } catch (error) {
+    const { response, message } = error;
+    const errorMessage = response ? response.statusText : message;
+
+    yield put(ACTION_NOTIFICATION_ERROR(errorMessage));
+  }
+}
+
+function* deleteNodeSaga({ nodeId }) {
+  try {
+    const mapId = yield select(({ map }) => map.id);
+    yield call(deleteNode, mapId, nodeId);
   } catch (error) {
     const { response, message } = error;
     const errorMessage = response ? response.statusText : message;
@@ -60,7 +76,7 @@ function* nodeSaga() {
   yield takeEvery(CREATE_NODE, createNodeSaga);
   yield takeEvery(UPDATE_NODE, updateNodeSaga);
   yield takeEvery(DELETE_NODE, deleteNodeSaga);
-  yield takeEvery(CREATE_NODE_WITH_EDGE, createNodeSaga);
+  yield takeEvery(CREATE_NODE_WITH_EDGE, createNodeWithEdgeSaga);
 }
 
 export default nodeSaga;

@@ -1,4 +1,6 @@
-import { call, put, takeLatest } from 'redux-saga/effects';
+import {
+  call, put, select, takeLatest,
+} from 'redux-saga/effects';
 import { getScopedObjects } from '../../../services/api/scopedObjects';
 
 import { SCOPED_OBJECTS_REQUESTED } from './types';
@@ -8,7 +10,8 @@ import { ACTION_SCOPED_OBJECTS_SUCCEEDED, ACTION_SCOPED_OBJECTS_FAILED } from '.
 
 function* getScopedObjectsSaga() {
   try {
-    const scopedObjects = yield call(getScopedObjects);
+    const mapId = yield select(({ map }) => map.id);
+    const scopedObjects = yield call(getScopedObjects, mapId);
 
     yield put(ACTION_SCOPED_OBJECTS_SUCCEEDED(scopedObjects));
   } catch (error) {

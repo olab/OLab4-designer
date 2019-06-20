@@ -134,7 +134,7 @@ export class Graph extends Component<IGraphProps, IGraphState> {
     const newNode = createNewNode(map.id, x, y, nodeBody);
     const newEdge = createNewEdge(sourceNode.id, newNode.data.id, edgeBody);
 
-    ACTION_CREATE_NODE_WITH_EDGE(newNode, newEdge);
+    ACTION_CREATE_NODE_WITH_EDGE(newNode, newEdge, sourceNode.id);
   }
 
   onUpdateNode = (node: NodeDataType) => {
@@ -285,8 +285,8 @@ const mapDispatchToProps = dispatch => ({
   ACTION_CREATE_NODE: (nodeData: NodeType) => {
     dispatch(graphActions.ACTION_CREATE_NODE(nodeData));
   },
-  ACTION_CREATE_NODE_WITH_EDGE: (nodeData: NodeType, edgeData: EdgeType) => {
-    dispatch(graphActions.ACTION_CREATE_NODE_WITH_EDGE(nodeData, edgeData));
+  ACTION_CREATE_NODE_WITH_EDGE: (nodeData: NodeType, edgeData: EdgeType, sourceNodeId: number) => {
+    dispatch(graphActions.ACTION_CREATE_NODE_WITH_EDGE(nodeData, edgeData, sourceNodeId));
   },
   ACTION_SELECT_ITEM: (id: number) => {
     dispatch(graphActions.ACTION_SELECT_ITEM(id));

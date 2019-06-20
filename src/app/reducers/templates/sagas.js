@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import {
   call, put, select, takeLatest,
 } from 'redux-saga/effects';
@@ -8,9 +7,10 @@ import { CREATE_TEMPLATE_FROM_MAP, TEMPLATES_REQUESTED } from './types';
 import { ACTION_NOTIFICATION_ERROR } from '../notifications/action';
 import { ACTION_TEMPLATES_REQUEST_FAILED, ACTION_TEMPLATES_REQUEST_SUCCEEDED } from './action';
 
-function* createTemplateSaga(action) {
+function* createTemplateSaga({ template }) {
   try {
-    const data = yield call(createTemplate, action.template);
+    // eslint-disable-next-line no-unused-vars
+    const data = yield call(createTemplate, template);
   } catch (error) {
     const { response, message } = error;
     const errorMessage = response ? response.statusText : message;

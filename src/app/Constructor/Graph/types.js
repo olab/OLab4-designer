@@ -23,7 +23,11 @@ export type IGraphProps = {
   ACTION_RESET_MAP: () => void,
   ACTION_SELECT_ITEM: (id: number | null) => void,
   ACTION_CREATE_NODE: (nodeData: NodeType) => void,
-  ACTION_CREATE_NODE_WITH_EDGE: (nodeData: NodeType, edgeData: EdgeType) => void,
+  ACTION_CREATE_NODE_WITH_EDGE: (
+    nodeData: NodeType,
+    edgeData: EdgeType,
+    sourceNodeId: number,
+  ) => void,
   ACTION_UPDATE_NODE: (nodeData: NodeDataType) => void,
   ACTION_DELETE_NODE: (nodeId: number) => void,
   ACTION_DELETE_EDGE: (edgeId: string | number) => void,

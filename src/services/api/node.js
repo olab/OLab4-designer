@@ -20,9 +20,27 @@ export const getNodes = mapId => API
     throw error;
   });
 
-export const createNode = mapId => API
-  .post(`/olab/maps/${mapId}/nodes`)
-  .then(({ data: { data: node } }) => node.id)
+export const createNode = (mapId, position, sourceNodeId) => API
+  .post(`/olab/maps/${mapId}/nodes`, {
+    data: {
+      ...position,
+      ...(sourceNodeId && { sourceId: sourceNodeId }),
+    },
+  })
+  .then(({ data: { data } }) => {
+    const { id: newNodeId, links } = data;
+
+    if (links) {
+      const { id: newEdgeId } = links;
+
+      return {
+        newNodeId,
+        newEdgeId,
+      };
+    }
+
+    return newNodeId;
+  })
   .catch((error) => {
     throw error;
   });
