@@ -6,7 +6,7 @@ import { DragSource } from 'react-dnd';
 import Slider from './Slider';
 import Switch from './Switch';
 import ColorPicker from './ColorPicker';
-import OutlinedInput from './OutlinedInput';
+import OutlinedInput from '../../../shared/components/OutlinedInput';
 import OutlinedSelect from '../../../shared/components/OutlinedSelect';
 import ScaleIcon from '../../../shared/assets/icons/cross.svg';
 

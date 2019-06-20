@@ -1,41 +1,33 @@
 // @flow
 import React from 'react';
 import { connect } from 'react-redux';
-import {
-  Route, Switch, Link, Redirect,
-} from 'react-router-dom';
+import { Route, Switch, Redirect } from 'react-router-dom';
 import { ConnectedRouter } from 'connected-react-router';
 import { Notify } from 'react-redux-notify';
-import LinearProgress from '@material-ui/core/LinearProgress';
 
 import Login from './Login';
 import Home from './Home';
 import Constructor from './Constructor';
 import PageNotFound from './404';
-
-import LogoIcon from '../shared/assets/icons/logo.svg';
+import Constants from './SOEditors/Constants';
+import ObjectsList from '../shared/components/ObjectsList';
+import Header from './Header';
 
 import type {
   IAppProps,
   IProtectedRouteProps,
 } from './types';
 
-import {
-  Logo,
-  Header,
-  FakeProgress,
-} from './styles';
-
 import 'react-redux-notify/dist/ReactReduxNotify.css';
 
 const ProtectedRoute = ({
-  component: Component, isAuth, path, ...rest
+  component: Component, isAuth, path, exact, ...rest
 }: IProtectedRouteProps) => (
   <Route
     path={path}
-    {...rest}
+    exact={exact}
     render={props => (isAuth ? (
-      <Component {...props} />
+      <Component {...props} {...rest} />
     ) : (
       <Redirect
         to={{
@@ -46,27 +38,28 @@ const ProtectedRoute = ({
   />
 );
 
-export const App = ({ isAuth, isDataFetching, history }: IAppProps) => (
+export const App = ({ isAuth, history }: IAppProps) => (
   <ConnectedRouter history={history}>
     <>
-      <Header>
-        <div>
-          <Link to="/" className="route-link">
-            <Logo>
-              <LogoIcon />
-              <h1>
-                Open
-                <span>Labyrinth</span>
-              </h1>
-            </Logo>
-          </Link>
-        </div>
-        {isDataFetching ? <LinearProgress /> : <FakeProgress />}
-      </Header>
+      <Header />
       <Switch>
         <Route exact path="/login" component={Login} />
         <ProtectedRoute exact isAuth={isAuth} path="/" component={Home} />
         <ProtectedRoute exact isAuth={isAuth} path="/constructor/:mapId" component={Constructor} />
+        <ProtectedRoute
+          exact
+          isAuth={isAuth}
+          path="/constants/add"
+          component={Constants}
+          scopedObject="Constants"
+        />
+        <ProtectedRoute
+          exact
+          isAuth={isAuth}
+          path="/constants"
+          component={ObjectsList}
+          scopedObject="Constants"
+        />
         <ProtectedRoute exact isAuth={isAuth} path="*" component={PageNotFound} />
       </Switch>
       <Notify />
@@ -74,12 +67,6 @@ export const App = ({ isAuth, isDataFetching, history }: IAppProps) => (
   </ConnectedRouter>
 );
 
-const mapStateToProps = ({
-  user: { isAuth, isFetching: isAuthFething },
-  map: { isFetching: isMapFetching },
-}) => ({
-  isAuth,
-  isDataFetching: isAuthFething || isMapFetching,
-});
+const mapStateToProps = ({ user: { isAuth } }) => ({ isAuth });
 
 export default connect(mapStateToProps)(App);
