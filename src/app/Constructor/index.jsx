@@ -96,7 +96,7 @@ export class Constructor extends PureComponent<IConstructorProps, IConstructorSt
     if (pageRefreshed) {
       ACTION_GET_MAP_REQUESTED(mapIdUrl);
     } else if (!mapIdUrl) {
-      history.push('/login');
+      history.push('/404');
     }
   }
 

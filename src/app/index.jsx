@@ -11,6 +11,7 @@ import LinearProgress from '@material-ui/core/LinearProgress';
 import Login from './Login';
 import Home from './Home';
 import Constructor from './Constructor';
+import PageNotFound from './404';
 
 import LogoIcon from '../shared/assets/icons/logo.svg';
 
@@ -66,6 +67,7 @@ export const App = ({ isAuth, isDataFetching, history }: IAppProps) => (
         <Route exact path="/login" component={Login} />
         <ProtectedRoute exact isAuth={isAuth} path="/" component={Home} />
         <ProtectedRoute exact isAuth={isAuth} path="/constructor/:mapId" component={Constructor} />
+        <ProtectedRoute exact isAuth={isAuth} path="*" component={PageNotFound} />
       </Switch>
       <Notify />
     </>
