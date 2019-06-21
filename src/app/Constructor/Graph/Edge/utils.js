@@ -1,17 +1,19 @@
 // @flow
 import { COLLAPSED_HEIGHT } from '../Node/config';
+import { VARIANT } from './config';
 
 import type { NodeData as NodeDataType } from '../Node/types';
 
-export const getStringVariant = (variant: string): string => {
+export const getVariantValueDOM = (variant: number): string => {
   switch (variant) {
-    case 'Standard':
-      return 'none';
-    case 'Dashed':
-      return '15';
-    case 'Dotted':
-      return '5';
-    default: return 'none';
+    case VARIANT.STANDARD:
+      return VARIANT.STANDARD_DOM;
+    case VARIANT.DASHED:
+      return VARIANT.DASHED_DOM;
+    case VARIANT.DOTTED:
+      return VARIANT.DOTTED_DOM;
+    default:
+      return VARIANT.STANDARD_DOM;
   }
 };
 
@@ -35,6 +37,6 @@ export const getMinRadius = (sourceNode: NodeDataType, targetNode: NodeDataType)
 };
 
 export default {
-  getStringVariant,
+  getVariantValueDOM,
   getMinRadius,
 };

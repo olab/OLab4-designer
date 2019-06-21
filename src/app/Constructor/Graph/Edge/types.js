@@ -5,7 +5,7 @@ export type EdgeData = {
   id: number,
   label: string;
   color: string;
-  variant: string;
+  variant: number;
   thickness: number;
   source: number;
   target: number;

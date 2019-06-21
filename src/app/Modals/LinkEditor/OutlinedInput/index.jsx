@@ -18,7 +18,16 @@ const OutlinedInput = ({
     onChange={onChange}
     margin="none"
     variant="outlined"
-    InputProps={{ classes: { input: classes.input } }}
+    InputProps={{
+      classes: {
+        input: classes.input,
+      },
+    }}
+    InputLabelProps={{
+      classes: {
+        root: classes.focusedLabel,
+      },
+    }}
     fullWidth={fullWidth}
   />
 );

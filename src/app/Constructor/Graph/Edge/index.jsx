@@ -14,7 +14,7 @@ import type {
   EdgeData as EdgeDataType,
 } from './types';
 
-import { getStringVariant, getMinRadius } from './utils';
+import { getVariantValueDOM, getMinRadius } from './utils';
 
 import { EdgeWrapper } from './styles';
 
@@ -620,7 +620,7 @@ export class Edge extends React.Component<IEdgeProps> {
           <path
             stroke={data.color}
             strokeWidth={`${data.thickness}px`}
-            strokeDasharray={getStringVariant(data.variant)}
+            strokeDasharray={getVariantValueDOM(data.variant)}
             d={this.getPathDescription() || undefined}
           />
           <use

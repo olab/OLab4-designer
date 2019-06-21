@@ -2,7 +2,7 @@
 export type DefaultEdge = {
   label: string,
   color: string,
-  variant: string,
+  variant: number | null,
   thickness: number | null,
   isHidden: boolean | null,
 };

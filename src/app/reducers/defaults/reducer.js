@@ -9,7 +9,7 @@ export const initialDefaultsState: DefaultsType = {
   edgeBody: {
     label: '',
     color: '',
-    variant: '',
+    variant: null,
     thickness: null,
     isHidden: null,
   },

@@ -9,7 +9,7 @@ export const edgeToServer = edgeData => ({
   imageId: 0,
   thickness: edgeData.thickness,
   color: edgeData.color,
-  lineIype: edgeData.variant,
+  lineType: edgeData.variant,
   sourceId: edgeData.source,
   destinationId: edgeData.target,
 });

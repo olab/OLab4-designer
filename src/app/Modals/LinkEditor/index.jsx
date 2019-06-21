@@ -67,6 +67,12 @@ class LinkEditor extends Component<ILinkEditorProps, ILinkEditorState> {
     this.setState({ [name]: value });
   }
 
+  handleVariantChange = (e: Event): void => {
+    const { value, name } = (e.target: window.HTMLInputElement);
+    const index = LINK_VARIANTS.findIndex(variant => variant === value);
+    this.setState({ [name]: index + 1 });
+  }
+
   handleSliderChange = (e: Event, thickness: number): void => {
     this.setState({ thickness });
   };
@@ -122,9 +128,9 @@ class LinkEditor extends Component<ILinkEditorProps, ILinkEditorState> {
               label="Variant"
               name="variant"
               labelWidth={55}
-              value={variant}
+              value={LINK_VARIANTS[variant - 1]}
               values={LINK_VARIANTS}
-              onChange={this.handleInputChange}
+              onChange={this.handleVariantChange}
             />
           </article>
           <article>

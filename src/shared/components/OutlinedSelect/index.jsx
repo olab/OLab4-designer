@@ -16,7 +16,7 @@ import styles from './styles';
 const OutlinedSelect = ({
   label, name, labelWidth, classes, value, values, onChange, fullWidth = false,
 }: IOutlinedSelectProps) => (
-  <FormControl variant="outlined" className={fullWidth && classes.fullWidth}>
+  <FormControl variant="outlined" className={fullWidth ? classes.fullWidth : ''}>
     <InputLabel>{label}</InputLabel>
     <Select
       value={value}
