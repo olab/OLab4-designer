@@ -1,5 +1,8 @@
 import styled from 'styled-components';
 
+const colorBright = '#F5F5F5';
+const colorDarkGray = '#7C8FA6';
+
 export const HomeWrapper = styled.div`
   padding: 1rem;
 `;
@@ -37,8 +40,28 @@ const styles = theme => ({
   list: {
     maxHeight: '40vh',
     overflowY: 'auto',
+    '&::-webkit-scrollbar': {
+      width: 7,
+      backgroundColor: colorBright,
+    },
+    '&::-webkit-scrollbar-thumb': {
+      backgroundColor: colorDarkGray,
+      borderRadius: 4,
+    },
+    '&::-webkit-scrollbar-button': {
+      width: 0,
+      height: 0,
+      display: 'none',
+    },
+    '&::-webkit-scrollbar-corner': {
+      backgroundColor: 'transparent',
+    },
+  },
+  listItem: {
+    padding: '.15rem',
   },
   listButton: {
+    width: '100%',
     textTransform: 'initial',
     textAlign: 'initial',
   },

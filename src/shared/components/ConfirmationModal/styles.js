@@ -31,7 +31,7 @@ export const ModalFooter = styled.div`
 
 export const CrossButtonWrapper = styled.div`
   position: absolute;
-  top: 5px;
-  right: 5px;
+  top: 10px;
+  right: 10px;
   cursor: pointer;
 `;

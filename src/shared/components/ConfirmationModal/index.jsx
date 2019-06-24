@@ -17,7 +17,7 @@ import {
 } from './styles';
 
 class ConfirmationModal extends PureComponent<IConfirmationModalProps> {
-  static deafultProps = {
+  static defaultProps = {
     cancelBttnLabel: 'Cancel',
     saveBttnLabel: 'Save',
     showFooterButtons: false,

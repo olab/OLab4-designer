@@ -20,14 +20,8 @@ import * as templatesActions from '../reducers/templates/action';
 
 import type { EdgeData as EdgeDataType } from './Graph/Edge/types';
 import type { NodeData as NodeDataType } from './Graph/Node/types';
-import type {
-  Map as MapType,
-  MapItem as MapItemType,
-} from '../reducers/map/types';
-import type {
-  IConstructorProps,
-  IConstructorState,
-} from './types';
+import type { MapItem as MapItemType } from '../reducers/map/types';
+import type { IConstructorProps, IConstructorState } from './types';
 
 import { ConstructorWrapper } from './styles';
 
@@ -123,15 +117,21 @@ export class Constructor extends PureComponent<IConstructorProps, IConstructorSt
   }
 
   saveTemplateFromMap = (): void => {
-    if (this.templateInputName && this.templateInputName.current) {
-      const { value } = this.templateInputName.current.state;
+    const { current: templateInput } = this.templateInputName;
 
-      if (value) {
-        const { map, ACTION_CREATE_TEMPLATE_FROM_MAP } = this.props;
-
-        ACTION_CREATE_TEMPLATE_FROM_MAP(value, map);
-      }
+    if (!templateInput || !templateInput.state) {
+      return;
     }
+
+    const { value: templateName } = templateInput.state;
+
+    if (!templateName) {
+      return;
+    }
+
+    const { ACTION_TEMPLATE_UPLOAD_REQUESTED } = this.props;
+
+    ACTION_TEMPLATE_UPLOAD_REQUESTED(templateName);
 
     this.closeCreateTemplateModal();
   }
@@ -189,8 +189,8 @@ const mapStateToProps = ({ map, modals }) => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  ACTION_CREATE_TEMPLATE_FROM_MAP: (templateName: string, map: MapType) => {
-    dispatch(templatesActions.ACTION_CREATE_TEMPLATE_FROM_MAP(templateName, map));
+  ACTION_TEMPLATE_UPLOAD_REQUESTED: (templateName: string) => {
+    dispatch(templatesActions.ACTION_TEMPLATE_UPLOAD_REQUESTED(templateName));
   },
   ACTION_GET_MAP_REQUESTED: (mapId: string) => {
     dispatch(mapActions.ACTION_GET_MAP_REQUESTED(mapId));

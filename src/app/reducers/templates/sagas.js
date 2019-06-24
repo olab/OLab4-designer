@@ -3,20 +3,28 @@ import {
 } from 'redux-saga/effects';
 import { getTemplates, createTemplate } from '../../../services/api/templates';
 
-import { CREATE_TEMPLATE_FROM_MAP, TEMPLATES_REQUESTED } from './types';
-import { ACTION_NOTIFICATION_ERROR } from '../notifications/action';
-import { ACTION_TEMPLATES_REQUEST_FAILED, ACTION_TEMPLATES_REQUEST_SUCCEEDED } from './action';
+import { TEMPLATE_UPLOAD_REQUESTED, TEMPLATES_REQUESTED } from './types';
+import { ACTION_NOTIFICATION_ERROR, ACTION_NOTIFICATION_SUCCESS } from '../notifications/action';
+import {
+  ACTION_TEMPLATES_REQUEST_FAILED,
+  ACTION_TEMPLATES_REQUEST_SUCCEEDED,
+  ACTION_TEMPLATE_UPLOAD_FULFILLED,
+} from './action';
 
-function* createTemplateSaga({ template }) {
+function* createTemplateSaga({ templateName }) {
   try {
-    // eslint-disable-next-line no-unused-vars
-    const data = yield call(createTemplate, template);
+    const mapId = yield select(({ map }) => map.id);
+    yield call(createTemplate, mapId, templateName);
+
+    yield put(ACTION_NOTIFICATION_SUCCESS('Template successfully created!'));
   } catch (error) {
     const { response, message } = error;
     const errorMessage = response ? response.statusText : message;
 
     yield put(ACTION_NOTIFICATION_ERROR(errorMessage));
   }
+
+  yield put(ACTION_TEMPLATE_UPLOAD_FULFILLED());
 }
 
 function* getTemplatesSaga() {
@@ -35,7 +43,7 @@ function* getTemplatesSaga() {
 }
 
 function* templatesSaga() {
-  yield takeLatest(CREATE_TEMPLATE_FROM_MAP, createTemplateSaga);
+  yield takeLatest(TEMPLATE_UPLOAD_REQUESTED, createTemplateSaga);
   yield takeLatest(TEMPLATES_REQUESTED, getTemplatesSaga);
 }
 

@@ -11,7 +11,7 @@ export type IConstructorProps = {
   match: any,
   history: any,
   ACTION_GET_MAP_REQUESTED: Function,
-  ACTION_CREATE_TEMPLATE_FROM_MAP: Function,
+  ACTION_TEMPLATE_UPLOAD_REQUESTED: Function,
 };
 export type IConstructorState = {
   isFullScreen: boolean,

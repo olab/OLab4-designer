@@ -8,6 +8,7 @@ export type Template = {
 export type Templates = {
   list: Array<Template>,
   isFetching: boolean,
+  isUploading: boolean,
 };
 
 const TEMPLATES_REQUESTED = 'TEMPLATES_REQUESTED';
@@ -26,18 +27,26 @@ type TemplatesRequestSucceeded = {
   templates: Array<Template>,
 };
 
-const CREATE_TEMPLATE_FROM_MAP = 'CREATE_TEMPLATE_FROM_MAP';
-type CreateTemplateFromMap = {
-  type: 'CREATE_TEMPLATE_FROM_MAP',
-  template: Template,
+const TEMPLATE_UPLOAD_REQUESTED = 'TEMPLATE_UPLOAD_REQUESTED';
+type TemplateUploadRequested = {
+  type: 'TEMPLATE_UPLOAD_REQUESTED',
+  templateName: string,
 };
 
-export type TemplatesActions = TemplatesRequestSucceeded | TemplatesRequested |
-  TemplatesRequestFailed | CreateTemplateFromMap;
+const TEMPLATE_UPLOAD_FULFILLED = 'TEMPLATE_UPLOAD_FULFILLED';
+type TemplateUploadFulfilled = {
+  type: 'TEMPLATE_UPLOAD_FULFILLED',
+};
+
+
+export type TemplatesActions = TemplatesRequested |
+  TemplatesRequestSucceeded | TemplatesRequestFailed |
+  TemplateUploadRequested | TemplateUploadFulfilled;
 
 export {
   TEMPLATES_REQUESTED,
   TEMPLATES_REQUEST_FAILED,
   TEMPLATES_REQUEST_SUCCEEDED,
-  CREATE_TEMPLATE_FROM_MAP,
+  TEMPLATE_UPLOAD_REQUESTED,
+  TEMPLATE_UPLOAD_FULFILLED,
 };

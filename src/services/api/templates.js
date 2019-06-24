@@ -9,12 +9,14 @@ export const getTemplates = () => API
     throw error;
   });
 
-export const createTemplate = templateData => API
-  .post(
-    '/createTemplate',
-    templateData,
-  )
-  .then(({ data }) => data)
+export const createTemplate = (mapId, templateName) => API
+  .post('/olab/templates', {
+    data: {
+      mapId,
+      name: templateName,
+    },
+  })
+  .then(({ data: { data: { id: templateId } } }) => templateId)
   .catch((error) => {
     throw error;
   });

@@ -5,12 +5,14 @@ import {
   TEMPLATES_REQUESTED,
   TEMPLATES_REQUEST_FAILED,
   TEMPLATES_REQUEST_SUCCEEDED,
-  CREATE_TEMPLATE_FROM_MAP,
+  TEMPLATE_UPLOAD_REQUESTED,
+  TEMPLATE_UPLOAD_FULFILLED,
 } from './types';
 
 export const initialTemplatesState: TemplatesType = {
   list: [],
   isFetching: false,
+  isUploading: false,
 };
 
 const templates = (state: TemplatesType = initialTemplatesState, action: TemplatesActions) => {
@@ -38,17 +40,20 @@ const templates = (state: TemplatesType = initialTemplatesState, action: Templat
         ],
       };
     }
-    case CREATE_TEMPLATE_FROM_MAP: {
-      const { template } = action;
-
+    case TEMPLATE_UPLOAD_REQUESTED:
       return {
-        ...state,
+        isUploading: true,
         list: [
           ...state.list,
-          template,
         ],
       };
-    }
+    case TEMPLATE_UPLOAD_FULFILLED:
+      return {
+        isUploading: false,
+        list: [
+          ...state.list,
+        ],
+      };
     default:
       return state;
   }

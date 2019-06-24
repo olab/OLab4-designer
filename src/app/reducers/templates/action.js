@@ -1,15 +1,14 @@
 // @flow
-import cloneDeep from 'lodash.clonedeep';
 import isEqual from 'lodash.isequal';
 import differenceWith from 'lodash.differencewith';
 
-import type { Map as MapType } from '../map/types';
 import {
   type Template as TemplateType,
   TEMPLATES_REQUESTED,
   TEMPLATES_REQUEST_FAILED,
   TEMPLATES_REQUEST_SUCCEEDED,
-  CREATE_TEMPLATE_FROM_MAP,
+  TEMPLATE_UPLOAD_REQUESTED,
+  TEMPLATE_UPLOAD_FULFILLED,
 } from './types';
 
 export const ACTION_TEMPLATES_REQUESTED = () => ({
@@ -32,24 +31,11 @@ export const ACTION_TEMPLATES_REQUEST_SUCCEEDED = (
   };
 };
 
-export const ACTION_CREATE_TEMPLATE_FROM_MAP = (templateName: string, map: MapType) => {
-  const template = cloneDeep(map);
+export const ACTION_TEMPLATE_UPLOAD_REQUESTED = (templateName: string) => ({
+  type: TEMPLATE_UPLOAD_REQUESTED,
+  templateName,
+});
 
-  template.id = null;
-  template.name = templateName;
-
-  delete template.redo;
-  delete template.undo;
-
-  [template.nodes, template.edges]
-    .forEach((items) => {
-      items.forEach((item) => {
-        item.isSelected = false;
-      });
-    });
-
-  return {
-    type: CREATE_TEMPLATE_FROM_MAP,
-    template: map,
-  };
-};
+export const ACTION_TEMPLATE_UPLOAD_FULFILLED = () => ({
+  type: TEMPLATE_UPLOAD_FULFILLED,
+});

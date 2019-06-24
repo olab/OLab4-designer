@@ -178,12 +178,22 @@ class Home extends PureComponent<IHomeProps, IHomeState> {
             text="Please take template from the following:"
             onClose={this.closeTemplatesListModal}
           >
+            <div style={{ visibility: isTemplatesFetching ? '' : 'hidden' }}>
+              <Typography align="right" variant="caption">
+                Updating list from the server...
+              </Typography>
+              <LinearProgress />
+            </div>
+
             <List
               classes={{ root: classes.list }}
               disablePadding
             >
               {templates.map((template, i) => (
-                <ListItem key={template.id}>
+                <ListItem
+                  key={template.id}
+                  classes={{ root: classes.listItem }}
+                >
                   <Button
                     classes={{ text: classes.listButton }}
                     onClick={() => this.onTemplateChoose(template.id)}
@@ -203,13 +213,6 @@ class Home extends PureComponent<IHomeProps, IHomeState> {
                 Empty list...
               </Typography>
             )}
-
-            <div style={{ visibility: isTemplatesFetching ? '' : 'hidden' }}>
-              <LinearProgress />
-              <Typography align="right" variant="caption">
-                Updating list from the server...
-              </Typography>
-            </div>
           </TemplatesModal>
         )}
       </HomeWrapper>
