@@ -6,20 +6,27 @@ import { InputLabel } from '@material-ui/core';
 
 import type { ISliderProps } from './types';
 
-import styles from './styles';
+import styles, {
+  SliderWrapper,
+  SliderValue,
+} from './styles';
 
 const Slider = ({
-  label, value, classes, min, max, onChange,
+  label, value, classes, min, max, step, onChange,
 }: ISliderProps) => (
   <div>
     <InputLabel>{label}</InputLabel>
-    <MaterialSlider
-      classes={{ container: classes.slider }}
-      value={value}
-      onChange={onChange}
-      min={min}
-      max={max}
-    />
+    <SliderWrapper>
+      <MaterialSlider
+        classes={{ container: classes.slider }}
+        value={value}
+        onChange={onChange}
+        min={min}
+        max={max}
+        step={step}
+      />
+      <SliderValue>{value}</SliderValue>
+    </SliderWrapper>
   </div>
 );
 

@@ -1,5 +1,6 @@
 // @flow
 export type ISwitchProps = {
+  name: string;
   label: string;
   labelPlacement: string;
   checked: boolean;

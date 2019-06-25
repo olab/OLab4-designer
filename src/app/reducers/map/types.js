@@ -105,6 +105,13 @@ const UPDATE_EDGE = 'UPDATE_EDGE';
 type UpdateEdge = {
   type: 'UPDATE_EDGE',
   edges: Array<Edge>,
+  updatedEdge: EdgeDataType,
+};
+
+const UPDATE_EDGE_VISUAL = 'UPDATE_EDGE_VISUAL';
+type UpdateEdgeVisual = {
+  type: 'UPDATE_EDGE_VISUAL',
+  edges: Array<Edge>,
 };
 
 const RESET_MAP = 'RESET_MAP';
@@ -174,7 +181,8 @@ export type MapActions = SelectItem |
   UndoMap | RedoMap | ExchangeNodeId |
   GetMapSucceeded | GetMapFailed | GetMapRequested |
   CreateMapFromTemplateRequested | CreateMapFromTemplateSucceeded |
-  CreateMapFromTemplateFailed | CreateNodeWithEdge | ExchangeEdgeId;
+  CreateMapFromTemplateFailed | CreateNodeWithEdge | ExchangeEdgeId |
+  UpdateEdgeVisual;
 
 export {
   SELECT_ITEM,
@@ -186,6 +194,7 @@ export {
   CREATE_EDGE,
   DELETE_EDGE,
   UPDATE_EDGE,
+  UPDATE_EDGE_VISUAL,
   CREATE_NODE_WITH_EDGE,
   RESET_MAP,
   RENAME_MAP,

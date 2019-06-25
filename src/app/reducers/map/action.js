@@ -18,6 +18,7 @@ import {
   EXCHANGE_EDGE_ID,
   CREATE_NODE_WITH_EDGE,
   UPDATE_EDGE,
+  UPDATE_EDGE_VISUAL,
   RESET_MAP,
   RENAME_MAP,
   SAVE_MAP_TO_UNDO,
@@ -219,6 +220,18 @@ export const ACTION_UPDATE_EDGE = (edgeData: EdgeDataType) => {
     type: UPDATE_EDGE,
     edges: clonedEdges,
     updatedEdge: edgeData,
+  };
+};
+
+export const ACTION_UPDATE_EDGE_VISUAL = (edgeData: EdgeDataType) => {
+  const { map: { edges } } = store.getState();
+  const clonedEdges = cloneDeep(edges);
+  const edge = clonedEdges.find(({ data }) => data.id === edgeData.id);
+  Object.assign(edge.data, edgeData);
+
+  return {
+    type: UPDATE_EDGE_VISUAL,
+    edges: clonedEdges,
   };
 };
 

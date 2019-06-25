@@ -12,7 +12,7 @@ import type { ISwitchProps } from './types';
 import styles from './styles';
 
 const Switch = ({
-  label, labelPlacement, classes, checked, onChange,
+  name, label, labelPlacement, classes, checked, onChange,
 }: ISwitchProps) => (
   <FormControlLabel
     label={(
@@ -32,7 +32,7 @@ const Switch = ({
           checked: classes.iOSChecked,
         }}
         checked={checked}
-        onChange={onChange}
+        onChange={(e: Event, checkedVal: boolean): Function => onChange(e, checkedVal, name)}
         disableRipple
       />
     )}

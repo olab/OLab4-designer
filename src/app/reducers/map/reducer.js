@@ -14,6 +14,7 @@ import {
   EXCHANGE_EDGE_ID,
   CREATE_NODE_WITH_EDGE,
   UPDATE_EDGE,
+  UPDATE_EDGE_VISUAL,
   RENAME_MAP,
   UNDO_MAP,
   REDO_MAP,
@@ -170,6 +171,7 @@ const map = (state: MapType = initialMapState, action: MapActions) => {
         edges,
       };
     }
+    case UPDATE_EDGE_VISUAL:
     case UPDATE_EDGE: {
       const { edges } = action;
 

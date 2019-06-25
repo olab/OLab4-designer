@@ -2,8 +2,6 @@ import styled from 'styled-components';
 
 const colorWhite = '#fff';
 const colorBlue = '#0089EC';
-const colorGray = '#7C8FA6';
-const colorRed = '#F53D4D';
 const fontFamily = 'SF Pro Display';
 
 export const LinkEditorBody = styled.div`
@@ -34,15 +32,28 @@ export const ActionButton = styled.button`
   height: 2.2rem;
   text-align: center;
   text-transform: uppercase;
-  background: ${({ blue }) => (blue ? colorBlue : colorWhite)};
-  color: ${({ blue }) => (blue ? colorWhite : colorGray)};
-  border: 1px solid ${({ blue }) => (blue ? colorBlue : colorGray)};
+  background: ${colorBlue};
+  color: ${colorWhite};
+  border: 1px solid ${colorBlue};
   cursor: pointer;
   outline: none;
 
   &:hover {
-    border-color: ${({ blue }) => (blue ? colorBlue : colorRed)};
-    color: ${({ blue }) => (blue ? colorBlue : colorRed)};
+    border-color: ${colorBlue};
+    color: ${colorBlue};
     background: ${colorWhite};
   }
 `;
+
+export const ChangeDirectionWrapper = styled.div`
+  display: inline-block;
+`;
+
+const styles = () => ({
+  reverseIcon: {
+    padding: 5,
+    marginLeft: 5,
+  },
+});
+
+export default styles;
