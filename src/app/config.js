@@ -1,7 +1,7 @@
-export const SCOPE_LEVELS = ['Map', 'Course', 'Global', 'Server'];
+export const SCOPE_LEVELS = ['Maps', 'Courses', 'Global', 'Servers'];
 
 export const SCOPED_OBJECTS = {
-  CONSTANT: 'Contsant',
+  CONSTANT: 'Constant',
   COUNTER: 'Counter',
   QUESTION: 'Question',
   FILE: 'File',

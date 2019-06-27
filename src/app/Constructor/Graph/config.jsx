@@ -20,7 +20,7 @@ export const EdgeTypes = {
 };
 
 export const VIEWPORT_OFFSET_X = 50;
-export const VIEWPORT_OFFSET_Y = 101;
+export const VIEWPORT_OFFSET_Y = 103;
 export const VIEWPORT_FULL_SCREEN_OFFSET_Y = 42;
 
 export default {

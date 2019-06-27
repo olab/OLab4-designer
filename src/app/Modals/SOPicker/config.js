@@ -1,15 +1,17 @@
-export const SOTypes = [
+import { SCOPE_LEVELS } from '../../config';
+
+export const SO_TYPES = [
   'Questions', 'Constants', 'Counters', 'Files',
 ];
 
-export const SOLevels = [
-  'All', 'Servers', 'Map',
+export const SO_LEVELS = [
+  'All', ...SCOPE_LEVELS,
 ];
 
-export const SOItemsLimit = 20;
+export const SO_ITEMS_LIMIT = 20;
 
 export default {
-  SOTypes,
-  SOLevels,
-  SOItemsLimit,
+  SO_TYPES,
+  SO_LEVELS,
+  SO_ITEMS_LIMIT,
 };

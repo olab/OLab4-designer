@@ -1,6 +1,6 @@
 const styles = () => ({
   inputSelect: {
-    padding: '10px 15px',
+    padding: '8px 15px',
     paddingRight: '32px',
   },
   fullWidth: {

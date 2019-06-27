@@ -2,31 +2,29 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { DragSource } from 'react-dnd';
-import { withStyles } from '@material-ui/core/styles';
-import { IconButton } from '@material-ui/core';
 
 import OutlinedSelect from '../../../shared/components/OutlinedSelect';
 import CopyToClipboard from './CopyToClipboard';
 import SearchBox from './SearchBox';
+import EyeComponent from './EyeComponent';
 
 import CrossIcon from '../../../shared/assets/icons/cross.svg';
 import ReloadIcon from '../../../shared/assets/icons/reload.svg';
 import UploadIcon from '../../../shared/assets/icons/add.svg';
-import EyeIcon from '../../../shared/assets/icons/eye.svg';
 
 import type { ScopedObject as ScopedObjectType } from '../../reducers/scopedObjects/types';
 import type { ISOPickerProps, ISOPickerState } from './types';
 import { DndContexts, ModalsNames } from '../config';
-import { SOTypes, SOLevels, SOItemsLimit } from './config';
+import { SO_TYPES, SO_LEVELS, SO_ITEMS_LIMIT } from './config';
 import getFilterCallback from './utils';
 
 import * as modalActions from '../action';
 import * as scopedObjectsActions from '../../reducers/scopedObjects/action';
 
-import styles, {
+import {
   ModalBody, ModalFooter, UploadButton,
   ConfigArticle, SOList, SOItem,
-  SOItemTitle, SOItemHeader, SOItemSubTitle,
+  SOItemTitle, SOItemHeader,
   EmptyList, ReloadIconWrapper,
 } from './styles';
 import { ModalWrapper, ModalHeader } from '../styles';
@@ -39,14 +37,27 @@ export class SOPicker extends PureComponent<ISOPickerProps, ISOPickerState> {
   constructor(props: ISOPickerProps) {
     super(props);
     this.state = {
-      type: SOTypes[0],
-      level: SOLevels[0],
-      scopedObjectsFiltered: props.scopedObjects[SOTypes[0].toLowerCase()],
+      type: SO_TYPES[0],
+      level: SO_LEVELS[0],
+      scopedObjectsFiltered: props.scopedObjects[SO_TYPES[0].toLowerCase()],
       isScrollbarVisible: false,
     };
 
     this.searchBoxRef = React.createRef();
     this.modalBodyRef = React.createRef();
+  }
+
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillReceiveProps(nextProps: ISOPickerProps) {
+    if (this.searchBoxRef.current) {
+      const { type, level } = this.state;
+      const queryStr = this.searchBoxRef.current.state.value;
+      const filterCallback = getFilterCallback(level, queryStr);
+      const scopedObjectsFiltered = nextProps.scopedObjects[type.toLowerCase()]
+        .filter(filterCallback);
+
+      this.setState({ scopedObjectsFiltered });
+    }
   }
 
   componentDidUpdate(prevProps: ISOPickerProps, prevState: ISOPickerState) {
@@ -132,7 +143,7 @@ export class SOPicker extends PureComponent<ISOPickerProps, ISOPickerState> {
       type, level, scopedObjectsFiltered, isScrollbarVisible,
     } = this.state;
     const {
-      x, y, isDragging, connectDragSource, connectDragPreview, classes, isFetching,
+      x, y, isDragging, connectDragSource, connectDragPreview, isFetching,
     } = this.props;
 
     if (isDragging) {
@@ -146,7 +157,7 @@ export class SOPicker extends PureComponent<ISOPickerProps, ISOPickerState> {
         ref={instance => connectDragPreview(instance)}
       >
         <ModalHeader ref={instance => connectDragSource(instance)}>
-          <h4>SO Picker</h4>
+          <h4>Object Picker</h4>
           <button
             type="button"
             title="Refresh"
@@ -170,7 +181,7 @@ export class SOPicker extends PureComponent<ISOPickerProps, ISOPickerState> {
             name="type"
             labelWidth={65}
             value={type}
-            values={SOTypes}
+            values={SO_TYPES}
             onChange={this.handleTypeChange}
             fullWidth
           />
@@ -179,7 +190,7 @@ export class SOPicker extends PureComponent<ISOPickerProps, ISOPickerState> {
             name="level"
             labelWidth={100}
             value={level}
-            values={SOLevels}
+            values={SO_LEVELS}
             onChange={this.handleLevelChange}
             fullWidth
           />
@@ -189,20 +200,21 @@ export class SOPicker extends PureComponent<ISOPickerProps, ISOPickerState> {
           isScrollbarVisible={isScrollbarVisible}
         >
           <SOList>
-            {scopedObjectsFiltered.slice(0, SOItemsLimit).map(SO => (
+            {scopedObjectsFiltered.slice(0, SO_ITEMS_LIMIT).map(SO => (
               <SOItem key={SO.id}>
                 <SOItemHeader>
                   <span>{SO.wiki}</span>
                   <CopyToClipboard text={SO.wiki} />
-                  <IconButton
-                    size="small"
-                    classes={{ root: classes.iconButton }}
-                  >
-                    <EyeIcon />
-                  </IconButton>
+                  {SO.isShowEyeIcon && (
+                    <EyeComponent
+                      scopedObjectId={SO.id}
+                      scopedObjectType={type.toLowerCase()}
+                      additionalInfo={SO.details}
+                      isShowSpinner={SO.isDetailsFetching}
+                    />
+                  )}
                 </SOItemHeader>
-                <SOItemTitle>{SO.name}</SOItemTitle>
-                <SOItemSubTitle>{SO.description}</SOItemSubTitle>
+                <SOItemTitle title={SO.name}>{SO.name}</SOItemTitle>
               </SOItem>
             ))}
           </SOList>
@@ -301,11 +313,9 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps,
 )(
-  withStyles(styles)(
-    DragSource(
-      DndContexts.VIEWPORT,
-      spec,
-      collect,
-    )(SOPicker),
-  ),
+  DragSource(
+    DndContexts.VIEWPORT,
+    spec,
+    collect,
+  )(SOPicker),
 );

@@ -105,6 +105,22 @@ export const mapFromServer = mapData => ({
 });
 
 export const templateFromServer = mapFromServer;
+export const scopedObjectFromServer = ({ url, ...restSO }) => ({
+  ...restSO,
+  isShowEyeIcon: Boolean(url),
+  isDetailsFetching: false,
+  details: null,
+});
+
+export const scopedObjectDetailsFromServer = SODetails => ({
+  description: SODetails.description,
+  scopeLevel: SODetails.scopeLevel,
+  value: SODetails.value,
+  prefix: SODetails.prefix,
+  suffix: SODetails.suffix,
+  startValue: SODetails.startValue,
+  outOf: SODetails.outOf,
+});
 
 export default {
   edgeToServer,
@@ -113,4 +129,5 @@ export default {
   nodeFromServer,
   mapFromServer,
   templateFromServer,
+  scopedObjectFromServer,
 };
