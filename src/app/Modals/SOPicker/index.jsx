@@ -16,7 +16,6 @@ import EyeIcon from '../../../shared/assets/icons/eye.svg';
 import type { ISOPickerProps, ISOPickerState } from './types';
 import { DndContexts, ModalsNames } from '../config';
 import { SOTypes, SOLevels, SOItemsLimit } from './config';
-import getFilterCallback from './utils';
 
 import * as actions from '../action';
 
@@ -24,7 +23,6 @@ import styles, {
   ModalBody, ModalFooter, UploadButton,
   ConfigArticle, SOList, SOItem,
   SOItemTitle, SOItemHeader, SOItemSubTitle,
-  EmptyList,
 } from './styles';
 import { ModalWrapper, ModalHeader } from '../styles';
 
@@ -36,7 +34,7 @@ export class SOPicker extends Component<ISOPickerProps, ISOPickerState> {
     this.state = {
       type: SOTypes[0],
       level: SOLevels[0],
-      scopedObjectsFiltered: props.scopedObjects[SOTypes[0].toLowerCase()],
+      scopedObjectsFiltered: props.scopedObjects[SOTypes[0]],
     };
 
     this.searchBoxRef = React.createRef();
@@ -63,32 +61,22 @@ export class SOPicker extends Component<ISOPickerProps, ISOPickerState> {
 
     this.setState({
       type: value,
-      scopedObjectsFiltered: scopedObjects[value.toLowerCase()],
+      scopedObjectsFiltered: scopedObjects[value],
     });
   }
 
   handleLevelChange = (e: Event): void => {
-    const { type } = this.state;
-    const { scopedObjects } = this.props;
-    const { value: level } = (e.target: window.HTMLInputElement);
-    const queryStr = this.searchBoxRef.current.state.value;
-    const filterCallback = getFilterCallback(level, queryStr);
-    const scopedObjectsFiltered = scopedObjects[type.toLowerCase()].filter(filterCallback);
-
-    this.setState({
-      level,
-      scopedObjectsFiltered,
-    });
+    const { value } = (e.target: window.HTMLInputElement);
+    this.setState({ level: value });
   }
 
   handleSearch = (value: string): void => {
-    const { type, level } = this.state;
-    const { scopedObjects } = this.props;
+    const { type } = this.state;
+    const { scopedObjects: SOs } = this.props;
     const queryStr = value.trim().toLowerCase();
-    const filterCallback = getFilterCallback(level, queryStr);
-    const scopedObjectsFiltered = scopedObjects[type.toLowerCase()].filter(filterCallback);
+    const SOsFiltered = SOs[type].filter(({ title }) => title.toLowerCase().includes(queryStr));
 
-    this.setState({ scopedObjectsFiltered });
+    this.setState({ scopedObjectsFiltered: SOsFiltered });
   }
 
   render() {
@@ -141,8 +129,8 @@ export class SOPicker extends Component<ISOPickerProps, ISOPickerState> {
             {scopedObjectsFiltered.slice(0, SOItemsLimit).map(SO => (
               <SOItem key={SO.id}>
                 <SOItemHeader>
-                  <span>{SO.wiki}</span>
-                  <CopyToClipboard text={SO.wiki} />
+                  <span>{SO.shortCode}</span>
+                  <CopyToClipboard text={SO.shortCode} />
                   <IconButton
                     size="small"
                     classes={{ root: classes.iconButton }}
@@ -150,14 +138,11 @@ export class SOPicker extends Component<ISOPickerProps, ISOPickerState> {
                     <EyeIcon />
                   </IconButton>
                 </SOItemHeader>
-                <SOItemTitle>{SO.name}</SOItemTitle>
-                <SOItemSubTitle>{SO.description}</SOItemSubTitle>
+                <SOItemTitle>{SO.title}</SOItemTitle>
+                <SOItemSubTitle>{SO.subTitle}</SOItemSubTitle>
               </SOItem>
             ))}
           </SOList>
-          {!scopedObjectsFiltered.length && (
-            <EmptyList>Empty list...</EmptyList>
-          )}
         </ModalBody>
         <ModalFooter>
           <SearchBox

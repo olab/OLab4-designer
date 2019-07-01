@@ -1,11 +1,9 @@
 // @flow
 export type ScopedObject = {
   id: number,
-  name: string,
-  description: string,
-  scopeLevel: string,
-  wiki: string,
-  acl: String,
+  shortCode: string,
+  title: string,
+  subTitle: string,
 };
 
 export type ScopedObjects = {

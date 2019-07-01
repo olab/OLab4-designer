@@ -7,12 +7,16 @@ import {
   SCOPED_OBJECTS_REQUESTED,
 } from './types';
 
+import { questions } from './config';
+
 export const initialScopedObjectsState: ScopedObjectsType = {
   data: {
-    questions: [],
-    constants: [],
-    counters: [],
-    files: [],
+    Questions: questions,
+    Medias: [],
+    Counters: [],
+    Constants: [],
+    Scripts: [],
+    Downloads: [],
   },
   isFetching: false,
 };

@@ -15,7 +15,8 @@ export const ModalBody = styled.div`
   padding-top: .5rem;
   margin-right: 5px;
   overflow: auto;
-
+  position: relative;
+  
   &:hover {
     &::-webkit-scrollbar {
       width: 7px;
@@ -64,6 +65,7 @@ export const SOItem = styled.li`
   letter-spacing: 0.06em;
   color: ${colorDarkWithOpacity};
   border-top: 1px solid ${colorDarkBorder};
+  padding-top: .25rem;
 `;
 
 export const SOItemHeader = styled.div`
@@ -79,7 +81,7 @@ export const SOItemTitle = styled.p`
 `;
 
 export const SOItemSubTitle = styled.p`
-  margin: .15rem 0;
+  margin: .5rem 0;
 `;
 
 export const ModalFooter = styled.div`
@@ -153,16 +155,6 @@ export const ConfigArticle = styled.article`
   > div:last-of-type {
     margin-left: .5rem;
   }
-`;
-
-export const EmptyList = styled.p`
-  font-style: italic;
-  position: absolute;
-  color: black;
-  margin: 0;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
 `;
 
 const styles = () => ({

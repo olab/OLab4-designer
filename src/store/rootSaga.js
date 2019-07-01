@@ -7,7 +7,6 @@ import nodeSaga from '../app/Constructor/Graph/Node/sagas';
 import mapSaga from '../app/reducers/map/sagas';
 import defaultsSaga from '../app/reducers/defaults/sagas';
 import templatesSaga from '../app/reducers/templates/sagas';
-import scopedObjectsSaga from '../app/reducers/scopedObjects/sagas';
 
 export default function* rootSaga(): Generator<any, void, void> {
   yield all([
@@ -17,6 +16,5 @@ export default function* rootSaga(): Generator<any, void, void> {
     mapSaga(),
     defaultsSaga(),
     templatesSaga(),
-    scopedObjectsSaga(),
   ]);
 }
