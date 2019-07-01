@@ -16,7 +16,7 @@ export const createMap = templateId => API
       ...(templateId && { templateId }),
     },
   })
-  .then(({ data: { data: map } }) => mapFromServer(map))
+  .then(({ data: { data: { map } } }) => mapFromServer(map))
   .catch((error) => {
     throw error;
   });
