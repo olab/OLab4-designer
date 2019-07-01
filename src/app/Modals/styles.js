@@ -26,7 +26,7 @@ export const ModalHeader = styled.div`
   font-size: 32px;
   display: flex;
   color: ${colorBlackBlue};
-  justify-content: flex-end;
+  justify-content: flex-start;
   position: relative;
   padding: 0.5rem 1rem;
   border-bottom: 1px solid ${colorLightGrayWOpacity};
@@ -34,15 +34,17 @@ export const ModalHeader = styled.div`
 
   > h4 {
     margin: 0;
-    margin-right: auto;
     font-size: 20px;
   }
 
   > button {
+    position: absolute;
     cursor: pointer;
     background: transparent;
     border: none;
     outline: none;
     padding: 0;
+    top: 10px;
+    right: 10px;
   }
 `;
