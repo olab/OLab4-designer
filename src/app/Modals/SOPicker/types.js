@@ -12,9 +12,11 @@ export type ISOPickerProps = {
   },
   ACTION_CLOSE_MODAL: Function,
   ACTION_SET_POSITION_MODAL: Function,
+  ACTION_SCOPED_OBJECTS_REQUESTED: Function,
   connectDragSource: Function,
   connectDragPreview: Function,
   isDragging: boolean,
+  isFetching: boolean,
   scopedObjects: ScopedObjectsType,
 };
 
@@ -22,4 +24,5 @@ export type ISOPickerState = {
   type: string,
   level: string,
   scopedObjectsFiltered: Array<ScopedObjectType>,
+  isScrollbarVisible: boolean,
 };

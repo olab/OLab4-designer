@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css, keyframes } from 'styled-components';
 
 const colorBright = '#F5F5F5';
 const colorGreen = '#03B595';
@@ -10,20 +10,22 @@ const colorDarkBorder = 'rgba(36,68,106,.16)';
 
 export const ModalBody = styled.div`
   padding-left: 1rem;
-  padding-right: calc(1rem - 5px);
+  padding-right: ${({ isScrollbarVisible }) => (isScrollbarVisible ? 'calc(1rem - 5px)' : '1rem')};
   padding-bottom: 0;
   padding-top: .5rem;
-  margin-right: 5px;
   overflow: auto;
-  position: relative;
-  
-  &:hover {
-    &::-webkit-scrollbar {
-      width: 7px;
-    }
+  ${({ isScrollbarVisible }) => (isScrollbarVisible && css`
+    margin-right: 5px;
 
-    padding-right: calc(1rem - 12px);
-  }
+    &:hover {
+      &::-webkit-scrollbar {
+        width: 7px;
+      }
+
+      padding-right: calc(1rem - 12px);
+    }
+  `)};
+
 
   &::-webkit-scrollbar {
     width: 0;
@@ -49,7 +51,6 @@ export const ModalBody = styled.div`
 export const SOList = styled.ul`
   padding: 0;
   margin: 0;
-  padding-right: 10px;
   list-style-type: none;
 
   > li:first-child {
@@ -65,7 +66,6 @@ export const SOItem = styled.li`
   letter-spacing: 0.06em;
   color: ${colorDarkWithOpacity};
   border-top: 1px solid ${colorDarkBorder};
-  padding-top: .25rem;
 `;
 
 export const SOItemHeader = styled.div`
@@ -81,7 +81,7 @@ export const SOItemTitle = styled.p`
 `;
 
 export const SOItemSubTitle = styled.p`
-  margin: .5rem 0;
+  margin: .15rem 0;
 `;
 
 export const ModalFooter = styled.div`
@@ -155,6 +155,38 @@ export const ConfigArticle = styled.article`
   > div:last-of-type {
     margin-left: .5rem;
   }
+`;
+
+export const EmptyList = styled.p`
+  font-style: italic;
+  position: absolute;
+  color: black;
+  margin: 0;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+`;
+
+const rotateAnimation = keyframes`
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+`;
+
+const keyframesMixin = css`
+  animation: ${rotateAnimation} 2s linear infinite;
+`;
+
+export const ReloadIconWrapper = styled.span`
+  ${({ isRotating }) => (isRotating ? keyframesMixin : 'animation: none;')};
+  animation-fill-mode: forwards;
+  transform-origin: center center;
+  transform: rotate(360deg);
+  display: inline-block;
+  height: 18px;
 `;
 
 const styles = () => ({

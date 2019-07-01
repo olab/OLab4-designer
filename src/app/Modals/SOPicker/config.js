@@ -1,9 +1,9 @@
 export const SOTypes = [
-  'Questions', 'Medias', 'Counters', 'Constants', 'Scripts', 'Downloads',
+  'Questions', 'Constants', 'Counters', 'Files',
 ];
 
 export const SOLevels = [
-  'All', 'Global', 'Server(Public)', 'Map(Private)',
+  'All', 'Servers', 'Map',
 ];
 
 export const SOItemsLimit = 20;
