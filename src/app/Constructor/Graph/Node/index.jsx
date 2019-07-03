@@ -179,6 +179,7 @@ export class Node extends React.Component<INodeProps, INodeState> {
     const {
       data,
       data: { isLocked },
+      isLinkSource,
       isLinkingStarted,
       onNodeLink,
       ACTION_SAVE_MAP_TO_UNDO,
@@ -187,7 +188,7 @@ export class Node extends React.Component<INodeProps, INodeState> {
     const { current: currentNodeRef } = this.nodeRef;
     const { parentElement: currentNodeRefParent } = currentNodeRef;
 
-    if (shiftKey) {
+    if (shiftKey && !isLinkSource) {
       onNodeLink(data);
     }
 

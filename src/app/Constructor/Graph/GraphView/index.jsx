@@ -353,11 +353,9 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
     const { sourceNode } = this.state;
     const [x, y] = d3.mouse(this.view);
 
-    const position = { x, y };
-
-    this.syncRenderEdge({
+    this.asyncRenderEdge({
       source: sourceNode.id,
-      targetPosition: position,
+      targetPosition: { x, y },
     });
   }
 
@@ -657,12 +655,13 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
 
     const { readOnly, onSelectNode, onCreateNode } = this.props;
     const previousSelection = (selectedNodeObj && selectedNodeObj.node) || null;
+    const shouldCreateNode = !readOnly && shiftKey && !isLinkingStarted;
 
     if (previousSelection) {
       this.syncRenderNode(previousSelection);
     }
 
-    if (!readOnly && shiftKey) {
+    if (shouldCreateNode) {
       const [x, y] = d3.mouse(target);
       onCreateNode(x, y);
     }
@@ -1253,8 +1252,10 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
     }
   }
 
-  asyncRenderEdge = (edge: EdgeDataType, nodeMoving: boolean = false) => {
-    if (!edge.source || !edge.target) {
+  asyncRenderEdge = (edge: EdgeDataType | any, nodeMoving: boolean = false) => {
+    const isEdgeIncomplete = !edge.source || (!edge.target && !edge.targetPosition);
+
+    if (isEdgeIncomplete) {
       return;
     }
 
