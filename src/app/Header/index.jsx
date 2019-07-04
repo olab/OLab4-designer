@@ -9,11 +9,7 @@ import LogoIcon from '../../shared/assets/icons/logo.svg';
 
 import type { IHeaderProps } from './types';
 
-import {
-  Logo,
-  HeaderWrapper,
-  FakeProgress,
-} from './styles';
+import { Logo, HeaderWrapper, FakeProgress } from './styles';
 
 const Header = ({ isDataFetching }: IHeaderProps) => (
   <HeaderWrapper>
@@ -33,11 +29,10 @@ const Header = ({ isDataFetching }: IHeaderProps) => (
   </HeaderWrapper>
 );
 
-const mapStateToProps = ({
-  user: { isFetching: isAuthFething },
-  map: { isFetching: isMapFetching },
-}) => ({
-  isDataFetching: isAuthFething || isMapFetching,
+const mapStateToProps = ({ user, map, scopedObjects }) => ({
+  isDataFetching: user.isFetching
+    || map.isFetching
+    || scopedObjects.isCreating,
 });
 
 export default connect(mapStateToProps)(Header);

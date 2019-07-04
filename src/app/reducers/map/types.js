@@ -144,7 +144,7 @@ const UNDO_MAP = 'UNDO_MAP';
 type UndoMap = {
   type: 'UNDO_MAP',
   currentMap: MapItem,
-  next: MapItem,
+  prev: MapItem,
 }
 
 const REDO_MAP = 'REDO_MAP';

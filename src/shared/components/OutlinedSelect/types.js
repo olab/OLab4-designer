@@ -10,4 +10,6 @@ export type IOutlinedSelectProps = {
   fullWidth: boolean,
   onChange: Function,
   values: Array<string>,
+  fullWidth: boolean,
+  disabled: boolean,
 };

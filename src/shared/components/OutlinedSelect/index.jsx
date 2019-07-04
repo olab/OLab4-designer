@@ -2,11 +2,7 @@
 import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import {
-  MenuItem,
-  FormControl,
-  InputLabel,
-  Select,
-  OutlinedInput,
+  MenuItem, FormControl, InputLabel, Select, OutlinedInput,
 } from '@material-ui/core';
 
 import type { IOutlinedSelectProps } from './types';
@@ -14,7 +10,15 @@ import type { IOutlinedSelectProps } from './types';
 import styles from './styles';
 
 const OutlinedSelect = ({
-  label, name, labelWidth, classes, value, values, onChange, fullWidth = false,
+  label,
+  name,
+  classes,
+  value,
+  values,
+  onChange,
+  labelWidth = 0,
+  fullWidth = false,
+  disabled = false,
 }: IOutlinedSelectProps) => (
   <FormControl variant="outlined" className={fullWidth ? classes.fullWidth : ''}>
     <InputLabel>{label}</InputLabel>
@@ -25,9 +29,8 @@ const OutlinedSelect = ({
         <OutlinedInput
           labelWidth={labelWidth}
           name={name}
-          classes={{
-            input: classes.inputSelect,
-          }}
+          classes={{ input: classes.inputSelect }}
+          disabled={disabled}
         />
       )}
     >

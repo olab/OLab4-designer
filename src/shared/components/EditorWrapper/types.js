@@ -5,4 +5,5 @@ export type IEditorWrapperProps = {
   },
   children: any,
   scopedObject: string,
+  onSave: Function,
 };

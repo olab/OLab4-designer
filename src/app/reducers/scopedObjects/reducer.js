@@ -7,6 +7,9 @@ import {
   SCOPED_OBJECTS_REQUESTED,
   SCOPED_OBJECT_DETAILS_FULFILLED,
   SCOPED_OBJECT_DETAILS_REQUESTED,
+  SCOPED_OBJECT_CREATE_REQUESTED,
+  SCOPED_OBJECT_CREATE_SUCCEEDED,
+  SCOPED_OBJECT_CREATE_FAILED,
 } from './types';
 
 export const initialScopedObjectsState: ScopedObjectsType = {
@@ -17,6 +20,7 @@ export const initialScopedObjectsState: ScopedObjectsType = {
     files: [],
   },
   isFetching: false,
+  isCreating: false,
 };
 
 const scopedObjects = (
@@ -65,6 +69,35 @@ const scopedObjects = (
         isFetching: false,
       };
     }
+    case SCOPED_OBJECT_CREATE_REQUESTED:
+      return {
+        ...state,
+        isCreating: true,
+      };
+    case SCOPED_OBJECT_CREATE_SUCCEEDED: {
+      const { data, ...restState } = state;
+      const { scopedObjectId, scopedObjectType, scopedObjectData } = action;
+
+      return {
+        ...restState,
+        data: {
+          ...data,
+          [scopedObjectType]: [
+            ...data[scopedObjectType],
+            {
+              id: scopedObjectId,
+              ...scopedObjectData,
+            },
+          ],
+        },
+        isCreating: false,
+      };
+    }
+    case SCOPED_OBJECT_CREATE_FAILED:
+      return {
+        ...state,
+        isCreating: false,
+      };
     default:
       return state;
   }
