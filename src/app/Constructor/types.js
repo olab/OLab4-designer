@@ -4,9 +4,6 @@ import type {
   Node as NodeData,
   Map as MapType,
 } from '../reducers/map/types';
-import type {
-  Template as TemplateType,
-} from '../reducers/templates/types';
 
 export type IConstructorProps = {
   map: MapType,
@@ -15,17 +12,12 @@ export type IConstructorProps = {
   history: any,
   ACTION_GET_MAP_REQUESTED: Function,
   ACTION_TEMPLATE_UPLOAD_REQUESTED: Function,
-  ACTION_TEMPLATES_REQUESTED: Function,
-  ACTION_EXTEND_MAP_REQUESTED: Function,
-  templates: Array<TemplateType>,
-  isTemplatesFetching: boolean,
 };
 export type IConstructorState = {
   isFullScreen: boolean,
   selectedLink: EdgeData | null,
   selectedNode: NodeData | null,
   isShowCreateTemplateModal: boolean,
-  isShowPreBuiltTemplatesModal: boolean,
 };
 
 export type Constructor = {

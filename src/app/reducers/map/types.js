@@ -125,24 +125,6 @@ type RenameMap = {
   name: string,
 };
 
-const EXTEND_MAP_REQUESTED = 'EXTEND_MAP_REQUESTED';
-type ExtendMapRequested = {
-  type: 'EXTEND_MAP_REQUESTED',
-  templateId: number,
-};
-
-const EXTEND_MAP_FAILED = 'EXTEND_MAP_FAILED';
-type ExtendMapFailed = {
-  type: 'EXTEND_MAP_FAILED',
-};
-
-const EXTEND_MAP_SUCCEEDED = 'EXTEND_MAP_SUCCEEDED';
-type ExtendMapSucceeded = {
-  type: 'EXTEND_MAP_SUCCEEDED',
-  nodes: Array<Node>,
-  edges: Array<Edge>,
-};
-
 const SAVE_MAP_TO_UNDO = 'SAVE_MAP_TO_UNDO';
 type MapToUndo = {
   type: 'SAVE_MAP_TO_UNDO',
@@ -200,7 +182,6 @@ export type MapActions = SelectItem |
   GetMapSucceeded | GetMapFailed | GetMapRequested |
   CreateMapFromTemplateRequested | CreateMapFromTemplateSucceeded |
   CreateMapFromTemplateFailed | CreateNodeWithEdge | ExchangeEdgeId |
-  ExtendMapRequested | ExtendMapFailed | ExtendMapSucceeded |
   UpdateEdgeVisual;
 
 export {
@@ -217,9 +198,6 @@ export {
   CREATE_NODE_WITH_EDGE,
   RESET_MAP,
   RENAME_MAP,
-  EXTEND_MAP_REQUESTED,
-  EXTEND_MAP_FAILED,
-  EXTEND_MAP_SUCCEEDED,
   SAVE_MAP_TO_UNDO,
   UNDO_MAP,
   REDO_MAP,

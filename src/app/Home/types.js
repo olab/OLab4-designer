@@ -8,15 +8,15 @@ export type IHomeProps = {
   history: any,
   mapId: number | null,
   isMapFetching: boolean,
+  templates: Array<TemplateType>,
+  isTemplatesFetching: boolean,
   showFooterButtons: boolean,
   ACTION_TEMPLATES_REQUESTED: Function,
   ACTION_CREATE_MAP_REQUESTED: Function,
-  templates: Array<TemplateType>,
-  isTemplatesFetching: boolean,
 };
 
 export type IHomeState = {
-  expandedPanel: string | null,
+  expanded: string | null,
   isButtonsDisabled: boolean,
   isShowTemplatesListModal: boolean,
 };

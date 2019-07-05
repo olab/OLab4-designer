@@ -21,7 +21,7 @@ export type ToolbarGroup = {
 export type IToolbarsProps = {
   classes: any,
   fullscreenHandler: Function,
-  showModal: Function,
+  showCreateTemplateModal: Function,
   isFullScreen: boolean,
   isUndoAvailable: boolean,
   isRedoAvailable: boolean,

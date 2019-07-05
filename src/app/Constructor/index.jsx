@@ -13,8 +13,7 @@ import SOPicker from '../Modals/SOPicker';
 import LinkEditor from '../Modals/LinkEditor';
 import NodeEditor from '../Modals/NodeEditor';
 import Input from '../../shared/components/Input';
-import ConfirmationModal from '../../shared/components/ConfirmationModal';
-import TemplatesModal from '../../shared/components/TemplatesModal';
+import TemplateModal from '../../shared/components/ConfirmationModal';
 
 import * as mapActions from '../reducers/map/action';
 import * as templatesActions from '../reducers/templates/action';
@@ -23,8 +22,6 @@ import type { EdgeData as EdgeDataType } from './Graph/Edge/types';
 import type { NodeData as NodeDataType } from './Graph/Node/types';
 import type { MapItem as MapItemType } from '../reducers/map/types';
 import type { IConstructorProps, IConstructorState } from './types';
-
-import { CONFIRMATION_MODALS } from './config';
 
 import { ConstructorWrapper } from './styles';
 
@@ -38,7 +35,6 @@ export class Constructor extends PureComponent<IConstructorProps, IConstructorSt
       selectedNode: null,
       isFullScreen: false,
       isShowCreateTemplateModal: false,
-      isShowPreBuiltTemplatesModal: false,
     };
 
     this.templateInputName = React.createRef();
@@ -108,21 +104,15 @@ export class Constructor extends PureComponent<IConstructorProps, IConstructorSt
     }));
   };
 
-  showModal = (modalName: string): void => {
-    const { ACTION_TEMPLATES_REQUESTED } = this.props;
-
-    if (modalName === CONFIRMATION_MODALS.PRE_BUILT_TEMPLATES) {
-      ACTION_TEMPLATES_REQUESTED();
-    }
-
+  showCreateTemplateModal = (): void => {
     this.setState({
-      [`isShow${modalName}Modal`]: true,
+      isShowCreateTemplateModal: true,
     });
   }
 
-  closeModal = (modalName: string): void => {
+  closeCreateTemplateModal = (): void => {
     this.setState({
-      [`isShow${modalName}Modal`]: false,
+      isShowCreateTemplateModal: false,
     });
   }
 
@@ -143,29 +133,14 @@ export class Constructor extends PureComponent<IConstructorProps, IConstructorSt
 
     ACTION_TEMPLATE_UPLOAD_REQUESTED(templateName);
 
-    this.closeModal(CONFIRMATION_MODALS.CREATE_TEMPLATE);
-  }
-
-  handleTemplateChoose = (templateId: number): void => {
-    const { ACTION_EXTEND_MAP_REQUESTED } = this.props;
-    ACTION_EXTEND_MAP_REQUESTED(templateId);
-
-    this.closeModal(CONFIRMATION_MODALS.PRE_BUILT_TEMPLATES);
+    this.closeCreateTemplateModal();
   }
 
   render() {
     const {
-      isFullScreen,
-      selectedNode,
-      selectedLink,
-      isShowCreateTemplateModal,
-      isShowPreBuiltTemplatesModal,
+      isFullScreen, selectedNode, selectedLink, isShowCreateTemplateModal,
     } = this.state;
-    const {
-      isShowSOPicker,
-      templates,
-      isTemplatesFetching,
-    } = this.props;
+    const { isShowSOPicker } = this.props;
 
     return (
       <ConstructorWrapper>
@@ -175,7 +150,7 @@ export class Constructor extends PureComponent<IConstructorProps, IConstructorSt
         >
           <ToolbarTemplates
             fullscreenHandler={this.toggleFullScreen}
-            showModal={this.showModal}
+            showCreateTemplateModal={this.showCreateTemplateModal}
             isFullScreen={isFullScreen}
           />
 
@@ -187,10 +162,10 @@ export class Constructor extends PureComponent<IConstructorProps, IConstructorSt
           { isShowSOPicker && <SOPicker /> }
 
           {isShowCreateTemplateModal && (
-            <ConfirmationModal
+            <TemplateModal
               label="Create template"
               text="Please enter name of template:"
-              onClose={() => this.closeModal(CONFIRMATION_MODALS.CREATE_TEMPLATE)}
+              onClose={this.closeCreateTemplateModal}
               onSave={this.saveTemplateFromMap}
               showFooterButtons
             >
@@ -200,17 +175,7 @@ export class Constructor extends PureComponent<IConstructorProps, IConstructorSt
                 autoFocus
                 fullWidth
               />
-            </ConfirmationModal>
-          )}
-          {isShowPreBuiltTemplatesModal && (
-            <TemplatesModal
-              label="Pre-built templates"
-              text="Please choose appropriate template:"
-              onClose={() => this.closeModal(CONFIRMATION_MODALS.PRE_BUILT_TEMPLATES)}
-              onTemplateChoose={this.handleTemplateChoose}
-              templates={templates}
-              isTemplatesFetching={isTemplatesFetching}
-            />
+            </TemplateModal>
           )}
         </Fullscreen>
       </ConstructorWrapper>
@@ -218,25 +183,17 @@ export class Constructor extends PureComponent<IConstructorProps, IConstructorSt
   }
 }
 
-const mapStateToProps = ({ map, modals, templates }) => ({
+const mapStateToProps = ({ map, modals }) => ({
   map,
   isShowSOPicker: modals.SOPickerModal.isShow,
-  templates: templates.list,
-  isTemplatesFetching: templates.isFetching,
 });
 
 const mapDispatchToProps = dispatch => ({
-  ACTION_GET_MAP_REQUESTED: (mapId: string) => {
-    dispatch(mapActions.ACTION_GET_MAP_REQUESTED(mapId));
-  },
-  ACTION_EXTEND_MAP_REQUESTED: (templateId: number) => {
-    dispatch(mapActions.ACTION_EXTEND_MAP_REQUESTED(templateId));
-  },
   ACTION_TEMPLATE_UPLOAD_REQUESTED: (templateName: string) => {
     dispatch(templatesActions.ACTION_TEMPLATE_UPLOAD_REQUESTED(templateName));
   },
-  ACTION_TEMPLATES_REQUESTED: () => {
-    dispatch(templatesActions.ACTION_TEMPLATES_REQUESTED());
+  ACTION_GET_MAP_REQUESTED: (mapId: string) => {
+    dispatch(mapActions.ACTION_GET_MAP_REQUESTED(mapId));
   },
 });
 

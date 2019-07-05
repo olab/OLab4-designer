@@ -12,8 +12,6 @@ import type {
   IToolbarsProps,
   IToolbarsState,
 } from './types';
-
-import { CONFIRMATION_MODALS } from '../config';
 import { ModalsNames } from '../../Modals/config';
 
 import moveIcon from '../../../shared/assets/icons/toolbar/templates/toolbar-move.png';
@@ -44,7 +42,7 @@ export class Toolbars extends Component<IToolbarsProps, IToolbarsState> {
   constructor(props: IToolbarsProps) {
     super(props);
 
-    const { fullscreenHandler, showModal } = props;
+    const { fullscreenHandler, showCreateTemplateModal } = props;
 
     this.state = {
       expand: '',
@@ -97,7 +95,6 @@ export class Toolbars extends Component<IToolbarsProps, IToolbarsState> {
             mouseIcon: 'template_mouse_icon',
             order: 40,
             label: 'Choose template',
-            onClick: () => showModal(CONFIRMATION_MODALS.PRE_BUILT_TEMPLATES),
           },
           {
             id: 'flag',
@@ -114,7 +111,7 @@ export class Toolbars extends Component<IToolbarsProps, IToolbarsState> {
             mouseIcon: 'template_mouse_icon',
             order: 60,
             label: 'Create Template From Map',
-            onClick: () => showModal(CONFIRMATION_MODALS.CREATE_TEMPLATE),
+            onClick: showCreateTemplateModal,
           },
         ],
       },

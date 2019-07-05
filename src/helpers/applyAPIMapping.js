@@ -13,7 +13,6 @@ export const edgeToServer = edgeData => ({
   sourceId: edgeData.source,
   destinationId: edgeData.target,
 });
-
 export const edgeFromServer = edgeData => ({
   isSelected: false,
   data: {
@@ -52,7 +51,6 @@ export const nodeToServer = nodeData => ({
   linkStyleId: nodeData.linkStyle,
   linkTypeId: nodeData.linkType,
 });
-
 export const nodeFromServer = nodeData => ({
   isSelected: false,
   data: {
@@ -88,6 +86,7 @@ export const nodeDefaultsFromServer = nodeDefault => ({
   color: nodeDefault.color,
 });
 
+export const mapToServer = mapData => mapData;
 export const mapFromServer = mapData => ({
   id: mapData.id,
   name: mapData.name,
@@ -104,13 +103,11 @@ export const mapFromServer = mapData => ({
   redo: [],
 });
 
-export const templateFromServer = mapFromServer;
-
 export default {
   edgeToServer,
   edgeFromServer,
   nodeToServer,
   nodeFromServer,
+  mapToServer,
   mapFromServer,
-  templateFromServer,
 };
