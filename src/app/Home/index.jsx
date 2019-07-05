@@ -6,38 +6,26 @@ import { withStyles } from '@material-ui/core/styles';
 import {
   ExpandMore as ExpandMoreIcon,
   ArrowForward as ArrowForwardIcon,
-  Dashboard as TemplateIcon,
-  DashboardOutlined as TemplateOutlinedIcon,
 } from '@material-ui/icons';
 import {
-  List,
-  ListItem,
-  ListItemText,
-  Button,
-  Typography,
-  ExpansionPanel,
-  ExpansionPanelDetails,
-  ExpansionPanelSummary,
-  LinearProgress,
+  Button, Typography, ExpansionPanel, ExpansionPanelDetails, ExpansionPanelSummary,
 } from '@material-ui/core';
 
-import TemplatesModal from '../../shared/components/ConfirmationModal';
+import TemplatesModal from '../../shared/components/TemplatesModal';
 
 import * as mapActions from '../reducers/map/action';
 import * as templatesActions from '../reducers/templates/action';
-import removeHTMLTags from '../../helpers/removeHTMLTags';
 
 import type { IHomeProps, IHomeState } from './types';
+import { PANEL_NAMES } from './config';
 
 import styles, {
-  HomeWrapper,
-  HomeHeader,
-  ExpansionPanelWrapper,
+  HomeWrapper, HomeHeader, ExpansionPanelWrapper,
 } from './styles';
 
 class Home extends PureComponent<IHomeProps, IHomeState> {
   state: IHomeState = {
-    expanded: null,
+    expandedPanel: null,
     isButtonsDisabled: false,
     isShowTemplatesListModal: false,
   };
@@ -59,13 +47,13 @@ class Home extends PureComponent<IHomeProps, IHomeState> {
 
   handleChange = (panelName: string): Function => (event: Event, expanded: boolean): void => {
     this.setState({
-      expanded: expanded
+      expandedPanel: expanded
         ? panelName
         : null,
     });
   }
 
-  onTemplateChoose = (templateId?: number): void => {
+  handleTemplateChoose = (templateId?: number): void => {
     const { ACTION_CREATE_MAP_REQUESTED } = this.props;
     ACTION_CREATE_MAP_REQUESTED(templateId);
 
@@ -83,20 +71,16 @@ class Home extends PureComponent<IHomeProps, IHomeState> {
 
     ACTION_TEMPLATES_REQUESTED();
 
-    this.setState({
-      isShowTemplatesListModal: true,
-    });
+    this.setState({ isShowTemplatesListModal: true });
   }
 
   closeTemplatesListModal = (): void => {
-    this.setState({
-      isShowTemplatesListModal: false,
-    });
+    this.setState({ isShowTemplatesListModal: false });
   }
 
   render() {
     const {
-      expanded, isButtonsDisabled, isShowTemplatesListModal,
+      expandedPanel, isButtonsDisabled, isShowTemplatesListModal,
     } = this.state;
     const {
       classes, templates, isTemplatesFetching,
@@ -106,7 +90,10 @@ class Home extends PureComponent<IHomeProps, IHomeState> {
       <HomeWrapper>
         <HomeHeader>Welcome home!</HomeHeader>
         <ExpansionPanelWrapper>
-          <ExpansionPanel expanded={expanded === 'panel1'} onChange={this.handleChange('panel1')}>
+          <ExpansionPanel
+            expanded={expandedPanel === PANEL_NAMES.MANUAL}
+            onChange={this.handleChange(PANEL_NAMES.MANUAL)}
+          >
             <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
               <Typography className={classes.heading}>Manual Map Creation</Typography>
               <Typography className={classes.secondaryHeading}>More experienced authors</Typography>
@@ -125,7 +112,7 @@ class Home extends PureComponent<IHomeProps, IHomeState> {
                 size="small"
                 aria-label="Create"
                 classes={{ root: classes.fab }}
-                onClick={() => this.onTemplateChoose()}
+                onClick={() => this.handleTemplateChoose()}
                 disabled={isButtonsDisabled}
               >
                 Create Map
@@ -136,7 +123,10 @@ class Home extends PureComponent<IHomeProps, IHomeState> {
               </Button>
             </ExpansionPanelDetails>
           </ExpansionPanel>
-          <ExpansionPanel expanded={expanded === 'panel2'} onChange={this.handleChange('panel2')}>
+          <ExpansionPanel
+            expanded={expandedPanel === PANEL_NAMES.FROM_TEMPLATE}
+            onChange={this.handleChange(PANEL_NAMES.FROM_TEMPLATE)}
+          >
             <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
               <Typography className={classes.heading}>Create Map from Template</Typography>
               <Typography className={classes.secondaryHeading}>General map creation</Typography>
@@ -177,52 +167,19 @@ class Home extends PureComponent<IHomeProps, IHomeState> {
             label="Choose template"
             text="Please take template from the following:"
             onClose={this.closeTemplatesListModal}
-          >
-            <div style={{ visibility: isTemplatesFetching ? '' : 'hidden' }}>
-              <Typography align="right" variant="caption">
-                Updating list from the server...
-              </Typography>
-              <LinearProgress />
-            </div>
-
-            <List
-              classes={{ root: classes.list }}
-              disablePadding
-            >
-              {templates.map((template, i) => (
-                <ListItem
-                  key={template.id}
-                  classes={{ root: classes.listItem }}
-                >
-                  <Button
-                    classes={{ text: classes.listButton }}
-                    onClick={() => this.onTemplateChoose(template.id)}
-                  >
-                    {i % 2 === 0 ? <TemplateIcon /> : <TemplateOutlinedIcon />}
-                    <ListItemText
-                      primary={template.name}
-                      secondary={removeHTMLTags(template.description)}
-                    />
-                  </Button>
-                </ListItem>
-              ))}
-            </List>
-
-            {!isTemplatesFetching && !templates.length && (
-              <Typography align="right" variant="caption">
-                Empty list...
-              </Typography>
-            )}
-          </TemplatesModal>
+            onTemplateChoose={this.handleTemplateChoose}
+            templates={templates}
+            isTemplatesFetching={isTemplatesFetching}
+          />
         )}
       </HomeWrapper>
     );
   }
 }
 
-const mapStateToProps = ({ map: { id, isFetching }, templates }) => ({
-  mapId: id,
-  isMapFetching: isFetching,
+const mapStateToProps = ({ map, templates }) => ({
+  mapId: map.id,
+  isMapFetching: map.isFetching,
   templates: templates.list,
   isTemplatesFetching: templates.isFetching,
 });

@@ -21,6 +21,9 @@ import {
   UPDATE_EDGE_VISUAL,
   RESET_MAP,
   RENAME_MAP,
+  EXTEND_MAP_REQUESTED,
+  EXTEND_MAP_FAILED,
+  EXTEND_MAP_SUCCEEDED,
   SAVE_MAP_TO_UNDO,
   UNDO_MAP,
   REDO_MAP,
@@ -295,4 +298,22 @@ export const ACTION_CREATE_MAP_SUCCEEDED = (map: MapType) => ({
 export const ACTION_CREATE_MAP_REQUESTED = (templateId?: number) => ({
   type: CREATE_MAP_REQUESTED,
   templateId,
+});
+
+export const ACTION_EXTEND_MAP_REQUESTED = (templateId: number) => ({
+  type: EXTEND_MAP_REQUESTED,
+  templateId,
+});
+
+export const ACTION_EXTEND_MAP_FAILED = () => ({
+  type: EXTEND_MAP_FAILED,
+});
+
+export const ACTION_EXTEND_MAP_SUCCEEDED = (
+  nodes: Array<NodeType>,
+  edges: Array<EdgeType>,
+) => ({
+  type: EXTEND_MAP_SUCCEEDED,
+  nodes,
+  edges,
 });

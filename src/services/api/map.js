@@ -1,5 +1,7 @@
 import createInstance from '../createCustomInstance';
-import { mapFromServer } from '../../helpers/applyAPIMapping';
+import {
+  mapFromServer, nodeFromServer, edgeFromServer,
+} from '../../helpers/applyAPIMapping';
 
 const API = createInstance();
 
@@ -21,7 +23,22 @@ export const createMap = templateId => API
     throw error;
   });
 
+export const extendMap = (mapId, templateId) => API
+  .post(`/olab/maps/${mapId}`, {
+    data: {
+      templateId,
+    },
+  })
+  .then(({ data: { data: { nodes, links } } }) => ({
+    extendedNodes: nodes.map(node => nodeFromServer(node)),
+    extendedEdges: links.map(edge => edgeFromServer(edge)),
+  }))
+  .catch((error) => {
+    throw error;
+  });
+
 export default {
   getMap,
   createMap,
+  extendMap,
 };

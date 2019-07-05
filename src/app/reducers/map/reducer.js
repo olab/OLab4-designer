@@ -16,6 +16,9 @@ import {
   UPDATE_EDGE,
   UPDATE_EDGE_VISUAL,
   RENAME_MAP,
+  EXTEND_MAP_REQUESTED,
+  EXTEND_MAP_FAILED,
+  EXTEND_MAP_SUCCEEDED,
   UNDO_MAP,
   REDO_MAP,
   SAVE_MAP_TO_UNDO,
@@ -106,6 +109,26 @@ const map = (state: MapType = initialMapState, action: MapActions) => {
         name,
       };
     }
+    case EXTEND_MAP_SUCCEEDED: {
+      const { nodes, edges } = action;
+
+      return {
+        ...state,
+        nodes,
+        edges,
+        isFetching: false,
+      };
+    }
+    case EXTEND_MAP_REQUESTED:
+      return {
+        ...state,
+        isFetching: true,
+      };
+    case EXTEND_MAP_FAILED:
+      return {
+        ...state,
+        isFetching: false,
+      };
     case SELECT_ITEM: {
       const graph = cloneDeep([state.nodes, state.edges]);
       const { id } = action;

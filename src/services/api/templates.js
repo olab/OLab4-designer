@@ -1,10 +1,18 @@
 import createInstance from '../createCustomInstance';
+import { templateFromServer } from '../../helpers/applyAPIMapping';
 
 const API = createInstance();
 
 export const getTemplates = () => API
   .get('/olab/templates')
   .then(({ data: { data: templates } }) => templates)
+  .catch((error) => {
+    throw error;
+  });
+
+export const getTemplateDetail = templateId => API
+  .get(`/olab/templates/${templateId}`)
+  .then(({ data: { data: template } }) => templateFromServer(template))
   .catch((error) => {
     throw error;
   });
