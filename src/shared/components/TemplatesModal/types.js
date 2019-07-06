@@ -12,3 +12,8 @@ export type ITemplatesModalProps = {
   templates: Array<TemplateType>,
   isTemplatesFetching: boolean,
 };
+
+export type ITemplatesModalState = {
+  queryStr: string,
+  templatesFiltered: Array<TemplateType>,
+};
