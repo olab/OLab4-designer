@@ -189,7 +189,7 @@ export class Toolbars extends Component<IToolbarsProps, IToolbarsState> {
 
   componentDidMount() {
     const { ACTION_SET_ZOOM_CONTROLS_REF } = this.props;
-    ACTION_SET_ZOOM_CONTROLS_REF(this.zoomControlsRef);
+    ACTION_SET_ZOOM_CONTROLS_REF(this.zoomControlsRef.current);
   }
 
   toggleShowSOPickerModal = (e: Event) => {
@@ -263,8 +263,6 @@ export class Toolbars extends Component<IToolbarsProps, IToolbarsState> {
           <Block>
             <LabTitleItem>
               <MapTitle />
-              {/* <LabTitle className="item">Lab name</LabTitle>
-              <LabIcon alt="show" src={dropdownIcon} /> */}
             </LabTitleItem>
             <div ref={this.zoomControlsRef} />
             <ToolbarGroup group={right} />
@@ -311,6 +309,9 @@ const mapDispatchToProps = dispatch => ({
   },
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(
   withStyles(styles)(Toolbars),
 );

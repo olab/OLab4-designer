@@ -6,7 +6,7 @@ import {
   SET_ZOOM_CONTROLS_REF,
 } from './types';
 
-export const ACTION_SET_ZOOM_CONTROLS_REF = (ref: { current: null | HTMLDivElement }) => ({
+export const ACTION_SET_ZOOM_CONTROLS_REF = (ref: null | HTMLDivElement) => ({
   type: SET_ZOOM_CONTROLS_REF,
   ref,
 });

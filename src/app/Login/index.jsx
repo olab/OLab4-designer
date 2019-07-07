@@ -3,26 +3,22 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import { withFormik, Form } from 'formik';
-import {
-  Button,
-  CssBaseline,
-  FormControl,
-  FormControlLabel,
-  Checkbox,
-  Input,
-  InputLabel,
-  Paper,
-  Typography,
-} from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
+import {
+  Button, CssBaseline, FormControl,
+  FormControlLabel, Checkbox, Input,
+  InputLabel, Paper, Typography,
+} from '@material-ui/core';
 
 import * as authActions from './action';
-import type { UserLoginData, Props, PropsAuthAction } from './types';
+
+import type { UserLoginData, ILoginProps, PropsAuthAction } from './types';
+
 import styles from './styles';
 
 const Login = ({
   classes, isAuth, values, handleChange,
-}: Props) => {
+}: ILoginProps) => {
   if (isAuth) {
     return <Redirect to="/" />;
   }

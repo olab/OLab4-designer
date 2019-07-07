@@ -38,7 +38,6 @@ type TemplateUploadFulfilled = {
   type: 'TEMPLATE_UPLOAD_FULFILLED',
 };
 
-
 export type TemplatesActions = TemplatesRequested |
   TemplatesRequestSucceeded | TemplatesRequestFailed |
   TemplateUploadRequested | TemplateUploadFulfilled;

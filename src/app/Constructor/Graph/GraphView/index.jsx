@@ -1299,9 +1299,7 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
     const { viewTransform } = this.state;
     const { minZoom, maxZoom, zoomControlsRef } = this.props;
 
-    const zoomRefs = zoomControlsRef.current;
-
-    if (zoomRefs) {
+    if (zoomControlsRef) {
       ReactDOM.render(
         <ZoomControls
           minZoom={minZoom}
@@ -1310,7 +1308,7 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
           zoomToFit={this.handleZoomToFit}
           modifyZoom={this.modifyZoom}
         />,
-        zoomRefs,
+        zoomControlsRef,
       );
     }
   }

@@ -16,12 +16,10 @@ export const initialConstructorState: ConstructorType = {
     zoomStep: 1,
     maxZoom: 150,
     minZoom: 15,
-    zoomControlsRef: {
-      current: null,
-    },
+    zoomControlsRef: null,
   },
   autoSave: {
-    enabled: true,
+    enabled: false,
     interval: 30000,
   },
   isFullScreen: false,
@@ -33,16 +31,14 @@ const constructor = (
 ) => {
   switch (action.type) {
     case SET_ZOOM_CONTROLS_REF: {
-      const { ref } = action;
+      const { zoom, ...restState } = state;
+      const { ref: zoomControlsRef } = action;
 
       return {
-        ...state,
+        ...restState,
         zoom: {
-          ...state.zoom,
-          zoomControlsRef: {
-            ...state.zoom.zoomControlsRef,
-            current: ref.current,
-          },
+          ...zoom,
+          zoomControlsRef,
         },
       };
     }

@@ -21,6 +21,7 @@ export type IConstructorProps = {
 export type IConstructorState = {
   selectedLink: EdgeType | null,
   selectedNode: NodeType | null,
+  isFullScreen: boolean,
   isShowCreateTemplateModal: boolean,
   isShowPreBuiltTemplatesModal: boolean,
 };
@@ -33,9 +34,7 @@ export type Constructor = {
     zoomStep: number,
     maxZoom: number,
     minZoom: number,
-    zoomControlsRef: {
-      current: HTMLDivElement | null,
-    },
+    zoomControlsRef: HTMLDivElement | null,
   },
   autoSave: {
     enabled: boolean,
@@ -47,7 +46,7 @@ export type Constructor = {
 const SET_ZOOM_CONTROLS_REF = 'SET_ZOOM_CONTROLS_REF';
 type SetZoomControlsRef = {
   type: 'SET_ZOOM_CONTROLS_REF',
-  ref: { current: null | HTMLDivElement },
+  ref: null | HTMLDivElement,
 };
 
 const SET_CURSOR = 'SET_CURSOR';

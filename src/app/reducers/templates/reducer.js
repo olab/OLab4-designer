@@ -17,42 +17,38 @@ export const initialTemplatesState: TemplatesType = {
 
 const templates = (state: TemplatesType = initialTemplatesState, action: TemplatesActions) => {
   switch (action.type) {
-    case TEMPLATES_REQUESTED: {
+    case TEMPLATES_REQUESTED:
       return {
         ...state,
         isFetching: true,
       };
-    }
-    case TEMPLATES_REQUEST_FAILED: {
+    case TEMPLATES_REQUEST_FAILED:
       return {
         ...state,
         isFetching: false,
       };
-    }
     case TEMPLATES_REQUEST_SUCCEEDED: {
+      const { list, ...restState } = state;
       const { templates: diffTemplates } = action;
 
       return {
-        isFetching: false,
+        ...restState,
         list: [
-          ...state.list,
+          ...list,
           ...diffTemplates,
         ],
+        isFetching: false,
       };
     }
     case TEMPLATE_UPLOAD_REQUESTED:
       return {
+        ...state,
         isUploading: true,
-        list: [
-          ...state.list,
-        ],
       };
     case TEMPLATE_UPLOAD_FULFILLED:
       return {
+        ...state,
         isUploading: false,
-        list: [
-          ...state.list,
-        ],
       };
     default:
       return state;

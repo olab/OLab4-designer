@@ -5,8 +5,7 @@ import {
   SCOPED_OBJECTS_FAILED,
   SCOPED_OBJECTS_SUCCEEDED,
   SCOPED_OBJECTS_REQUESTED,
-  SCOPED_OBJECT_DETAILS_FAILED,
-  SCOPED_OBJECT_DETAILS_SUCCEEDED,
+  SCOPED_OBJECT_DETAILS_FULFILLED,
   SCOPED_OBJECT_DETAILS_REQUESTED,
 } from './types';
 
@@ -26,11 +25,13 @@ const scopedObjects = (
 ) => {
   switch (action.type) {
     case SCOPED_OBJECTS_SUCCEEDED: {
+      const { data, ...restState } = state;
       const { scopedObjectsData } = action;
 
       return {
+        ...restState,
         data: {
-          ...state.data,
+          ...data,
           ...scopedObjectsData,
         },
         isFetching: false,
@@ -38,27 +39,28 @@ const scopedObjects = (
     }
     case SCOPED_OBJECTS_REQUESTED:
       return {
-        data: {
-          ...state.data,
-        },
+        ...state,
         isFetching: true,
       };
     case SCOPED_OBJECTS_FAILED:
       return {
-        data: {
-          ...state.data,
-        },
+        ...state,
         isFetching: false,
       };
-    case SCOPED_OBJECT_DETAILS_FAILED:
-    case SCOPED_OBJECT_DETAILS_SUCCEEDED:
+    case SCOPED_OBJECT_DETAILS_FULFILLED:
     case SCOPED_OBJECT_DETAILS_REQUESTED: {
-      const { scopedObjects: scopedObjectsList, scopedObjectType } = action;
+      const { data, ...restState } = state;
+      const { scopedObjectType, scopedObjectIndex, scopedObject } = action;
 
       return {
+        ...restState,
         data: {
-          ...state.data,
-          [scopedObjectType]: scopedObjectsList,
+          ...data,
+          [scopedObjectType]: [
+            ...data[scopedObjectType].slice(0, scopedObjectIndex),
+            ...data[scopedObjectType].slice(scopedObjectIndex + 1),
+            scopedObject,
+          ],
         },
         isFetching: false,
       };

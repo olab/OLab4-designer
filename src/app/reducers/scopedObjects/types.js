@@ -51,33 +51,26 @@ type ScopedObjectsDetailsRequested = {
   type: 'SCOPED_OBJECT_DETAILS_REQUESTED',
   scopedObjectId: number,
   scopedObjectType: string,
-  scopedObjects: Array<ScopedObject>,
+  scopedObjectIndex: number,
+  scopedObject: ScopedObject,
 };
 
-const SCOPED_OBJECT_DETAILS_SUCCEEDED = 'SCOPED_OBJECT_DETAILS_SUCCEEDED';
-type ScopedObjectsDetailsSucceeded = {
-  type: 'SCOPED_OBJECT_DETAILS_SUCCEEDED',
+const SCOPED_OBJECT_DETAILS_FULFILLED = 'SCOPED_OBJECT_DETAILS_FULFILLED';
+type ScopedObjectsDetailsFulfilled = {
+  type: 'SCOPED_OBJECT_DETAILS_FULFILLED',
   scopedObjectType: string,
-  scopedObjects: Array<ScopedObject>,
-};
-
-const SCOPED_OBJECT_DETAILS_FAILED = 'SCOPED_OBJECT_DETAILS_FAILED';
-type ScopedObjectsDetailsFailed = {
-  type: 'SCOPED_OBJECT_DETAILS_FAILED',
-  scopedObjectType: string,
-  scopedObjects: Array<ScopedObject>,
+  scopedObjectIndex: number,
+  scopedObject: ScopedObject,
 };
 
 export type ScopedObjectsActions = ScopedObjectsSucceeded |
   ScopedObjectsRequested | ScopedObjectsFailed |
-  ScopedObjectsDetailsRequested | ScopedObjectsDetailsSucceeded |
-  ScopedObjectsDetailsFailed;
+  ScopedObjectsDetailsRequested | ScopedObjectsDetailsFulfilled;
 
 export {
   SCOPED_OBJECTS_FAILED,
   SCOPED_OBJECTS_SUCCEEDED,
   SCOPED_OBJECTS_REQUESTED,
-  SCOPED_OBJECT_DETAILS_FAILED,
-  SCOPED_OBJECT_DETAILS_SUCCEEDED,
+  SCOPED_OBJECT_DETAILS_FULFILLED,
   SCOPED_OBJECT_DETAILS_REQUESTED,
 };

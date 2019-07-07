@@ -9,7 +9,6 @@ import {
 } from './types';
 
 export const initialUserState: UserType = {
-  isAuth: false,
   data: {
     id: null,
     name: '',
@@ -18,6 +17,7 @@ export const initialUserState: UserType = {
   authData: {
     token: '',
   },
+  isAuth: false,
   isFetching: false,
 };
 
@@ -41,14 +41,12 @@ const user = (state: UserType = initialUserState, action: UserActions) => {
         },
       };
     }
-
     case USER_AUTH_FAILED:
       return {
         ...state,
         isAuth: false,
         isFetching: false,
       };
-
     case USER_AUTH_LOGOUT:
       return {
         ...state,
@@ -57,7 +55,6 @@ const user = (state: UserType = initialUserState, action: UserActions) => {
           token: '',
         },
       };
-
     default:
       return state;
   }

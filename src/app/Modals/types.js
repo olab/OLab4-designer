@@ -13,8 +13,8 @@ export type NodeEditorModal = {
 };
 
 export type SOPickerModal = {
-  isShow: boolean,
   ...ModalPosition,
+  isShow: boolean,
 };
 
 export type Modals = {

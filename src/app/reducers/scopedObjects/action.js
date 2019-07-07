@@ -1,5 +1,4 @@
 // @flow
-import cloneDeep from 'lodash.clonedeep';
 import store from '../../../store/store';
 
 import {
@@ -9,8 +8,7 @@ import {
   SCOPED_OBJECTS_SUCCEEDED,
   SCOPED_OBJECTS_REQUESTED,
   SCOPED_OBJECT_DETAILS_REQUESTED,
-  SCOPED_OBJECT_DETAILS_FAILED,
-  SCOPED_OBJECT_DETAILS_SUCCEEDED,
+  SCOPED_OBJECT_DETAILS_FULFILLED,
 } from './types';
 
 export const ACTION_SCOPED_OBJECTS_SUCCEEDED = (scopedObjectsData: ScopedObjectsType) => ({
@@ -31,16 +29,18 @@ export const ACTION_SCOPED_OBJECT_DETAILS_REQUESTED = (
   scopedObjectType: string,
 ) => {
   const { scopedObjects: { data: scopedObjects } } = store.getState();
-  const clonedScopedObjects = cloneDeep(scopedObjects[scopedObjectType]);
-  const scopedObject = clonedScopedObjects.find(({ id }) => id === scopedObjectId);
+  const scopedObjectsList = scopedObjects[scopedObjectType];
+  const scopedObjectIndex = scopedObjectsList.findIndex(({ id }) => id === scopedObjectId);
+  const clonedScopedObject = { ...scopedObjectsList[scopedObjectIndex] };
 
-  scopedObject.isDetailsFetching = true;
+  clonedScopedObject.isDetailsFetching = true;
 
   return {
     type: SCOPED_OBJECT_DETAILS_REQUESTED,
     scopedObjectId,
     scopedObjectType,
-    scopedObjects: clonedScopedObjects,
+    scopedObjectIndex,
+    scopedObject: clonedScopedObject,
   };
 };
 
@@ -49,15 +49,17 @@ export const ACTION_SCOPED_OBJECT_DETAILS_FAILED = (
   scopedObjectType: string,
 ) => {
   const { scopedObjects: { data: scopedObjects } } = store.getState();
-  const clonedScopedObjects = cloneDeep(scopedObjects[scopedObjectType]);
-  const scopedObject = clonedScopedObjects.find(({ id }) => id === scopedObjectId);
+  const scopedObjectsList = scopedObjects[scopedObjectType];
+  const scopedObjectIndex = scopedObjectsList.findIndex(({ id }) => id === scopedObjectId);
+  const clonedScopedObject = { ...scopedObjectsList[scopedObjectIndex] };
 
-  scopedObject.isDetailsFetching = false;
+  clonedScopedObject.isDetailsFetching = false;
 
   return {
-    type: SCOPED_OBJECT_DETAILS_FAILED,
+    type: SCOPED_OBJECT_DETAILS_FULFILLED,
     scopedObjectType,
-    scopedObjects: clonedScopedObjects,
+    scopedObjectIndex,
+    scopedObject: clonedScopedObject,
   };
 };
 
@@ -67,15 +69,17 @@ export const ACTION_SCOPED_OBJECT_DETAILS_SUCCEEDED = (
   scopedObjectDetails: ScopedObjectDetailsType,
 ) => {
   const { scopedObjects: { data: scopedObjects } } = store.getState();
-  const clonedScopedObjects = cloneDeep(scopedObjects[scopedObjectType]);
-  const scopedObject = clonedScopedObjects.find(({ id }) => id === scopedObjectId);
+  const scopedObjectsList = scopedObjects[scopedObjectType];
+  const scopedObjectIndex = scopedObjectsList.findIndex(({ id }) => id === scopedObjectId);
+  const clonedScopedObject = { ...scopedObjectsList[scopedObjectIndex] };
 
-  scopedObject.isDetailsFetching = false;
-  scopedObject.details = scopedObjectDetails;
+  clonedScopedObject.isDetailsFetching = false;
+  clonedScopedObject.details = scopedObjectDetails;
 
   return {
-    type: SCOPED_OBJECT_DETAILS_SUCCEEDED,
+    type: SCOPED_OBJECT_DETAILS_FULFILLED,
     scopedObjectType,
-    scopedObjects: clonedScopedObjects,
+    scopedObjectIndex,
+    scopedObject: clonedScopedObject,
   };
 };
