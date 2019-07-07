@@ -83,6 +83,5 @@ export type IGraphViewProps = {
     isEdgeSelected: boolean,
   ) => void,
   zoomControlsRef: HTMLDivElement | null,
-  ACTION_SAVE_MAP_TO_UNDO: Function,
   ACTION_SET_CURSOR: Function,
 };

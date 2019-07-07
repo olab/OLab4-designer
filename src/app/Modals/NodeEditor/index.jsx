@@ -46,8 +46,8 @@ class NodeEditor extends PureComponent<INodeEditorProps, INodeEditorState> {
   }
 
   handleCloseModal = (): void => {
-    const { ACTION_DESELECT_ITEM } = this.props;
-    ACTION_DESELECT_ITEM();
+    const { ACTION_DESELECT_NODE } = this.props;
+    ACTION_DESELECT_NODE();
   }
 
   handleInputChange = (e: Event): void => {
@@ -171,8 +171,8 @@ const mapDispatchToProps = dispatch => ({
   ACTION_UPDATE_NODE: (nodeData: NodeType) => {
     dispatch(mapActions.ACTION_UPDATE_NODE(nodeData));
   },
-  ACTION_DESELECT_ITEM: () => {
-    dispatch(mapActions.ACTION_SELECT_ITEM(null));
+  ACTION_DESELECT_NODE: () => {
+    dispatch(mapActions.ACTION_SELECT_NODE(null));
   },
   ACTION_SET_POSITION_MODAL: (x: number, y: number) => {
     dispatch(modalActions.ACTION_SET_POSITION_MODAL(

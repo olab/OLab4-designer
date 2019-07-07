@@ -192,7 +192,6 @@ export class Node extends PureComponent<INodeProps, INodeState> {
       isLinkSource,
       isLinkingStarted,
       onNodeLink,
-      ACTION_SAVE_MAP_TO_UNDO,
     } = this.props;
     const { shiftKey } = d3.event.sourceEvent;
     const { current: currentNodeRef } = this.nodeRef;
@@ -205,8 +204,6 @@ export class Node extends PureComponent<INodeProps, INodeState> {
     if (!currentNodeRef || isLocked || isLinkingStarted) {
       return;
     }
-
-    ACTION_SAVE_MAP_TO_UNDO();
 
     // Moves child to the end of the element stack to re-arrange the z-index
     currentNodeRefParent.parentElement.appendChild(currentNodeRefParent);

@@ -13,7 +13,7 @@ import { createNewEdge, createNewNode } from './utils';
 import { EDGE_TYPES, NODE_CREATION_OFFSET } from './config';
 import { DND_CONTEXTS, MODALS_NAMES } from '../../Modals/config';
 
-import * as graphActions from '../../reducers/map/action';
+import * as mapActions from '../../reducers/map/action';
 import * as modalActions from '../../Modals/action';
 
 import type { IGraphProps, IGraphState } from './types';
@@ -63,32 +63,32 @@ export class Graph extends Component<IGraphProps, IGraphState> {
     return edges.find(edge => edge.isSelected) || null;
   }
 
-  onSelectNode = (item: NodeType | null, clientX?: number = 0, clientY?: number = 0) => {
-    const itemId = item ? item.id : null;
+  onSelectNode = (node: NodeType | null, clientX?: number = 0, clientY?: number = 0) => {
+    const nodeId = node ? node.id : null;
     const {
-      ACTION_SELECT_ITEM,
+      ACTION_SELECT_NODE,
       ACTION_SET_POSITION_MODAL,
     } = this.props;
 
-    if (item) {
+    if (node) {
       ACTION_SET_POSITION_MODAL(MODALS_NAMES.NODE_EDITOR_MODAL, clientX, clientY);
     }
 
-    ACTION_SELECT_ITEM(itemId);
+    ACTION_SELECT_NODE(nodeId);
   };
 
-  onSelectEdge = (item: EdgeType | null, clientX?: number = 0, clientY?: number = 0) => {
-    const itemId = item ? item.id : null;
+  onSelectEdge = (edge: EdgeType | null, clientX?: number = 0, clientY?: number = 0) => {
+    const edgeId = edge ? edge.id : null;
     const {
-      ACTION_SELECT_ITEM,
+      ACTION_SELECT_EDGE,
       ACTION_SET_POSITION_MODAL,
     } = this.props;
 
-    if (item) {
+    if (edge) {
       ACTION_SET_POSITION_MODAL(MODALS_NAMES.LINK_EDITOR_MODAL, clientX, clientY);
     }
 
-    ACTION_SELECT_ITEM(itemId);
+    ACTION_SELECT_EDGE(edgeId);
   };
 
   onCollapseNode = (nodeId: number) => {
@@ -259,44 +259,47 @@ const mapStateToProps = ({ map, defaults, constructor }) => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  ACTION_DELETE_EDGE: (edgeId: number, nodeId: number) => {
-    dispatch(graphActions.ACTION_DELETE_EDGE(edgeId, nodeId));
+  ACTION_SELECT_EDGE: (edgeId: number) => {
+    dispatch(mapActions.ACTION_SELECT_EDGE(edgeId));
   },
-  ACTION_CREATE_EDGE: (edgeData: EdgeType) => {
-    dispatch(graphActions.ACTION_CREATE_EDGE(edgeData));
+  ACTION_DELETE_EDGE: (edgeId: number, nodeId: number) => {
+    dispatch(mapActions.ACTION_DELETE_EDGE(edgeId, nodeId));
+  },
+  ACTION_CREATE_EDGE: (edge: EdgeType) => {
+    dispatch(mapActions.ACTION_CREATE_EDGE(edge));
   },
   ACTION_DELETE_NODE: (nodeId: number) => {
-    dispatch(graphActions.ACTION_DELETE_NODE(nodeId));
+    dispatch(mapActions.ACTION_DELETE_NODE(nodeId));
   },
-  ACTION_UPDATE_NODE: (nodeData: NodeType) => {
-    dispatch(graphActions.ACTION_UPDATE_NODE(nodeData));
+  ACTION_UPDATE_NODE: (node: NodeType) => {
+    dispatch(mapActions.ACTION_UPDATE_NODE(node));
   },
-  ACTION_CREATE_NODE: (nodeData: NodeType) => {
-    dispatch(graphActions.ACTION_CREATE_NODE(nodeData));
+  ACTION_CREATE_NODE: (node: NodeType) => {
+    dispatch(mapActions.ACTION_CREATE_NODE(node));
   },
-  ACTION_CREATE_NODE_WITH_EDGE: (nodeData: NodeType, edgeData: EdgeType, sourceNodeId: number) => {
-    dispatch(graphActions.ACTION_CREATE_NODE_WITH_EDGE(nodeData, edgeData, sourceNodeId));
+  ACTION_CREATE_NODE_WITH_EDGE: (node: NodeType, edge: EdgeType, sourceNodeId: number) => {
+    dispatch(mapActions.ACTION_CREATE_NODE_WITH_EDGE(node, edge, sourceNodeId));
   },
-  ACTION_SELECT_ITEM: (id: number) => {
-    dispatch(graphActions.ACTION_SELECT_ITEM(id));
+  ACTION_SELECT_NODE: (nodeId: number) => {
+    dispatch(mapActions.ACTION_SELECT_NODE(nodeId));
   },
   ACTION_UPDATE_NODE_COLLAPSE: (nodeId: number) => {
-    dispatch(graphActions.ACTION_UPDATE_NODE_COLLAPSE(nodeId));
+    dispatch(mapActions.ACTION_UPDATE_NODE_COLLAPSE(nodeId));
   },
   ACTION_UPDATE_NODE_RESIZE: (nodeId: number, width: number, height: number) => {
-    dispatch(graphActions.ACTION_UPDATE_NODE_RESIZE(nodeId, width, height));
+    dispatch(mapActions.ACTION_UPDATE_NODE_RESIZE(nodeId, width, height));
   },
   ACTION_UPDATE_NODE_LOCK: (nodeId: number) => {
-    dispatch(graphActions.ACTION_UPDATE_NODE_LOCK(nodeId));
+    dispatch(mapActions.ACTION_UPDATE_NODE_LOCK(nodeId));
   },
   ACTION_SET_POSITION_MODAL: (modalName: string, x: number, y: number) => {
     dispatch(modalActions.ACTION_SET_POSITION_MODAL(modalName, x, y));
   },
   ACTION_REDO_MAP: () => {
-    dispatch(graphActions.ACTION_REDO_MAP());
+    dispatch(mapActions.ACTION_REDO_MAP());
   },
   ACTION_UNDO_MAP: () => {
-    dispatch(graphActions.ACTION_UNDO_MAP());
+    dispatch(mapActions.ACTION_UNDO_MAP());
   },
 });
 

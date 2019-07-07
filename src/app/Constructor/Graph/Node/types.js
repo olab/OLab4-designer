@@ -35,7 +35,6 @@ export type INodeProps = {
   onNodeResize: (id: number, width: number, height: number) => void;
   onNodeLocked: (id: number) => void;
   onNodeLink: (data: any) => void;
-  ACTION_SAVE_MAP_TO_UNDO: () => void;
   layoutEngine?: any;
   viewWrapperElem: HTMLDivElement;
 };

@@ -37,7 +37,7 @@ export type Constructor = {
     zoomControlsRef: HTMLDivElement | null,
   },
   autoSave: {
-    enabled: boolean,
+    isEnabled: boolean,
     interval: number,
   },
   isFullScreen: boolean,

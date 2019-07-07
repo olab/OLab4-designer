@@ -286,7 +286,7 @@ const mapDispatchToProps = dispatch => ({
   ACTION_TOGGLE_FULLSCREEN: () => {
     dispatch(constructorActions.ACTION_TOGGLE_FULLSCREEN());
   },
-  ACTION_SET_ZOOM_CONTROLS_REF: (ref: { current: null | HTMLDivElement }) => {
+  ACTION_SET_ZOOM_CONTROLS_REF: (ref: null | HTMLDivElement) => {
     dispatch(constructorActions.ACTION_SET_ZOOM_CONTROLS_REF(ref));
   },
   ACTION_UNDO_MAP: () => {

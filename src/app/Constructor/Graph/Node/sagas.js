@@ -17,10 +17,10 @@ import {
 import { ACTION_EXCHANGE_NODE_ID, ACTION_EXCHANGE_EDGE_ID } from '../../../reducers/map/action';
 import { ACTION_NOTIFICATION_ERROR } from '../../../reducers/notifications/action';
 
-function* createNodeSaga({ position, oldNodeId }) {
+function* createNodeSaga({ node: { id: oldNodeId, x, y } }) {
   try {
     const mapId = yield select(({ map }) => map.id);
-    const newNodeId = yield call(createNode, mapId, position);
+    const newNodeId = yield call(createNode, mapId, { x, y });
 
     yield put(ACTION_EXCHANGE_NODE_ID(oldNodeId, newNodeId));
   } catch (error) {
@@ -33,8 +33,8 @@ function* createNodeSaga({ position, oldNodeId }) {
 
 function* createNodeWithEdgeSaga({
   sourceNodeId,
-  nodeData: { x, y, id: oldNodeId },
-  edgeData: { id: oldEdgeId },
+  node: { x, y, id: oldNodeId },
+  edge: { id: oldEdgeId },
 }) {
   try {
     const mapId = yield select(({ map }) => map.id);
@@ -50,10 +50,11 @@ function* createNodeWithEdgeSaga({
   }
 }
 
-function* updateNodeSaga({ updatedNode }) {
+function* updateNodeSaga({ node }) {
   try {
     const mapId = yield select(({ map }) => map.id);
-    yield call(updateNode, mapId, updatedNode);
+
+    yield call(updateNode, mapId, node);
   } catch (error) {
     const { response, message } = error;
     const errorMessage = response ? response.statusText : message;
@@ -65,6 +66,7 @@ function* updateNodeSaga({ updatedNode }) {
 function* deleteNodeSaga({ nodeId }) {
   try {
     const mapId = yield select(({ map }) => map.id);
+
     yield call(deleteNode, mapId, nodeId);
   } catch (error) {
     const { response, message } = error;

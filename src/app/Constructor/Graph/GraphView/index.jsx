@@ -19,7 +19,6 @@ import ZoomControls from '../ZoomControls';
 
 import { CURSOR_DEFAULT, CURSOR_CUSTOM_CROSSHAIR } from '../../config';
 
-import * as mapActions from '../../../reducers/map/action';
 import * as constructorActions from '../../action';
 
 import GraphUtils from '../utilities/graph-utils';
@@ -656,6 +655,7 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
     const { readOnly, onSelectNode, onCreateNode } = this.props;
     const previousSelection = (selectedNodeObj && selectedNodeObj.node) || null;
     const shouldCreateNode = !readOnly && shiftKey && !isLinkingStarted;
+    const shouldUnselectNode = !shiftKey && !isLinkingStarted;
 
     if (previousSelection) {
       this.syncRenderNode(previousSelection);
@@ -666,7 +666,7 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
       onCreateNode(x, y);
     }
 
-    if (!isLinkingStarted) {
+    if (shouldUnselectNode) {
       onSelectNode(null);
     }
 
@@ -1080,7 +1080,7 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
   getNodeComponent(id: string, node: NodeType) {
     const { selectedNodeObj, sourceNode, isLinkingStarted } = this.state;
     const {
-      ACTION_SAVE_MAP_TO_UNDO, onCreateNodeWithEdge, onCollapseNode, onLockNode, onResizeNode,
+      onCreateNodeWithEdge, onCollapseNode, onLockNode, onResizeNode,
     } = this.props;
 
     return (
@@ -1101,7 +1101,6 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
         isSelected={selectedNodeObj.node === node}
         layoutEngine={this.layoutEngine}
         viewWrapperElem={this.viewWrapper.current}
-        ACTION_SAVE_MAP_TO_UNDO={ACTION_SAVE_MAP_TO_UNDO}
       />
     );
   }
@@ -1370,9 +1369,6 @@ const mapStateToProps = ({ constructor: { cursor, zoom } }) => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  ACTION_SAVE_MAP_TO_UNDO: () => {
-    dispatch(mapActions.ACTION_SAVE_MAP_TO_UNDO());
-  },
   ACTION_SET_CURSOR: (cursor: string) => {
     dispatch(constructorActions.ACTION_SET_CURSOR(cursor));
   },

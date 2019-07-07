@@ -9,7 +9,7 @@ export type INodeEditorProps = {
   connectDragSource: Function;
   connectDragPreview: Function;
   ACTION_UPDATE_NODE: Function;
-  ACTION_DESELECT_ITEM: Function;
+  ACTION_DESELECT_NODE: Function;
   ACTION_SET_POSITION_MODAL: Function;
 };
 

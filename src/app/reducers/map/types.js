@@ -17,92 +17,96 @@ export type Map = {
   name: string,
   abstract: string,
   keywords: string,
-  enabled: boolean,
-  isFetching: boolean,
   nodes: Array<NodeType>,
   edges: Array<EdgeType>,
   undo: Array<MapItem>,
   redo: Array<MapItem>,
+  isEnabled: boolean,
+  isFetching: boolean,
 };
 
-const SELECT_ITEM = 'SELECT_ITEM';
-type SelectItem = {
-  type: 'SELECT_ITEM',
+const SELECT_NODE = 'SELECT_NODE';
+type SelectNode = {
+  type: 'SELECT_NODE',
   nodes: Array<NodeType>,
-  edges: Array<EdgeType>,
 };
 
 const CREATE_NODE = 'CREATE_NODE';
 type CreateNode = {
   type: 'CREATE_NODE',
-  nodes: Array<NodeType>,
-  oldNodeId: string,
-  position: Position,
+  node: NodeType,
 };
 
 const CREATE_NODE_WITH_EDGE = 'CREATE_NODE_WITH_EDGE';
 type CreateNodeWithEdge = {
   type: 'CREATE_NODE_WITH_EDGE',
-  nodes: Array<NodeType>,
-  edges: Array<EdgeType>,
-  nodeData: NodeType,
-  edgeData: EdgeType,
+  node: NodeType,
+  edge: EdgeType,
   sourceNodeId: number,
 };
 
 const UPDATE_NODE = 'UPDATE_NODE';
 type UpdateNode = {
   type: 'UPDATE_NODE',
-  nodes: Array<NodeType>,
-  updatedNode: NodeType,
+  index: number,
+  node: NodeType,
 };
 
 const DELETE_NODE = 'DELETE_NODE';
 type DeleteNode = {
   type: 'DELETE_NODE',
-  nodes: Array<NodeType>,
-  edges: Array<EdgeType>,
   nodeId: number,
+  nodeIndex: number,
+  edges: Array<EdgeType>,
 };
 
 const EXCHANGE_NODE_ID = 'EXCHANGE_NODE_ID';
 type ExchangeNodeId = {
   type: 'EXCHANGE_NODE_ID',
-  nodes: Array<NodeType>,
+  nodeIndex: number,
+  node: NodeType,
   edges: Array<EdgeType>,
 };
 
 const EXCHANGE_EDGE_ID = 'EXCHANGE_EDGE_ID';
 type ExchangeEdgeId = {
   type: 'EXCHANGE_EDGE_ID',
+  index: number,
+  edge: EdgeType,
+};
+
+const SELECT_EDGE = 'SELECT_EDGE';
+type SelectEdge = {
+  type: 'SELECT_EDGE',
   edges: Array<EdgeType>,
 };
 
 const CREATE_EDGE = 'CREATE_EDGE';
 type CreateEdge = {
   type: 'CREATE_EDGE',
-  nodes: Array<NodeType>,
-  edges: Array<EdgeType>,
-  edgeData: EdgeType,
+  edge: EdgeType,
 };
 
 const DELETE_EDGE = 'DELETE_EDGE';
 type DeleteEdge = {
   type: 'DELETE_EDGE',
-  edges: Array<EdgeType>,
+  index: number,
+  edgeId: number,
+  nodeId: number,
 };
 
 const UPDATE_EDGE = 'UPDATE_EDGE';
 type UpdateEdge = {
   type: 'UPDATE_EDGE',
-  edges: Array<EdgeType>,
-  updatedEdge: EdgeType,
+  index: number,
+  edge: EdgeType,
 };
 
 const UPDATE_EDGE_VISUAL = 'UPDATE_EDGE_VISUAL';
 type UpdateEdgeVisual = {
   type: 'UPDATE_EDGE_VISUAL',
-  edges: Array<EdgeType>,
+  index: number,
+  edge: EdgeType,
 };
 
 const RENAME_MAP = 'RENAME_MAP';
@@ -183,7 +187,7 @@ type CreateMapFromTemplateRequested = {
   templateId?: number,
 };
 
-export type MapActions = SelectItem |
+export type MapActions = SelectNode | SelectEdge |
   CreateNode | UpdateNode | DeleteNode |
   CreateEdge | DeleteEdge | UpdateEdge |
   RenameMap | MapToUndo | UndoMap | RedoMap | ExchangeNodeId |
@@ -194,12 +198,13 @@ export type MapActions = SelectItem |
   UpdateEdgeVisual;
 
 export {
-  SELECT_ITEM,
+  SELECT_NODE,
   CREATE_NODE,
   UPDATE_NODE,
   DELETE_NODE,
   EXCHANGE_NODE_ID,
   EXCHANGE_EDGE_ID,
+  SELECT_EDGE,
   CREATE_EDGE,
   DELETE_EDGE,
   UPDATE_EDGE,

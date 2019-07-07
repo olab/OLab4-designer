@@ -14,8 +14,8 @@ import {
 function* createTemplateSaga({ templateName }) {
   try {
     const mapId = yield select(({ map }) => map.id);
-    yield call(createTemplate, mapId, templateName);
 
+    yield call(createTemplate, mapId, templateName);
     yield put(ACTION_NOTIFICATION_SUCCESS('Template successfully created!'));
   } catch (error) {
     const { response, message } = error;

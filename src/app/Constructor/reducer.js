@@ -19,7 +19,7 @@ export const initialConstructorState: ConstructorType = {
     zoomControlsRef: null,
   },
   autoSave: {
-    enabled: false,
+    isEnabled: false,
     interval: 30000,
   },
   isFullScreen: false,

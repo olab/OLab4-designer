@@ -15,11 +15,10 @@ import {
   UPDATE_EDGE,
 } from '../../../reducers/map/types';
 
-function* createEdgeSaga({ edgeData }) {
+function* createEdgeSaga({ edge, edge: { id: prevEdgeId } }) {
   try {
-    const { id: prevEdgeId } = edgeData;
     const mapId = yield select(({ map }) => map.id);
-    const newEdgeId = yield call(createEdge, mapId, edgeData);
+    const newEdgeId = yield call(createEdge, mapId, edge);
 
     yield put(ACTION_EXCHANGE_EDGE_ID(prevEdgeId, newEdgeId));
   } catch (error) {
@@ -43,11 +42,11 @@ function* deleteEdgeSaga({ edgeId, nodeId }) {
   }
 }
 
-function* updateEdgeSaga({ updatedEdge }) {
+function* updateEdgeSaga({ edge }) {
   try {
     const mapId = yield select(({ map }) => map.id);
 
-    yield call(updateEdge, mapId, updatedEdge);
+    yield call(updateEdge, mapId, edge);
   } catch (error) {
     const { response, message } = error;
     const errorMessage = response ? response.statusText : message;
@@ -55,7 +54,6 @@ function* updateEdgeSaga({ updatedEdge }) {
     yield put(ACTION_NOTIFICATION_ERROR(errorMessage));
   }
 }
-
 
 function* edgeSaga() {
   yield takeEvery(CREATE_EDGE, createEdgeSaga);

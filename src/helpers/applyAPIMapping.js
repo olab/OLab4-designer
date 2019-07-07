@@ -91,7 +91,6 @@ export const mapFromServer = mapData => ({
   name: mapData.name,
   abstract: mapData.abstract,
   keywords: mapData.keywords,
-  enabled: Boolean(mapData.enabled),
   nodes: mapData.nodes
     ? mapData.nodes.map(node => nodeFromServer(node))
     : [],
@@ -100,9 +99,12 @@ export const mapFromServer = mapData => ({
     : [],
   undo: [],
   redo: [],
+  isEnabled: Boolean(mapData.enabled),
+  isFetching: false,
 });
 
 export const templateFromServer = mapFromServer;
+
 export const scopedObjectFromServer = ({ url, ...restSO }) => ({
   ...restSO,
   isShowEyeIcon: Boolean(url),

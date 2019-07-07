@@ -2,10 +2,11 @@
 import {
   type MapActions,
   type Map as MapType,
-  SELECT_ITEM,
+  SELECT_NODE,
   CREATE_NODE,
   UPDATE_NODE,
   DELETE_NODE,
+  SELECT_EDGE,
   CREATE_EDGE,
   DELETE_EDGE,
   EXCHANGE_NODE_ID,
@@ -30,15 +31,15 @@ import {
 
 export const initialMapState: MapType = {
   id: null,
-  name: 'My Labyrinth',
+  name: 'New Labyrinth',
   abstract: '',
   keywords: '',
-  enabled: false,
-  isFetching: false,
   nodes: [],
   edges: [],
   undo: [],
   redo: [],
+  isEnabled: false,
+  isFetching: false,
 };
 
 const map = (state: MapType = initialMapState, action: MapActions) => {
@@ -57,13 +58,13 @@ const map = (state: MapType = initialMapState, action: MapActions) => {
       };
     }
     case UNDO_MAP: {
-      const { currentMap, prev } = action;
       const { undo, redo, ...restState } = state;
+      const { currentMap, prev: { nodes, edges } } = action;
 
       return {
         ...restState,
-        nodes: prev.nodes,
-        edges: prev.edges,
+        nodes,
+        edges,
         undo: [
           ...undo.slice(0, undo.length - 1),
         ],
@@ -74,13 +75,13 @@ const map = (state: MapType = initialMapState, action: MapActions) => {
       };
     }
     case REDO_MAP: {
-      const { currentMap, next } = action;
       const { undo, redo, ...restState } = state;
+      const { currentMap, next: { nodes, edges } } = action;
 
       return {
         ...restState,
-        nodes: next.nodes,
-        edges: next.edges,
+        nodes,
+        edges,
         redo: [
           ...redo.slice(0, redo.length - 1),
         ],
@@ -98,6 +99,29 @@ const map = (state: MapType = initialMapState, action: MapActions) => {
         name,
       };
     }
+    case GET_MAP_REQUESTED:
+    case CREATE_MAP_REQUESTED:
+    case EXTEND_MAP_REQUESTED:
+      return {
+        ...state,
+        isFetching: true,
+      };
+    case GET_MAP_FAILED:
+    case CREATE_MAP_FAILED:
+    case EXTEND_MAP_FAILED:
+      return {
+        ...state,
+        isFetching: false,
+      };
+    case GET_MAP_SUCCEEDED:
+    case CREATE_MAP_SUCCEEDED: {
+      const { map: newMap } = action;
+
+      return {
+        ...newMap,
+        isFetching: false,
+      };
+    }
     case EXTEND_MAP_SUCCEEDED: {
       const { nodes, edges } = action;
 
@@ -108,26 +132,7 @@ const map = (state: MapType = initialMapState, action: MapActions) => {
         isFetching: false,
       };
     }
-    case EXTEND_MAP_REQUESTED:
-      return {
-        ...state,
-        isFetching: true,
-      };
-    case EXTEND_MAP_FAILED:
-      return {
-        ...state,
-        isFetching: false,
-      };
-    case SELECT_ITEM: {
-      const { nodes, edges } = action;
-
-      return {
-        ...state,
-        nodes,
-        edges,
-      };
-    }
-    case CREATE_NODE: {
+    case SELECT_NODE: {
       const { nodes } = action;
 
       return {
@@ -135,111 +140,121 @@ const map = (state: MapType = initialMapState, action: MapActions) => {
         nodes,
       };
     }
-    case EXCHANGE_NODE_ID: {
-      const { nodes, edges } = action;
+    case UPDATE_NODE: {
+      const { nodes, ...restState } = state;
+      const { index, node } = action;
 
       return {
-        ...state,
-        nodes,
+        ...restState,
+        nodes: [
+          ...nodes.slice(0, index),
+          ...nodes.slice(index + 1),
+          node,
+        ],
+      };
+    }
+    case CREATE_NODE: {
+      const { nodes, ...restState } = state;
+      const { node } = action;
+
+      return {
+        ...restState,
+        nodes: [
+          ...nodes,
+          node,
+        ],
+      };
+    }
+    case EXCHANGE_NODE_ID: {
+      const { nodes, ...restState } = state;
+      const { nodeIndex, node, edges } = action;
+
+      return {
+        ...restState,
+        nodes: [
+          ...nodes.slice(0, nodeIndex),
+          ...nodes.slice(nodeIndex + 1),
+          node,
+        ],
         edges,
       };
     }
-    case EXCHANGE_EDGE_ID: {
-      const { edges } = action;
+    case DELETE_NODE: {
+      const { nodes, ...restState } = state;
+      const { nodeIndex, edges } = action;
 
       return {
-        ...state,
+        ...restState,
+        nodes: [
+          ...nodes.slice(0, nodeIndex),
+          ...nodes.slice(nodeIndex + 1),
+        ],
         edges,
       };
     }
     case CREATE_NODE_WITH_EDGE: {
-      const { nodes, edges } = action;
+      const { nodes, edges, ...restState } = state;
+      const { node, edge } = action;
+
+      return {
+        ...restState,
+        nodes: [
+          ...nodes,
+          node,
+        ],
+        edges: [
+          ...edges,
+          edge,
+        ],
+      };
+    }
+    case SELECT_EDGE: {
+      const { edges } = action;
 
       return {
         ...state,
-        nodes,
         edges,
+      };
+    }
+    case EXCHANGE_EDGE_ID:
+    case UPDATE_EDGE_VISUAL:
+    case UPDATE_EDGE: {
+      const { edges, ...restState } = state;
+      const { index, edge } = action;
+
+      return {
+        ...restState,
+        edges: [
+          ...edges.slice(0, index),
+          ...edges.slice(index + 1),
+          edge,
+        ],
       };
     }
     case CREATE_EDGE: {
-      const { nodes, edges } = action;
+      const { edges, ...restState } = state;
+      const { edge } = action;
 
       return {
-        ...state,
-        nodes,
-        edges,
-      };
-    }
-    case UPDATE_EDGE_VISUAL:
-    case UPDATE_EDGE: {
-      const { edges } = action;
-
-      return {
-        ...state,
-        edges: [...edges],
-      };
-    }
-    case UPDATE_NODE: {
-      const { nodes } = action;
-
-      return {
-        ...state,
-        nodes,
-      };
-    }
-    case DELETE_NODE: {
-      const { nodes, edges } = action;
-
-      return {
-        ...state,
-        nodes,
-        edges,
+        ...restState,
+        edges: [
+          ...edges,
+          edge,
+        ],
       };
     }
     case DELETE_EDGE: {
-      const { edges } = action;
+      const { edges, ...restState } = state;
+      const { index } = action;
 
       return {
-        ...state,
-        edges,
+        ...restState,
+        edges: [
+          ...edges.slice(0, index),
+          ...edges.slice(index + 1),
+        ],
       };
     }
-    case CREATE_MAP_SUCCEEDED: {
-      const { map: newMap } = action;
-
-      return {
-        ...newMap,
-        isFetching: false,
-      };
-    }
-    case CREATE_MAP_FAILED:
-      return {
-        ...state,
-        isFetching: false,
-      };
-    case CREATE_MAP_REQUESTED:
-      return {
-        ...state,
-        isFetching: true,
-      };
-    case GET_MAP_SUCCEEDED: {
-      const { map: newMap } = action;
-
-      return {
-        ...newMap,
-        isFetching: false,
-      };
-    }
-    case GET_MAP_REQUESTED:
-      return {
-        ...state,
-        isFetching: true,
-      };
-    case GET_MAP_FAILED:
-      return {
-        ...state,
-        isFetching: false,
-      };
     default:
       return state;
   }

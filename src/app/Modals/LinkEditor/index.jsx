@@ -52,10 +52,10 @@ class LinkEditor extends PureComponent<ILinkEditorProps, ILinkEditorState> {
   UNSAFE_componentWillReceiveProps(nextProps: ILinkEditorProps) {
     const { link } = nextProps;
     const { id: linkId } = this.state;
-    const { ACTION_UPDATE_EDGE_VISUAL } = this.props;
+    const { ACTION_UPDATE_EDGE } = this.props;
 
     if (link.id !== linkId) {
-      ACTION_UPDATE_EDGE_VISUAL(this.defaultLinkProps);
+      ACTION_UPDATE_EDGE(this.defaultLinkProps, true);
 
       this.isLinkHasSibling = this.checkIfLinkHasSibling(link);
 
@@ -71,10 +71,10 @@ class LinkEditor extends PureComponent<ILinkEditorProps, ILinkEditorState> {
 
   componentDidUpdate() {
     const { shouldUpdateVisual, ...link } = this.state;
-    const { ACTION_UPDATE_EDGE_VISUAL } = this.props;
+    const { ACTION_UPDATE_EDGE } = this.props;
 
     if (shouldUpdateVisual) {
-      ACTION_UPDATE_EDGE_VISUAL(link);
+      ACTION_UPDATE_EDGE(link, true);
 
       // eslint-disable-next-line react/no-did-update-set-state
       this.setState({ shouldUpdateVisual: false });
@@ -82,10 +82,10 @@ class LinkEditor extends PureComponent<ILinkEditorProps, ILinkEditorState> {
   }
 
   handleCloseModal = (): void => {
-    const { ACTION_DESELECT_ITEM, ACTION_UPDATE_EDGE_VISUAL } = this.props;
+    const { ACTION_DESELECT_EDGE, ACTION_UPDATE_EDGE } = this.props;
 
-    ACTION_UPDATE_EDGE_VISUAL(this.defaultLinkProps);
-    ACTION_DESELECT_ITEM();
+    ACTION_UPDATE_EDGE(this.defaultLinkProps, true);
+    ACTION_DESELECT_EDGE();
   }
 
   handleModalMove = (x: number, y: number): void => {
@@ -270,14 +270,11 @@ const mapStateToProps = ({ map, modals, constructor }) => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  ACTION_UPDATE_EDGE: (edgeData: LinkType) => {
-    dispatch(graphActions.ACTION_UPDATE_EDGE(edgeData));
+  ACTION_UPDATE_EDGE: (edge: LinkType, isVisualOnly: boolean = false) => {
+    dispatch(graphActions.ACTION_UPDATE_EDGE(edge, isVisualOnly));
   },
-  ACTION_UPDATE_EDGE_VISUAL: (edgeData: LinkType) => {
-    dispatch(graphActions.ACTION_UPDATE_EDGE_VISUAL(edgeData));
-  },
-  ACTION_DESELECT_ITEM: () => {
-    dispatch(graphActions.ACTION_SELECT_ITEM(null));
+  ACTION_DESELECT_EDGE: () => {
+    dispatch(graphActions.ACTION_SELECT_EDGE(null));
   },
   ACTION_SET_POSITION_MODAL: (x: number, y: number) => {
     dispatch(modalActions.ACTION_SET_POSITION_MODAL(
