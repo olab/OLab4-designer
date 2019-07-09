@@ -630,10 +630,10 @@ export class Edge extends React.Component<IEdgeProps> {
             width={edgeHandleSize}
             height={edgeHandleSize}
             xlinkHref={Edge.getXlinkHref(edgeTypes, data)}
-            transform={`${this.getEdgeHandleTransformation()}`}
+            transform={this.getEdgeHandleTransformation()}
             data-source={data.source}
             data-target={data.target}
-            fill={data.color || '#D3DAE1'}
+            fill={data.color}
           />
         </EdgeWrapper>
       </g>

@@ -37,9 +37,3 @@ export const getEdge = (mapId, nodeId, edgeId) => API
   .catch((error) => {
     throw error;
   });
-
-export default {
-  getEdge,
-  createEdge,
-  updateEdge,
-};

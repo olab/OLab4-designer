@@ -18,16 +18,16 @@ export type SOPickerModal = {
 };
 
 export type Modals = {
-  SOPickerModal: SOPickerModal,
-  linkEditorModal: LinkEditorModal,
-  nodeEditorModal: NodeEditorModal,
+  [modalName: string]: SOPickerModal |
+    LinkEditorModal | NodeEditorModal,
 };
 
 export const UPDATE_MODAL = 'UPDATE_MODAL';
 type UpdateModal = {
   type: 'UPDATE_MODAL',
   modalName: string,
-  modalValue: SOPickerModal | NodeEditorModal | LinkEditorModal,
+  modalValue: SOPickerModal
+    | NodeEditorModal | LinkEditorModal,
 };
 
 export type ModalsActions = UpdateModal;

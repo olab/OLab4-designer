@@ -5,14 +5,11 @@ import { DragSource } from 'react-dnd';
 
 import ScaleIcon from '../../../shared/assets/icons/cross.svg';
 
-import type {
-  INodeEditorProps,
-  INodeEditorState,
-} from './types';
+import type { INodeEditorProps, INodeEditorState } from './types';
 
 import * as modalActions from '../action';
 import * as mapActions from '../../reducers/map/action';
-import { DndContexts, ModalsNames } from '../config';
+import { DND_CONTEXTS, MODALS_NAMES } from '../config';
 
 import { ModalWrapper, ModalHeader } from '../styles';
 
@@ -78,7 +75,7 @@ class NodeEditor extends Component<INodeEditorProps, INodeEditorState> {
   }
 }
 
-const mapStateToProps = ({ modals }) => ({ ...modals.nodeEditorModal });
+const mapStateToProps = ({ modals }) => ({ ...modals[MODALS_NAMES.NODE_EDITOR_MODAL] });
 
 const mapDispatchToProps = dispatch => ({
   ACTION_DESELECT_ITEM: () => {
@@ -86,7 +83,7 @@ const mapDispatchToProps = dispatch => ({
   },
   ACTION_SET_POSITION_MODAL: (x: number, y: number) => {
     dispatch(modalActions.ACTION_SET_POSITION_MODAL(
-      ModalsNames.NODE_EDITOR_MODAL,
+      MODALS_NAMES.NODE_EDITOR_MODAL,
       x,
       y,
     ));
@@ -134,7 +131,7 @@ export default connect(
   mapDispatchToProps,
 )(
   DragSource(
-    DndContexts.VIEWPORT,
+    DND_CONTEXTS.VIEWPORT,
     spec,
     collect,
   )(NodeEditor),

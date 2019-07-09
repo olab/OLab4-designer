@@ -26,7 +26,3 @@ export const getScopedObjectDetails = (scopedObjectId, scopedObjectType) => API
   .catch((error) => {
     throw error;
   });
-
-export default {
-  getScopedObjects,
-};

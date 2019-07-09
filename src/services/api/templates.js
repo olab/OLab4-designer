@@ -28,8 +28,3 @@ export const createTemplate = (mapId, templateName) => API
   .catch((error) => {
     throw error;
   });
-
-export default {
-  getTemplates,
-  createTemplate,
-};

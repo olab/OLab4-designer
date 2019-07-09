@@ -1,6 +1,5 @@
-// @flow
-export const sliderSteps: number = 100;
+export const SLIDER_STEPS = 100;
 
 export default {
-  sliderSteps,
+  SLIDER_STEPS,
 };

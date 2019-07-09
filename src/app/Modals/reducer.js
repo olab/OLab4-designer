@@ -5,17 +5,19 @@ import {
   UPDATE_MODAL,
 } from './types';
 
+import { MODALS_NAMES } from './config';
+
 export const initialModalsState: ModalsType = {
-  SOPickerModal: {
+  [MODALS_NAMES.SO_PICKER_MODAL]: {
     isShow: false,
     x: 0,
     y: 0,
   },
-  linkEditorModal: {
+  [MODALS_NAMES.LINK_EDITOR_MODAL]: {
     x: 0,
     y: 0,
   },
-  nodeEditorModal: {
+  [MODALS_NAMES.NODE_EDITOR_MODAL]: {
     x: 0,
     y: 0,
   },

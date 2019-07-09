@@ -5,4 +5,6 @@ export const EDITORS_FIELDS = {
   SCOPE_LEVEL: 'Scope Level',
 };
 
-export default EDITORS_FIELDS;
+export default {
+  EDITORS_FIELDS,
+};

@@ -36,9 +36,3 @@ export const extendMap = (mapId, templateId) => API
   .catch((error) => {
     throw error;
   });
-
-export default {
-  getMap,
-  createMap,
-  extendMap,
-};

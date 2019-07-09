@@ -16,8 +16,3 @@ export const getNodeDefaults = () => API
   .catch((error) => {
     throw error;
   });
-
-export default {
-  getEdgeDefaults,
-  getNodeDefaults,
-};

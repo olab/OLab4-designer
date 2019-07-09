@@ -8,13 +8,10 @@ import ToolbarGroup from '../../../shared/components/ToolbarGroup';
 import GraphUndoRedoButtons from '../Graph/UndoRedo';
 import MapTitle from './MapTitle';
 
-import type {
-  IToolbarsProps,
-  IToolbarsState,
-} from './types';
+import type { IToolbarsProps, IToolbarsState } from './types';
 
 import { CONFIRMATION_MODALS } from '../config';
-import { ModalsNames } from '../../Modals/config';
+import { MODALS_NAMES } from '../../Modals/config';
 
 import moveIcon from '../../../shared/assets/icons/toolbar/templates/toolbar-move.png';
 import selectIcon from '../../../shared/assets/icons/toolbar/templates/toolbar-select.png';
@@ -35,10 +32,7 @@ import * as constructorActions from '../action';
 import * as mapActions from '../../reducers/map/action';
 import * as modalActions from '../../Modals/action';
 
-import styles, {
-  Block,
-  LabTitleItem,
-} from './styles';
+import styles, { Block, LabTitleItem } from './styles';
 
 export class Toolbars extends Component<IToolbarsProps, IToolbarsState> {
   constructor(props: IToolbarsProps) {
@@ -284,13 +278,10 @@ export class Toolbars extends Component<IToolbarsProps, IToolbarsState> {
   }
 }
 
-const mapStateToProps = ({
-  map: { undo, redo },
-  modals: { SOPickerModal },
-}) => ({
+const mapStateToProps = ({ map: { undo, redo }, modals }) => ({
   isUndoAvailable: !!undo.length,
   isRedoAvailable: !!redo.length,
-  SOPickerModal,
+  SOPickerModal: modals[MODALS_NAMES.SO_PICKER_MODAL],
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -305,12 +296,12 @@ const mapDispatchToProps = dispatch => ({
   },
   ACTION_TOGGLE_MODAL: () => {
     dispatch(modalActions.ACTION_TOGGLE_MODAL(
-      ModalsNames.SO_PICKER_MODAL,
+      MODALS_NAMES.SO_PICKER_MODAL,
     ));
   },
   ACTION_SET_POSITION_MODAL: (x: number, y: number) => {
     dispatch(modalActions.ACTION_SET_POSITION_MODAL(
-      ModalsNames.SO_PICKER_MODAL,
+      MODALS_NAMES.SO_PICKER_MODAL,
       x,
       y,
     ));

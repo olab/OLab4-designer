@@ -9,9 +9,3 @@ export const SO_LEVELS = [
 ];
 
 export const SO_ITEMS_LIMIT = 20;
-
-export default {
-  SO_TYPES,
-  SO_LEVELS,
-  SO_ITEMS_LIMIT,
-};

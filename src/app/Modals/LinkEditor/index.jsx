@@ -18,21 +18,16 @@ import type { ILinkEditorProps, ILinkEditorState } from './types';
 
 import * as modalActions from '../action';
 import * as graphActions from '../../reducers/map/action';
-import { DndContexts, ModalsNames } from '../config';
-import {
-  LINK_VARIANTS,
-  THICKNESS_MIN,
-  THICKNESS_MAX,
-  THICKNESS_STEP,
-} from './config';
 
-import styles, {
-  LinkEditorBody,
-  LinkEditorFooter,
-  ActionButton,
-  ChangeDirectionWrapper,
-} from './styles';
+import {
+  LINK_VARIANTS, THICKNESS_MIN, THICKNESS_MAX, THICKNESS_STEP,
+} from './config';
+import { DND_CONTEXTS, MODALS_NAMES } from '../config';
+
 import { ModalWrapper, ModalHeader } from '../styles';
+import styles, {
+  LinkEditorBody, LinkEditorFooter, ActionButton, ChangeDirectionWrapper,
+} from './styles';
 
 class LinkEditor extends PureComponent<ILinkEditorProps, ILinkEditorState> {
   defaultLinkProps: LinkType | null;
@@ -266,7 +261,7 @@ class LinkEditor extends PureComponent<ILinkEditorProps, ILinkEditorState> {
 }
 
 const mapStateToProps = ({ map, modals, constructor }) => ({
-  ...modals.linkEditorModal,
+  ...modals[MODALS_NAMES.LINK_EDITOR_MODAL],
   links: map.edges,
   layoutEngineType: constructor.layoutEngineType,
 });
@@ -283,7 +278,7 @@ const mapDispatchToProps = dispatch => ({
   },
   ACTION_SET_POSITION_MODAL: (x: number, y: number) => {
     dispatch(modalActions.ACTION_SET_POSITION_MODAL(
-      ModalsNames.LINK_EDITOR_MODAL,
+      MODALS_NAMES.LINK_EDITOR_MODAL,
       x,
       y,
     ));
@@ -332,7 +327,7 @@ export default connect(
 )(
   withStyles(styles)(
     DragSource(
-      DndContexts.VIEWPORT,
+      DND_CONTEXTS.VIEWPORT,
       spec,
       collect,
     )(LinkEditor),

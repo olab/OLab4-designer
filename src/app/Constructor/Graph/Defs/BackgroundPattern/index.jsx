@@ -11,7 +11,7 @@ import Circle from './Circle';
 
 import type { IBackgroundPatternProps } from './types';
 
-import { patternId } from './config';
+import { PATTERN_ID } from './config';
 
 export class BackgroundPattern extends Component<IBackgroundPatternProps> {
   static defaultProps: IBackgroundPatternProps = {
@@ -24,8 +24,8 @@ export class BackgroundPattern extends Component<IBackgroundPatternProps> {
 
     return (
       <pattern
-        id={`${patternId}`}
-        key={`${patternId}`}
+        id={PATTERN_ID}
+        key={PATTERN_ID}
         width={gridSpacing}
         height={gridSpacing}
         patternUnits="userSpaceOnUse"

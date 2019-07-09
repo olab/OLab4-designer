@@ -42,13 +42,13 @@ export type Constructor = {
   },
 };
 
-export const SET_ZOOM_CONTROLS_REF = 'SET_ZOOM_CONTROLS_REF';
+const SET_ZOOM_CONTROLS_REF = 'SET_ZOOM_CONTROLS_REF';
 type SetZoomControlsRef = {
   type: 'SET_ZOOM_CONTROLS_REF',
   ref: { current: null | HTMLDivElement },
 };
 
-export const SET_CURSOR = 'SET_CURSOR';
+const SET_CURSOR = 'SET_CURSOR';
 type SetCursor = {
   type: 'SET_CURSOR',
   cursor: string,
@@ -56,7 +56,7 @@ type SetCursor = {
 
 export type ConstructorActions = SetZoomControlsRef | SetCursor;
 
-export default {
+export {
   SET_ZOOM_CONTROLS_REF,
   SET_CURSOR,
 };

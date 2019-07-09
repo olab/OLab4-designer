@@ -10,7 +10,7 @@ import React from 'react';
 
 import type { IArrowHeadProps } from './types';
 import { getMarkerViewBox, getPathToBeDrawn } from './helpers';
-import { markerId } from './config';
+import { MARKER_ID } from './config';
 
 import { ArrowWrapper } from './styles';
 
@@ -21,8 +21,8 @@ export const ArrowHead = ({ edgeArrowSize }: IArrowHeadProps) => {
 
   return (
     <marker
-      id={`${markerId}`}
-      key={`${markerId}`}
+      id={MARKER_ID}
+      key={MARKER_ID}
       orient="auto"
       strokeWidth="1px"
       stroke="#fff"

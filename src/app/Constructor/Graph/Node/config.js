@@ -1,27 +1,13 @@
-const ACTION_COLLAPSE = 'COLLAPSE_NODE';
-const ACTION_LOCK = 'ACTION_LOCK';
-const ACTION_ADD = 'ACTION_ADD';
-const ACTION_RESIZE = 'ACTION_RESIZE';
-const ACTION_LINK = 'ACTION_LINK';
+export const ACTION_COLLAPSE = 'COLLAPSE_NODE';
+export const ACTION_LOCK = 'ACTION_LOCK';
+export const ACTION_ADD = 'ACTION_ADD';
+export const ACTION_RESIZE = 'ACTION_RESIZE';
+export const ACTION_LINK = 'ACTION_LINK';
 
-const COLLAPSED_HEIGHT = 40;
-const DEFAULT_NODE_INDENT = 400;
-const FOOTER_WIDTH = 105;
-const LINK_ICON_SIZE = 32;
-const TYPE_ROOT = 1;
+export const COLLAPSED_HEIGHT = 40;
+export const DEFAULT_NODE_INDENT = 400;
+export const FOOTER_WIDTH = 105;
+export const LINK_ICON_SIZE = 32;
+export const TYPE_ROOT = 1;
 
-const SALT = 'tmp-node';
-
-export {
-  ACTION_COLLAPSE,
-  ACTION_LOCK,
-  ACTION_ADD,
-  ACTION_RESIZE,
-  ACTION_LINK,
-  COLLAPSED_HEIGHT,
-  DEFAULT_NODE_INDENT,
-  FOOTER_WIDTH,
-  LINK_ICON_SIZE,
-  SALT,
-  TYPE_ROOT,
-};
+export const SALT = 'tmp-node';

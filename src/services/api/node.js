@@ -58,10 +58,3 @@ export const deleteNode = (mapId, nodeId) => API
   .catch((error) => {
     throw error;
   });
-
-export default {
-  getNode,
-  getNodes,
-  createNode,
-  deleteNode,
-};

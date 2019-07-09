@@ -1,15 +1,10 @@
 // @flow
-export const DndContexts = {
+export const DND_CONTEXTS = {
   VIEWPORT: 'viewport',
 };
 
-export const ModalsNames = {
+export const MODALS_NAMES = {
   SO_PICKER_MODAL: 'SOPickerModal',
-  LINK_EDITOR_MODAL: 'linkEditorModal',
-  NODE_EDITOR_MODAL: 'nodeEditorModal',
-};
-
-export default {
-  DndContexts,
-  ModalsNames,
+  LINK_EDITOR_MODAL: 'LinkEditorModal',
+  NODE_EDITOR_MODAL: 'NodeEditorModal',
 };

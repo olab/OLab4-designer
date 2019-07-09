@@ -14,7 +14,7 @@ import UploadIcon from '../../../shared/assets/icons/add.svg';
 
 import type { ScopedObject as ScopedObjectType } from '../../reducers/scopedObjects/types';
 import type { ISOPickerProps, ISOPickerState } from './types';
-import { DndContexts, ModalsNames } from '../config';
+import { DND_CONTEXTS, MODALS_NAMES } from '../config';
 import { SO_TYPES, SO_LEVELS, SO_ITEMS_LIMIT } from './config';
 import getFilterCallback from './utils';
 
@@ -250,7 +250,7 @@ const mapStateToProps = ({
   modals,
   scopedObjects,
 }) => ({
-  ...modals.SOPickerModal,
+  ...modals[MODALS_NAMES.SO_PICKER_MODAL],
   scopedObjects: scopedObjects.data,
   isFetching: scopedObjects.isFetching,
 });
@@ -258,12 +258,12 @@ const mapStateToProps = ({
 const mapDispatchToProps = dispatch => ({
   ACTION_CLOSE_MODAL: () => {
     dispatch(modalActions.ACTION_CLOSE_MODAL(
-      ModalsNames.SO_PICKER_MODAL,
+      MODALS_NAMES.SO_PICKER_MODAL,
     ));
   },
   ACTION_SET_POSITION_MODAL: (x: number, y: number) => {
     dispatch(modalActions.ACTION_SET_POSITION_MODAL(
-      ModalsNames.SO_PICKER_MODAL,
+      MODALS_NAMES.SO_PICKER_MODAL,
       x,
       y,
     ));
@@ -314,7 +314,7 @@ export default connect(
   mapDispatchToProps,
 )(
   DragSource(
-    DndContexts.VIEWPORT,
+    DND_CONTEXTS.VIEWPORT,
     spec,
     collect,
   )(SOPicker),

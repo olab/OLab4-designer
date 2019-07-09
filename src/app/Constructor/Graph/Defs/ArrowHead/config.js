@@ -1,6 +1,5 @@
-// @flow
-export const markerId: string = 'end-arrow';
+export const MARKER_ID = 'end-arrow';
 
 export default {
-  markerId,
+  MARKER_ID,
 };

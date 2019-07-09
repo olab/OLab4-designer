@@ -35,8 +35,3 @@ export const getMinRadius = (sourceNode: NodeType, targetNode: NodeType): number
 
   return minRadius;
 };
-
-export default {
-  getVariantValueDOM,
-  getMinRadius,
-};

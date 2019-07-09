@@ -1,5 +1,3 @@
-import { maps, app } from '../app/reducers';
-
 import user from '../app/Login/reducer';
 import modals from '../app/Modals/reducer';
 import constructor from '../app/Constructor/reducer';
@@ -11,9 +9,7 @@ import defaults from '../app/reducers/defaults/reducer';
 export default {
   user,
   constructor,
-  maps,
   map,
-  app,
   scopedObjects,
   modals,
   templates,

@@ -1,30 +1,21 @@
 // @flow
 import React, { Fragment } from 'react';
-
 import { withStyles } from '@material-ui/core/styles';
 import { Slider } from '@material-ui/lab';
 import {
-  Button,
-  ClickAwayListener,
-  Grow,
-  Paper,
-  Popper,
-  MenuList,
+  Button, ClickAwayListener, Grow, Paper, Popper, MenuList,
 } from '@material-ui/core';
 
-import type {
-  IGraphControlProps,
-  IGraphControlState,
-} from './types';
+import DropDownIcon from '../../../../shared/assets/icons/dropdown.svg';
+import ScaleIcon from '../../../../shared/assets/icons/scale.svg';
 
-import { sliderSteps } from './config';
+import type { IGraphControlProps, IGraphControlState } from './types';
+
+import { SLIDER_STEPS } from './config';
 
 import styles, {
   ZoomContainer, ZoomWrapper, ScaleIconWrapper,
 } from './styles';
-
-import DropDownIcon from '../../../../shared/assets/icons/dropdown.svg';
-import ScaleIcon from '../../../../shared/assets/icons/scale.svg';
 
 export class ZoomControls extends React.Component<IGraphControlProps, IGraphControlState> {
   constructor(props: IGraphControlProps) {
@@ -68,19 +59,19 @@ export class ZoomControls extends React.Component<IGraphControlProps, IGraphCont
       return 0;
     }
 
-    return sliderSteps;
+    return SLIDER_STEPS;
   };
 
-  // Convert slider val (0-sliderSteps) to original zoom value range
+  // Convert slider val (0-SLIDER_STEPS) to original zoom value range
   sliderToZoom(val: number) {
     const { minZoom = 0, maxZoom = 1 } = this.props;
-    return val * (maxZoom - minZoom) / sliderSteps + minZoom;
+    return val * (maxZoom - minZoom) / SLIDER_STEPS + minZoom;
   }
 
   // Convert zoom val (minZoom-maxZoom) to slider range
   zoomToSlider(val: number) {
     const { minZoom = 0, maxZoom = 1 } = this.props;
-    return (val - minZoom) * sliderSteps / (maxZoom - minZoom);
+    return (val - minZoom) * SLIDER_STEPS / (maxZoom - minZoom);
   }
 
   anchorEl: { current: null | HTMLDivElement };

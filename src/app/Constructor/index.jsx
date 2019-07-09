@@ -25,9 +25,8 @@ import type { Node as NodeType } from './Graph/Node/types';
 import type { MapItem as MapItemType } from '../reducers/map/types';
 import type { IConstructorProps, IConstructorState } from './types';
 
+import { MODALS_NAMES } from '../Modals/config';
 import { CONFIRMATION_MODALS } from './config';
-
-import { ConstructorWrapper } from './styles';
 
 export class Constructor extends PureComponent<IConstructorProps, IConstructorState> {
   templateInputName: { current: null | React$Element<any> };
@@ -66,7 +65,7 @@ export class Constructor extends PureComponent<IConstructorProps, IConstructorSt
   }
 
   static getSelectedNode(map: MapItemType): NodeType | null {
-    const selectedNode = map.nodes.find(node => node.isSelected);
+    const selectedNode = map.nodes.find(({ isSelected }) => isSelected);
     if (d3.event) {
       if (d3.event.type !== 'mousedown') {
         return null;
@@ -80,7 +79,7 @@ export class Constructor extends PureComponent<IConstructorProps, IConstructorSt
   }
 
   static getSelectedEdge(map: MapItemType): EdgeType | null {
-    const selectedLink = map.edges.find(edge => edge.isSelected);
+    const selectedLink = map.edges.find(({ isSelected }) => isSelected);
     if (selectedLink) {
       return selectedLink;
     }
@@ -172,59 +171,59 @@ export class Constructor extends PureComponent<IConstructorProps, IConstructorSt
     } = this.props;
 
     return (
-      <ConstructorWrapper>
-        <Fullscreen
-          enabled={isFullScreen}
-          onChange={this.changeIfFullScreen}
-        >
-          <ToolbarTemplates
-            fullscreenHandler={this.toggleFullScreen}
-            showModal={this.showModal}
-            isFullScreen={isFullScreen}
-          />
+      <Fullscreen
+        enabled={isFullScreen}
+        onChange={this.changeIfFullScreen}
+      >
+        <ToolbarTemplates
+          fullscreenHandler={this.toggleFullScreen}
+          showModal={this.showModal}
+          isFullScreen={isFullScreen}
+        />
 
-          <Graph
-            isFullScreen={isFullScreen}
-          />
-          { !!selectedLink && <LinkEditor link={selectedLink} /> }
-          { !!selectedNode && <NodeEditor node={selectedNode} /> }
-          { isShowSOPicker && <SOPicker /> }
+        <Graph
+          isFullScreen={isFullScreen}
+        />
 
-          {isShowCreateTemplateModal && (
-            <ConfirmationModal
-              label="Create template"
-              text="Please enter name of template:"
-              onClose={() => this.closeModal(CONFIRMATION_MODALS.CREATE_TEMPLATE)}
-              onSave={this.saveTemplateFromMap}
-              showFooterButtons
-            >
-              <Input
-                ref={this.templateInputName}
-                label="Template Name"
-                autoFocus
-                fullWidth
-              />
-            </ConfirmationModal>
-          )}
-          {isShowPreBuiltTemplatesModal && (
-            <TemplatesModal
-              label="Pre-built templates"
-              text="Please choose appropriate template:"
-              onClose={() => this.closeModal(CONFIRMATION_MODALS.PRE_BUILT_TEMPLATES)}
-              onTemplateChoose={this.handleTemplateChoose}
-              templates={templates}
-              isTemplatesFetching={isTemplatesFetching}
+        { !!selectedLink && <LinkEditor link={selectedLink} /> }
+        { !!selectedNode && <NodeEditor node={selectedNode} /> }
+        { isShowSOPicker && <SOPicker /> }
+
+        {isShowCreateTemplateModal && (
+          <ConfirmationModal
+            label="Create template"
+            text="Please enter name of template:"
+            onClose={() => this.closeModal(CONFIRMATION_MODALS.CREATE_TEMPLATE)}
+            onSave={this.saveTemplateFromMap}
+            showFooterButtons
+          >
+            <Input
+              ref={this.templateInputName}
+              label="Template Name"
+              autoFocus
+              fullWidth
             />
-          )}
-        </Fullscreen>
-      </ConstructorWrapper>
+          </ConfirmationModal>
+        )}
+
+        {isShowPreBuiltTemplatesModal && (
+          <TemplatesModal
+            label="Pre-built templates"
+            text="Please choose appropriate template:"
+            onClose={() => this.closeModal(CONFIRMATION_MODALS.PRE_BUILT_TEMPLATES)}
+            onTemplateChoose={this.handleTemplateChoose}
+            templates={templates}
+            isTemplatesFetching={isTemplatesFetching}
+          />
+        )}
+      </Fullscreen>
     );
   }
 }
 
 const mapStateToProps = ({ map, modals, templates }) => ({
   map,
-  isShowSOPicker: modals.SOPickerModal.isShow,
+  isShowSOPicker: modals[MODALS_NAMES.SO_PICKER_MODAL].isShow,
   templates: templates.list,
   isTemplatesFetching: templates.isFetching,
 });

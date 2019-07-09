@@ -117,13 +117,3 @@ export const scopedObjectDetailsFromServer = SODetails => ({
   startValue: SODetails.startValue,
   outOf: SODetails.outOf,
 });
-
-export default {
-  edgeToServer,
-  edgeFromServer,
-  nodeToServer,
-  nodeFromServer,
-  mapFromServer,
-  templateFromServer,
-  scopedObjectFromServer,
-};

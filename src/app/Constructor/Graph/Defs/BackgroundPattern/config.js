@@ -1,6 +1,5 @@
-// @flow
-export const patternId: string = 'grid';
+export const PATTERN_ID = 'grid';
 
 export default {
-  patternId,
+  PATTERN_ID,
 };

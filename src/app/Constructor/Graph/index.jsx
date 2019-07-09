@@ -11,7 +11,7 @@ import GraphView from './GraphView';
 
 import { createNewEdge, createNewNode } from './utils';
 import { EDGE_TYPES, NODE_CREATION_OFFSET } from './config';
-import { DndContexts, ModalsNames } from '../../Modals/config';
+import { DND_CONTEXTS, MODALS_NAMES } from '../../Modals/config';
 
 import * as graphActions from '../../reducers/map/action';
 import * as modalActions from '../../Modals/action';
@@ -71,7 +71,7 @@ export class Graph extends Component<IGraphProps, IGraphState> {
     } = this.props;
 
     if (item) {
-      ACTION_SET_POSITION_MODAL(ModalsNames.NODE_EDITOR_MODAL, clientX, clientY);
+      ACTION_SET_POSITION_MODAL(MODALS_NAMES.NODE_EDITOR_MODAL, clientX, clientY);
     }
 
     ACTION_SELECT_ITEM(itemId);
@@ -85,7 +85,7 @@ export class Graph extends Component<IGraphProps, IGraphState> {
     } = this.props;
 
     if (item) {
-      ACTION_SET_POSITION_MODAL(ModalsNames.LINK_EDITOR_MODAL, clientX, clientY);
+      ACTION_SET_POSITION_MODAL(MODALS_NAMES.LINK_EDITOR_MODAL, clientX, clientY);
     }
 
     ACTION_SELECT_ITEM(itemId);
@@ -327,7 +327,7 @@ const collect = conn => ({
 });
 
 export default DropTarget(
-  DndContexts.VIEWPORT,
+  DND_CONTEXTS.VIEWPORT,
   spec,
   collect,
 )(
