@@ -18,6 +18,7 @@ import TemplatesModal from '../../shared/components/TemplatesModal';
 
 import * as mapActions from '../reducers/map/action';
 import * as templatesActions from '../reducers/templates/action';
+import * as constructorActions from './action';
 
 import type { Edge as EdgeType } from './Graph/Edge/types';
 import type { Node as NodeType } from './Graph/Node/types';
@@ -35,7 +36,6 @@ export class Constructor extends PureComponent<IConstructorProps, IConstructorSt
     this.state = {
       selectedLink: null,
       selectedNode: null,
-      isFullScreen: false,
       isShowCreateTemplateModal: false,
       isShowPreBuiltTemplatesModal: false,
     };
@@ -96,16 +96,6 @@ export class Constructor extends PureComponent<IConstructorProps, IConstructorSt
     }
   }
 
-  changeIfFullScreen = (isFullScreen: boolean): void => {
-    this.setState({ isFullScreen });
-  };
-
-  toggleFullScreen = (): void => {
-    this.setState(({ isFullScreen }) => ({
-      isFullScreen: !isFullScreen,
-    }));
-  };
-
   showModal = (modalName: string): void => {
     const { ACTION_TEMPLATES_REQUESTED } = this.props;
 
@@ -153,32 +143,20 @@ export class Constructor extends PureComponent<IConstructorProps, IConstructorSt
 
   render() {
     const {
-      isFullScreen,
-      selectedNode,
-      selectedLink,
-      isShowCreateTemplateModal,
-      isShowPreBuiltTemplatesModal,
+      selectedNode, selectedLink, isShowCreateTemplateModal, isShowPreBuiltTemplatesModal,
     } = this.state;
     const {
-      isShowSOPicker,
-      templates,
-      isTemplatesFetching,
+      isShowSOPicker, templates, isTemplatesFetching, isFullScreen, ACTION_SET_FULLSCREEN,
     } = this.props;
 
     return (
       <Fullscreen
         enabled={isFullScreen}
-        onChange={this.changeIfFullScreen}
+        onChange={ACTION_SET_FULLSCREEN}
       >
-        <ToolbarTemplates
-          fullscreenHandler={this.toggleFullScreen}
-          showModal={this.showModal}
-          isFullScreen={isFullScreen}
-        />
+        <ToolbarTemplates showModal={this.showModal} />
 
-        <Graph
-          isFullScreen={isFullScreen}
-        />
+        <Graph />
 
         { !!selectedLink && <LinkEditor link={selectedLink} /> }
         { !!selectedNode && <NodeEditor node={selectedNode} /> }
@@ -216,11 +194,14 @@ export class Constructor extends PureComponent<IConstructorProps, IConstructorSt
   }
 }
 
-const mapStateToProps = ({ map, modals, templates }) => ({
+const mapStateToProps = ({
+  map, modals, templates, constructor,
+}) => ({
   map,
   isShowSOPicker: modals[MODALS_NAMES.SO_PICKER_MODAL].isShow,
   templates: templates.list,
   isTemplatesFetching: templates.isFetching,
+  isFullScreen: constructor.isFullScreen,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -235,6 +216,9 @@ const mapDispatchToProps = dispatch => ({
   },
   ACTION_TEMPLATES_REQUESTED: () => {
     dispatch(templatesActions.ACTION_TEMPLATES_REQUESTED());
+  },
+  ACTION_SET_FULLSCREEN: (isFullScreen: boolean) => {
+    dispatch(constructorActions.ACTION_SET_FULLSCREEN(isFullScreen));
   },
 });
 

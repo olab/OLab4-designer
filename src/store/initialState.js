@@ -15,20 +15,11 @@ import type { Defaults as DefaultsType } from '../app/reducers/defaults/types';
 import type { Templates as TemplatesType } from '../app/reducers/templates/types';
 import type { ScopedObjectsState as ScopedObjectsType } from '../app/reducers/scopedObjects/types';
 
-export type App = {
-  loadingState: Array<{
-    id: string,
-    isLoading: boolean,
-  }>,
-};
-
 export type Store = {
   user: UserType,
   constructor: ConstructorType,
   map: MapType,
-  maps: Array<MapType>,
   templates: TemplatesType,
-  app: App,
   scopedObjects: ScopedObjectsType,
   modals: ModalsType,
   defaults: DefaultsType,
@@ -38,11 +29,7 @@ const initialState: Store = {
   user: initialUserState,
   constructor: initialConstructorState,
   map: initialMapState,
-  maps: [],
   templates: initialTemplatesState,
-  app: {
-    loadingState: [],
-  },
   scopedObjects: initialScopedObjectsState,
   modals: initialModalsState,
   defaults: initialDefaultsState,

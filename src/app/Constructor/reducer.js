@@ -2,8 +2,10 @@
 import {
   type ConstructorActions,
   type Constructor as ConstructorType,
-  SET_ZOOM_CONTROLS_REF,
   SET_CURSOR,
+  SET_FULLSCREEN,
+  TOGGLE_FULLSCREEN,
+  SET_ZOOM_CONTROLS_REF,
 } from './types';
 
 export const initialConstructorState: ConstructorType = {
@@ -22,6 +24,7 @@ export const initialConstructorState: ConstructorType = {
     enabled: true,
     interval: 30000,
   },
+  isFullScreen: false,
 };
 
 const constructor = (
@@ -48,6 +51,22 @@ const constructor = (
       return {
         ...state,
         cursor,
+      };
+    }
+    case TOGGLE_FULLSCREEN: {
+      const { isFullScreen, ...restState } = state;
+
+      return {
+        ...restState,
+        isFullScreen: !isFullScreen,
+      };
+    }
+    case SET_FULLSCREEN: {
+      const { isFullScreen } = action;
+
+      return {
+        ...state,
+        isFullScreen,
       };
     }
     default:

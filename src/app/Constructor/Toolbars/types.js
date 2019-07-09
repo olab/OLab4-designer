@@ -20,17 +20,14 @@ export type ToolbarGroup = {
 
 export type IToolbarsProps = {
   classes: any,
-  fullscreenHandler: Function,
   showModal: Function,
-  isFullScreen: boolean,
   isUndoAvailable: boolean,
   isRedoAvailable: boolean,
   SOPickerModal: SOPickerType,
   ACTION_UNDO_MAP: Function,
   ACTION_REDO_MAP: Function,
-  ACTION_SET_ZOOM_CONTROLS_REF: (
-    ref: { current: null | HTMLDivElement },
-  ) => void,
+  ACTION_TOGGLE_FULLSCREEN: Function,
+  ACTION_SET_ZOOM_CONTROLS_REF: Function,
   ACTION_TOGGLE_MODAL: Function,
   ACTION_SET_POSITION_MODAL: Function,
 };

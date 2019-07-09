@@ -1,5 +1,10 @@
 // @flow
-import { SET_ZOOM_CONTROLS_REF, SET_CURSOR } from './types';
+import {
+  SET_CURSOR,
+  SET_FULLSCREEN,
+  TOGGLE_FULLSCREEN,
+  SET_ZOOM_CONTROLS_REF,
+} from './types';
 
 export const ACTION_SET_ZOOM_CONTROLS_REF = (ref: { current: null | HTMLDivElement }) => ({
   type: SET_ZOOM_CONTROLS_REF,
@@ -9,4 +14,13 @@ export const ACTION_SET_ZOOM_CONTROLS_REF = (ref: { current: null | HTMLDivEleme
 export const ACTION_SET_CURSOR = (cursor: string) => ({
   type: SET_CURSOR,
   cursor,
+});
+
+export const ACTION_TOGGLE_FULLSCREEN = () => ({
+  type: TOGGLE_FULLSCREEN,
+});
+
+export const ACTION_SET_FULLSCREEN = (isFullScreen: boolean) => ({
+  type: SET_FULLSCREEN,
+  isFullScreen,
 });

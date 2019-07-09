@@ -13,11 +13,12 @@ export type IConstructorProps = {
   ACTION_TEMPLATE_UPLOAD_REQUESTED: Function,
   ACTION_TEMPLATES_REQUESTED: Function,
   ACTION_EXTEND_MAP_REQUESTED: Function,
+  ACTION_SET_FULLSCREEN: Function,
   templates: Array<TemplateType>,
   isTemplatesFetching: boolean,
+  isFullScreen: boolean,
 };
 export type IConstructorState = {
-  isFullScreen: boolean,
   selectedLink: EdgeType | null,
   selectedNode: NodeType | null,
   isShowCreateTemplateModal: boolean,
@@ -40,6 +41,7 @@ export type Constructor = {
     enabled: boolean,
     interval: number,
   },
+  isFullScreen: boolean,
 };
 
 const SET_ZOOM_CONTROLS_REF = 'SET_ZOOM_CONTROLS_REF';
@@ -54,9 +56,23 @@ type SetCursor = {
   cursor: string,
 };
 
-export type ConstructorActions = SetZoomControlsRef | SetCursor;
+const SET_FULLSCREEN = 'SET_FULLSCREEN';
+type SetFullscreen = {
+  type: 'SET_FULLSCREEN',
+  isFullScreen: boolean,
+};
+
+const TOGGLE_FULLSCREEN = 'TOGGLE_FULLSCREEN';
+type ToggleFullscreen = {
+  type: 'TOGGLE_FULLSCREEN',
+};
+
+export type ConstructorActions = SetZoomControlsRef |
+  SetFullscreen | ToggleFullscreen | SetCursor;
 
 export {
-  SET_ZOOM_CONTROLS_REF,
   SET_CURSOR,
+  SET_FULLSCREEN,
+  TOGGLE_FULLSCREEN,
+  SET_ZOOM_CONTROLS_REF,
 };

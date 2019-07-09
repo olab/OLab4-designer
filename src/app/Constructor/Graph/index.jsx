@@ -247,18 +247,15 @@ export class Graph extends Component<IGraphProps, IGraphState> {
   }
 }
 
-const mapStateToProps = ({
+const mapStateToProps = ({ map, defaults, constructor }) => ({
   map,
-  constructor: { zoom, layoutEngineType },
   defaults,
-}) => ({
-  minZoom: zoom.minZoom,
-  maxZoom: zoom.maxZoom,
-  map,
-  layoutEngineType,
+  minZoom: constructor.zoom.minZoom,
+  maxZoom: constructor.zoom.maxZoom,
   isUndoAvailable: !!map.undo.length,
   isRedoAvailable: !!map.redo.length,
-  defaults,
+  layoutEngineType: constructor.layoutEngineType,
+  isFullScreen: constructor.isFullScreen,
 });
 
 const mapDispatchToProps = dispatch => ({

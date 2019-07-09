@@ -38,7 +38,7 @@ export class Toolbars extends Component<IToolbarsProps, IToolbarsState> {
   constructor(props: IToolbarsProps) {
     super(props);
 
-    const { fullscreenHandler, showModal } = props;
+    const { ACTION_TOGGLE_FULLSCREEN, showModal } = props;
 
     this.state = {
       expand: '',
@@ -121,7 +121,7 @@ export class Toolbars extends Component<IToolbarsProps, IToolbarsState> {
             name: 'fullscreen',
             icon: fullscreenIcon,
             mouseIcon: 'template_mouse_icon',
-            onClick: fullscreenHandler,
+            onClick: ACTION_TOGGLE_FULLSCREEN,
             order: 10,
             label: 'Go to fullscreen',
           },
@@ -285,6 +285,9 @@ const mapStateToProps = ({ map: { undo, redo }, modals }) => ({
 });
 
 const mapDispatchToProps = dispatch => ({
+  ACTION_TOGGLE_FULLSCREEN: () => {
+    dispatch(constructorActions.ACTION_TOGGLE_FULLSCREEN());
+  },
   ACTION_SET_ZOOM_CONTROLS_REF: (ref: { current: null | HTMLDivElement }) => {
     dispatch(constructorActions.ACTION_SET_ZOOM_CONTROLS_REF(ref));
   },
