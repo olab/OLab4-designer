@@ -27,7 +27,6 @@ const OutlinedSelect = ({
           name={name}
           classes={{
             input: classes.inputSelect,
-            root: classes.root,
           }}
         />
       )}

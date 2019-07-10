@@ -652,10 +652,9 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
       return;
     }
 
-    const { readOnly, onSelectNode, onCreateNode } = this.props;
+    const { readOnly, onCreateNode } = this.props;
     const previousSelection = (selectedNodeObj && selectedNodeObj.node) || null;
     const shouldCreateNode = !readOnly && shiftKey && !isLinkingStarted;
-    const shouldUnselectNode = !shiftKey && !isLinkingStarted;
 
     if (previousSelection) {
       this.syncRenderNode(previousSelection);
@@ -664,10 +663,6 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
     if (shouldCreateNode) {
       const [x, y] = d3.mouse(target);
       onCreateNode(x, y);
-    }
-
-    if (shouldUnselectNode) {
-      onSelectNode(null);
     }
 
     this.setState({
@@ -1178,7 +1173,7 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
 
   getEdgeComponent = (edge: EdgeType | any) => {
     const { isLinkingStarted } = this.state;
-    const { edgeTypes, edgeHandleSize } = this.props;
+    const { edgeTypes, edgeDefaults } = this.props;
     const srcNodeMap = this.getNodeById(edge.source);
     const sourceNode = srcNodeMap ? srcNodeMap.node : null;
     const trgNodeMap = this.getNodeById(edge.target);
@@ -1188,7 +1183,7 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
       <Edge
         data={edge}
         edgeTypes={edgeTypes}
-        edgeHandleSize={edgeHandleSize}
+        edgeDefaults={edgeDefaults}
         sourceNode={sourceNode}
         targetNode={targetNode || edge.targetPosition}
         viewWrapperElem={this.viewWrapper.current}
@@ -1363,9 +1358,10 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
   }
 }
 
-const mapStateToProps = ({ constructor: { cursor, zoom } }) => ({
-  zoomControlsRef: zoom.zoomControlsRef,
-  cursor,
+const mapStateToProps = ({ constructor, defaults }) => ({
+  zoomControlsRef: constructor.zoom.zoomControlsRef,
+  cursor: constructor.cursor,
+  edgeDefaults: defaults.edgeBody,
 });
 
 const mapDispatchToProps = dispatch => ({

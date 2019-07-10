@@ -8,3 +8,5 @@ export const VARIANT = {
   DOTTED: 3,
   DOTTED_DOM: 5,
 };
+
+export const EDGE_HANDLE_SIZE = 24;

@@ -1,10 +1,8 @@
 const styles = () => ({
-  root: {
-    marginRight: 20,
-  },
   inputSelect: {
     padding: '8px 15px',
     paddingRight: '32px',
+    maxWidth: '7rem',
   },
   fullWidth: {
     margin: 0,

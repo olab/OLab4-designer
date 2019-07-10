@@ -2,11 +2,10 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { DragSource } from 'react-dnd';
-import { withStyles } from '@material-ui/core/styles';
-import { IconButton, InputLabel, Button } from '@material-ui/core';
-import { SwapVertRounded as ReverseIcon } from '@material-ui/icons';
+import { Button } from '@material-ui/core';
 
 import Slider from './Slider';
+import ChangeDirection from './ChangeDirection';
 import Switch from '../../../shared/components/Switch';
 import ColorPicker from '../../../shared/components/ColorPicker';
 import OutlinedInput from '../../../shared/components/OutlinedInput';
@@ -17,28 +16,34 @@ import type { Edge as LinkType } from '../../Constructor/Graph/Edge/types';
 import type { ILinkEditorProps, ILinkEditorState } from './types';
 
 import * as modalActions from '../action';
-import * as graphActions from '../../reducers/map/action';
-import {
-  LINK_VARIANTS, THICKNESS_MIN, THICKNESS_MAX, THICKNESS_STEP,
-} from './config';
-import { DND_CONTEXTS, MODALS_NAMES } from '../config';
+import * as mapActions from '../../reducers/map/action';
 
 import {
-  ModalWrapper, ModalHeader, ModalBody, ModalFooter,
+  DND_CONTEXTS, MODALS_NAMES, LINK_STYLES,
+} from '../config';
+import {
+  THICKNESS_MIN, THICKNESS_MAX, THICKNESS_STEP, LINK_VARIANTS,
+} from './config';
+
+import {
+  ModalWrapper, ModalHeader, ModalBody, ModalFooter, ArticleItem,
 } from '../styles';
-import styles, { ChangeDirectionWrapper } from './styles';
+import {
+  MenusArticle, SwitchArticle,
+} from './styles';
 
 class LinkEditor extends PureComponent<ILinkEditorProps, ILinkEditorState> {
   defaultLinkProps: LinkType | null;
 
   isLinkHasSibling: boolean = false;
 
+  shouldUpdateVisual: boolean = false;
+
   constructor(props: ILinkEditorProps) {
     super(props);
 
     this.state = {
       ...props.link,
-      shouldUpdateVisual: false,
     };
 
     this.defaultLinkProps = {
@@ -51,11 +56,15 @@ class LinkEditor extends PureComponent<ILinkEditorProps, ILinkEditorState> {
   // eslint-disable-next-line camelcase
   UNSAFE_componentWillReceiveProps(nextProps: ILinkEditorProps) {
     const { link } = nextProps;
-    const { id: linkId } = this.state;
-    const { ACTION_UPDATE_EDGE } = this.props;
+    const { ACTION_UPDATE_EDGE, link: prevLink } = this.props;
 
-    if (link.id !== linkId) {
-      ACTION_UPDATE_EDGE(this.defaultLinkProps, true);
+    if (link.id !== prevLink.id) {
+      const previousLink = {
+        ...this.defaultLinkProps,
+        isSelected: false,
+      };
+
+      ACTION_UPDATE_EDGE(previousLink, true);
 
       this.isLinkHasSibling = this.checkIfLinkHasSibling(link);
 
@@ -70,14 +79,12 @@ class LinkEditor extends PureComponent<ILinkEditorProps, ILinkEditorState> {
   }
 
   componentDidUpdate() {
-    const { shouldUpdateVisual, ...link } = this.state;
     const { ACTION_UPDATE_EDGE } = this.props;
 
-    if (shouldUpdateVisual) {
-      ACTION_UPDATE_EDGE(link, true);
+    if (this.shouldUpdateVisual) {
+      ACTION_UPDATE_EDGE(this.state, true);
 
-      // eslint-disable-next-line react/no-did-update-set-state
-      this.setState({ shouldUpdateVisual: false });
+      this.shouldUpdateVisual = false;
     }
   }
 
@@ -94,43 +101,42 @@ class LinkEditor extends PureComponent<ILinkEditorProps, ILinkEditorState> {
   }
 
   handleSwitchChange = (e: Event, checked: boolean, name: string): void => {
-    this.setState({
-      [name]: checked,
-      shouldUpdateVisual: true,
-    });
+    this.setState({ [name]: checked });
+    this.shouldUpdateVisual = true;
   }
 
   handleInputChange = (e: Event): void => {
     const { value, name } = (e.target: window.HTMLInputElement);
 
-    this.setState({
-      [name]: value,
-      shouldUpdateVisual: true,
-    });
+    this.setState({ [name]: value });
+    this.shouldUpdateVisual = true;
   }
 
-  handleVariantChange = (e: Event): void => {
+  handleSelectChange = (e: Event): void => {
     const { value, name } = (e.target: window.HTMLInputElement);
-    const index = LINK_VARIANTS.findIndex(variant => variant === value);
 
-    this.setState({
-      [name]: index + 1,
-      shouldUpdateVisual: true,
-    });
+    let menuItems = [];
+
+    if (name === 'variant') {
+      menuItems = LINK_VARIANTS;
+    } else if (name === 'linkStyle') {
+      menuItems = LINK_STYLES;
+    }
+
+    const index = menuItems.findIndex(item => item === value);
+
+    this.setState({ [name]: index + 1 });
+    this.shouldUpdateVisual = true;
   }
 
   handleSliderChange = (e: Event, thickness: number): void => {
-    this.setState({
-      thickness,
-      shouldUpdateVisual: true,
-    });
+    this.setState({ thickness });
+    this.shouldUpdateVisual = true;
   };
 
   handleColorChange = (color: string): void => {
-    this.setState({
-      color,
-      shouldUpdateVisual: true,
-    });
+    this.setState({ color });
+    this.shouldUpdateVisual = true;
   }
 
   handleDirectionChange = (): void => {
@@ -139,18 +145,17 @@ class LinkEditor extends PureComponent<ILinkEditorProps, ILinkEditorState> {
     this.setState({
       source: target,
       target: source,
-      shouldUpdateVisual: true,
     });
+    this.shouldUpdateVisual = true;
   }
 
   applyChanges = (): void => {
-    const { shouldUpdateVisual, ...link } = this.state;
     const { ACTION_UPDATE_EDGE } = this.props;
 
-    ACTION_UPDATE_EDGE(link);
+    ACTION_UPDATE_EDGE(this.state);
 
     this.defaultLinkProps = {
-      ...link,
+      ...this.state,
     };
   }
 
@@ -163,11 +168,13 @@ class LinkEditor extends PureComponent<ILinkEditorProps, ILinkEditorState> {
 
   render() {
     const {
-      label, color, variant, thickness, isHidden,
+      label, color, variant, thickness, linkStyle, isHidden, isFollowOnce,
     } = this.state;
     const {
-      x, y, isDragging, connectDragSource, connectDragPreview, layoutEngineType, classes,
+      x, y, isDragging, connectDragSource, connectDragPreview, layoutEngineType,
     } = this.props;
+
+    const isShowChangeDirection = layoutEngineType !== 'VerticalTree' && !this.isLinkHasSibling;
 
     if (isDragging) {
       return null;
@@ -198,16 +205,26 @@ class LinkEditor extends PureComponent<ILinkEditorProps, ILinkEditorState> {
               fullWidth
             />
           </article>
-          <article>
+          <MenusArticle>
+            <OutlinedSelect
+              label="Link Style"
+              name="linkStyle"
+              labelWidth={70}
+              value={LINK_STYLES[linkStyle - 1]}
+              values={LINK_STYLES}
+              onChange={this.handleSelectChange}
+              fullWidth
+            />
             <OutlinedSelect
               label="Style"
               name="variant"
               labelWidth={40}
               value={LINK_VARIANTS[variant - 1]}
               values={LINK_VARIANTS}
-              onChange={this.handleVariantChange}
+              onChange={this.handleSelectChange}
+              fullWidth
             />
-          </article>
+          </MenusArticle>
           <article>
             <Slider
               label="Thickness"
@@ -218,7 +235,22 @@ class LinkEditor extends PureComponent<ILinkEditorProps, ILinkEditorState> {
               onChange={this.handleSliderChange}
             />
           </article>
-          <article>
+          <ArticleItem>
+            <ColorPicker
+              label="Color"
+              color={color}
+              onChange={this.handleColorChange}
+            />
+            {isShowChangeDirection && (
+              <ChangeDirection
+                label="Change Direction"
+                title="Change Link Direction"
+                size="small"
+                onClick={this.handleDirectionChange}
+              />
+            )}
+          </ArticleItem>
+          <SwitchArticle>
             <Switch
               name="isHidden"
               label="Hidden"
@@ -226,28 +258,14 @@ class LinkEditor extends PureComponent<ILinkEditorProps, ILinkEditorState> {
               checked={isHidden}
               onChange={this.handleSwitchChange}
             />
-            {layoutEngineType !== 'VerticalTree' && !this.isLinkHasSibling && (
-              <ChangeDirectionWrapper>
-                <InputLabel>Change Direction</InputLabel>
-                <IconButton
-                  aria-label="Change Link Direction"
-                  title="Change Link Direction"
-                  size="small"
-                  classes={{ root: classes.reverseIcon }}
-                  onClick={this.handleDirectionChange}
-                >
-                  <ReverseIcon />
-                </IconButton>
-              </ChangeDirectionWrapper>
-            )}
-          </article>
-          <article>
-            <ColorPicker
-              label="Color"
-              color={color}
-              onChange={this.handleColorChange}
+            <Switch
+              name="isFollowOnce"
+              label="Follow Once"
+              labelPlacement="start"
+              checked={isFollowOnce}
+              onChange={this.handleSwitchChange}
             />
-          </article>
+          </SwitchArticle>
         </ModalBody>
         <ModalFooter>
           <Button
@@ -271,10 +289,10 @@ const mapStateToProps = ({ map, modals, constructor }) => ({
 
 const mapDispatchToProps = dispatch => ({
   ACTION_UPDATE_EDGE: (edge: LinkType, isVisualOnly: boolean = false) => {
-    dispatch(graphActions.ACTION_UPDATE_EDGE(edge, isVisualOnly));
+    dispatch(mapActions.ACTION_UPDATE_EDGE(edge, isVisualOnly));
   },
   ACTION_DESELECT_EDGE: () => {
-    dispatch(graphActions.ACTION_SELECT_EDGE(null));
+    dispatch(mapActions.ACTION_SELECT_EDGE(null));
   },
   ACTION_SET_POSITION_MODAL: (x: number, y: number) => {
     dispatch(modalActions.ACTION_SET_POSITION_MODAL(
@@ -325,11 +343,9 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps,
 )(
-  withStyles(styles)(
-    DragSource(
-      DND_CONTEXTS.VIEWPORT,
-      spec,
-      collect,
-    )(LinkEditor),
-  ),
+  DragSource(
+    DND_CONTEXTS.VIEWPORT,
+    spec,
+    collect,
+  )(LinkEditor),
 );

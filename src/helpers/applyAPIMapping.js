@@ -1,17 +1,14 @@
 export const edgeToServer = edgeData => ({
   id: edgeData.id,
   text: edgeData.label,
-  typeId: 1,
-  styleId: 5,
-  hidden: Number(edgeData.isHidden),
-  order: 0,
-  probability: 0,
-  imageId: 0,
+  linkStyleId: edgeData.linkStyle,
   thickness: edgeData.thickness,
   color: edgeData.color,
   lineType: edgeData.variant,
   sourceId: edgeData.source,
   destinationId: edgeData.target,
+  hidden: Number(edgeData.isHidden),
+  followOnce: Number(edgeData.isFollowOnce),
 });
 
 export const edgeFromServer = edgeData => ({
@@ -19,10 +16,12 @@ export const edgeFromServer = edgeData => ({
   label: edgeData.text || '',
   color: edgeData.color,
   variant: edgeData.lineType,
+  linkStyle: edgeData.linkStyleId,
   thickness: edgeData.thickness,
   source: edgeData.sourceId,
   target: edgeData.destinationId,
   isHidden: Boolean(edgeData.hidden),
+  isFollowOnce: Boolean(edgeData.followOnce),
   isSelected: false,
 });
 
@@ -30,8 +29,10 @@ export const edgeDefaultsFromServer = edgeDefault => ({
   label: edgeDefault.text,
   color: edgeDefault.color,
   variant: edgeDefault.lineType,
+  linkStyle: edgeDefault.linkStyleId,
   thickness: edgeDefault.thickness,
   isHidden: Boolean(edgeDefault.hidden),
+  isFollowOnce: Boolean(edgeDefault.followOnce),
 });
 
 export const nodeToServer = nodeData => ({

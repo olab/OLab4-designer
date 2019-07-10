@@ -1,6 +1,7 @@
 // @flow
 import type { Node as NodeType } from '../Node/types';
 import type { Edge as EdgeType } from '../Edge/types';
+import type { DefaultEdge as DefaultEdgeType } from '../../../reducers/defaults/types';
 
 export type ITargetPosition = {
   clientX: number,
@@ -45,7 +46,6 @@ export type IGraphViewProps = {
   backgroundFillId?: string,
   edges: any[],
   edgeArrowSize?: number,
-  edgeHandleSize?: number,
   edgeTypes: any,
   gridDotSize?: number,
   gridSize?: number,
@@ -84,4 +84,5 @@ export type IGraphViewProps = {
   ) => void,
   zoomControlsRef: HTMLDivElement | null,
   ACTION_SET_CURSOR: Function,
+  edgeDefaults: DefaultEdgeType,
 };

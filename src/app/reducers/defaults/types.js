@@ -4,7 +4,9 @@ export type DefaultEdge = {
   color: string,
   variant: number | null,
   thickness: number | null,
+  linkStyle: number | null,
   isHidden: boolean | null,
+  isFollowOnce: boolean | null,
 };
 
 export type DefaultNode = {

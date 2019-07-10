@@ -1,14 +1,16 @@
 import styled from 'styled-components';
 
-export const ChangeDirectionWrapper = styled.div`
-  display: inline-block;
+export const SwitchArticle = styled.article`
+  display: flex;
+  justify-content: space-between;
 `;
 
-const styles = () => ({
-  reverseIcon: {
-    padding: 5,
-    marginLeft: 5,
-  },
-});
+export const MenusArticle = styled(SwitchArticle)`
+  > div:first-of-type {
+    margin-right: .5rem;
+  }
 
-export default styles;
+  > div:last-of-type {
+    margin-left: .5rem;
+  }
+`;

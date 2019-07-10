@@ -3,12 +3,9 @@ import type { Edge as EdgeType } from '../../Constructor/Graph/Edge/types';
 import type { ModalPosition as ModalPositionType } from '../types';
 
 export type ILinkEditorProps = {
-  classes: {
-    [props: string]: any,
-  },
   ...ModalPositionType,
   link: EdgeType,
-  edges: Array<EdgeType>,
+  links: Array<EdgeType>,
   isDragging: boolean;
   connectDragSource: Function;
   connectDragPreview: Function;
@@ -18,7 +15,4 @@ export type ILinkEditorProps = {
   layoutEngineType: string,
 };
 
-export type ILinkEditorState = {
-  ...EdgeType,
-  shouldUpdateVisual: boolean,
-};
+export type ILinkEditorState = EdgeType;

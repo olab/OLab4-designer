@@ -65,3 +65,9 @@ export const ModalFooter = styled.div`
     margin-right: 0.5rem;
   }
 `;
+
+export const ArticleItem = styled.article`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;

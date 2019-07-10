@@ -11,7 +11,9 @@ export const initialDefaultsState: DefaultsType = {
     color: '',
     variant: null,
     thickness: null,
+    linkStyle: null,
     isHidden: null,
+    isFollowOnce: null,
   },
   nodeBody: {
     title: '',

@@ -8,12 +8,13 @@ import { intersect, shape } from 'svg-intersections';
 import { Point2D, Matrix2D } from 'kld-affine';
 import { Intersection } from 'kld-intersections';
 
-import type {
-  IEdgeProps, ITargetPosition, Edge as EdgeType,
-} from './types';
+import type { IEdgeProps, Edge as EdgeType } from './types';
 
-import { BLUE_GREY } from '../../../../shared/colors';
-import { getVariantValueDOM, getMinRadius } from './utils';
+import {
+  getVariantValueDOM, getMinRadius,
+  getEdgeHandleOffsetTranslation, getOffset,
+} from './utils';
+import { EDGE_HANDLE_SIZE } from './config';
 
 import { EdgeWrapper } from './styles';
 
@@ -22,10 +23,6 @@ export class Edge extends React.Component<IEdgeProps> {
     super(props);
     this.edgeOverlayRef = React.createRef();
   }
-
-  static defaultProps = {
-    edgeHandleSize: 24,
-  };
 
   /**
    *
@@ -496,13 +493,6 @@ export class Edge extends React.Component<IEdgeProps> {
     return `translate(${x}, ${y})`;
   }
 
-  getEdgeHandleOffsetTranslation = () => {
-    const { edgeHandleSize = 0 } = this.props;
-    const offset = -edgeHandleSize / 2;
-
-    return `translate(${offset}, ${offset})`;
-  }
-
   getEdgeHandleRotation = () => {
     const { sourceNode: src, targetNode: trg } = this.props;
     const theta = Edge.calculateAngle(src, trg);
@@ -513,26 +503,9 @@ export class Edge extends React.Component<IEdgeProps> {
   getEdgeHandleTransformation = () => {
     const translation = this.getEdgeHandleTranslation();
     const rotation = this.getEdgeHandleRotation();
-    const offset = this.getEdgeHandleOffsetTranslation();
+    const offset = getEdgeHandleOffsetTranslation();
 
     return `${translation} ${rotation} ${offset}`;
-  }
-
-  static getOffset = (
-    sourceNodeXY: ITargetPosition,
-    targetNodeXY: ITargetPosition,
-    offset: number,
-  ) => {
-    const { x: sourceX, y: sourceY } = sourceNodeXY;
-    const { x: targetX, y: targetY } = targetNodeXY;
-
-    const lineLength = Math.sqrt(((targetX - sourceX) ** 2) + ((targetY - sourceY) ** 2));
-    const k = offset / lineLength;
-
-    return [
-      (targetX - sourceX) * k,
-      (targetY - sourceY) * k,
-    ];
   }
 
   getPathDescription() {
@@ -565,13 +538,13 @@ export class Edge extends React.Component<IEdgeProps> {
         ],
       ];
     } else {
-      const [srcDeltaX, srcDeltaY] = Edge.getOffset(
+      const [srcDeltaX, srcDeltaY] = getOffset(
         { x: srcX, y: srcY },
         { x: trgX, y: trgY },
         minRadius,
       );
 
-      const [trgDeltaX, trgDeltaY] = Edge.getOffset(
+      const [trgDeltaX, trgDeltaY] = getOffset(
         { x: trgX, y: trgY },
         { x: srcX, y: srcY },
         minRadius,
@@ -596,12 +569,7 @@ export class Edge extends React.Component<IEdgeProps> {
 
   render() {
     const {
-      data,
-      edgeTypes,
-      edgeHandleSize,
-      viewWrapperElem,
-      isSelected: selected,
-      isLinkingStarted,
+      data, edgeTypes, viewWrapperElem, isSelected: selected, isLinkingStarted, edgeDefaults,
     } = this.props;
 
     if (!viewWrapperElem) {
@@ -617,8 +585,8 @@ export class Edge extends React.Component<IEdgeProps> {
           isLinkingStarted={isLinkingStarted}
         >
           <path
-            stroke={data.color}
-            strokeWidth={`${data.thickness}px`}
+            stroke={data.color || edgeDefaults.color}
+            strokeWidth={`${data.thickness || edgeDefaults.thickness}px`}
             strokeDasharray={getVariantValueDOM(data.variant)}
             d={this.getPathDescription() || undefined}
           />
@@ -626,13 +594,13 @@ export class Edge extends React.Component<IEdgeProps> {
             id={id}
             className="edge-use"
             ref={this.edgeOverlayRef}
-            width={edgeHandleSize}
-            height={edgeHandleSize}
+            width={EDGE_HANDLE_SIZE}
+            height={EDGE_HANDLE_SIZE}
             xlinkHref={Edge.getXlinkHref(edgeTypes, data)}
             transform={this.getEdgeHandleTransformation()}
             data-source={data.source}
             data-target={data.target}
-            fill={data.color || BLUE_GREY}
+            fill={data.color || edgeDefaults.color}
           />
         </EdgeWrapper>
       </g>

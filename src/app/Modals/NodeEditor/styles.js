@@ -5,7 +5,6 @@ export const NodeEditorBody = styled.div`
   margin: 0;
 `;
 
-export const ItemsBox = styled.article`
-  display: flex;
-  align-items: center;
-`;
+export default {
+  NodeEditorBody,
+};

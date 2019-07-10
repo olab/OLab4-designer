@@ -19,9 +19,8 @@ import * as mapActions from '../../reducers/map/action';
 import { DND_CONTEXTS, MODALS_NAMES, LINK_STYLES } from '../config';
 
 import {
-  ModalWrapper, ModalHeader, ModalBody, ModalFooter,
+  ModalWrapper, ModalHeader, ModalBody, ModalFooter, ArticleItem,
 } from '../styles';
-import { ItemsBox } from './styles';
 
 class NodeEditor extends PureComponent<INodeEditorProps, INodeEditorState> {
   constructor(props: INodeEditorProps) {
@@ -121,7 +120,7 @@ class NodeEditor extends PureComponent<INodeEditorProps, INodeEditorState> {
               fullWidth
             />
           </article>
-          <ItemsBox>
+          <ArticleItem>
             <OutlinedSelect
               label="Links Style"
               name="linkStyle"
@@ -135,7 +134,7 @@ class NodeEditor extends PureComponent<INodeEditorProps, INodeEditorState> {
               color={color}
               onChange={this.handleColorChange}
             />
-          </ItemsBox>
+          </ArticleItem>
           <article>
             <TextEditor
               text={text}
