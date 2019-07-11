@@ -2,6 +2,7 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { DragSource } from 'react-dnd';
+import { withStyles } from '@material-ui/core/styles';
 import { Button } from '@material-ui/core';
 
 import TextEditor from './TextEditor';
@@ -19,29 +20,37 @@ import * as mapActions from '../../reducers/map/action';
 import { DND_CONTEXTS, MODALS_NAMES, LINK_STYLES } from '../config';
 
 import {
-  ModalWrapper, ModalHeader, ModalBody, ModalFooter, ArticleItem,
+  ModalWrapper, ModalHeader, ModalBody,
+  ModalFooter, ArticleItem, ModalHeaderButton,
 } from '../styles';
+import styles from './styles';
 
 class NodeEditor extends PureComponent<INodeEditorProps, INodeEditorState> {
+  textEditorRef: { current: any };
+
   constructor(props: INodeEditorProps) {
     super(props);
 
     this.state = {
       ...props.node,
     };
+
+    this.textEditorRef = React.createRef();
   }
 
-  static getDerivedStateFromProps(nextProps: INodeEditorProps, state: INodeEditorState) {
-    const { node } = nextProps;
+  componentDidUpdate(prevProps) {
+    const { node } = this.props;
+    const { node: prevNode } = prevProps;
+    const { current: currentTextEditorRef } = this.textEditorRef;
 
-    if (node.id !== state.id) {
-      return {
-        ...state,
-        ...node,
-      };
+    if (node.id !== prevNode.id) {
+      // eslint-disable-next-line react/no-did-update-set-state
+      this.setState({ ...node });
+
+      if (currentTextEditorRef) {
+        currentTextEditorRef.updateComponent(node.text);
+      }
     }
-
-    return null;
   }
 
   handleCloseModal = (): void => {
@@ -78,9 +87,14 @@ class NodeEditor extends PureComponent<INodeEditorProps, INodeEditorState> {
     ACTION_SET_POSITION_MODAL(x, y);
   }
 
+  toggleScopedObjectModal = (): void => {
+    const { ACTION_TOGGLE_SO_PICKER_MODAL } = this.props;
+    ACTION_TOGGLE_SO_PICKER_MODAL();
+  }
+
   applyChanges = (): void => {
     const { ACTION_UPDATE_NODE } = this.props;
-    ACTION_UPDATE_NODE(this.state);
+    ACTION_UPDATE_NODE(this.state, true);
   }
 
   render() {
@@ -88,7 +102,7 @@ class NodeEditor extends PureComponent<INodeEditorProps, INodeEditorState> {
       color, title, isVisitOnce, linkStyle, text,
     } = this.state;
     const {
-      x, y, isDragging, connectDragSource, connectDragPreview,
+      x, y, isDragging, connectDragSource, connectDragPreview, classes,
     } = this.props;
 
     if (isDragging) {
@@ -103,12 +117,21 @@ class NodeEditor extends PureComponent<INodeEditorProps, INodeEditorState> {
       >
         <ModalHeader ref={instance => connectDragSource(instance)}>
           <h4>Node Editor</h4>
-          <button
+          <Button
+            size="small"
+            variant="outlined"
+            color="primary"
+            className={classes.button}
+            onClick={this.toggleScopedObjectModal}
+          >
+            Object Picker
+          </Button>
+          <ModalHeaderButton
             type="button"
             onClick={this.handleCloseModal}
           >
             <ScaleIcon />
-          </button>
+          </ModalHeaderButton>
         </ModalHeader>
         <ModalBody>
           <article>
@@ -134,19 +157,18 @@ class NodeEditor extends PureComponent<INodeEditorProps, INodeEditorState> {
               color={color}
               onChange={this.handleColorChange}
             />
-          </ArticleItem>
-          <article>
-            <TextEditor
-              text={text}
-              onChange={this.handleTextChange}
-            />
-          </article>
-          <article>
             <Switch
               label="Visit Once"
               labelPlacement="start"
               checked={isVisitOnce}
               onChange={this.handleVisitOnceChange}
+            />
+          </ArticleItem>
+          <article>
+            <TextEditor
+              text={text}
+              ref={this.textEditorRef}
+              onChange={this.handleTextChange}
             />
           </article>
         </ModalBody>
@@ -167,8 +189,8 @@ class NodeEditor extends PureComponent<INodeEditorProps, INodeEditorState> {
 const mapStateToProps = ({ modals }) => ({ ...modals[MODALS_NAMES.NODE_EDITOR_MODAL] });
 
 const mapDispatchToProps = dispatch => ({
-  ACTION_UPDATE_NODE: (nodeData: NodeType) => {
-    dispatch(mapActions.ACTION_UPDATE_NODE(nodeData));
+  ACTION_UPDATE_NODE: (nodeData: NodeType, isShowNotification: boolean) => {
+    dispatch(mapActions.ACTION_UPDATE_NODE(nodeData, isShowNotification));
   },
   ACTION_DESELECT_NODE: () => {
     dispatch(mapActions.ACTION_SELECT_NODE(null));
@@ -178,6 +200,11 @@ const mapDispatchToProps = dispatch => ({
       MODALS_NAMES.NODE_EDITOR_MODAL,
       x,
       y,
+    ));
+  },
+  ACTION_TOGGLE_SO_PICKER_MODAL: () => {
+    dispatch(modalActions.ACTION_TOGGLE_MODAL(
+      MODALS_NAMES.SO_PICKER_MODAL,
     ));
   },
 });
@@ -222,9 +249,11 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps,
 )(
-  DragSource(
-    DND_CONTEXTS.VIEWPORT,
-    spec,
-    collect,
-  )(NodeEditor),
+  withStyles(styles)(
+    DragSource(
+      DND_CONTEXTS.VIEWPORT,
+      spec,
+      collect,
+    )(NodeEditor),
+  ),
 );

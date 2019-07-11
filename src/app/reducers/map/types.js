@@ -50,6 +50,7 @@ type UpdateNode = {
   type: 'UPDATE_NODE',
   index: number,
   node: NodeType,
+  isShowNotification: boolean,
 };
 
 const DELETE_NODE = 'DELETE_NODE';

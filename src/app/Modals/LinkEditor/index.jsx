@@ -26,7 +26,8 @@ import {
 } from './config';
 
 import {
-  ModalWrapper, ModalHeader, ModalBody, ModalFooter, ArticleItem,
+  ModalWrapper, ModalHeader, ModalBody,
+  ModalFooter, ArticleItem, ModalHeaderButton,
 } from '../styles';
 import {
   MenusArticle, SwitchArticle,
@@ -188,12 +189,12 @@ class LinkEditor extends PureComponent<ILinkEditorProps, ILinkEditorState> {
       >
         <ModalHeader ref={instance => connectDragSource(instance)}>
           <h4>Link Editor</h4>
-          <button
+          <ModalHeaderButton
             type="button"
             onClick={this.handleCloseModal}
           >
             <ScaleIcon />
-          </button>
+          </ModalHeaderButton>
         </ModalHeader>
         <ModalBody>
           <article>

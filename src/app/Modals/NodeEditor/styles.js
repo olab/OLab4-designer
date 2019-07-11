@@ -1,10 +1,10 @@
-import styled from 'styled-components';
-
-export const NodeEditorBody = styled.div`
-  font-size: 1rem;
-  margin: 0;
-`;
-
-export default {
-  NodeEditorBody,
+const styles = {
+  button: {
+    height: 22,
+    lineHeight: 0.75,
+    fontSize: 13,
+    marginRight: 10,
+  },
 };
+
+export default styles;

@@ -14,8 +14,14 @@ import {
   DELETE_NODE,
   CREATE_NODE_WITH_EDGE,
 } from '../../../reducers/map/types';
-import { ACTION_EXCHANGE_NODE_ID, ACTION_EXCHANGE_EDGE_ID } from '../../../reducers/map/action';
-import { ACTION_NOTIFICATION_ERROR } from '../../../reducers/notifications/action';
+import {
+  ACTION_EXCHANGE_NODE_ID,
+  ACTION_EXCHANGE_EDGE_ID,
+} from '../../../reducers/map/action';
+import {
+  ACTION_NOTIFICATION_ERROR,
+  ACTION_NOTIFICATION_SUCCESS,
+} from '../../../reducers/notifications/action';
 
 function* createNodeSaga({ node: { id: oldNodeId, x, y } }) {
   try {
@@ -50,11 +56,14 @@ function* createNodeWithEdgeSaga({
   }
 }
 
-function* updateNodeSaga({ node }) {
+function* updateNodeSaga({ node, isShowNotification }) {
   try {
     const mapId = yield select(({ map }) => map.id);
 
     yield call(updateNode, mapId, node);
+    if (isShowNotification) {
+      yield put(ACTION_NOTIFICATION_SUCCESS('Changes was saved!'));
+    }
   } catch (error) {
     const { response, message } = error;
     const errorMessage = response ? response.statusText : message;

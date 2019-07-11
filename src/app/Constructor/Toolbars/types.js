@@ -1,6 +1,4 @@
 // @flow
-import type { SOPickerModal as SOPickerType } from '../../Modals/types';
-
 export type ToolbarItem = {
   id: string,
   name: string,
@@ -23,13 +21,11 @@ export type IToolbarsProps = {
   showModal: Function,
   isUndoAvailable: boolean,
   isRedoAvailable: boolean,
-  SOPickerModal: SOPickerType,
   ACTION_UNDO_MAP: Function,
   ACTION_REDO_MAP: Function,
   ACTION_TOGGLE_FULLSCREEN: Function,
   ACTION_SET_ZOOM_CONTROLS_REF: Function,
   ACTION_TOGGLE_MODAL: Function,
-  ACTION_SET_POSITION_MODAL: Function,
 };
 
 export type IToolbarsState = {

@@ -192,22 +192,8 @@ export class Toolbars extends Component<IToolbarsProps, IToolbarsState> {
     ACTION_SET_ZOOM_CONTROLS_REF(this.zoomControlsRef.current);
   }
 
-  toggleShowSOPickerModal = (e: Event) => {
-    const {
-      SOPickerModal, ACTION_TOGGLE_MODAL, ACTION_SET_POSITION_MODAL,
-    } = this.props;
-
-    if (!SOPickerModal.isShow && !SOPickerModal.x && !SOPickerModal.y) {
-      const toolbarItem = (e.target: window.HTMLInputElement).closest('.toolbar-item');
-      const [{
-        x: rectsX, y: rectsY, width: rectsWidth, height: rectsHeight,
-      }] = toolbarItem.getClientRects();
-
-      const x = rectsX + rectsWidth;
-      const y = rectsY - rectsHeight;
-
-      ACTION_SET_POSITION_MODAL(x, y);
-    }
+  toggleShowSOPickerModal = () => {
+    const { ACTION_TOGGLE_MODAL } = this.props;
 
     ACTION_TOGGLE_MODAL();
   }
@@ -276,10 +262,9 @@ export class Toolbars extends Component<IToolbarsProps, IToolbarsState> {
   }
 }
 
-const mapStateToProps = ({ map: { undo, redo }, modals }) => ({
+const mapStateToProps = ({ map: { undo, redo } }) => ({
   isUndoAvailable: !!undo.length,
   isRedoAvailable: !!redo.length,
-  SOPickerModal: modals[MODALS_NAMES.SO_PICKER_MODAL],
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -298,13 +283,6 @@ const mapDispatchToProps = dispatch => ({
   ACTION_TOGGLE_MODAL: () => {
     dispatch(modalActions.ACTION_TOGGLE_MODAL(
       MODALS_NAMES.SO_PICKER_MODAL,
-    ));
-  },
-  ACTION_SET_POSITION_MODAL: (x: number, y: number) => {
-    dispatch(modalActions.ACTION_SET_POSITION_MODAL(
-      MODALS_NAMES.SO_PICKER_MODAL,
-      x,
-      y,
     ));
   },
 });

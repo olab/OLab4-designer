@@ -1,12 +1,11 @@
 // @flow
 import React, { Component } from 'react';
-import { EditorState } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
 import { stateToHTML } from 'draft-js-export-html';
-import { stateFromHTML } from 'draft-js-import-html';
 
 import type { ITextEditorProps, ITextEditorState } from './types';
 
+import { createEditorState } from './utils';
 import {
   BASIC_TEXT_EDITOR_OPTIONS, LIST_OPTION, INLINE_OPTION,
 } from './config';
@@ -19,16 +18,17 @@ import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 class TextEditor extends Component<ITextEditorProps, ITextEditorState> {
   constructor(props: ITextEditorProps) {
     super(props);
-    let editorState;
 
-    if (props.text) {
-      const contentState = stateFromHTML(props.text);
-      editorState = EditorState.createWithContent(contentState);
-    } else {
-      editorState = EditorState.createEmpty();
-    }
+    const editorState = createEditorState(props.text);
 
-    this.state = { editorState };
+    this.state = {
+      editorState,
+    };
+  }
+
+  updateComponent = (text: string) => {
+    const editorState = createEditorState(text);
+    this.setState({ editorState });
   }
 
   onEditorStateChange = (editorState: any): void => {

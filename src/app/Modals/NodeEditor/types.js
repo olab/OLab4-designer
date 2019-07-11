@@ -4,6 +4,9 @@ import type { ModalPosition as ModalPositionType } from '../types';
 
 export type INodeEditorProps = {
   ...ModalPositionType,
+  classes: {
+    [props: string]: any,
+  },
   node: NodeType,
   isDragging: boolean;
   connectDragSource: Function;
@@ -11,6 +14,7 @@ export type INodeEditorProps = {
   ACTION_UPDATE_NODE: Function;
   ACTION_DESELECT_NODE: Function;
   ACTION_SET_POSITION_MODAL: Function;
+  ACTION_TOGGLE_SO_PICKER_MODAL: Function;
 };
 
 export type INodeEditorState = NodeType;

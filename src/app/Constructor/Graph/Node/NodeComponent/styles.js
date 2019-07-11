@@ -50,6 +50,7 @@ const styles = {
     maxWidth: 500,
     maxHeight: 400,
     minWidth: 200,
+    minHeight: 80,
     letterSpacing: '0.06em',
     padding: 0,
     borderTop: 'none',

@@ -13,7 +13,7 @@ import HeaderTitle from './HeaderTitle';
 import ResizeIcon from '../../../../../shared/assets/icons/resizer.svg';
 
 import {
-  ACTION_RESIZE, ACTION_EDITOR, COLLAPSED_HEIGHT, EXTRA_PADDINGS,
+  ACTION_RESIZE, ACTION_EDITOR, HEADER_HEIGHT, EXTRA_PADDINGS,
 } from '../config';
 
 import type { INodeProps } from './types';
@@ -44,7 +44,7 @@ const NodeComponent = ({
   );
 
   const headerWidth = isCollapsed ? width : '';
-  const cardContentHeigth = height - COLLAPSED_HEIGHT;
+  const cardContentHeigth = height - HEADER_HEIGHT;
   const cardTextHeight = cardContentHeigth - EXTRA_PADDINGS;
 
   return (

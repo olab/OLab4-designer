@@ -147,7 +147,7 @@ export const ACTION_UPDATE_NODE_RESIZE = (nodeId: number, width: number, height:
   };
 };
 
-export const ACTION_UPDATE_NODE = (nodeData: NodeType) => {
+export const ACTION_UPDATE_NODE = (nodeData: NodeType, isShowNotification: boolean = false) => {
   const { map: { nodes } } = store.getState();
   const index = nodes.findIndex(({ id }) => id === nodeData.id);
   const node = {
@@ -159,6 +159,7 @@ export const ACTION_UPDATE_NODE = (nodeData: NodeType) => {
     type: UPDATE_NODE,
     index,
     node,
+    isShowNotification,
   };
 };
 

@@ -27,7 +27,9 @@ import {
   SOItemTitle, SOItemHeader,
   EmptyList, ReloadIconWrapper,
 } from './styles';
-import { ModalWrapper, ModalHeader } from '../styles';
+import {
+  ModalWrapper, ModalHeader, ModalHeaderButton,
+} from '../styles';
 
 export class SOPicker extends PureComponent<ISOPickerProps, ISOPickerState> {
   searchBoxRef: { current: null | Element };
@@ -81,8 +83,7 @@ export class SOPicker extends PureComponent<ISOPickerProps, ISOPickerState> {
   }
 
   handleCloseModal = (): void => {
-    const { ACTION_CLOSE_MODAL, ACTION_SET_POSITION_MODAL } = this.props;
-    ACTION_SET_POSITION_MODAL(0, 0);
+    const { ACTION_CLOSE_MODAL } = this.props;
     ACTION_CLOSE_MODAL();
   }
 
@@ -158,7 +159,7 @@ export class SOPicker extends PureComponent<ISOPickerProps, ISOPickerState> {
       >
         <ModalHeader ref={instance => connectDragSource(instance)}>
           <h4>Object Picker</h4>
-          <button
+          <ModalHeaderButton
             type="button"
             title="Refresh"
             onClick={this.handleFetchScopedObjects}
@@ -166,14 +167,14 @@ export class SOPicker extends PureComponent<ISOPickerProps, ISOPickerState> {
             <ReloadIconWrapper isRotating={isFetching}>
               <ReloadIcon />
             </ReloadIconWrapper>
-          </button>
-          <button
+          </ModalHeaderButton>
+          <ModalHeaderButton
             type="button"
             title="Close"
             onClick={this.handleCloseModal}
           >
             <CrossIcon />
-          </button>
+          </ModalHeaderButton>
         </ModalHeader>
         <ConfigArticle>
           <OutlinedSelect

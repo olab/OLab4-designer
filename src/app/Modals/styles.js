@@ -21,6 +21,14 @@ export const ModalWrapper = styled.div`
   box-shadow: 2px 2px 5px 0 ${colorLightGray};
 `;
 
+export const ModalHeaderButton = styled.button`
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  outline: none;
+  padding: 0;
+`;
+
 export const ModalHeader = styled.div`
   font-size: 32px;
   display: flex;
@@ -35,14 +43,6 @@ export const ModalHeader = styled.div`
     margin: 0;
     margin-right: auto;
     font-size: 20px;
-  }
-
-  > button {
-    cursor: pointer;
-    background: transparent;
-    border: none;
-    outline: none;
-    padding: 0;
   }
 `;
 
