@@ -3,6 +3,7 @@ export const EDITORS_FIELDS = {
   DESCRIPTION: 'Description',
   TEXT: 'Text',
   SCOPE_LEVEL: 'Scope Level',
+  PARENT: 'Parent',
 };
 
 export default {

@@ -6,6 +6,10 @@ import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 import Fullscreen from 'react-full-screen';
 import isEqual from 'lodash.isequal';
+import {
+  Dashboard as TemplateIcon,
+  DashboardOutlined as TemplateOutlinedIcon,
+} from '@material-ui/icons';
 
 import Graph from './Graph';
 import ToolbarTemplates from './Toolbars';
@@ -14,7 +18,7 @@ import LinkEditor from '../Modals/LinkEditor';
 import NodeEditor from '../Modals/NodeEditor';
 import Input from '../../shared/components/Input';
 import ConfirmationModal from '../../shared/components/ConfirmationModal';
-import TemplatesModal from '../../shared/components/TemplatesModal';
+import SearchModal from '../../shared/components/SearchModal';
 
 import * as mapActions from '../reducers/map/action';
 import * as templatesActions from '../reducers/templates/action';
@@ -23,6 +27,7 @@ import * as constructorActions from './action';
 import type { Edge as EdgeType } from './Graph/Edge/types';
 import type { Node as NodeType } from './Graph/Node/types';
 import type { MapItem as MapItemType } from '../reducers/map/types';
+import type { Template as TemplateType } from '../reducers/templates/types';
 import type { IConstructorProps, IConstructorState } from './types';
 
 import { MODALS_NAMES } from '../Modals/config';
@@ -135,9 +140,9 @@ export class Constructor extends PureComponent<IConstructorProps, IConstructorSt
     this.closeModal(CONFIRMATION_MODALS.CREATE_TEMPLATE);
   }
 
-  handleTemplateChoose = (templateId: number): void => {
+  handleTemplateChoose = (template: TemplateType): void => {
     const { ACTION_EXTEND_MAP_REQUESTED } = this.props;
-    ACTION_EXTEND_MAP_REQUESTED(templateId);
+    ACTION_EXTEND_MAP_REQUESTED(template.id);
 
     this.closeModal(CONFIRMATION_MODALS.PRE_BUILT_TEMPLATES);
   }
@@ -181,13 +186,16 @@ export class Constructor extends PureComponent<IConstructorProps, IConstructorSt
         )}
 
         {isShowPreBuiltTemplatesModal && (
-          <TemplatesModal
+          <SearchModal
             label="Pre-built templates"
+            searchLabel="Search for template"
             text="Please choose appropriate template:"
+            items={templates}
             onClose={() => this.closeModal(CONFIRMATION_MODALS.PRE_BUILT_TEMPLATES)}
-            onTemplateChoose={this.handleTemplateChoose}
-            templates={templates}
-            isTemplatesFetching={isTemplatesFetching}
+            onItemChoose={this.handleTemplateChoose}
+            isItemsFetching={isTemplatesFetching}
+            iconEven={TemplateIcon}
+            iconOdd={TemplateOutlinedIcon}
           />
         )}
       </Fullscreen>

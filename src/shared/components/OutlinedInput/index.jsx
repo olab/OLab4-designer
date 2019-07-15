@@ -8,7 +8,17 @@ import type { IOutlinedInputProps } from './types';
 import styles from './styles';
 
 const OutlinedInput = ({
-  name, label, classes, value, placeholder = '', onChange, fullWidth = false, disabled = false,
+  name,
+  label,
+  classes,
+  value,
+  placeholder = '',
+  onChange,
+  onFocus,
+  setRef,
+  fullWidth = false,
+  disabled = false,
+  readOnly = false,
 }: IOutlinedInputProps) => (
   <TextField
     type="text"
@@ -17,6 +27,7 @@ const OutlinedInput = ({
     value={value}
     placeholder={placeholder}
     onChange={onChange}
+    onFocus={onFocus}
     margin="none"
     variant="outlined"
     disabled={disabled}
@@ -24,6 +35,8 @@ const OutlinedInput = ({
       classes: {
         input: classes.input,
       },
+      readOnly,
+      inputRef: setRef,
     }}
     InputLabelProps={{
       classes: {

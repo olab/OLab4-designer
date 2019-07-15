@@ -6,16 +6,19 @@ import { withStyles } from '@material-ui/core/styles';
 import {
   ExpandMore as ExpandMoreIcon,
   ArrowForward as ArrowForwardIcon,
+  Dashboard as TemplateIcon,
+  DashboardOutlined as TemplateOutlinedIcon,
 } from '@material-ui/icons';
 import {
   Button, Typography, ExpansionPanel, ExpansionPanelDetails, ExpansionPanelSummary,
 } from '@material-ui/core';
 
-import TemplatesModal from '../../shared/components/TemplatesModal';
+import SearchModal from '../../shared/components/SearchModal';
 
 import * as mapActions from '../reducers/map/action';
 import * as templatesActions from '../reducers/templates/action';
 
+import type { Template as TemplateType } from '../reducers/templates/types';
 import type { IHomeProps, IHomeState } from './types';
 import { PANEL_NAMES } from './config';
 
@@ -53,7 +56,9 @@ class Home extends PureComponent<IHomeProps, IHomeState> {
     });
   }
 
-  handleTemplateChoose = (templateId?: number): void => {
+  handleTemplateChoose = (template?: TemplateType): void => {
+    const templateId = template ? template.id : null;
+
     const { ACTION_CREATE_MAP_REQUESTED } = this.props;
     ACTION_CREATE_MAP_REQUESTED(templateId);
 
@@ -163,13 +168,16 @@ class Home extends PureComponent<IHomeProps, IHomeState> {
         </ExpansionPanelWrapper>
 
         {isShowTemplatesListModal && (
-          <TemplatesModal
+          <SearchModal
             label="Choose template"
+            searchLabel="Search for template"
             text="Please take template from the following:"
+            items={templates}
             onClose={this.closeTemplatesListModal}
-            onTemplateChoose={this.handleTemplateChoose}
-            templates={templates}
-            isTemplatesFetching={isTemplatesFetching}
+            onItemChoose={this.handleTemplateChoose}
+            isItemsFetching={isTemplatesFetching}
+            iconEven={TemplateIcon}
+            iconOdd={TemplateOutlinedIcon}
           />
         )}
       </HomeWrapper>

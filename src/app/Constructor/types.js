@@ -21,7 +21,6 @@ export type IConstructorProps = {
 export type IConstructorState = {
   selectedLink: EdgeType | null,
   selectedNode: NodeType | null,
-  isFullScreen: boolean,
   isShowCreateTemplateModal: boolean,
   isShowPreBuiltTemplatesModal: boolean,
 };

@@ -61,10 +61,8 @@ function* getScopedObjectDetailsSaga({ scopedObjectId, scopedObjectType }) {
 
 function* createScopedObjectSaga({ scopedObjectType, scopedObjectData }) {
   try {
-    const mapId = yield select(({ map }) => map.id);
     const scopedObjectId = yield call(
       createScopedObject,
-      mapId,
       scopedObjectType,
       scopedObjectData,
     );

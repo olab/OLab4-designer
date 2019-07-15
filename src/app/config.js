@@ -1,4 +1,4 @@
-export const SCOPE_LEVELS = ['Maps', 'Courses', 'Global', 'Servers'];
+export const SCOPE_LEVELS = ['Maps', 'Servers', 'Courses', 'Globals'];
 
 export const SCOPED_OBJECTS = {
   CONSTANT: 'Constant',

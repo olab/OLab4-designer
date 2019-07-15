@@ -4,15 +4,15 @@ import { GREY, DARK_GREY } from '../../colors';
 
 const colorGray = 'rgba(0, 0, 0, 0.42)';
 
+export const SearchWrapper = styled.div`
+  position: relative;
+`;
+
 export const ProgressWrapper = styled.div`
   display: flex;
   align-items: flex-end;
   position: absolute;
   bottom: 15px;
-`;
-
-export const SearchWrapper = styled.div`
-  position: relative;
 `;
 
 const styles = () => ({
@@ -52,9 +52,6 @@ const styles = () => ({
     textTransform: 'initial',
     textAlign: 'initial',
   },
-  spinnerCaption: {
-    marginLeft: 5,
-  },
   searchField: {
     marginBottom: 5,
   },
@@ -64,6 +61,10 @@ const styles = () => ({
     bottom: 7,
     padding: 3,
     fill: colorGray,
+    boxSizing: 'content-box',
+  },
+  spinnerCaption: {
+    marginLeft: 5,
   },
 });
 

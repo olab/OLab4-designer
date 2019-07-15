@@ -27,12 +27,9 @@ export const getScopedObjectDetails = (scopedObjectId, scopedObjectType) => API
     throw error;
   });
 
-export const createScopedObject = (mapId, scopedObjectType, scopedObjectData) => API
+export const createScopedObject = (scopedObjectType, scopedObjectData) => API
   .post(`/olab/${scopedObjectType}`, {
-    data: {
-      ...scopedObjectData,
-      parentId: mapId,
-    },
+    data: scopedObjectData,
   })
   .then(({ data: { data: { id: scopedObjectId } } }) => scopedObjectId)
   .catch((error) => {
