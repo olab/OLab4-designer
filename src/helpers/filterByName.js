@@ -1,5 +1,5 @@
 // @flow
-export const filterItems = (items: Array<any>, queryStr: string): Array<any> => {
+const filterByName = (items: Array<any>, queryStr: string): Array<any> => {
   const queryStrClear = queryStr.trim().toLowerCase();
   const itemsFiltered = items.filter(({ name }) => (
     name.toLowerCase().includes(queryStrClear)
@@ -8,6 +8,4 @@ export const filterItems = (items: Array<any>, queryStr: string): Array<any> => 
   return itemsFiltered;
 };
 
-export default {
-  filterItems,
-};
+export default filterByName;

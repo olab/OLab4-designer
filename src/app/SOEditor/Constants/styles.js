@@ -15,7 +15,8 @@ const styles = () => ({
     fontStyle: 'bold',
   },
   form: {
-    width: '100%', // Fix IE 11 issue.
+    // Fix IE 11 issue.
+    width: '100%',
     marginTop: 1,
   },
   submit: {

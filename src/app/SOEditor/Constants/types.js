@@ -11,13 +11,16 @@ export type IConstantsProps = {
   classes: {
     [props: string]: any,
   },
+  match: any,
   history: any,
   constants: Array<ScopedObjectType>,
   scopeLevels: ScopeLevelsType,
   isConstantCreating: boolean,
-  ACTION_SCOPED_OBJECT_CREATE_REQUESTED: Function,
+  isConstantUpdating: boolean,
   ACTION_SCOPE_LEVELS_REQUESTED: Function,
-  ACTION_SCOPE_LEVELS_CLEAR: Function,
+  ACTION_CONSTANT_CREATE_REQUESTED: Function,
+  ACTION_CONSTANT_DETAILS_REQUESTED: Function,
+  ACTION_CONSTANT_UPDATE_REQUESTED: Function,
 };
 
 export type Icons = {

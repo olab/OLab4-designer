@@ -32,7 +32,9 @@ const Header = ({ isDataFetching }: IHeaderProps) => (
 const mapStateToProps = ({ user, map, scopedObjects }) => ({
   isDataFetching: user.isFetching
     || map.isFetching
-    || scopedObjects.isCreating,
+    || scopedObjects.isCreating
+    || scopedObjects.isUpdating
+    || scopedObjects.isDeleting,
 });
 
 export default connect(mapStateToProps)(Header);

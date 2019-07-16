@@ -15,13 +15,18 @@ export const ProgressWrapper = styled.div`
   bottom: 15px;
 `;
 
+export const ListItemContentWrapper = styled.div`
+  width: 100%;
+
+  &:hover {
+    & button:last-of-type {
+      opacity: 1;
+    }
+  }
+`;
+
 const styles = () => ({
   list: {
-    maxHeight: '40vh',
-    minHeight: '40vh',
-    maxWidth: '40vw',
-    minWidth: '40vw',
-    overflowY: 'auto',
     marginBottom: 10,
     '&::-webkit-scrollbar': {
       width: 7,
@@ -40,6 +45,13 @@ const styles = () => ({
       backgroundColor: 'transparent',
     },
   },
+  listLimits: {
+    maxHeight: '40vh',
+    minHeight: '40vh',
+    maxWidth: '40vw',
+    minWidth: '40vw',
+    overflowY: 'auto',
+  },
   listEmpty: {
     marginTop: 10,
   },
@@ -48,6 +60,7 @@ const styles = () => ({
     justifyContent: 'flex-end',
   },
   listButton: {
+    position: 'relative',
     width: '100%',
     textTransform: 'initial',
     textAlign: 'initial',
@@ -65,6 +78,15 @@ const styles = () => ({
   },
   spinnerCaption: {
     marginLeft: 5,
+  },
+  deleteIcon: {
+    position: 'absolute',
+    opacity: 0,
+    right: 10,
+    top: '50%',
+    padding: 5,
+    transform: 'translate(0, -50%)',
+    transition: 'opacity .25s ease',
   },
 });
 

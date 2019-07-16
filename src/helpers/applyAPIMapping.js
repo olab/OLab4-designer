@@ -108,17 +108,26 @@ export const templateFromServer = mapFromServer;
 
 export const scopedObjectFromServer = ({ url, ...restSO }) => ({
   ...restSO,
+  details: null,
   isShowEyeIcon: Boolean(url),
   isDetailsFetching: false,
-  details: null,
 });
 
-export const scopedObjectDetailsFromServer = SODetails => ({
-  description: SODetails.description,
-  scopeLevel: SODetails.scopeLevel,
-  value: SODetails.value,
-  prefix: SODetails.prefix,
-  suffix: SODetails.suffix,
-  startValue: SODetails.startValue,
-  outOf: SODetails.outOf,
+export const scopedObjectByTypeFromServer = ({ url, ...restSO }) => ({ ...restSO });
+
+export const scopedObjectDetailsFromServer = ({
+  url, description, scopeLevel, value, prefix, suffix, startValue, outOf, ...restSODetails
+}) => ({
+  ...restSODetails,
+  details: {
+    description,
+    scopeLevel,
+    value,
+    prefix,
+    suffix,
+    startValue,
+    outOf,
+  },
+  isShowEyeIcon: Boolean(url),
+  isDetailsFetching: false,
 });

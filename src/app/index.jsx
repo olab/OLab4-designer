@@ -9,14 +9,10 @@ import Login from './Login';
 import Home from './Home';
 import Constructor from './Constructor';
 import PageNotFound from './404';
-import Constants from './SOEditors/Constants';
-import ObjectsList from '../shared/components/ObjectsList';
 import Header from './Header';
+import SOEditor from './SOEditor';
 
-import type {
-  IAppProps,
-  IProtectedRouteProps,
-} from './types';
+import type { IAppProps, IProtectedRouteProps } from './types';
 
 import 'react-redux-notify/dist/ReactReduxNotify.css';
 
@@ -46,20 +42,7 @@ export const App = ({ isAuth, history }: IAppProps) => (
         <Route exact path="/login" component={Login} />
         <ProtectedRoute exact isAuth={isAuth} path="/" component={Home} />
         <ProtectedRoute exact isAuth={isAuth} path="/constructor/:mapId" component={Constructor} />
-        <ProtectedRoute
-          exact
-          isAuth={isAuth}
-          path="/constants/add"
-          component={Constants}
-          scopedObject="Constants"
-        />
-        <ProtectedRoute
-          exact
-          isAuth={isAuth}
-          path="/constants"
-          component={ObjectsList}
-          scopedObject="Constants"
-        />
+        <ProtectedRoute isAuth={isAuth} path="/scopedObject/:scopedObjectType" component={SOEditor} />
         <ProtectedRoute exact isAuth={isAuth} path="*" component={PageNotFound} />
       </Switch>
       <Notify />
@@ -67,6 +50,8 @@ export const App = ({ isAuth, history }: IAppProps) => (
   </ConnectedRouter>
 );
 
-const mapStateToProps = ({ user: { isAuth } }) => ({ isAuth });
+const mapStateToProps = ({ user }) => ({
+  isAuth: user.isAuth,
+});
 
 export default connect(mapStateToProps)(App);

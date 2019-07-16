@@ -3,6 +3,13 @@ export const DEFAULTS = {
   canDismiss: true,
 };
 
-export default {
-  DEFAULTS,
+export const MESSAGES = {
+  ON_UPDATE: 'Changes has been saved',
+  ON_CREATE: {
+    TEMPLATE: 'Template has been created',
+    SCOPED_OBJECT: 'Object has been created',
+  },
+  ON_DELETE: {
+    SCOPED_OBJECT: 'Object has been deleted',
+  },
 };

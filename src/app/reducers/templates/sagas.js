@@ -11,12 +11,14 @@ import {
   ACTION_TEMPLATE_UPLOAD_FULFILLED,
 } from './action';
 
+import { MESSAGES } from '../notifications/config';
+
 function* createTemplateSaga({ templateName }) {
   try {
     const mapId = yield select(({ map }) => map.id);
 
     yield call(createTemplate, mapId, templateName);
-    yield put(ACTION_NOTIFICATION_SUCCESS('Template successfully created!'));
+    yield put(ACTION_NOTIFICATION_SUCCESS(MESSAGES.ON_CREATE.TEMPLATE));
   } catch (error) {
     const { response, message } = error;
     const errorMessage = response ? response.statusText : message;

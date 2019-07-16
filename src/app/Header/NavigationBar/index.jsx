@@ -51,7 +51,7 @@ class NavigationBar extends PureComponent<INavigationProps, INavigationState> {
             onClick={this.handleClose}
             className={classes.menuItem}
             component={Link}
-            to="/constants"
+            to="/scopedObject/constant"
           >
             Constants
           </MenuItem>

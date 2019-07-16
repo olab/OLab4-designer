@@ -1,5 +1,11 @@
+import styled from 'styled-components';
 
 import { LIGHT_BLUE, DARK_BLUE } from '../../colors';
+
+export const HeadingWrapper = styled.div`
+  display: flex;
+  align-items: center;
+`;
 
 const styles = () => ({
   root: {
@@ -14,7 +20,6 @@ const styles = () => ({
   title: {
     fontWeight: 400,
     color: DARK_BLUE,
-    marginBottom: '2rem',
   },
   paper: {
     margin: 10,

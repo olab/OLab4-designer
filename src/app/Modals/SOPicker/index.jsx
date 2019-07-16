@@ -144,7 +144,7 @@ export class SOPicker extends PureComponent<ISOPickerProps, ISOPickerState> {
       type, level, scopedObjectsFiltered, isScrollbarVisible,
     } = this.state;
     const {
-      x, y, isDragging, connectDragSource, connectDragPreview, isFetching,
+      x, y, isDragging, connectDragSource, connectDragPreview, scopedObjects,
     } = this.props;
 
     if (isDragging) {
@@ -164,7 +164,7 @@ export class SOPicker extends PureComponent<ISOPickerProps, ISOPickerState> {
             title="Refresh"
             onClick={this.handleFetchScopedObjects}
           >
-            <ReloadIconWrapper isRotating={isFetching}>
+            <ReloadIconWrapper isRotating={scopedObjects.isFetching}>
               <ReloadIcon />
             </ReloadIconWrapper>
           </ModalHeaderButton>
@@ -252,8 +252,7 @@ const mapStateToProps = ({
   scopedObjects,
 }) => ({
   ...modals[MODALS_NAMES.SO_PICKER_MODAL],
-  scopedObjects: scopedObjects.data,
-  isFetching: scopedObjects.isFetching,
+  scopedObjects,
 });
 
 const mapDispatchToProps = dispatch => ({

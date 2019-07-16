@@ -3,7 +3,11 @@ import React, { PureComponent } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import classNames from 'classnames';
 import {
-  Close as CloseIcon, Search as SearchIcon,
+  Close as CloseIcon,
+  Search as SearchIcon,
+  Delete as DeleteIcon,
+  FilterVintage as DefaultIcon,
+  FilterVintageOutlined as DefaultOutlinedIcon,
 } from '@material-ui/icons';
 import {
   List, ListItem, ListItemText, Button, IconButton, TextField, Typography, CircularProgress,
@@ -13,9 +17,18 @@ import removeHTMLTags from '../../../helpers/removeHTMLTags';
 
 import type { IListWithSearchProps, IListWithSearchState } from './types';
 
-import styles, { SearchWrapper, ProgressWrapper } from './styles';
+import styles, {
+  SearchWrapper, ProgressWrapper, ListItemContentWrapper,
+} from './styles';
 
 class ListWithSearch extends PureComponent<IListWithSearchProps, IListWithSearchState> {
+  static defaultProps = {
+    iconEven: DefaultIcon,
+    iconOdd: DefaultOutlinedIcon,
+    isForModal: false,
+    isWithSpinner: true,
+  };
+
   state: IListWithSearchState = {
     query: '',
   };
@@ -40,8 +53,11 @@ class ListWithSearch extends PureComponent<IListWithSearchProps, IListWithSearch
     const {
       label,
       onItemClick,
+      onItemDelete,
       list,
       classes,
+      isForModal,
+      isWithSpinner,
       isHideSearch,
       isItemsFetching,
       iconEven: IconEven,
@@ -50,8 +66,11 @@ class ListWithSearch extends PureComponent<IListWithSearchProps, IListWithSearch
 
     const listClassNames = classNames(
       classes.list,
+      { [classes.listLimits]: isForModal },
       { [classes.listEmpty]: isHideSearch },
     );
+
+    const isShowSpinner = isWithSpinner && isItemsFetching;
 
     return (
       <div>
@@ -93,16 +112,29 @@ class ListWithSearch extends PureComponent<IListWithSearchProps, IListWithSearch
               key={listItem.id}
               classes={{ root: classes.listItem }}
             >
-              <Button
-                classes={{ text: classes.listButton }}
-                onClick={() => onItemClick(listItem)}
-              >
-                {i % 2 === 0 ? <IconEven /> : <IconOdd />}
-                <ListItemText
-                  primary={listItem.name}
-                  secondary={removeHTMLTags(listItem.description)}
-                />
-              </Button>
+              <ListItemContentWrapper>
+                <Button
+                  classes={{ text: classes.listButton }}
+                  onClick={() => onItemClick(listItem)}
+                >
+                  {i % 2 === 0 ? <IconEven /> : <IconOdd />}
+                  <ListItemText
+                    primary={listItem.name}
+                    secondary={removeHTMLTags(listItem.description || '')}
+                  />
+                </Button>
+                {onItemDelete && (
+                  <IconButton
+                    aria-label="Delete Scoped Object"
+                    title={`Delete ${listItem.name}`}
+                    size="small"
+                    onClick={() => onItemDelete(listItem.id)}
+                    classes={{ root: classes.deleteIcon }}
+                  >
+                    <DeleteIcon />
+                  </IconButton>
+                )}
+              </ListItemContentWrapper>
             </ListItem>
           ))}
 
@@ -115,7 +147,7 @@ class ListWithSearch extends PureComponent<IListWithSearchProps, IListWithSearch
           )}
         </List>
 
-        {isItemsFetching && (
+        {isShowSpinner && (
           <ProgressWrapper>
             <CircularProgress size={24} />
             <Typography variant="caption" className={classes.spinnerCaption}>

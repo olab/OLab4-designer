@@ -1,5 +1,4 @@
 // @flow
-import cloneDeep from 'lodash.clonedeep';
 import {
   type ScopeLevelsActions,
   type ScopeLevels as ScopeLevelsType,
@@ -44,7 +43,9 @@ const scopeLevels = (
       };
     }
     case SCOPE_LEVELS_CLEAR:
-      return cloneDeep(initialScopeLevelsState);
+      return {
+        ...initialScopeLevelsState,
+      };
     default:
       return state;
   }

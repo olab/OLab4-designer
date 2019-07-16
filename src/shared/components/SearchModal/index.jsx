@@ -4,7 +4,7 @@ import React, { PureComponent } from 'react';
 import ConfirmationModal from '../ConfirmationModal';
 import ListWithSearch from '../ListWithSearch';
 
-import { filterItems } from './utils';
+import filterByName from '../../../helpers/filterByName';
 
 import type { ISearchModalProps, ISearchModalState } from './types';
 
@@ -25,7 +25,7 @@ class SearchModal extends PureComponent<ISearchModalProps, ISearchModalState> {
     const { query } = this.listWithSearchRef.state;
 
     if (items !== prevProps.items) {
-      const listFiltered = filterItems(items, query);
+      const listFiltered = filterByName(items, query);
 
       // eslint-disable-next-line react/no-did-update-set-state
       this.setState({ listFiltered });
@@ -34,7 +34,7 @@ class SearchModal extends PureComponent<ISearchModalProps, ISearchModalState> {
 
   handleItemsSearch = (query: string): void => {
     const { items } = this.props;
-    const listFiltered = filterItems(items, query);
+    const listFiltered = filterByName(items, query);
 
     this.setState({ listFiltered });
   }
@@ -81,6 +81,7 @@ class SearchModal extends PureComponent<ISearchModalProps, ISearchModalState> {
           iconOdd={iconOdd}
           isHideSearch={isHideSearch}
           isItemsFetching={isItemsFetching}
+          isForModal
         />
       </ConfirmationModal>
     );

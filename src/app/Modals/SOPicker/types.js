@@ -2,7 +2,7 @@
 import type { ModalPosition as ModalPositionType } from '../types';
 import type {
   ScopedObject as ScopedObjectType,
-  ScopedObjects as ScopedObjectsType,
+  ScopedObjectsState as ScopedObjectsStateType,
 } from '../../reducers/scopedObjects/types';
 
 export type ISOPickerProps = {
@@ -13,8 +13,7 @@ export type ISOPickerProps = {
   connectDragSource: Function,
   connectDragPreview: Function,
   isDragging: boolean,
-  isFetching: boolean,
-  scopedObjects: ScopedObjectsType,
+  scopedObjects: ScopedObjectsStateType,
 };
 
 export type ISOPickerState = {

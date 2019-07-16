@@ -7,12 +7,15 @@ export type IListWithSearchProps = {
   onClear: Function,
   onSearch: Function,
   onItemClick: Function,
+  onItemDelete?: Function,
   innerRef: Function,
   list: Array<any>,
-  iconEven: any,
-  iconOdd: any,
+  iconEven?: any,
+  iconOdd?: any,
   isHideSearch: boolean,
   isItemsFetching: boolean,
+  isForModal: boolean,
+  isWithSpinner: boolean,
 };
 
 export type IListWithSearchState = {

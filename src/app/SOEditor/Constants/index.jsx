@@ -1,5 +1,4 @@
 // @flow
-/* eslint-disable react/no-unused-state */
 import React, { PureComponent } from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -13,10 +12,12 @@ import SearchModal from '../../../shared/components/SearchModal';
 
 import type { IConstantsProps, IConstantsState, Icons } from './types';
 import type { ScopeLevel as ScopeLevelType } from '../../reducers/scopeLevels/types';
+import type { ScopedObjectBase as ScopedObjectBaseType } from '../../reducers/scopedObjects/types';
 
 import { EDITORS_FIELDS } from '../config';
 import { SCOPE_LEVELS, SCOPED_OBJECTS } from '../../config';
 import { getIconsByScopeLevel } from './utils';
+import { toLowerCaseAndPlural } from '../utils';
 
 import * as scopedObjectsActions from '../../reducers/scopedObjects/action';
 import * as scopeLevelsActions from '../../reducers/scopeLevels/action';
@@ -25,6 +26,8 @@ import styles, { FieldLabel } from './styles';
 
 class Constants extends PureComponent<IConstantsProps, IConstantsState> {
   parentIdRef: HTMLElement | null;
+
+  isEditMode: boolean = false;
 
   scopeLevelObj: ScopeLevelType | null;
 
@@ -36,27 +39,41 @@ class Constants extends PureComponent<IConstantsProps, IConstantsState> {
       name: '',
       description: '',
       value: '',
-      parentId: null,
       scopeLevel: SCOPE_LEVELS[0],
       isShowModal: false,
       isFieldsDisabled: false,
     };
 
+    this.checkIfEditMode();
     this.icons = getIconsByScopeLevel(SCOPE_LEVELS[0]);
   }
 
   componentDidUpdate(prevProps: IConstantsProps, prevState: IConstantsState) {
     const { scopeLevel, isShowModal } = this.state;
     const { scopeLevel: scopeLevelPrev, isShowModal: isShowModalPrev } = prevState;
-    const { history, constants, isConstantCreating } = this.props;
-    const { constants: constantsPrev, isConstantCreating: isConstantCreatingPrev } = prevProps;
+    const {
+      history,
+      constants,
+      isConstantCreating,
+      isConstantUpdating,
+      match: { params: { constantId } },
+    } = this.props;
+    const {
+      constants: constantsPrev,
+      isConstantCreating: isConstantCreatingPrev,
+      isConstantUpdating: isConstantUpdatingPrev,
+    } = prevProps;
+
     const isScopeLevelChanged = scopeLevel !== scopeLevelPrev;
     const isCreatingStarted = !isConstantCreatingPrev && isConstantCreating;
     const isCreatingEnded = isConstantCreatingPrev && !isConstantCreating;
+    const isUpdatingStarted = !isConstantUpdatingPrev && isConstantUpdating;
+    const isUpdatingEnded = isConstantUpdatingPrev && !isConstantUpdating;
     const isConstantCreated = constantsPrev.length < constants.length;
     const isModalClosed = isShowModalPrev && !isShowModal;
+    const isConstantsUpdated = constantsPrev !== constants;
 
-    if (isCreatingStarted) {
+    if (isCreatingStarted || isUpdatingStarted) {
       this.toggleDisableFields();
     }
 
@@ -64,9 +81,9 @@ class Constants extends PureComponent<IConstantsProps, IConstantsState> {
       this.blurParentInput();
     }
 
-    if (isCreatingEnded) {
+    if (isCreatingEnded || isUpdatingEnded) {
       if (isConstantCreated) {
-        history.push('/constants');
+        history.push(`/scopedObject/${SCOPED_OBJECTS.CONSTANT.toLowerCase()}`);
       } else {
         this.toggleDisableFields();
       }
@@ -76,11 +93,25 @@ class Constants extends PureComponent<IConstantsProps, IConstantsState> {
       this.icons = getIconsByScopeLevel(scopeLevel);
       this.handleParentRemove();
     }
+
+    if (isConstantsUpdated && constantId) {
+      const constant = constants.find(({ id }) => id === Number(constantId));
+
+      // eslint-disable-next-line react/no-did-update-set-state
+      this.setState({ ...constant });
+    }
   }
 
-  componentWillUnmount() {
-    const { ACTION_SCOPE_LEVELS_CLEAR } = this.props;
-    ACTION_SCOPE_LEVELS_CLEAR();
+  checkIfEditMode = (): void => {
+    const {
+      match: { params: { constantId } }, ACTION_CONSTANT_DETAILS_REQUESTED,
+    } = this.props;
+
+    if (constantId) {
+      ACTION_CONSTANT_DETAILS_REQUESTED(Number(constantId));
+
+      this.isEditMode = true;
+    }
   }
 
   handleInputChange = (e: Event): void => {
@@ -88,12 +119,22 @@ class Constants extends PureComponent<IConstantsProps, IConstantsState> {
     this.setState({ [name]: value });
   }
 
-  handleCreateScopedObject = (): void => {
-    const { isShowModal, isFieldsDisabled, ...scopedObjectData } = this.state;
-    const { ACTION_SCOPED_OBJECT_CREATE_REQUESTED } = this.props;
-    const scopedObjectType = `${SCOPED_OBJECTS.CONSTANT.toLowerCase()}s`;
+  handleSubmitScopedObject = (): void => {
+    const scopedObjectData = { ...this.state };
+    const {
+      match: { params: { constantId } },
+      ACTION_CONSTANT_CREATE_REQUESTED,
+      ACTION_CONSTANT_UPDATE_REQUESTED,
+    } = this.props;
 
-    ACTION_SCOPED_OBJECT_CREATE_REQUESTED(scopedObjectType, scopedObjectData);
+    if (this.isEditMode) {
+      ACTION_CONSTANT_UPDATE_REQUESTED(Number(constantId), scopedObjectData);
+    } else {
+      const { id: parentId } = this.scopeLevelObj;
+      Object.assign(scopedObjectData, { parentId });
+
+      ACTION_CONSTANT_CREATE_REQUESTED(scopedObjectData);
+    }
   }
 
   toggleDisableFields = (): void => {
@@ -117,10 +158,7 @@ class Constants extends PureComponent<IConstantsProps, IConstantsState> {
 
   handleLevelObjChoose = (level: ScopeLevelType): void => {
     this.scopeLevelObj = level;
-    this.setState({
-      parentId: level.id,
-      isShowModal: false,
-    });
+    this.setState({ isShowModal: false });
   }
 
   blurParentInput = (): void => {
@@ -133,7 +171,7 @@ class Constants extends PureComponent<IConstantsProps, IConstantsState> {
 
   handleParentRemove = (): void => {
     this.scopeLevelObj = null;
-    this.setState({ parentId: null });
+    this.forceUpdate();
   }
 
   render() {
@@ -145,14 +183,15 @@ class Constants extends PureComponent<IConstantsProps, IConstantsState> {
 
     return (
       <EditorWrapper
+        isEditMode={this.isEditMode}
         scopedObject={SCOPED_OBJECTS.CONSTANT}
-        onSave={this.handleCreateScopedObject}
+        onSubmit={this.handleSubmitScopedObject}
       >
         <FieldLabel>
           {EDITORS_FIELDS.NAME}
           <OutlinedInput
             name="name"
-            placeholder="Name"
+            placeholder={EDITORS_FIELDS.NAME}
             value={name}
             onChange={this.handleInputChange}
             disabled={isFieldsDisabled}
@@ -165,7 +204,7 @@ class Constants extends PureComponent<IConstantsProps, IConstantsState> {
             multiline
             rows="3"
             name="description"
-            placeholder="Description"
+            placeholder={EDITORS_FIELDS.DESCRIPTION}
             className={classes.textField}
             margin="normal"
             variant="outlined"
@@ -181,7 +220,7 @@ class Constants extends PureComponent<IConstantsProps, IConstantsState> {
             multiline
             rows="6"
             name="value"
-            placeholder="Text"
+            placeholder={EDITORS_FIELDS.TEXT}
             className={classes.textField}
             margin="normal"
             variant="outlined"
@@ -191,38 +230,42 @@ class Constants extends PureComponent<IConstantsProps, IConstantsState> {
             fullWidth
           />
         </FieldLabel>
-        <FieldLabel>
-          {EDITORS_FIELDS.SCOPE_LEVEL}
-        </FieldLabel>
-        <OutlinedSelect
-          name="scopeLevel"
-          value={scopeLevel}
-          values={SCOPE_LEVELS}
-          onChange={this.handleInputChange}
-          disabled={isFieldsDisabled}
-        />
-        <FieldLabel>
-          {EDITORS_FIELDS.PARENT}
-          <OutlinedInput
-            name="parentId"
-            placeholder={this.scopeLevelObj ? '' : 'Parent'}
-            disabled={isFieldsDisabled}
-            onFocus={this.showModal}
-            setRef={this.setParentRef}
-            readOnly
-            fullWidth
-          />
-          {this.scopeLevelObj && (
-            <Chip
-              className={classes.chip}
-              label={this.scopeLevelObj.name}
-              variant="outlined"
-              color="primary"
-              onDelete={this.handleParentRemove}
-              icon={<IconEven />}
+        {!this.isEditMode && (
+          <>
+            <FieldLabel>
+              {EDITORS_FIELDS.SCOPE_LEVEL}
+            </FieldLabel>
+            <OutlinedSelect
+              name="scopeLevel"
+              value={scopeLevel}
+              values={SCOPE_LEVELS}
+              onChange={this.handleInputChange}
+              disabled={isFieldsDisabled}
             />
-          )}
-        </FieldLabel>
+            <FieldLabel>
+              {EDITORS_FIELDS.PARENT}
+              <OutlinedInput
+                name="parentId"
+                placeholder={this.scopeLevelObj ? '' : EDITORS_FIELDS.PARENT}
+                disabled={isFieldsDisabled}
+                onFocus={this.showModal}
+                setRef={this.setParentRef}
+                readOnly
+                fullWidth
+              />
+              {this.scopeLevelObj && (
+                <Chip
+                  className={classes.chip}
+                  label={this.scopeLevelObj.name}
+                  variant="outlined"
+                  color="primary"
+                  onDelete={this.handleParentRemove}
+                  icon={<IconEven />}
+                />
+              )}
+            </FieldLabel>
+          </>
+        )}
 
         {isShowModal && (
           <SearchModal
@@ -243,26 +286,37 @@ class Constants extends PureComponent<IConstantsProps, IConstantsState> {
 }
 
 const mapStateToProps = ({ scopedObjects, scopeLevels }) => ({
+  constants: scopedObjects[toLowerCaseAndPlural(SCOPED_OBJECTS.CONSTANT)],
   isConstantCreating: scopedObjects.isCreating,
-  constants: scopedObjects.data[`${SCOPED_OBJECTS.CONSTANT.toLowerCase()}s`],
+  isConstantUpdating: scopedObjects.isUpdating,
   scopeLevels,
 });
 
 const mapDispatchToProps = dispatch => ({
-  ACTION_SCOPED_OBJECT_CREATE_REQUESTED: (
-    scopedObjectType: string,
-    scopedObjectData: IConstantsState,
-  ) => {
-    dispatch(scopedObjectsActions.ACTION_SCOPED_OBJECT_CREATE_REQUESTED(
-      scopedObjectType,
-      scopedObjectData,
-    ));
-  },
   ACTION_SCOPE_LEVELS_REQUESTED: (scopeLevel: string) => {
     dispatch(scopeLevelsActions.ACTION_SCOPE_LEVELS_REQUESTED(scopeLevel));
   },
-  ACTION_SCOPE_LEVELS_CLEAR: () => {
-    dispatch(scopeLevelsActions.ACTION_SCOPE_LEVELS_CLEAR());
+  ACTION_CONSTANT_DETAILS_REQUESTED: (scopedObjectId: number) => {
+    dispatch(scopedObjectsActions.ACTION_SCOPED_OBJECT_DETAILS_REQUESTED(
+      scopedObjectId,
+      toLowerCaseAndPlural(SCOPED_OBJECTS.CONSTANT),
+    ));
+  },
+  ACTION_CONSTANT_CREATE_REQUESTED: (scopedObjectData: ScopedObjectBaseType) => {
+    dispatch(scopedObjectsActions.ACTION_SCOPED_OBJECT_CREATE_REQUESTED(
+      toLowerCaseAndPlural(SCOPED_OBJECTS.CONSTANT),
+      scopedObjectData,
+    ));
+  },
+  ACTION_CONSTANT_UPDATE_REQUESTED: (
+    scopedObjectId: number,
+    scopedObjectData: ScopedObjectBaseType,
+  ) => {
+    dispatch(scopedObjectsActions.ACTION_SCOPED_OBJECT_UPDATE_REQUESTED(
+      scopedObjectId,
+      toLowerCaseAndPlural(SCOPED_OBJECTS.CONSTANT),
+      scopedObjectData,
+    ));
   },
 });
 

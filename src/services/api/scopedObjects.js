@@ -1,6 +1,8 @@
 import createInstance from '../createCustomInstance';
 import {
-  scopedObjectFromServer, scopedObjectDetailsFromServer,
+  scopedObjectFromServer,
+  scopedObjectByTypeFromServer,
+  scopedObjectDetailsFromServer,
 } from '../../helpers/applyAPIMapping';
 
 const API = createInstance();
@@ -14,6 +16,14 @@ export const getScopedObjects = mapId => API
 
       return scopedObjectsNew;
     }, {}))
+  .catch((error) => {
+    throw error;
+  });
+
+export const getScopedObjectsByType = scopedObjectType => API
+  .get(`/olab/${scopedObjectType}`)
+  .then(({ data: { data: scopedObjects } }) => scopedObjects
+    .map(SO => scopedObjectByTypeFromServer(SO)))
   .catch((error) => {
     throw error;
   });

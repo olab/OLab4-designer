@@ -17,6 +17,11 @@ export type ScopedObjectDetails = {
   outOf: number,
 };
 
+export type ScopedObjectListItem = {
+  id: number,
+  ...ScopedObjectBase,
+}
+
 export type ScopedObject = {
   id: number,
   name: string,
@@ -30,23 +35,25 @@ export type ScopedObject = {
 };
 
 export type ScopedObjects = {
-  [type: string]: Array<ScopedObject>,
+  [type: string]: Array<ScopedObject | ScopedObjectListItem>,
 };
 
 export type ScopedObjectsState = {
-  data: ScopedObjects,
+  ...ScopedObjects,
   isFetching: boolean,
   isCreating: boolean,
+  isUpdating: boolean,
+  isDeleting: boolean,
 };
 
-const SCOPED_OBJECTS_FAILED = 'SCOPED_OBJECTS_FAILED';
-type ScopedObjectsFailed = {
-  type: 'SCOPED_OBJECTS_FAILED',
+const SCOPED_OBJECTS_REQUEST_FAILED = 'SCOPED_OBJECTS_REQUEST_FAILED';
+type ScopedObjectsRequestFailed = {
+  type: 'SCOPED_OBJECTS_REQUEST_FAILED',
 };
 
-const SCOPED_OBJECTS_SUCCEEDED = 'SCOPED_OBJECTS_SUCCEEDED';
-type ScopedObjectsSucceeded = {
-  type: 'SCOPED_OBJECTS_SUCCEEDED',
+const SCOPED_OBJECTS_REQUEST_SUCCEEDED = 'SCOPED_OBJECTS_REQUEST_SUCCEEDED';
+type ScopedObjectsRequestSucceeded = {
+  type: 'SCOPED_OBJECTS_REQUEST_SUCCEEDED',
   scopedObjectsData: ScopedObjects,
 };
 
@@ -92,19 +99,87 @@ type ScopedObjectsCreateRequested = {
   scopedObjectData: ScopedObjects,
 };
 
-export type ScopedObjectsActions = ScopedObjectsSucceeded |
-  ScopedObjectsRequested | ScopedObjectsFailed |
+const SCOPED_OBJECT_UPDATE_REQUESTED = 'SCOPED_OBJECT_UPDATE_REQUESTED';
+type ScopedObjectUpdateRequested = {
+  type: 'SCOPED_OBJECT_UPDATE_REQUESTED',
+  scopedObjectId: number,
+  scopedObjectType: string,
+  scopedObjectData: ScopedObjects,
+};
+
+const SCOPED_OBJECT_UPDATE_FULFILLED = 'SCOPED_OBJECT_UPDATE_FULFILLED';
+type ScopedObjectUpdateFulfilled = {
+  type: 'SCOPED_OBJECT_UPDATE_FULFILLED',
+};
+
+const SCOPED_OBJECTS_TYPED_REQUESTED = 'SCOPED_OBJECTS_TYPED_REQUESTED';
+type ScopedObjectsTypedRequested = {
+  type: 'SCOPED_OBJECTS_TYPED_REQUESTED',
+  scopedObjectType: string,
+};
+
+const SCOPED_OBJECTS_TYPED_SUCCEEDED = 'SCOPED_OBJECTS_TYPED_SUCCEEDED';
+type ScopedObjectsTypedSucceeded = {
+  type: 'SCOPED_OBJECTS_TYPED_SUCCEEDED',
+  scopedObjectType: string,
+  scopedObjects: Array<ScopedObjectListItem>,
+};
+
+const SCOPED_OBJECTS_TYPED_FAILED = 'SCOPED_OBJECTS_TYPED_FAILED';
+type ScopedObjectsTypedFailed = {
+  type: 'SCOPED_OBJECTS_TYPED_FAILED',
+};
+
+const SCOPED_OBJECTS_CLEAR = 'SCOPED_OBJECTS_CLEAR';
+type ScopedObjectsClear = {
+  type: 'SCOPED_OBJECTS_CLEAR',
+};
+
+const SCOPED_OBJECT_DELETE_REQUESTED = 'SCOPED_OBJECT_DELETE_REQUESTED';
+type ScopedObjectDeleteRequested = {
+  type: 'SCOPED_OBJECT_DELETE_REQUESTED',
+  scopedObjectId: number,
+  scopedObjectType: string,
+};
+
+const SCOPED_OBJECT_DELETE_SUCCEEDED = 'SCOPED_OBJECT_DELETE_SUCCEEDED';
+type ScopedObjectDeleteSucceeded = {
+  type: 'SCOPED_OBJECT_DELETE_SUCCEEDED',
+  scopedObjectType: string,
+  scopedObjectIndex: number,
+};
+
+const SCOPED_OBJECT_DELETE_FAILED = 'SCOPED_OBJECT_DELETE_FAILED';
+type ScopedObjectDeleteFailed = {
+  type: 'SCOPED_OBJECT_DELETE_FAILED',
+};
+
+export type ScopedObjectsActions = ScopedObjectsRequestSucceeded |
+  ScopedObjectsRequested | ScopedObjectsRequestFailed |
   ScopedObjectsDetailsRequested | ScopedObjectsDetailsFulfilled |
   ScopedObjectsCreateFailed | ScopedObjectsCreateSucceeded |
-  ScopedObjectsCreateRequested;
+  ScopedObjectsCreateRequested | ScopedObjectUpdateRequested |
+  ScopedObjectUpdateFulfilled | ScopedObjectsTypedRequested |
+  ScopedObjectsTypedSucceeded | ScopedObjectsTypedFailed |
+  ScopedObjectsClear | ScopedObjectDeleteRequested |
+  ScopedObjectDeleteSucceeded | ScopedObjectDeleteFailed;
 
 export {
-  SCOPED_OBJECTS_FAILED,
-  SCOPED_OBJECTS_SUCCEEDED,
+  SCOPED_OBJECTS_REQUEST_FAILED,
+  SCOPED_OBJECTS_REQUEST_SUCCEEDED,
   SCOPED_OBJECTS_REQUESTED,
+  SCOPED_OBJECTS_TYPED_REQUESTED,
+  SCOPED_OBJECTS_TYPED_SUCCEEDED,
+  SCOPED_OBJECTS_TYPED_FAILED,
+  SCOPED_OBJECTS_CLEAR,
   SCOPED_OBJECT_DETAILS_FULFILLED,
   SCOPED_OBJECT_DETAILS_REQUESTED,
   SCOPED_OBJECT_CREATE_FAILED,
   SCOPED_OBJECT_CREATE_SUCCEEDED,
   SCOPED_OBJECT_CREATE_REQUESTED,
+  SCOPED_OBJECT_UPDATE_REQUESTED,
+  SCOPED_OBJECT_UPDATE_FULFILLED,
+  SCOPED_OBJECT_DELETE_REQUESTED,
+  SCOPED_OBJECT_DELETE_SUCCEEDED,
+  SCOPED_OBJECT_DELETE_FAILED,
 };

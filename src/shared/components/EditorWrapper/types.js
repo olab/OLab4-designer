@@ -3,7 +3,9 @@ export type IEditorWrapperProps = {
   classes: {
     [props: string]: any,
   },
+  history: any,
   children: any,
   scopedObject: string,
-  onSave: Function,
+  onSubmit: Function,
+  isEditMode: boolean,
 };
