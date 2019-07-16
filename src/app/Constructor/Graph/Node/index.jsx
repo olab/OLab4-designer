@@ -14,6 +14,7 @@ import {
   COLLAPSED_HEIGHT,
   DEFAULT_NODE_INDENT,
   ACTION_EDITOR,
+  BORDER_SIZE,
 } from './config';
 
 import type {
@@ -23,6 +24,10 @@ import type {
 } from './types';
 
 export class Node extends PureComponent<INodeProps, INodeState> {
+  nodeRef: any;
+
+  nodeComponentRef: any;
+
   constructor(props: INodeProps) {
     super(props);
     this.state = {
@@ -32,7 +37,7 @@ export class Node extends PureComponent<INodeProps, INodeState> {
     };
 
     this.nodeRef = React.createRef();
-    this.resizeRef = React.createRef();
+    this.nodeComponentRef = React.createRef();
   }
 
   static getDerivedStateFromProps(nextProps: INodeProps) {
@@ -56,30 +61,41 @@ export class Node extends PureComponent<INodeProps, INodeState> {
       .call(dragFunction);
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(prevProps: INodeProps) {
     const { isResizeStart } = this.state;
     const {
-      onNodeResize,
+      isResizingStarted,
+      onNodeResizeEnded,
       data: {
         id, width, height, isCollapsed,
       },
     } = this.props;
 
-    const isResizeForbidden = !this.resizeRef.current || isCollapsed || !isResizeStart;
+    const isResizeForbidden = !this.nodeComponentRef.current || isCollapsed || !isResizeStart;
+    const isResizeEnded = prevProps.isResizingStarted && !isResizingStarted;
 
     if (isResizeForbidden) {
       return;
     }
 
-    const { offsetWidth, offsetHeight } = this.resizeRef.current;
-    const newWidth = offsetWidth - 4;
-    const newHeight = offsetHeight - 2;
+    const { offsetWidth, offsetHeight } = this.nodeComponentRef.current;
+    const newWidth = offsetWidth - BORDER_SIZE * 2;
+    const newHeight = offsetHeight - BORDER_SIZE;
 
-    if (newWidth !== width || newHeight !== height) {
-      onNodeResize(id, newWidth, newHeight);
+    if (isResizeEnded) {
+      if (newWidth !== width || newHeight !== height) {
+        onNodeResizeEnded(id, newWidth, newHeight);
+      }
       // eslint-disable-next-line react/no-did-update-set-state
       this.setState({ isResizeStart: false });
     }
+  }
+
+  startResizing = (): void => {
+    const { onNodeResizeStarted } = this.props;
+    onNodeResizeStarted();
+
+    this.setState({ isResizeStart: true });
   }
 
   calculateNewNodePosition = (data: NodeType) => {
@@ -114,7 +130,7 @@ export class Node extends PureComponent<INodeProps, INodeState> {
         onCreateNodeWithEdge(x, y, data);
       } break;
       case ACTION_RESIZE:
-        this.setState({ isResizeStart: true });
+        this.startResizing();
         break;
       case ACTION_LINK:
         onNodeLink(data);
@@ -234,10 +250,6 @@ export class Node extends PureComponent<INodeProps, INodeState> {
     }
   }
 
-  nodeRef: any;
-
-  resizeRef: any;
-
   renderShape() {
     const {
       isLinkSource,
@@ -260,7 +272,7 @@ export class Node extends PureComponent<INodeProps, INodeState> {
           isLinked={isLinkSource}
           isLocked={isLocked}
           isCollapsed={isCollapsed}
-          resizeRef={this.resizeRef}
+          nodeComponentRef={this.nodeComponentRef}
           width={currentWidth}
           height={height}
           type={type}

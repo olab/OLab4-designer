@@ -13,5 +13,5 @@ export type INodeProps = {
   isCollapsed: boolean,
   isLocked: boolean,
   isLinked: boolean,
-  resizeRef: any,
+  nodeComponentRef: any,
 };

@@ -37,6 +37,7 @@ export type IGraphViewState = {
   svgClicked: boolean,
   documentClicked: boolean,
   isLinkingStarted: boolean,
+  isResizingStarted: boolean,
   componentUpToDate: boolean,
   viewTransform?: IViewTransform,
 };

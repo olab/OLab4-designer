@@ -73,6 +73,7 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
       documentClicked: false,
       componentUpToDate: false,
       isLinkingStarted: false,
+      isResizingStarted: false,
     };
   }
 
@@ -210,6 +211,7 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
     d3
       .select(this.viewWrapper.current)
       .on('click', this.handleSvgClicked) // handle element click in the element components
+      .on('mouseup', this.stopResizing)
       .select('svg')
       .on('zoom.dbclick', null)
       .call(this.zoom);
@@ -222,7 +224,7 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
   }
 
   shouldComponentUpdate(nextProps: IGraphViewProps, nextState: IGraphViewState) {
-    const { sourceNode, isLinkingStarted } = this.state;
+    const { sourceNode, isLinkingStarted, isResizingStarted } = this.state;
     const {
       nodes, edges, selected, readOnly, layoutEngineType, cursor,
     } = this.props;
@@ -234,6 +236,7 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
       || nextProps.readOnly !== readOnly
       || nextProps.layoutEngineType !== layoutEngineType
       || nextState.isLinkingStarted !== isLinkingStarted
+      || nextState.isResizingStarted !== isResizingStarted
       || nextState.sourceNode !== sourceNode
       || nextProps.cursor !== cursor
     ) {
@@ -254,6 +257,7 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
       componentUpToDate,
       sourceNode,
       isLinkingStarted,
+      isResizingStarted,
     } = this.state;
     const {
       edges: propsEdges,
@@ -294,7 +298,8 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
       || propsEdges !== prevProps.edges
       || !componentUpToDate
       || sourceNode !== prevState.sourceNode
-      || isLinkingStarted !== prevState.isLinkingStarted;
+      || isLinkingStarted !== prevState.isLinkingStarted
+      || isResizingStarted !== prevState.isResizingStarted;
     const isMapItemsCountChanged = propsEdges.length !== prevProps.edges.length
       || propsNodes.length !== prevProps.nodes.length;
 
@@ -338,6 +343,14 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
   componentWillUnmount() {
     document.removeEventListener('keydown', this.handleWrapperKeydown);
     document.removeEventListener('click', this.handleDocumentClick);
+  }
+
+  stopResizing = (): void => {
+    this.setState({ isResizingStarted: false });
+  }
+
+  startResizing = (): void => {
+    this.setState({ isResizingStarted: true });
   }
 
   asyncHandleZoomToFit = (delay: number = 0): void => {
@@ -1073,7 +1086,9 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
   }
 
   getNodeComponent(id: string, node: NodeType) {
-    const { selectedNodeObj, sourceNode, isLinkingStarted } = this.state;
+    const {
+      selectedNodeObj, sourceNode, isLinkingStarted, isResizingStarted,
+    } = this.state;
     const {
       onCreateNodeWithEdge, onCollapseNode, onLockNode, onResizeNode,
     } = this.props;
@@ -1087,11 +1102,13 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
         onNodeUpdate={this.handleNodeUpdate}
         onNodeSelected={this.handleNodeSelected}
         onNodeCollapsed={onCollapseNode}
-        onNodeResize={onResizeNode}
+        onNodeResizeEnded={onResizeNode}
+        onNodeResizeStarted={this.startResizing}
         onNodeLocked={onLockNode}
         onNodeLink={this.toggleDraggingEdgeByIcon}
         onCreateNodeWithEdge={onCreateNodeWithEdge}
         isLinkingStarted={isLinkingStarted}
+        isResizingStarted={isResizingStarted}
         isLinkSource={isLinkingStarted && sourceNode.id === node.id}
         isSelected={selectedNodeObj.node === node}
         layoutEngine={this.layoutEngine}

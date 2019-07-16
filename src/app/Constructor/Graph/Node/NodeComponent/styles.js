@@ -1,4 +1,6 @@
-import { ACTION_RESIZE, HEADER_PADDING, HEADER_HEIGHT } from '../config';
+import {
+  ACTION_RESIZE, HEADER_PADDING, HEADER_HEIGHT, BORDER_SIZE,
+} from '../config';
 import { WHITE, ORANGE, DARK_GREY } from '../../../../../shared/colors';
 
 const nodeFocus = `&:focus [data-action=${ACTION_RESIZE}]`;
@@ -51,7 +53,7 @@ const styles = {
     letterSpacing: '0.06em',
     padding: 0,
     borderTop: 'none',
-    border: '2px solid transparent',
+    border: `${BORDER_SIZE}px solid transparent`,
     '& p, ul': {
       margin: 0,
     },

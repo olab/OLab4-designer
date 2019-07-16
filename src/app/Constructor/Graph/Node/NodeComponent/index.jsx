@@ -23,7 +23,7 @@ import styles from './styles';
 const NodeComponent = ({
   classes,
   isCollapsed,
-  resizeRef,
+  nodeComponentRef,
   isLocked,
   width,
   height,
@@ -48,7 +48,7 @@ const NodeComponent = ({
   const cardTextHeight = cardContentHeigth - EXTRA_PADDINGS;
 
   return (
-    <RootRef rootRef={resizeRef}>
+    <RootRef rootRef={nodeComponentRef}>
       <Card className={classes.card} tabIndex={0}>
         <CardHeader
           className={cardHeader}
