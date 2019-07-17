@@ -18,6 +18,7 @@ import type { ILinkEditorProps, ILinkEditorState } from './types';
 import * as modalActions from '../action';
 import * as mapActions from '../../reducers/map/action';
 
+import { LAYOUT_ENGINE } from '../../Constructor/config';
 import {
   DND_CONTEXTS, MODALS_NAMES, LINK_STYLES,
 } from '../config';
@@ -175,7 +176,7 @@ class LinkEditor extends PureComponent<ILinkEditorProps, ILinkEditorState> {
       x, y, isDragging, connectDragSource, connectDragPreview, layoutEngineType,
     } = this.props;
 
-    const isShowChangeDirection = layoutEngineType !== 'VerticalTree' && !this.isLinkHasSibling;
+    const isShowChangeDirection = layoutEngineType !== LAYOUT_ENGINE.NONE && !this.isLinkHasSibling;
 
     if (isDragging) {
       return null;

@@ -10,7 +10,6 @@ import EyeComponent from './EyeComponent';
 
 import CrossIcon from '../../../shared/assets/icons/cross.svg';
 import ReloadIcon from '../../../shared/assets/icons/reload.svg';
-import UploadIcon from '../../../shared/assets/icons/add.svg';
 
 import type { ScopedObject as ScopedObjectType } from '../../reducers/scopedObjects/types';
 import type { ISOPickerProps, ISOPickerState } from './types';
@@ -22,7 +21,7 @@ import * as modalActions from '../action';
 import * as scopedObjectsActions from '../../reducers/scopedObjects/action';
 
 import {
-  ModalBody, ModalFooter, UploadButton,
+  ModalBody, ModalFooter,
   ConfigArticle, SOList, SOItem,
   SOItemTitle, SOItemHeader,
   EmptyList, ReloadIconWrapper,
@@ -228,19 +227,6 @@ export class SOPicker extends PureComponent<ISOPickerProps, ISOPickerState> {
             innerRef={this.searchBoxRef}
             onSearch={this.handleSearch}
           />
-          <label htmlFor="upload_file">
-            <input
-              type="file"
-              accept="image/*"
-              style={{ display: 'none' }}
-              id="upload_file"
-              multiple
-            />
-            <UploadButton>
-              <UploadIcon />
-                Add files
-            </UploadButton>
-          </label>
         </ModalFooter>
       </ModalWrapper>
     );

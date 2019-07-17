@@ -6,7 +6,7 @@ const colorDarkGray = '#7C8FA6';
 
 export const SearchBoxWrapper = styled.div`
   position: relative;
-  margin-right: 1rem;
+  width: 100%;
 
   > input {
     border-radius: 16px;

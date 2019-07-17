@@ -3,6 +3,8 @@ const styles = () => ({
     padding: '8px 15px',
     paddingRight: '32px',
     minWidth: '5.5rem',
+  },
+  inputSelectWidth: {
     maxWidth: '5.5rem',
   },
   fullWidth: {

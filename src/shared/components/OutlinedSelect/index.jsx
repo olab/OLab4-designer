@@ -1,5 +1,6 @@
 // @flow
 import React from 'react';
+import classNames from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
 import {
   MenuItem, FormControl, InputLabel, Select, OutlinedInput,
@@ -19,6 +20,7 @@ const OutlinedSelect = ({
   labelWidth = 0,
   fullWidth = false,
   disabled = false,
+  limitMaxWidth = false,
 }: IOutlinedSelectProps) => (
   <FormControl variant="outlined" className={fullWidth ? classes.fullWidth : ''}>
     <InputLabel>{label}</InputLabel>
@@ -29,7 +31,12 @@ const OutlinedSelect = ({
         <OutlinedInput
           labelWidth={labelWidth}
           name={name}
-          classes={{ input: classes.inputSelect }}
+          classes={{
+            input: classNames(
+              classes.inputSelect,
+              { [classes.inputSelectWidth]: limitMaxWidth },
+            ),
+          }}
           disabled={disabled}
         />
       )}

@@ -6,3 +6,9 @@ export const CONFIRMATION_MODALS = {
   CREATE_TEMPLATE: 'CreateTemplate',
   PRE_BUILT_TEMPLATES: 'PreBuiltTemplates',
 };
+
+export const LAYOUT_ENGINE = {
+  SNAP_TO_GRID: 'SnapToGrid',
+  VERTICAL_TREE: 'VerticalTree',
+  NONE: 'None',
+};

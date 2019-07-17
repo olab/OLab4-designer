@@ -11,7 +11,7 @@ export const FieldLabel = styled.p`
 
 const styles = () => ({
   wrapper: {
-    marginLeft: 50,
+    marginLeft: 40,
   },
   button: {
     marginLeft: '1rem',

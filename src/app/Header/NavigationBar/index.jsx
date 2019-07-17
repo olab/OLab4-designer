@@ -37,7 +37,7 @@ class NavigationBar extends PureComponent<INavigationProps, INavigationState> {
           onClick={this.handleClick}
           className={classes.button}
         >
-          Scoped Objects
+          Objects
           <ExpandMoreIcon />
         </Button>
         <Menu

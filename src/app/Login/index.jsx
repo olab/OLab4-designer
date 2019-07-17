@@ -5,8 +5,7 @@ import { Redirect } from 'react-router-dom';
 import { withFormik, Form } from 'formik';
 import { withStyles } from '@material-ui/core/styles';
 import {
-  Button, CssBaseline, FormControl,
-  FormControlLabel, Checkbox, Input,
+  Button, CssBaseline, FormControl, Input,
   InputLabel, Paper, Typography,
 } from '@material-ui/core';
 
@@ -50,10 +49,6 @@ const Login = ({
               onChange={handleChange}
             />
           </FormControl>
-          <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Remember me"
-          />
           <Button
             type="submit"
             fullWidth

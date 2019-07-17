@@ -151,6 +151,7 @@ class NodeEditor extends PureComponent<INodeEditorProps, INodeEditorState> {
               value={LINK_STYLES[linkStyle - 1]}
               values={LINK_STYLES}
               onChange={this.handleStyleChange}
+              limitMaxWidth
             />
             <ColorPicker
               label="Color"

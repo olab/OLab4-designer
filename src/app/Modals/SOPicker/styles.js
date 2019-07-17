@@ -9,6 +9,7 @@ const colorDarkWithOpacity = 'rgba(36,68,106,.7)';
 const colorDarkBorder = 'rgba(36,68,106,.16)';
 
 export const ModalBody = styled.div`
+  height: 260px;
   padding-left: 1rem;
   padding-right: ${({ isScrollbarVisible }) => (isScrollbarVisible ? 'calc(1rem - 5px)' : '1rem')};
   padding-bottom: 0;
@@ -87,22 +88,6 @@ export const ModalFooter = styled.div`
   border-top: 2px solid ${LIGHT_BLUE};
   display: flex;
   align-items: center;
-`;
-
-export const UploadButton = styled.span`
-  cursor: pointer;
-  color: ${GREEN};
-  display: inline-flex;
-  align-items: center;
-  font-family: SF Pro Display;
-  font-size: 14px;
-  line-height: 17px;
-  letter-spacing: 0.06em;
-  white-space: nowrap;
-
-  > svg {
-    margin-right: 10px;
-  }
 `;
 
 export const SearchBox = styled.div`

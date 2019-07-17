@@ -8,9 +8,11 @@ import {
   SET_ZOOM_CONTROLS_REF,
 } from './types';
 
+import { LAYOUT_ENGINE } from './config';
+
 export const initialConstructorState: ConstructorType = {
   cursor: 'default',
-  layoutEngineType: 'None',
+  layoutEngineType: LAYOUT_ENGINE.NONE,
   zoom: {
     index: 50,
     zoomStep: 1,

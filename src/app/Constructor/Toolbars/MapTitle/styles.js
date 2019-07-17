@@ -18,6 +18,11 @@ const styles = () => ({
     marginTop: '4px',
     fontSize: '10px',
   },
+  pencilIcon: {
+    height: 19,
+    width: 19,
+    marginBottom: 5,
+  },
 });
 
 export default styles;

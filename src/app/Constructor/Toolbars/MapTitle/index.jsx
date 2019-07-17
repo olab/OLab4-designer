@@ -1,14 +1,12 @@
 // @flow
-import React, { PureComponent, memo } from 'react';
+import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import {
-  FormControl,
-  Input,
-  FormHelperText,
+  FormControl, Input, FormHelperText, InputAdornment,
 } from '@material-ui/core';
 
-import DropDownIcon from '../../../../shared/assets/icons/dropdown.svg';
+import PencilIcon from '../../../../shared/assets/icons/toolbar/pencil.svg';
 
 import * as actions from '../../../reducers/map/action';
 import type { IMapTitleProps, IMapTitleState } from './types';
@@ -66,13 +64,12 @@ class MapTitle extends PureComponent<IMapTitleProps, IMapTitleState> {
   }
 
   handleGetRef = (instance): void => {
-    // const { title } = this.state;
+    const { title } = this.state;
 
     this.inputRef = instance;
-    // commented for future fix
-    // if (!title) {
-    //   this.focusInput();
-    // }
+    if (!title) {
+      this.focusInput();
+    }
   }
 
   handleFocus = (): void => {
@@ -141,6 +138,11 @@ class MapTitle extends PureComponent<IMapTitleProps, IMapTitleState> {
             autoComplete="off"
             disableUnderline={!isError}
             aria-describedby="component-error-text"
+            startAdornment={(
+              <InputAdornment className={classes.pencilIcon} position="start">
+                <PencilIcon />
+              </InputAdornment>
+            )}
           />
           {isError && (
             <FormHelperText
@@ -151,7 +153,6 @@ class MapTitle extends PureComponent<IMapTitleProps, IMapTitleState> {
             </FormHelperText>
           )}
         </FormControl>
-        <DropDownIcon />
       </MapTitleWrapper>
     );
   }
@@ -168,4 +169,4 @@ const mapDispatchToProps = dispatch => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(withStyles(styles)(memo(MapTitle)));
+)(withStyles(styles)(MapTitle));

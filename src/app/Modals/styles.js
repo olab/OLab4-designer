@@ -1,4 +1,6 @@
 import styled from 'styled-components';
+
+import { MIN_MODAL_HEIGHT, MIN_MODAL_WIDTH } from './config';
 import { DARK_BLUE, WHITE } from '../../shared/colors';
 
 const colorLightGray = 'rgb(168,168,168)';
@@ -7,8 +9,8 @@ const colorLightGrayWOpacity = 'rgb(168,168,168,0.3)';
 export const ModalWrapper = styled.div`
   left: ${({ x }) => x || 0}px;
   top: ${({ y }) => y || 0}px;
-  min-width: 20rem;
-  min-height: 25rem;
+  min-width: ${MIN_MODAL_WIDTH}px;
+  min-height: ${MIN_MODAL_HEIGHT}px;
   background-color: ${WHITE};
   color: ${WHITE};
   position: absolute;

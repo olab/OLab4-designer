@@ -17,7 +17,7 @@ import Defs from '../Defs';
 import Background from '../Background';
 import ZoomControls from '../ZoomControls';
 
-import { CURSOR_DEFAULT, CURSOR_CUSTOM_CROSSHAIR } from '../../config';
+import { CURSOR_DEFAULT, CURSOR_CUSTOM_CROSSHAIR, LAYOUT_ENGINE } from '../../config';
 
 import * as constructorActions from '../../action';
 
@@ -80,7 +80,7 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
   static defaultProps = {
     edgeArrowSize: 6,
     gridSpacing: 36,
-    layoutEngineType: 'None',
+    layoutEngineType: LAYOUT_ENGINE.NONE,
     maxZoom: 1.5,
     minZoom: 0.15,
     readOnly: false,

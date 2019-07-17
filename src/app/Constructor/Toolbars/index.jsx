@@ -13,19 +13,10 @@ import type { IToolbarsProps, IToolbarsState } from './types';
 import { CONFIRMATION_MODALS } from '../config';
 import { MODALS_NAMES } from '../../Modals/config';
 
-import moveIcon from '../../../shared/assets/icons/toolbar/templates/toolbar-move.png';
-import selectIcon from '../../../shared/assets/icons/toolbar/templates/toolbar-select.png';
 import addNewIcon from '../../../shared/assets/icons/toolbar/templates/toolbar-addnew.png';
 import templateIcon from '../../../shared/assets/icons/toolbar/templates/toolbar-template.png';
-import flagIcon from '../../../shared/assets/icons/toolbar/templates/toolbar-flag.png';
-import previewIcon from '../../../shared/assets/icons/toolbar/templates/toolbar-preview.png';
 import fullscreenIcon from '../../../shared/assets/icons/toolbar/templates/toolbar-fullscreen.png';
-import settingsIcon from '../../../shared/assets/icons/toolbar/templates/toolbar-settings.png';
 import questionIcon from '../../../shared/assets/icons/toolbar/templates/meta-question.png';
-import assetsIcon from '../../../shared/assets/icons/toolbar/templates/meta-assets.png';
-import addIcon from '../../../shared/assets/icons/toolbar/templates/meta-add.png';
-import counterIcon from '../../../shared/assets/icons/toolbar/templates/meta-counter.png';
-import filesIcon from '../../../shared/assets/icons/toolbar/templates/meta-files.png';
 import createTemplateFromMapIcon from '../../../shared/assets/icons/create_template.png';
 
 import * as constructorActions from '../action';
@@ -41,41 +32,10 @@ export class Toolbars extends Component<IToolbarsProps, IToolbarsState> {
     const { ACTION_TOGGLE_FULLSCREEN, showModal } = props;
 
     this.state = {
-      expand: '',
-      preview: {
-        id: 'toolbars',
-        order: 10,
-        itemList: [
-          {
-            id: 'preview',
-            name: 'preview',
-            icon: previewIcon,
-            mouseIcon: 'template_mouse_icon',
-            order: 10,
-            label: 'preview',
-          },
-        ],
-      },
       toolbars: {
         id: 'toolbars',
         order: 10,
         itemList: [
-          {
-            id: 'cursors',
-            name: 'cursors',
-            icon: moveIcon,
-            mouseIcon: 'template_mouse_icon',
-            order: 10,
-            label: 'cursors',
-          },
-          {
-            id: 'select',
-            name: 'select',
-            icon: selectIcon,
-            mouseIcon: 'template_mouse_icon',
-            order: 20,
-            label: 'Select area',
-          },
           {
             id: 'addNew',
             name: 'add_new',
@@ -94,14 +54,6 @@ export class Toolbars extends Component<IToolbarsProps, IToolbarsState> {
             onClick: () => showModal(CONFIRMATION_MODALS.PRE_BUILT_TEMPLATES),
           },
           {
-            id: 'flag',
-            name: 'flag',
-            icon: flagIcon,
-            mouseIcon: 'template_mouse_icon',
-            order: 50,
-            label: 'Flag',
-          },
-          {
             id: 'createTemplateFromMap',
             name: 'createTemplateFromMap',
             icon: createTemplateFromMapIcon,
@@ -109,6 +61,15 @@ export class Toolbars extends Component<IToolbarsProps, IToolbarsState> {
             order: 60,
             label: 'Create Template From Map',
             onClick: () => showModal(CONFIRMATION_MODALS.CREATE_TEMPLATE),
+          },
+          {
+            id: 'question',
+            name: 'question',
+            icon: questionIcon,
+            mouseIcon: 'template_mouse_icon',
+            order: 10,
+            label: 'Tutorial',
+            onClick: this.toggleShowSOPickerModal,
           },
         ],
       },
@@ -125,62 +86,7 @@ export class Toolbars extends Component<IToolbarsProps, IToolbarsState> {
             order: 10,
             label: 'Go to fullscreen',
           },
-          {
-            id: 'settings',
-            name: 'settings',
-            icon: settingsIcon,
-            mouseIcon: 'template_mouse_icon',
-            order: 20,
-            label: 'settings',
-          },
         ],
-      },
-      meta: {
-        id: 'meta',
-        order: 10,
-        itemList: [
-          {
-            id: 'question',
-            name: 'question',
-            icon: questionIcon,
-            mouseIcon: 'template_mouse_icon',
-            order: 10,
-            label: 'Tutorial',
-          },
-          {
-            id: 'assets',
-            name: 'assets',
-            icon: assetsIcon,
-            mouseIcon: 'template_mouse_icon',
-            order: 20,
-            label: 'assets',
-          },
-          {
-            id: 'counter',
-            name: 'counter',
-            icon: counterIcon,
-            mouseIcon: 'template_mouse_icon',
-            order: 20,
-            label: 'Counter',
-          },
-          {
-            id: 'files',
-            name: 'files',
-            icon: filesIcon,
-            mouseIcon: 'template_mouse_icon',
-            order: 20,
-            label: 'Manage files',
-          },
-          {
-            id: 'add',
-            name: 'add',
-            icon: addIcon,
-            mouseIcon: 'template_mouse_icon',
-            order: 20,
-            label: 'add',
-          },
-        ],
-        onClick: this.toggleShowSOPickerModal,
       },
     };
 
@@ -221,24 +127,17 @@ export class Toolbars extends Component<IToolbarsProps, IToolbarsState> {
   zoomControlsRef: { current: null | HTMLDivElement };
 
   render() {
-    const {
-      expand, toolbars, right, meta, preview,
-    } = this.state;
-    const {
-      isUndoAvailable, isRedoAvailable, classes,
-    } = this.props;
+    const { expand, toolbars, right } = this.state;
+    const { isUndoAvailable, isRedoAvailable, classes } = this.props;
 
     return (
       <>
         <AppBar className={classes.positionRelative} position="fixed">
           <Block>
-            <ToolbarGroup group={preview} expand={expand} />
-            <>
-              <ToolbarGroup
-                group={toolbars}
-                expand={expand}
-              />
-            </>
+            <ToolbarGroup
+              group={toolbars}
+              expand={expand}
+            />
             <GraphUndoRedoButtons
               isUndoAvailable={isUndoAvailable}
               isRedoAvailable={isRedoAvailable}
@@ -253,9 +152,6 @@ export class Toolbars extends Component<IToolbarsProps, IToolbarsState> {
             <div ref={this.zoomControlsRef} />
             <ToolbarGroup group={right} />
           </Block>
-        </AppBar>
-        <AppBar className={classes.root}>
-          <ToolbarGroup group={meta} expand={expand} />
         </AppBar>
       </>
     );
