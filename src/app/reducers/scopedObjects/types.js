@@ -5,6 +5,9 @@ export type ScopedObjectBase = {
   value: string,
   scopeLevel: string,
   parentId: number | null,
+  visible?: number,
+  status?: number,
+  startValue?: string,
 };
 
 export type ScopedObjectDetails = {

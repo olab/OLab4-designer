@@ -3,8 +3,9 @@ import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { Route, Switch } from 'react-router-dom';
 
-import Constants from './Constants';
 import SOList from './SOList';
+
+import { SCOPED_OBJECTS_MAPPING } from './config';
 
 import * as scopeLevelsActions from '../reducers/scopeLevels/action';
 import * as scopedObjectsActions from '../reducers/scopedObjects/action';
@@ -30,11 +31,17 @@ class SOEditor extends PureComponent<ISOEditorProps> {
           path="/scopedObject/:scopedObjectType"
           component={SOList}
         />
-        <Route
-          exact
-          path={['/scopedObject/constant/add', '/scopedObject/constant/:constantId']}
-          component={Constants}
-        />
+        {Object.keys(SCOPED_OBJECTS_MAPPING).map(scopedObjectType => (
+          <Route
+            key={scopedObjectType}
+            exact
+            path={[
+              `/scopedObject/${scopedObjectType}/add`,
+              `/scopedObject/${scopedObjectType}/:scopedObjectId`,
+            ]}
+            component={SCOPED_OBJECTS_MAPPING[scopedObjectType]}
+          />
+        ))}
       </Switch>
     );
   }

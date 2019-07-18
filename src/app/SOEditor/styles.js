@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import { DARK_BLUE } from '../../../shared/colors';
+import { DARK_BLUE } from '../../shared/colors';
 
 export const FieldLabel = styled.label`
   position: relative;

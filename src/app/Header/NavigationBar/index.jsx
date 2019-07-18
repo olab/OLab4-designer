@@ -7,6 +7,8 @@ import { ExpandMore as ExpandMoreIcon } from '@material-ui/icons';
 
 import type { INavigationProps, INavigationState } from './types';
 
+import { SCOPED_OBJECTS } from '../../config';
+
 import styles from './styles';
 
 class NavigationBar extends PureComponent<INavigationProps, INavigationState> {
@@ -47,14 +49,17 @@ class NavigationBar extends PureComponent<INavigationProps, INavigationState> {
           onClose={this.handleClose}
           className={classes.menu}
         >
-          <MenuItem
-            onClick={this.handleClose}
-            className={classes.menuItem}
-            component={Link}
-            to="/scopedObject/constant"
-          >
-            Constants
-          </MenuItem>
+          {Object.values(SCOPED_OBJECTS).map(SOName => (
+            <MenuItem
+              key={SOName}
+              onClick={this.handleClose}
+              className={classes.menuItem}
+              component={Link}
+              to={`/scopedObject/${SOName.toLowerCase()}`}
+            >
+              {`${SOName}s`}
+            </MenuItem>
+          ))}
         </Menu>
       </div>
     );

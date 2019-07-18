@@ -45,10 +45,24 @@ class SOList extends PureComponent<ISOListProps, ISOListState> {
   }
 
   componentDidUpdate(prevProps: ISOListProps) {
-    const { scopedObjects } = this.props;
+    const {
+      scopedObjects,
+      match: { params: { scopedObjectType } },
+      ACTION_SCOPED_OBJECTS_TYPED_REQUESTED,
+    } = this.props;
+    const {
+      scopedObjects: scopedObjectsPrev,
+      match: { params: { scopedObjectType: scopedObjectTypePrev } },
+    } = prevProps;
+
     const { query } = this.listWithSearchRef.state;
 
-    if (scopedObjects !== prevProps.scopedObjects) {
+    if (scopedObjectType !== scopedObjectTypePrev) {
+      this.scopedObjectTypePluralled = toLowerCaseAndPlural(scopedObjectType);
+      ACTION_SCOPED_OBJECTS_TYPED_REQUESTED(this.scopedObjectTypePluralled);
+    }
+
+    if (scopedObjects !== scopedObjectsPrev) {
       const scopedObjectsFiltered = sortByIdDesc(filterByName(scopedObjects, query));
 
       // eslint-disable-next-line react/no-did-update-set-state
@@ -105,7 +119,7 @@ class SOList extends PureComponent<ISOListProps, ISOListState> {
         <Grid item xs={12} sm={11} md={11} component={Paper} className={classes.rightPanel}>
           <HeaderWrapper>
             <Typography variant="h4" className={classes.title}>
-              {this.scopedObjectTypePluralled}
+              {scopedObjectType.toUpperCase()}
             </Typography>
             <Button
               color="primary"

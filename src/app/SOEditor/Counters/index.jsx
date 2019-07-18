@@ -11,27 +11,57 @@ import SearchModal from '../../../shared/components/SearchModal';
 
 import type { IScopedObjectProps } from '../types';
 
+import { VISIBILITY, COUNTER_STATUSES } from './config';
 import { EDITORS_FIELDS } from '../config';
 import { SCOPE_LEVELS, SCOPED_OBJECTS } from '../../config';
 
 import { FieldLabel } from '../styles';
 
-class Constant extends ScopedObjectService {
+class Counters extends ScopedObjectService {
   constructor(props: IScopedObjectProps) {
-    super(props, SCOPED_OBJECTS.CONSTANT);
+    super(props, SCOPED_OBJECTS.COUNTER);
     this.state = {
       name: '',
       description: '',
-      value: '',
       scopeLevel: SCOPE_LEVELS[0],
+      visible: 0,
+      status: 0,
+      startValue: '',
       isShowModal: false,
       isFieldsDisabled: false,
     };
   }
 
+  handleSelectChoose = (e: Event): void => {
+    const { value, name } = (e.target: window.HTMLInputElement);
+
+    let valuesList;
+
+    switch (name) {
+      case 'status':
+        valuesList = COUNTER_STATUSES;
+        break;
+      case 'visible':
+        valuesList = VISIBILITY;
+        break;
+      default: break;
+    }
+
+    const valueNumbered = valuesList.findIndex(item => item === value);
+
+    this.setState({ [name]: valueNumbered });
+  }
+
   render() {
     const {
-      name, description, value, scopeLevel, isShowModal, isFieldsDisabled,
+      name,
+      description,
+      scopeLevel,
+      startValue,
+      status,
+      visible,
+      isShowModal,
+      isFieldsDisabled,
     } = this.state;
     const { classes, scopeLevels } = this.props;
     const { iconEven: IconEven, iconOdd: IconOdd } = this.icons;
@@ -70,21 +100,41 @@ class Constant extends ScopedObjectService {
           />
         </FieldLabel>
         <FieldLabel>
-          {EDITORS_FIELDS.TEXT}
+          {EDITORS_FIELDS.STARTING_VALUE}
           <TextField
             multiline
-            rows="6"
-            name="value"
-            placeholder={EDITORS_FIELDS.TEXT}
+            rows="1"
+            name="startValue"
+            placeholder={EDITORS_FIELDS.STARTING_VALUE}
             className={classes.textField}
             margin="normal"
             variant="outlined"
-            value={value}
+            value={startValue}
             onChange={this.handleInputChange}
             disabled={isFieldsDisabled}
             fullWidth
           />
         </FieldLabel>
+        <FieldLabel>
+          {EDITORS_FIELDS.SCOPED_OBJECT_STATUS}
+        </FieldLabel>
+        <OutlinedSelect
+          name="status"
+          value={COUNTER_STATUSES[status]}
+          values={COUNTER_STATUSES}
+          onChange={this.handleSelectChoose}
+          disabled={isFieldsDisabled}
+        />
+        <FieldLabel>
+          {EDITORS_FIELDS.VISIBLE}
+        </FieldLabel>
+        <OutlinedSelect
+          name="visible"
+          value={VISIBILITY[visible]}
+          values={VISIBILITY}
+          onChange={this.handleSelectChoose}
+          disabled={isFieldsDisabled}
+        />
         {!this.isEditMode && (
           <>
             <FieldLabel>
@@ -140,4 +190,4 @@ class Constant extends ScopedObjectService {
   }
 }
 
-export default withSORedux(Constant, SCOPED_OBJECTS.CONSTANT);
+export default withSORedux(Counters, SCOPED_OBJECTS.COUNTER);
