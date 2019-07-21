@@ -8,12 +8,14 @@ import { createBrowserHistory } from 'history';
 
 import undoRedoMiddleware from './undoRedoMiddleware';
 
+import config from './storeConfig';
 import rootReducer from './rootReducer';
 import rootSaga from './rootSaga';
 import initialState from './initialState';
 
-
-export const history = createBrowserHistory();
+export const history = createBrowserHistory({
+  basename: config.baseHref,
+});
 const sagaMiddleware = createSagaMiddleware();
 
 const enhancers = [];
