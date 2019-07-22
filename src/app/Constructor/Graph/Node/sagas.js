@@ -3,25 +3,17 @@ import {
 } from 'redux-saga/effects';
 
 import {
-  createNode,
-  deleteNode,
-  updateNode,
+  createNode, deleteNode, updateNode,
 } from '../../../../services/api/node';
 
 import {
-  CREATE_NODE,
-  UPDATE_NODE,
-  DELETE_NODE,
-  CREATE_NODE_WITH_EDGE,
+  CREATE_NODE, UPDATE_NODE, DELETE_NODE, CREATE_NODE_WITH_EDGE,
 } from '../../../reducers/map/types';
-import {
-  ACTION_EXCHANGE_NODE_ID,
-  ACTION_EXCHANGE_EDGE_ID,
-} from '../../../reducers/map/action';
-import {
-  ACTION_NOTIFICATION_ERROR,
-  ACTION_NOTIFICATION_SUCCESS,
-} from '../../../reducers/notifications/action';
+
+import { ACTION_EXCHANGE_NODE_ID, ACTION_EXCHANGE_EDGE_ID } from '../../../reducers/map/action';
+import { ACTION_NOTIFICATION_ERROR, ACTION_NOTIFICATION_SUCCESS } from '../../../reducers/notifications/action';
+
+import { MESSAGES } from '../../../reducers/notifications/config';
 
 function* createNodeSaga({ node: { id: oldNodeId, x, y } }) {
   try {
@@ -62,7 +54,7 @@ function* updateNodeSaga({ node, isShowNotification }) {
 
     yield call(updateNode, mapId, node);
     if (isShowNotification) {
-      yield put(ACTION_NOTIFICATION_SUCCESS('Changes was saved!'));
+      yield put(ACTION_NOTIFICATION_SUCCESS(MESSAGES.ON_UPDATE.NODE));
     }
   } catch (error) {
     const { response, message } = error;

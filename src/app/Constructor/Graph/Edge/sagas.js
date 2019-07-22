@@ -2,21 +2,14 @@ import {
   call, put, select, takeEvery,
 } from 'redux-saga/effects';
 
-import {
-  createEdge, deleteEdge, updateEdge,
-} from '../../../../services/api/edge';
+import { createEdge, deleteEdge, updateEdge } from '../../../../services/api/edge';
+
+import { CREATE_EDGE, DELETE_EDGE, UPDATE_EDGE } from '../../../reducers/map/types';
 
 import { ACTION_EXCHANGE_EDGE_ID } from '../../../reducers/map/action';
-import {
-  ACTION_NOTIFICATION_ERROR,
-  ACTION_NOTIFICATION_SUCCESS,
-} from '../../../reducers/notifications/action';
+import { ACTION_NOTIFICATION_ERROR, ACTION_NOTIFICATION_SUCCESS } from '../../../reducers/notifications/action';
 
-import {
-  CREATE_EDGE,
-  DELETE_EDGE,
-  UPDATE_EDGE,
-} from '../../../reducers/map/types';
+import { MESSAGES } from '../../../reducers/notifications/config';
 
 function* createEdgeSaga({ edge, edge: { id: prevEdgeId } }) {
   try {
@@ -50,7 +43,7 @@ function* updateEdgeSaga({ edge }) {
     const mapId = yield select(({ map }) => map.id);
 
     yield call(updateEdge, mapId, edge);
-    yield put(ACTION_NOTIFICATION_SUCCESS('Changes was saved!'));
+    yield put(ACTION_NOTIFICATION_SUCCESS(MESSAGES.ON_UPDATE.EDGE));
   } catch (error) {
     const { response, message } = error;
     const errorMessage = response ? response.statusText : message;

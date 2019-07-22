@@ -120,7 +120,7 @@ function* updateScopedObjectSaga({ scopedObjectId, scopedObjectType, scopedObjec
       scopedObjectData,
     );
 
-    yield put(ACTION_NOTIFICATION_SUCCESS(MESSAGES.ON_UPDATE));
+    yield put(ACTION_NOTIFICATION_SUCCESS(MESSAGES.ON_UPDATE.SCOPED_OBJECT));
   } catch (error) {
     const { response, message } = error;
     const errorMessage = response ? response.statusText : message;

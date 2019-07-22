@@ -4,9 +4,7 @@ import {
 import { getMap, createMap, extendMap } from '../../../services/api/map';
 
 import {
-  GET_MAP_REQUESTED,
-  CREATE_MAP_REQUESTED,
-  EXTEND_MAP_REQUESTED,
+  GET_MAP_REQUESTED, CREATE_MAP_REQUESTED, EXTEND_MAP_REQUESTED,
 } from './types';
 
 import { ACTION_NOTIFICATION_ERROR } from '../notifications/action';

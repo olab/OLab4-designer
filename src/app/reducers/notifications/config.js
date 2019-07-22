@@ -4,7 +4,11 @@ export const DEFAULTS = {
 };
 
 export const MESSAGES = {
-  ON_UPDATE: 'Changes has been saved',
+  ON_UPDATE: {
+    SCOPED_OBJECT: 'Object has been updated',
+    NODE: 'Node has been updated',
+    EDGE: 'Link has been updated',
+  },
   ON_CREATE: {
     TEMPLATE: 'Template has been created',
     SCOPED_OBJECT: 'Object has been created',
