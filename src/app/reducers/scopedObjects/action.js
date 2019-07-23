@@ -45,9 +45,10 @@ export const ACTION_SCOPED_OBJECT_DETAILS_REQUESTED = (
   const { scopedObjects } = store.getState();
   const scopedObjectsList = scopedObjects[scopedObjectType];
   const scopedObjectIndex = scopedObjectsList.findIndex(({ id }) => id === scopedObjectId);
-  const clonedScopedObject = { ...scopedObjectsList[scopedObjectIndex] };
-
-  clonedScopedObject.isDetailsFetching = true;
+  const clonedScopedObject = {
+    ...scopedObjectsList[scopedObjectIndex],
+    isDetailsFetching: true,
+  };
 
   return {
     type: SCOPED_OBJECT_DETAILS_REQUESTED,
@@ -65,9 +66,10 @@ export const ACTION_SCOPED_OBJECT_DETAILS_FAILED = (
   const { scopedObjects } = store.getState();
   const scopedObjectsList = scopedObjects[scopedObjectType];
   const scopedObjectIndex = scopedObjectsList.findIndex(({ id }) => id === scopedObjectId);
-  const clonedScopedObject = { ...scopedObjectsList[scopedObjectIndex] };
-
-  clonedScopedObject.isDetailsFetching = false;
+  const clonedScopedObject = {
+    ...scopedObjectsList[scopedObjectIndex],
+    isDetailsFetching: false,
+  };
 
   return {
     type: SCOPED_OBJECT_DETAILS_FULFILLED,
@@ -87,7 +89,8 @@ export const ACTION_SCOPED_OBJECT_DETAILS_SUCCEEDED = (
   const scopedObjectIndex = scopedObjectsList.findIndex(({ id }) => id === scopedObjectId);
   const clonedScopedObject = {
     ...scopedObjectsList[scopedObjectIndex],
-    scopedObjectDetails,
+    ...scopedObjectDetails,
+    isDetailsFetching: false,
   };
 
   return {

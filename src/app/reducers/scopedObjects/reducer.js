@@ -65,8 +65,8 @@ const scopedObjects = (
         ...state,
         [scopedObjectType]: [
           ...state[scopedObjectType].slice(0, scopedObjectIndex),
-          ...state[scopedObjectType].slice(scopedObjectIndex + 1),
           scopedObject,
+          ...state[scopedObjectType].slice(scopedObjectIndex + 1),
         ],
         isFetching: false,
       };

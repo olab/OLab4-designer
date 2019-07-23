@@ -148,18 +148,14 @@ export const scopedObjectToServer = (SO) => {
 };
 
 export const scopedObjectDetailsFromServer = ({
-  url, description, scopeLevel, value, prefix, suffix, startValue, outOf, ...restSODetails
+  id, name, parentId, wiki, url, ...restSODetails
 }) => ({
+  id,
+  name,
+  ...(parentId && { parentId }),
   ...restSODetails,
   details: {
-    description,
-    scopeLevel,
-    value,
-    prefix,
-    suffix,
-    startValue,
-    outOf,
+    ...restSODetails,
   },
-  isShowEyeIcon: Boolean(url),
-  isDetailsFetching: false,
+  ...(url && { isShowEyeIcon: Boolean(url) }),
 });
