@@ -41,7 +41,7 @@ export const App = ({ isAuth, history }: IAppProps) => (
       <Switch>
         <Route exact path="/login" component={Login} />
         <ProtectedRoute exact isAuth={isAuth} path="/" component={Home} />
-        <ProtectedRoute exact isAuth={isAuth} path="/constructor/:mapId" component={Constructor} />
+        <ProtectedRoute exact isAuth={isAuth} path="/:mapId" component={Constructor} />
         <ProtectedRoute isAuth={isAuth} path="/scopedObject/:scopedObjectType" component={SOEditor} />
         <ProtectedRoute exact isAuth={isAuth} path="*" component={PageNotFound} />
       </Switch>
