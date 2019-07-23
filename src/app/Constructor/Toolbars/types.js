@@ -24,7 +24,6 @@ export type IToolbarsProps = {
   ACTION_UNDO_MAP: Function,
   ACTION_REDO_MAP: Function,
   ACTION_TOGGLE_FULLSCREEN: Function,
-  ACTION_SET_ZOOM_CONTROLS_REF: Function,
   ACTION_TOGGLE_MODAL: Function,
 };
 

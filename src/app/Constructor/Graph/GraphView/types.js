@@ -83,7 +83,6 @@ export type IGraphViewProps = {
     edgeContainer: any,
     isEdgeSelected: boolean,
   ) => void,
-  zoomControlsRef: HTMLDivElement | null,
   ACTION_SET_CURSOR: Function,
   edgeDefaults: DefaultEdgeType,
 };

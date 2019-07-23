@@ -5,7 +5,6 @@ import {
   SET_CURSOR,
   SET_FULLSCREEN,
   TOGGLE_FULLSCREEN,
-  SET_ZOOM_CONTROLS_REF,
 } from './types';
 
 import { LAYOUT_ENGINE } from './config';
@@ -18,7 +17,6 @@ export const initialConstructorState: ConstructorType = {
     zoomStep: 1,
     maxZoom: 150,
     minZoom: 15,
-    zoomControlsRef: null,
   },
   autoSave: {
     isEnabled: false,
@@ -32,18 +30,6 @@ const constructor = (
   action: ConstructorActions,
 ) => {
   switch (action.type) {
-    case SET_ZOOM_CONTROLS_REF: {
-      const { zoom, ...restState } = state;
-      const { ref: zoomControlsRef } = action;
-
-      return {
-        ...restState,
-        zoom: {
-          ...zoom,
-          zoomControlsRef,
-        },
-      };
-    }
     case SET_CURSOR: {
       const { cursor } = action;
 

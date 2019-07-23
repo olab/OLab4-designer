@@ -1,15 +1,7 @@
 // @flow
 import {
-  SET_CURSOR,
-  SET_FULLSCREEN,
-  TOGGLE_FULLSCREEN,
-  SET_ZOOM_CONTROLS_REF,
+  SET_CURSOR, SET_FULLSCREEN, TOGGLE_FULLSCREEN,
 } from './types';
-
-export const ACTION_SET_ZOOM_CONTROLS_REF = (ref: null | HTMLDivElement) => ({
-  type: SET_ZOOM_CONTROLS_REF,
-  ref,
-});
 
 export const ACTION_SET_CURSOR = (cursor: string) => ({
   type: SET_CURSOR,

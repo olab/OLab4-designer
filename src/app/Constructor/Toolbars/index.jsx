@@ -10,7 +10,7 @@ import MapTitle from './MapTitle';
 
 import type { IToolbarsProps, IToolbarsState } from './types';
 
-import { CONFIRMATION_MODALS } from '../config';
+import { ZOOM_CONTROLS_ID, CONFIRMATION_MODALS } from '../config';
 import { MODALS_NAMES } from '../../Modals/config';
 
 import addNewIcon from '../../../shared/assets/icons/toolbar/templates/toolbar-addnew.png';
@@ -89,13 +89,6 @@ export class Toolbars extends Component<IToolbarsProps, IToolbarsState> {
         ],
       },
     };
-
-    this.zoomControlsRef = React.createRef();
-  }
-
-  componentDidMount() {
-    const { ACTION_SET_ZOOM_CONTROLS_REF } = this.props;
-    ACTION_SET_ZOOM_CONTROLS_REF(this.zoomControlsRef.current);
   }
 
   toggleShowSOPickerModal = () => {
@@ -124,8 +117,6 @@ export class Toolbars extends Component<IToolbarsProps, IToolbarsState> {
     ACTION_REDO_MAP();
   }
 
-  zoomControlsRef: { current: null | HTMLDivElement };
-
   render() {
     const { expand, toolbars, right } = this.state;
     const { isUndoAvailable, isRedoAvailable, classes } = this.props;
@@ -149,7 +140,7 @@ export class Toolbars extends Component<IToolbarsProps, IToolbarsState> {
             <LabTitleItem>
               <MapTitle />
             </LabTitleItem>
-            <div ref={this.zoomControlsRef} />
+            <div id={ZOOM_CONTROLS_ID} />
             <ToolbarGroup group={right} />
           </Block>
         </AppBar>
@@ -166,9 +157,6 @@ const mapStateToProps = ({ map: { undo, redo } }) => ({
 const mapDispatchToProps = dispatch => ({
   ACTION_TOGGLE_FULLSCREEN: () => {
     dispatch(constructorActions.ACTION_TOGGLE_FULLSCREEN());
-  },
-  ACTION_SET_ZOOM_CONTROLS_REF: (ref: null | HTMLDivElement) => {
-    dispatch(constructorActions.ACTION_SET_ZOOM_CONTROLS_REF(ref));
   },
   ACTION_UNDO_MAP: () => {
     dispatch(mapActions.ACTION_UNDO_MAP());

@@ -17,31 +17,20 @@ import Defs from '../Defs';
 import Background from '../Background';
 import ZoomControls from '../ZoomControls';
 
-import { CURSOR_DEFAULT, CURSOR_CUSTOM_CROSSHAIR, LAYOUT_ENGINE } from '../../config';
+import {
+  CURSOR_DEFAULT, CURSOR_CUSTOM_CROSSHAIR, LAYOUT_ENGINE, ZOOM_CONTROLS_ID,
+} from '../../config';
 
 import * as constructorActions from '../../action';
 
 import GraphUtils from '../utilities/graph-utils';
 import LayoutEngines from '../utilities/layout-engine/layout-engine-config';
 
-import type {
-  Edge as EdgeType,
-} from '../Edge/types';
-import type {
-  IPoint,
-  Node as NodeType,
-} from '../Node/types';
-import type {
-  INodeMapNode,
-  IGraphViewState,
-  IGraphViewProps,
-} from './types';
+import type { Edge as EdgeType } from '../Edge/types';
+import type { IPoint, Node as NodeType } from '../Node/types';
+import type { INodeMapNode, IGraphViewState, IGraphViewProps } from './types';
 
-import {
-  View,
-  ViewWrapper,
-  GraphWrapper,
-} from './styles';
+import { View, ViewWrapper, GraphWrapper } from './styles';
 
 export class GraphView extends React.Component<IGraphViewProps, IGraphViewState> {
   constructor(props: IGraphViewProps) {
@@ -1308,7 +1297,8 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
    */
   renderGraphControls() {
     const { viewTransform } = this.state;
-    const { minZoom, maxZoom, zoomControlsRef } = this.props;
+    const { minZoom, maxZoom } = this.props;
+    const zoomControlsRef = document.querySelector(`#${ZOOM_CONTROLS_ID}`);
 
     if (zoomControlsRef) {
       ReactDOM.render(
@@ -1376,7 +1366,6 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
 }
 
 const mapStateToProps = ({ constructor, defaults }) => ({
-  zoomControlsRef: constructor.zoom.zoomControlsRef,
   cursor: constructor.cursor,
   edgeDefaults: defaults.edgeBody,
 });

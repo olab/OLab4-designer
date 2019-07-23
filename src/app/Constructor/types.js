@@ -33,19 +33,12 @@ export type Constructor = {
     zoomStep: number,
     maxZoom: number,
     minZoom: number,
-    zoomControlsRef: HTMLDivElement | null,
   },
   autoSave: {
     isEnabled: boolean,
     interval: number,
   },
   isFullScreen: boolean,
-};
-
-const SET_ZOOM_CONTROLS_REF = 'SET_ZOOM_CONTROLS_REF';
-type SetZoomControlsRef = {
-  type: 'SET_ZOOM_CONTROLS_REF',
-  ref: null | HTMLDivElement,
 };
 
 const SET_CURSOR = 'SET_CURSOR';
@@ -65,12 +58,11 @@ type ToggleFullscreen = {
   type: 'TOGGLE_FULLSCREEN',
 };
 
-export type ConstructorActions = SetZoomControlsRef |
-  SetFullscreen | ToggleFullscreen | SetCursor;
+export type ConstructorActions = SetFullscreen |
+  ToggleFullscreen | SetCursor;
 
 export {
   SET_CURSOR,
   SET_FULLSCREEN,
   TOGGLE_FULLSCREEN,
-  SET_ZOOM_CONTROLS_REF,
 };
