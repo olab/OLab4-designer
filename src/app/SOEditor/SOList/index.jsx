@@ -15,8 +15,7 @@ import type { ScopedObjectListItem as ScopedObjectListItemType } from '../../red
 import * as scopedObjectsActions from '../../reducers/scopedObjects/action';
 
 import filterByName from '../../../helpers/filterByName';
-import { toLowerCaseAndPlural } from '../utils';
-import { sortByIdDesc } from './utils';
+import { toLowerCaseAndPlural, toUpperCaseAndPlural } from '../utils';
 
 import styles, {
   HeaderWrapper, ProgressWrapper, ListWithSearchWrapper,
@@ -25,12 +24,14 @@ import styles, {
 class SOList extends PureComponent<ISOListProps, ISOListState> {
   listWithSearchRef: null | React.RefObject<any>;
 
-  scopedObjectTypePluralled: string;
+  SOTypeLowerCasedAndPluralled: string;
+
+  SOTypeUpperCasedAndPluralled: string;
 
   constructor(props: ISOListProps) {
     super(props);
     this.state = {
-      scopedObjectsFiltered: sortByIdDesc(props.scopedObjects),
+      scopedObjectsFiltered: props.scopedObjects,
     };
 
     this.listWithSearchRef = React.createRef();
@@ -40,8 +41,9 @@ class SOList extends PureComponent<ISOListProps, ISOListState> {
       ACTION_SCOPED_OBJECTS_TYPED_REQUESTED,
     } = props;
 
-    this.scopedObjectTypePluralled = toLowerCaseAndPlural(scopedObjectType);
-    ACTION_SCOPED_OBJECTS_TYPED_REQUESTED(this.scopedObjectTypePluralled);
+    this.SOTypeLowerCasedAndPluralled = toLowerCaseAndPlural(scopedObjectType);
+    this.SOTypeUpperCasedAndPluralled = toUpperCaseAndPlural(scopedObjectType);
+    ACTION_SCOPED_OBJECTS_TYPED_REQUESTED(this.SOTypeLowerCasedAndPluralled);
   }
 
   componentDidUpdate(prevProps: ISOListProps) {
@@ -58,12 +60,14 @@ class SOList extends PureComponent<ISOListProps, ISOListState> {
     const { query } = this.listWithSearchRef.state;
 
     if (scopedObjectType !== scopedObjectTypePrev) {
-      this.scopedObjectTypePluralled = toLowerCaseAndPlural(scopedObjectType);
-      ACTION_SCOPED_OBJECTS_TYPED_REQUESTED(this.scopedObjectTypePluralled);
+      this.SOTypeLowerCasedAndPluralled = toLowerCaseAndPlural(scopedObjectType);
+      this.SOTypeUpperCasedAndPluralled = toUpperCaseAndPlural(scopedObjectType);
+
+      ACTION_SCOPED_OBJECTS_TYPED_REQUESTED(this.SOTypeLowerCasedAndPluralled);
     }
 
     if (scopedObjects !== scopedObjectsPrev) {
-      const scopedObjectsFiltered = sortByIdDesc(filterByName(scopedObjects, query));
+      const scopedObjectsFiltered = filterByName(scopedObjects, query);
 
       // eslint-disable-next-line react/no-did-update-set-state
       this.setState({ scopedObjectsFiltered });
@@ -72,14 +76,14 @@ class SOList extends PureComponent<ISOListProps, ISOListState> {
 
   handleItemsSearch = (query: string): void => {
     const { scopedObjects } = this.props;
-    const scopedObjectsFiltered = sortByIdDesc(filterByName(scopedObjects, query));
+    const scopedObjectsFiltered = filterByName(scopedObjects, query);
 
     this.setState({ scopedObjectsFiltered });
   }
 
   clearSearchInput = (): void => {
     const { scopedObjects } = this.props;
-    const scopedObjectsFiltered = sortByIdDesc(scopedObjects);
+    const scopedObjectsFiltered = scopedObjects;
 
     this.setState({ scopedObjectsFiltered });
   }
@@ -97,7 +101,7 @@ class SOList extends PureComponent<ISOListProps, ISOListState> {
     const { ACTION_SCOPED_OBJECT_DELETE_REQUESTED } = this.props;
     ACTION_SCOPED_OBJECT_DELETE_REQUESTED(
       scopedObjectId,
-      this.scopedObjectTypePluralled,
+      this.SOTypeLowerCasedAndPluralled,
     );
   }
 
@@ -119,7 +123,7 @@ class SOList extends PureComponent<ISOListProps, ISOListState> {
         <Grid item xs={12} sm={11} md={11} component={Paper} className={classes.rightPanel}>
           <HeaderWrapper>
             <Typography variant="h4" className={classes.title}>
-              {scopedObjectType.toUpperCase()}
+              {this.SOTypeUpperCasedAndPluralled}
             </Typography>
             <Button
               color="primary"

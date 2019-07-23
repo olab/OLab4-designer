@@ -8,4 +8,5 @@ export type IEditorWrapperProps = {
   scopedObject: string,
   onSubmit: Function,
   isEditMode: boolean,
+  isDisabled: boolean,
 };

@@ -1,5 +1,6 @@
 import createInstance from '../createCustomInstance';
 import {
+  scopedObjectToServer,
   scopedObjectFromServer,
   scopedObjectByTypeFromServer,
   scopedObjectDetailsFromServer,
@@ -39,7 +40,9 @@ export const getScopedObjectDetails = (scopedObjectId, scopedObjectType) => API
 
 export const createScopedObject = (scopedObjectType, scopedObjectData) => API
   .post(`/olab/${scopedObjectType}`, {
-    data: scopedObjectData,
+    data: {
+      ...scopedObjectToServer(scopedObjectData),
+    },
   })
   .then(({ data: { data: { id: scopedObjectId } } }) => scopedObjectId)
   .catch((error) => {
@@ -49,7 +52,7 @@ export const createScopedObject = (scopedObjectType, scopedObjectData) => API
 export const editScopedObject = (scopedObjectId, scopedObjectType, editedScopedObjectData) => API
   .put(`/olab/${scopedObjectType}/${scopedObjectId}`, {
     data: {
-      ...editedScopedObjectData,
+      ...scopedObjectToServer(editedScopedObjectData),
     },
   })
   .catch((error) => {

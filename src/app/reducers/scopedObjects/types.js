@@ -2,12 +2,21 @@
 export type ScopedObjectBase = {
   name: string,
   description: string,
-  value: string,
   scopeLevel: string,
   parentId: number | null,
+  value?: string,
   visible?: number,
   status?: number,
   startValue?: string,
+  questionType?: number,
+  stem?: string,
+  width?: number,
+  height?: number,
+  feedback?: string,
+  placeholder?: string,
+  layoutType?: number,
+  isShowAnswer?: boolean,
+  isShowSubmit?: boolean,
 };
 
 export type ScopedObjectDetails = {

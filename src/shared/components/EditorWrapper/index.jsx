@@ -12,7 +12,7 @@ import type { IEditorWrapperProps } from './types';
 import styles, { HeadingWrapper } from './styles';
 
 const EditorWrapper = ({
-  classes, children, scopedObject, onSubmit, isEditMode, history,
+  classes, children, history, scopedObject, onSubmit, isEditMode, isDisabled,
 }: IEditorWrapperProps) => (
   <Grid container component="main" className={classes.root}>
     <CssBaseline />
@@ -39,6 +39,7 @@ const EditorWrapper = ({
           color="primary"
           className={classes.submit}
           onClick={onSubmit}
+          disabled={isDisabled}
         >
           {isEditMode ? 'Update' : 'Create'}
         </Button>

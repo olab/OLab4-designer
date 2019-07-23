@@ -1,3 +1,6 @@
+import { isBoolean, isNumber } from './dataTypes';
+import { QUESTION_TYPES } from '../app/SOEditor/Questions/config';
+
 export const edgeToServer = edgeData => ({
   id: edgeData.id,
   text: edgeData.label,
@@ -113,7 +116,36 @@ export const scopedObjectFromServer = ({ url, ...restSO }) => ({
   isDetailsFetching: false,
 });
 
-export const scopedObjectByTypeFromServer = ({ url, ...restSO }) => ({ ...restSO });
+export const scopedObjectByTypeFromServer = ({
+  url, showAnswer, showSubmit, ...restSO
+}) => ({
+  ...restSO,
+  ...(isNumber(showAnswer) && { isShowAnswer: Number(showAnswer) }),
+  ...(isNumber(showAnswer) && { isShowSubmit: Number(showAnswer) }),
+});
+
+export const scopedObjectToServer = (SO) => {
+  if (Number(Object.keys(QUESTION_TYPES)[0]) === SO.questionType) {
+    const {
+      feedback, layoutType, isShowAnswer, isShowSubmit, ...restSO
+    } = SO;
+
+    return {
+      ...restSO,
+      ...(!SO.placeholder && { placeholder: 'Default Placeholder Value' }),
+    };
+  }
+
+  const {
+    width, height, placeholder, isShowAnswer, isShowSubmit, ...restSO
+  } = SO;
+
+  return {
+    ...restSO,
+    ...(isBoolean(isShowAnswer) && { showAnswer: Number(isShowAnswer) }),
+    ...(isBoolean(isShowSubmit) && { showSubmit: Number(isShowSubmit) }),
+  };
+};
 
 export const scopedObjectDetailsFromServer = ({
   url, description, scopeLevel, value, prefix, suffix, startValue, outOf, ...restSODetails

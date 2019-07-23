@@ -4,8 +4,8 @@ import { connect } from 'react-redux';
 import { DragSource } from 'react-dnd';
 import { Button } from '@material-ui/core';
 
-import Slider from './Slider';
 import ChangeDirection from './ChangeDirection';
+import Slider from '../../../shared/components/Slider';
 import Switch from '../../../shared/components/Switch';
 import ColorPicker from '../../../shared/components/ColorPicker';
 import OutlinedInput from '../../../shared/components/OutlinedInput';

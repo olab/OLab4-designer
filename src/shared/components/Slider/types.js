@@ -1,12 +1,14 @@
 // @flow
-export type ISwitchProps = {
+export type ISliderProps = {
   classes: {
     [prop: string]: any,
   },
-  name: string,
   label: string,
-  labelPlacement: string,
-  checked: boolean,
+  name: string,
+  value: number,
+  min: number,
+  max: number,
+  step: number,
   disabled: boolean,
   onChange: Function,
 };

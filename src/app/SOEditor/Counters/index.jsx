@@ -69,6 +69,7 @@ class Counters extends ScopedObjectService {
     return (
       <EditorWrapper
         isEditMode={this.isEditMode}
+        isDisabled={isFieldsDisabled}
         scopedObject={this.scopedObjectType}
         onSubmit={this.handleSubmitScopedObject}
       >

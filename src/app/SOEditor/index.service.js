@@ -113,7 +113,11 @@ class ScopedObjectService extends PureComponent<IScopedObjectProps, IScopedObjec
   }
 
   handleSubmitScopedObject = (): void => {
-    const scopedObjectData = { ...this.state };
+    const {
+      isFieldsDisabled,
+      isShowModal,
+      ...scopedObjectData
+    } = this.state;
     const {
       match: { params: { scopedObjectId } },
       ACTION_SCOPED_OBJECT_CREATE_REQUESTED,
@@ -122,14 +126,11 @@ class ScopedObjectService extends PureComponent<IScopedObjectProps, IScopedObjec
 
     if (this.isEditMode) {
       ACTION_SCOPED_OBJECT_UPDATE_REQUESTED(Number(scopedObjectId), scopedObjectData);
-    } else {
+    } else if (this.scopeLevelObj) {
       const { id: parentId } = this.scopeLevelObj;
+      Object.assign(scopedObjectData, { parentId });
 
-      if (parentId) {
-        Object.assign(scopedObjectData, { parentId });
-
-        ACTION_SCOPED_OBJECT_CREATE_REQUESTED(scopedObjectData);
-      }
+      ACTION_SCOPED_OBJECT_CREATE_REQUESTED(scopedObjectData);
     }
   }
 
