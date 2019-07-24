@@ -2,7 +2,6 @@
 import React from 'react';
 import classNames from 'classnames';
 import { sanitize } from 'dompurify';
-import { withStyles } from '@material-ui/core/styles';
 import {
   Card, CardHeader, CardContent, RootRef,
 } from '@material-ui/core';
@@ -13,16 +12,16 @@ import HeaderTitle from './HeaderTitle';
 import ResizeIcon from '../../../../../shared/assets/icons/resizer.svg';
 
 import {
-  ACTION_RESIZE, ACTION_EDITOR, HEADER_HEIGHT, EXTRA_PADDINGS,
+  ACTION_RESIZE, ACTION_FOCUS, ACTION_SELECT, HEADER_HEIGHT, EXTRA_PADDINGS,
 } from '../config';
 
 import type { INodeProps } from './types';
 
-import styles from './styles';
+import useStyles from './styles';
 
 const NodeComponent = ({
-  classes,
   isCollapsed,
+  isSelected,
   nodeComponentRef,
   isLocked,
   width,
@@ -33,6 +32,8 @@ const NodeComponent = ({
   color,
   isLinked,
 }: INodeProps) => {
+  const classes = useStyles({ borderColor: color });
+
   const cardContentMain = classNames(
     classes.cardContent,
     { [classes.cardContentLocked]: isLocked },
@@ -49,7 +50,10 @@ const NodeComponent = ({
 
   return (
     <RootRef rootRef={nodeComponentRef}>
-      <Card className={classes.card} tabIndex={0}>
+      <Card
+        className={classes.card}
+        data-selected={isSelected}
+      >
         <CardHeader
           className={cardHeader}
           classes={{
@@ -69,6 +73,8 @@ const NodeComponent = ({
             )}
           disableTypography
           action={<ActionBar />}
+          data-active="true"
+          data-action={ACTION_SELECT}
         />
 
         {!isCollapsed && (
@@ -81,7 +87,7 @@ const NodeComponent = ({
             >
               <div
                 data-active="true"
-                data-action={ACTION_EDITOR}
+                data-action={ACTION_FOCUS}
                 style={{ minHeight: cardTextHeight }}
                 className={classes.cardContentText}
                 dangerouslySetInnerHTML={{ __html: sanitize(text) }}
@@ -98,4 +104,4 @@ const NodeComponent = ({
   );
 };
 
-export default withStyles(styles)(NodeComponent);
+export default NodeComponent;

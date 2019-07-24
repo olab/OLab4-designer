@@ -1,11 +1,12 @@
 {
   "name": "olab-4",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "private": true,
   "dependencies": {
     "@material-ui/core": "^3.9.2",
     "@material-ui/icons": "^3.0.2",
     "@material-ui/lab": "^3.0.0-alpha.30",
+    "@material-ui/styles": "^4.2.1",
     "axios": "^0.18.0",
     "babel-preset-stage-0": "^6.24.1",
     "bfj": "6.1.1",

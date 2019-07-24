@@ -25,6 +25,20 @@ export type Map = {
   isFetching: boolean,
 };
 
+const FOCUS_NODE = 'FOCUS_NODE';
+type FocusNode = {
+  type: 'FOCUS_NODE',
+  index: number,
+  nodes: Array<NodeType>,
+};
+
+const UNFOCUS_NODE = 'UNFOCUS_NODE';
+type UnfocusNode = {
+  type: 'UNFOCUS_NODE',
+  index: number,
+  node: NodeType,
+};
+
 const SELECT_NODE = 'SELECT_NODE';
 type SelectNode = {
   type: 'SELECT_NODE',
@@ -196,9 +210,11 @@ export type MapActions = SelectNode | SelectEdge |
   CreateMapFromTemplateRequested | CreateMapFromTemplateSucceeded |
   CreateMapFromTemplateFailed | CreateNodeWithEdge | ExchangeEdgeId |
   ExtendMapRequested | ExtendMapFailed | ExtendMapSucceeded |
-  UpdateEdgeVisual;
+  UpdateEdgeVisual | FocusNode | UnfocusNode;
 
 export {
+  FOCUS_NODE,
+  UNFOCUS_NODE,
   SELECT_NODE,
   CREATE_NODE,
   UPDATE_NODE,

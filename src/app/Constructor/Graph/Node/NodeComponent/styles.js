@@ -1,11 +1,13 @@
+import { makeStyles } from '@material-ui/styles';
+
 import {
   ACTION_RESIZE, HEADER_PADDING, HEADER_HEIGHT, BORDER_SIZE,
 } from '../config';
 import { WHITE, ORANGE, DARK_GREY } from '../../../../../shared/colors';
 
-const nodeFocus = `&:focus [data-action=${ACTION_RESIZE}]`;
+const nodeFocus = `&[data-selected=true] > [data-action=${ACTION_RESIZE}]`;
 
-const styles = {
+const useStyles = makeStyles({
   card: {
     display: 'inline-block',
     verticalAlign: 'top',
@@ -14,7 +16,7 @@ const styles = {
     overflow: 'visible',
     borderRadius: '8px',
     [nodeFocus]: {
-      borderColor: DARK_GREY,
+      borderColor: ({ borderColor }) => borderColor || DARK_GREY,
       borderBottomRightRadius: 8,
       borderBottomLeftRadius: 8,
     },
@@ -132,6 +134,6 @@ const styles = {
     left: 0,
     bottom: 0,
   },
-};
+});
 
-export default styles;
+export default useStyles;

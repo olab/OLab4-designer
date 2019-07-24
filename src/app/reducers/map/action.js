@@ -13,6 +13,8 @@ import {
   SELECT_EDGE,
   CREATE_EDGE,
   DELETE_EDGE,
+  FOCUS_NODE,
+  UNFOCUS_NODE,
   EXCHANGE_NODE_ID,
   EXCHANGE_EDGE_ID,
   CREATE_NODE_WITH_EDGE,
@@ -33,10 +35,53 @@ import {
   CREATE_MAP_REQUESTED,
 } from './types';
 
+export const ACTION_FOCUS_NODE = (nodeId: number) => {
+  const { map: { nodes } } = store.getState();
+  const clonedNodes = nodes.map((node) => {
+    if (node.id === nodeId) {
+      return {
+        ...node,
+        isFocused: true,
+        isSelected: false,
+      };
+    }
+
+    if (node.isFocused || node.isSelected) {
+      return {
+        ...node,
+        isFocused: false,
+        isSelected: false,
+      };
+    }
+
+    return node;
+  });
+
+  return {
+    type: FOCUS_NODE,
+    nodes: clonedNodes,
+  };
+};
+
+export const ACTION_UNFOCUS_NODE = (nodeId: number) => {
+  const { map: { nodes } } = store.getState();
+  const index = nodes.findIndex(({ id }) => id === nodeId);
+  const node = {
+    ...nodes[index],
+    isFocused: false,
+  };
+
+  return {
+    type: UNFOCUS_NODE,
+    index,
+    node,
+  };
+};
+
 export const ACTION_SELECT_NODE = (nodeId: number | null) => {
   const { map: { nodes } } = store.getState();
   const clonedNodes = nodes.map((node) => {
-    if (nodeId && node.id === nodeId && !node.isSelected) {
+    if (nodeId && node.id === nodeId) {
       return {
         ...node,
         isSelected: true,

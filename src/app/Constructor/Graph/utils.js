@@ -24,6 +24,7 @@ export const createNewNode = (
     x,
     y,
     isSelected: false,
+    isFocused: false,
   };
 };
 

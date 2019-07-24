@@ -73,6 +73,7 @@ export const nodeFromServer = nodeData => ({
   isLocked: Boolean(nodeData.locked),
   isVisitOnce: Boolean(nodeData.visitOnce),
   isSelected: false,
+  isFocused: false,
 });
 
 export const nodeDefaultsFromServer = nodeDefault => ({

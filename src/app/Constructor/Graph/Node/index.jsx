@@ -13,9 +13,10 @@ import {
   ACTION_ADD,
   ACTION_RESIZE,
   ACTION_LINK,
+  ACTION_SELECT,
   COLLAPSED_HEIGHT,
   DEFAULT_NODE_INDENT,
-  ACTION_EDITOR,
+  ACTION_FOCUS,
   BORDER_SIZE,
 } from './config';
 
@@ -117,12 +118,13 @@ export class Node extends PureComponent<INodeProps, INodeState> {
       onNodeLocked,
       onNodeLink,
       onNodeSelected,
+      onNodeFocused,
       onCreateNodeWithEdge,
     } = this.props;
 
     switch (action) {
-      case ACTION_EDITOR:
-        onNodeSelected(data);
+      case ACTION_FOCUS:
+        onNodeFocused(data.id);
         break;
       case ACTION_LOCK:
         onNodeLocked(data.id);
@@ -140,6 +142,9 @@ export class Node extends PureComponent<INodeProps, INodeState> {
       case ACTION_LINK:
         onNodeLink(data);
         break;
+      case ACTION_SELECT:
+        onNodeSelected(data);
+        break;
       default: break;
     }
   }
@@ -148,8 +153,6 @@ export class Node extends PureComponent<INodeProps, INodeState> {
     const { isLinkingStarted } = this.props;
     const { sourceEvent: sourceEventD3, target: targetD3, shiftKey } = d3.event;
     const target = sourceEventD3 ? sourceEventD3.target : targetD3;
-    const shouldStopPropagation = !shiftKey && !isLinkingStarted;
-
     const activeElement = target.closest('[data-active="true"]');
 
     if (!activeElement) {
@@ -157,6 +160,9 @@ export class Node extends PureComponent<INodeProps, INodeState> {
     }
 
     const action = activeElement.getAttribute('data-action');
+    const shouldStopPropagation = !shiftKey
+      && !isLinkingStarted
+      && (!action || action !== ACTION_SELECT);
 
     if (shouldStopPropagation) {
       this.stopImmediatePropagation();
@@ -171,8 +177,8 @@ export class Node extends PureComponent<INodeProps, INodeState> {
     const action = this.getClickedItemAction();
     const isActionClickedAndAvailable = (!isLocked && action)
       || (isLocked && action === ACTION_LOCK);
-    const isLinking = (shiftKey && action === ACTION_EDITOR)
-      || (isLinkingStarted && action === ACTION_EDITOR);
+    const isLinking = (shiftKey && action === ACTION_FOCUS)
+      || (isLinkingStarted && action === ACTION_FOCUS);
 
     if (isActionClickedAndAvailable && !isLinking) {
       this.callElementAction(action);
@@ -241,8 +247,9 @@ export class Node extends PureComponent<INodeProps, INodeState> {
 
     const action = this.getClickedItemAction();
 
-    const isInappropriateAction = !action || action === ACTION_RESIZE || action === ACTION_EDITOR;
-    const shouldUpdateNode = !isLinkingStarted || (isLinkingStarted && isInappropriateAction);
+    const isInappropriateAction = !action || action === ACTION_RESIZE || action === ACTION_FOCUS;
+    const shouldUpdateNode = (!isLinkingStarted && action !== ACTION_SELECT)
+      || (isLinkingStarted && isInappropriateAction);
 
     if (shouldUpdateNode) {
       onNodeUpdate({ x, y }, data.id);
@@ -259,7 +266,16 @@ export class Node extends PureComponent<INodeProps, INodeState> {
     const {
       isLinkSource,
       data: {
-        isCollapsed, isLocked, width: currentWidth, height, type, title, text, color, id,
+        id,
+        text,
+        type,
+        title,
+        color,
+        width: currentWidth,
+        height,
+        isCollapsed,
+        isLocked,
+        isSelected,
       },
     } = this.props;
 
@@ -278,6 +294,7 @@ export class Node extends PureComponent<INodeProps, INodeState> {
           isLinked={isLinkSource}
           isLocked={isLocked}
           isCollapsed={isCollapsed}
+          isSelected={isSelected}
           nodeComponentRef={this.nodeComponentRef}
           width={currentWidth}
           height={height}

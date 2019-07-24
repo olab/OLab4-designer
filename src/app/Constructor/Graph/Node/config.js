@@ -3,7 +3,8 @@ export const ACTION_LOCK = 'ACTION_LOCK';
 export const ACTION_ADD = 'ACTION_ADD';
 export const ACTION_RESIZE = 'ACTION_RESIZE';
 export const ACTION_LINK = 'ACTION_LINK';
-export const ACTION_EDITOR = 'ACTION_EDITOR';
+export const ACTION_FOCUS = 'ACTION_FOCUS';
+export const ACTION_SELECT = 'ACTION_SELECT';
 
 export const HEADER_PADDING = 7;
 export const HEADER_HEIGHT = 40;

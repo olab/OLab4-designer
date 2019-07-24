@@ -1,9 +1,6 @@
 // @flow
 
 export type INodeProps = {
-  classes: {
-    [props: string]: any,
-  },
   color: string,
   text: string,
   title: string,
@@ -11,6 +8,7 @@ export type INodeProps = {
   height: number,
   type: number,
   isCollapsed: boolean,
+  isSelected: boolean,
   isLocked: boolean,
   isLinked: boolean,
   nodeComponentRef: any,

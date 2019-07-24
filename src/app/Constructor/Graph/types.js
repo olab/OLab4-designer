@@ -28,6 +28,7 @@ export type IGraphProps = {
   ACTION_UPDATE_NODE_COLLAPSE: (nodeId: number) => void,
   ACTION_UPDATE_NODE_RESIZE: (nodeId: number, width: number, height: number) => void,
   ACTION_UPDATE_NODE_LOCK: (nodeId: number) => void,
+  ACTION_FOCUS_NODE: (nodeId: number) => void,
   defaults: DefaultsType,
 };
 

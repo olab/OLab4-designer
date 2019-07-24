@@ -14,11 +14,13 @@ export type Node = {
   height: number,
   color: string,
   text: string,
-  isCollapsed: boolean,
-  isLocked: boolean,
   linkStyle: number,
   linkType: number,
+  isCollapsed: boolean,
+  isLocked: boolean,
   isVisitOnce: boolean,
+  isSelected: boolean,
+  isFocused: boolean,
 };
 
 export type INodeProps = {
@@ -37,6 +39,7 @@ export type INodeProps = {
   onNodeResizeStarted: () => void,
   onNodeLocked: (id: number) => void,
   onNodeLink: (data: any) => void,
+  onNodeFocused: (id: number) => void,
   layoutEngine?: any,
   viewWrapperElem: HTMLDivElement,
 };

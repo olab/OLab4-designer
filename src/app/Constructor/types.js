@@ -20,7 +20,7 @@ export type IConstructorProps = {
 };
 export type IConstructorState = {
   selectedLink: EdgeType | null,
-  selectedNode: NodeType | null,
+  focusedNode: NodeType | null,
   isShowCreateTemplateModal: boolean,
   isShowPreBuiltTemplatesModal: boolean,
 };

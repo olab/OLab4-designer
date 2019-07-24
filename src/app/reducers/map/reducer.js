@@ -6,6 +6,8 @@ import {
   CREATE_NODE,
   UPDATE_NODE,
   DELETE_NODE,
+  FOCUS_NODE,
+  UNFOCUS_NODE,
   SELECT_EDGE,
   CREATE_EDGE,
   DELETE_EDGE,
@@ -132,7 +134,8 @@ const map = (state: MapType = initialMapState, action: MapActions) => {
         isFetching: false,
       };
     }
-    case SELECT_NODE: {
+    case SELECT_NODE:
+    case FOCUS_NODE: {
       const { nodes } = action;
 
       return {
@@ -140,7 +143,8 @@ const map = (state: MapType = initialMapState, action: MapActions) => {
         nodes,
       };
     }
-    case UPDATE_NODE: {
+    case UPDATE_NODE:
+    case UNFOCUS_NODE: {
       const { nodes, ...restState } = state;
       const { index, node } = action;
 
@@ -148,8 +152,8 @@ const map = (state: MapType = initialMapState, action: MapActions) => {
         ...restState,
         nodes: [
           ...nodes.slice(0, index),
-          ...nodes.slice(index + 1),
           node,
+          ...nodes.slice(index + 1),
         ],
       };
     }
@@ -173,8 +177,8 @@ const map = (state: MapType = initialMapState, action: MapActions) => {
         ...restState,
         nodes: [
           ...nodes.slice(0, nodeIndex),
-          ...nodes.slice(nodeIndex + 1),
           node,
+          ...nodes.slice(nodeIndex + 1),
         ],
         edges,
       };
@@ -226,8 +230,8 @@ const map = (state: MapType = initialMapState, action: MapActions) => {
         ...restState,
         edges: [
           ...edges.slice(0, index),
-          ...edges.slice(index + 1),
           edge,
+          ...edges.slice(index + 1),
         ],
       };
     }

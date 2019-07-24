@@ -51,33 +51,40 @@ export class Graph extends Component<IGraphProps, IGraphState> {
     return null;
   }
 
+  get getFocusedNode(): NodeType | null {
+    const { map: { nodes } } = this.props;
+    return nodes.find(({ isFocused }) => isFocused) || null;
+  }
+
   get getSelectedNode(): NodeType | null {
     const { map: { nodes } } = this.props;
-
-    return nodes.find(node => node.isSelected) || null;
+    return nodes.find(({ isSelected }) => isSelected) || null;
   }
 
   get getSelectedEdge(): EdgeType | null {
     const { map: { edges } } = this.props;
-
-    return edges.find(edge => edge.isSelected) || null;
+    return edges.find(({ isSelected }) => isSelected) || null;
   }
 
-  onSelectNode = (node: NodeType | null, clientX?: number = 0, clientY?: number = 0) => {
-    const nodeId = node ? node.id : null;
+  onNodeFocused = (nodeId: number, posX: number = 0, posY: number = 0) => {
     const {
-      ACTION_SELECT_NODE,
+      ACTION_FOCUS_NODE,
       ACTION_SET_POSITION_MODAL,
     } = this.props;
 
-    if (node) {
-      ACTION_SET_POSITION_MODAL(MODALS_NAMES.NODE_EDITOR_MODAL, clientX, clientY);
-    }
+    ACTION_SET_POSITION_MODAL(MODALS_NAMES.NODE_EDITOR_MODAL, posX, posY);
+
+    ACTION_FOCUS_NODE(nodeId);
+  }
+
+  onSelectNode = (node: NodeType | null) => {
+    const nodeId = node ? node.id : null;
+    const { ACTION_SELECT_NODE } = this.props;
 
     ACTION_SELECT_NODE(nodeId);
   };
 
-  onSelectEdge = (edge: EdgeType | null, clientX?: number = 0, clientY?: number = 0) => {
+  onSelectEdge = (edge: EdgeType | null, posX?: number = 0, posY?: number = 0) => {
     const edgeId = edge ? edge.id : null;
     const {
       ACTION_SELECT_EDGE,
@@ -85,7 +92,7 @@ export class Graph extends Component<IGraphProps, IGraphState> {
     } = this.props;
 
     if (edge) {
-      ACTION_SET_POSITION_MODAL(MODALS_NAMES.LINK_EDITOR_MODAL, clientX, clientY);
+      ACTION_SET_POSITION_MODAL(MODALS_NAMES.LINK_EDITOR_MODAL, posX, posY);
     }
 
     ACTION_SELECT_EDGE(edgeId);
@@ -224,8 +231,10 @@ export class Graph extends Component<IGraphProps, IGraphState> {
           nodes={nodes}
           edges={edges}
           selected={this.getSelectedItem}
+          focused={this.getFocusedNode}
           edgeTypes={EDGE_TYPES}
           onSelectNode={this.onSelectNode}
+          onNodeFocused={this.onNodeFocused}
           onCreateNode={this.onCreateNode}
           onCollapseNode={this.onCollapseNode}
           onLockNode={this.onLockNode}
@@ -282,6 +291,9 @@ const mapDispatchToProps = dispatch => ({
   },
   ACTION_SELECT_NODE: (nodeId: number) => {
     dispatch(mapActions.ACTION_SELECT_NODE(nodeId));
+  },
+  ACTION_FOCUS_NODE: (nodeId: number) => {
+    dispatch(mapActions.ACTION_FOCUS_NODE(nodeId));
   },
   ACTION_UPDATE_NODE_COLLAPSE: (nodeId: number) => {
     dispatch(mapActions.ACTION_UPDATE_NODE_COLLAPSE(nodeId));

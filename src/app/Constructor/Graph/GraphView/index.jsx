@@ -187,7 +187,7 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
 
     // TODO: can we target the element rather than the document?
     document.addEventListener('keydown', this.handleWrapperKeydown);
-    document.addEventListener('click', this.handleDocumentClick);
+    document.addEventListener('click', this.handleDocumentClick, true);
 
     this.zoom = d3
       .zoom()
@@ -331,7 +331,7 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
 
   componentWillUnmount() {
     document.removeEventListener('keydown', this.handleWrapperKeydown);
-    document.removeEventListener('click', this.handleDocumentClick);
+    document.removeEventListener('click', this.handleDocumentClick, true);
   }
 
   stopResizing = (): void => {
@@ -637,15 +637,13 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
     const { target, shiftKey } = event;
     const { selectedNodeObj, isLinkingStarted } = this.state;
 
-    if (isLinkingStarted) {
-      const nodeDOMId = GraphView.getClickedDOMNodeId();
+    const nodeDOMId = GraphView.getClickedDOMNodeId();
 
-      if (!nodeDOMId) {
-        this.setState({
-          isLinkingStarted: false,
-          sourceNode: null,
-        });
-      }
+    if (isLinkingStarted && !nodeDOMId) {
+      this.setState({
+        isLinkingStarted: false,
+        sourceNode: null,
+      });
     }
 
     if (GraphView.isPartOfEdge(target)) {
@@ -654,12 +652,17 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
       return;
     }
 
-    const { readOnly, onCreateNode } = this.props;
+    const { readOnly, onCreateNode, onSelectNode } = this.props;
     const previousSelection = (selectedNodeObj && selectedNodeObj.node) || null;
-    const shouldCreateNode = !readOnly && shiftKey && !isLinkingStarted;
+    const shouldDeselectNode = !readOnly && !isLinkingStarted && !nodeDOMId;
+    const shouldCreateNode = !readOnly && !isLinkingStarted && shiftKey;
 
     if (previousSelection) {
       this.syncRenderNode(previousSelection);
+    }
+
+    if (shouldDeselectNode) {
+      onSelectNode(null);
     }
 
     if (shouldCreateNode) {
@@ -676,10 +679,10 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
 
   handleDocumentClick = (e: MouseEvent) => {
     // Ignore document click if it's in the SVGElement
-    if (e
-      && e.target
-      && e.target.ownerSVGElement != null
-      && e.target.ownerSVGElement === this.graphSvg.current) {
+    const { selected: isItemSelected, focused: isNodeFocused } = this.props;
+    const isTargetEqualsToViewport = e && e.target && this.graphSvg.current.contains(e.target);
+
+    if (isItemSelected || isNodeFocused || isTargetEqualsToViewport) {
       return;
     }
 
@@ -687,6 +690,8 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
       documentClicked: true,
       focused: false,
       svgClicked: false,
+      isLinkingStarted: false,
+      sourceNode: null,
     });
   }
 
@@ -780,9 +785,7 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
 
   handleNodeSelected = (node: NodeType) => {
     const { onSelectNode } = this.props;
-    const { clientX: x, clientY: y } = d3.event.sourceEvent || d3.event;
-
-    onSelectNode(node, x, y);
+    onSelectNode(node);
 
     this.setState({
       componentUpToDate: false,
@@ -791,6 +794,13 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
         node,
       },
     });
+  }
+
+  handleNodeFocused = (nodeId: number) => {
+    const { onNodeFocused } = this.props;
+    const { clientX: x, clientY: y } = d3.event.sourceEvent || d3.event;
+
+    onNodeFocused(nodeId, x, y);
   }
 
   // One can't attach handlers to 'markers' or obtain them from the event.target
@@ -1090,6 +1100,7 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
         onNodeMove={this.handleNodeMove}
         onNodeUpdate={this.handleNodeUpdate}
         onNodeSelected={this.handleNodeSelected}
+        onNodeFocused={this.handleNodeFocused}
         onNodeCollapsed={onCollapseNode}
         onNodeResizeEnded={onResizeNode}
         onNodeResizeStarted={this.startResizing}

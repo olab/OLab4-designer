@@ -24,14 +24,12 @@ import * as mapActions from '../reducers/map/action';
 import * as templatesActions from '../reducers/templates/action';
 import * as constructorActions from './action';
 
-import type { Edge as EdgeType } from './Graph/Edge/types';
-import type { Node as NodeType } from './Graph/Node/types';
-import type { MapItem as MapItemType } from '../reducers/map/types';
 import type { Template as TemplateType } from '../reducers/templates/types';
 import type { IConstructorProps, IConstructorState } from './types';
 
 import { MODALS_NAMES } from '../Modals/config';
 import { CONFIRMATION_MODALS } from './config';
+import { getFocusedNode, getSelectedEdge } from './utils';
 
 export class Constructor extends PureComponent<IConstructorProps, IConstructorState> {
   templateInputName: { current: null | React$Element<any> };
@@ -40,7 +38,7 @@ export class Constructor extends PureComponent<IConstructorProps, IConstructorSt
     super(props);
     this.state = {
       selectedLink: null,
-      selectedNode: null,
+      focusedNode: null,
       isShowCreateTemplateModal: false,
       isShowPreBuiltTemplatesModal: false,
     };
@@ -51,38 +49,20 @@ export class Constructor extends PureComponent<IConstructorProps, IConstructorSt
   }
 
   static getDerivedStateFromProps(nextProps: IConstructorProps, state: IConstructorState) {
-    const selectedNode: NodeType | null = Constructor.getSelectedNode(nextProps.map);
-    if (!isEqual(state.selectedNode, selectedNode)) {
+    const { nodes, edges } = nextProps.map;
+
+    const focusedNode = getFocusedNode(nodes);
+    if (!isEqual(state.focusedNode, focusedNode)) {
       return {
-        selectedNode,
+        focusedNode,
       };
     }
 
-    const selectedLink: EdgeType | null = Constructor.getSelectedEdge(nextProps.map);
+    const selectedLink = getSelectedEdge(edges);
     if (!isEqual(state.selectedLink, selectedLink)) {
       return {
         selectedLink,
       };
-    }
-
-    return null;
-  }
-
-  static getSelectedNode(map: MapItemType): NodeType | null {
-    const selectedNode = map.nodes.find(({ isSelected }) => isSelected);
-
-    if (selectedNode) {
-      return selectedNode;
-    }
-
-    return null;
-  }
-
-  static getSelectedEdge(map: MapItemType): EdgeType | null {
-    const selectedLink = map.edges.find(({ isSelected }) => isSelected);
-
-    if (selectedLink) {
-      return selectedLink;
     }
 
     return null;
@@ -134,7 +114,6 @@ export class Constructor extends PureComponent<IConstructorProps, IConstructorSt
     }
 
     const { ACTION_TEMPLATE_UPLOAD_REQUESTED } = this.props;
-
     ACTION_TEMPLATE_UPLOAD_REQUESTED(templateName);
 
     this.closeModal(CONFIRMATION_MODALS.CREATE_TEMPLATE);
@@ -149,7 +128,7 @@ export class Constructor extends PureComponent<IConstructorProps, IConstructorSt
 
   render() {
     const {
-      selectedNode, selectedLink, isShowCreateTemplateModal, isShowPreBuiltTemplatesModal,
+      focusedNode, selectedLink, isShowCreateTemplateModal, isShowPreBuiltTemplatesModal,
     } = this.state;
     const {
       isShowSOPicker, templates, isTemplatesFetching, isFullScreen, ACTION_SET_FULLSCREEN,
@@ -164,8 +143,8 @@ export class Constructor extends PureComponent<IConstructorProps, IConstructorSt
 
         <Graph />
 
-        { !!selectedLink && <LinkEditor link={selectedLink} /> }
-        { !!selectedNode && <NodeEditor node={selectedNode} /> }
+        { Boolean(selectedLink) && <LinkEditor link={selectedLink} /> }
+        { Boolean(focusedNode) && <NodeEditor node={focusedNode} /> }
         { isShowSOPicker && <SOPicker /> }
 
         {isShowCreateTemplateModal && (

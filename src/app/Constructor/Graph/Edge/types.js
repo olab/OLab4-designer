@@ -13,6 +13,7 @@ export type Edge = {
   target: number,
   isHidden: boolean,
   isFollowOnce: boolean,
+  isSelected: boolean,
 };
 
 export type ITargetPosition = {
