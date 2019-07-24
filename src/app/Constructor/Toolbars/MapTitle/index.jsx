@@ -11,9 +11,7 @@ import PencilIcon from '../../../../shared/assets/icons/toolbar/pencil.svg';
 import * as actions from '../../../reducers/map/action';
 import type { IMapTitleProps, IMapTitleState } from './types';
 
-import styles, {
-  MapTitleWrapper,
-} from './styles';
+import styles, { MapTitleWrapper } from './styles';
 
 class MapTitle extends PureComponent<IMapTitleProps, IMapTitleState> {
   inputRef: HTMLInputElement | null;
@@ -42,6 +40,19 @@ class MapTitle extends PureComponent<IMapTitleProps, IMapTitleState> {
     });
   };
 
+  handleGetRef = (instance): void => {
+    const { title } = this.state;
+
+    this.inputRef = instance;
+    if (!title) {
+      this.focusInput();
+    }
+  }
+
+  handleFocus = (): void => {
+    this.setState({ isFocused: true });
+  }
+
   handleBlur = (): void => {
     const { title } = this.state;
     const { ACTION_RENAME_MAP } = this.props;
@@ -63,40 +74,12 @@ class MapTitle extends PureComponent<IMapTitleProps, IMapTitleState> {
     ACTION_RENAME_MAP(title);
   }
 
-  handleGetRef = (instance): void => {
-    const { title } = this.state;
-
-    this.inputRef = instance;
-    if (!title) {
-      this.focusInput();
-    }
-  }
-
-  handleFocus = (): void => {
-    this.setState({ isFocused: true });
-  }
-
   handleSubmit = (e: Event): void => {
-    e.preventDefault();
-
-    const { title } = this.state;
-    const { ACTION_RENAME_MAP } = this.props;
-
-    if (!title) {
-      this.setState({ isError: true });
-      this.focusInput();
-
-      return;
+    if (e.preventDefault) {
+      e.preventDefault();
     }
-
-    this.setState({
-      isFocused: false,
-      isError: false,
-    });
 
     this.blurInput();
-
-    ACTION_RENAME_MAP(title);
   }
 
   focusInput = (): void => {

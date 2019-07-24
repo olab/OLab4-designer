@@ -36,3 +36,11 @@ export const extendMap = (mapId, templateId) => API
   .catch((error) => {
     throw error;
   });
+
+export const updateMap = (mapId, name) => API
+  .put(`/olab/maps/${mapId}`, {
+    data: { name },
+  })
+  .catch((error) => {
+    throw error;
+  });

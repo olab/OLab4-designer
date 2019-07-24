@@ -8,6 +8,7 @@ export const MESSAGES = {
     SCOPED_OBJECT: 'Object has been updated',
     NODE: 'Node has been updated',
     EDGE: 'Link has been updated',
+    MAP: 'Map\'s name successfully updated',
   },
   ON_CREATE: {
     TEMPLATE: 'Template has been created',
