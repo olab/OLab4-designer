@@ -213,9 +213,7 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
   }
 
   shouldComponentUpdate(nextProps: IGraphViewProps, nextState: IGraphViewState) {
-    const {
-      sourceNode, isLinkingStarted, isResizingStarted, focused,
-    } = this.state;
+    const { sourceNode, isLinkingStarted, isResizingStarted } = this.state;
     const {
       nodes, edges, selected, readOnly, layoutEngineType, cursor,
     } = this.props;
@@ -229,7 +227,6 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
       || nextState.isLinkingStarted !== isLinkingStarted
       || nextState.isResizingStarted !== isResizingStarted
       || nextState.sourceNode !== sourceNode
-      || nextState.focused !== focused
       || nextProps.cursor !== cursor
     ) {
       return true;
@@ -248,7 +245,6 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
       selectedEdgeObj,
       componentUpToDate,
       sourceNode,
-      focused,
       isLinkingStarted,
       isResizingStarted,
     } = this.state;
@@ -292,8 +288,7 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
       || !componentUpToDate
       || sourceNode !== prevState.sourceNode
       || isLinkingStarted !== prevState.isLinkingStarted
-      || isResizingStarted !== prevState.isResizingStarted
-      || focused !== prevState.focused;
+      || isResizingStarted !== prevState.isResizingStarted;
     const isMapItemsCountChanged = propsEdges.length !== prevProps.edges.length
       || propsNodes.length !== prevProps.nodes.length;
 
@@ -681,10 +676,10 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
 
   handleDocumentClick = (e: MouseEvent) => {
     // Ignore document click if it's in the SVGElement
-    const { selected: isItemSelected } = this.props;
-    const isTargetEqualsToViewport = e && e.target && this.graphSvg.current.contains(e.target);
-
-    if (isItemSelected || isTargetEqualsToViewport) {
+    if (e
+      && e.target
+      && e.target.ownerSVGElement != null
+      && e.target.ownerSVGElement === this.graphSvg.current) {
       return;
     }
 
