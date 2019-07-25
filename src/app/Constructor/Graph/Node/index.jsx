@@ -19,6 +19,7 @@ import {
 
 import type {
   Node as NodeType,
+  IPoint as IPointType,
   INodeProps,
   INodeState,
 } from './types';
@@ -98,11 +99,11 @@ export class Node extends PureComponent<INodeProps, INodeState> {
     this.setState({ isResizeStart: true });
   }
 
-  calculateNewNodePosition = (data: NodeType) => {
+  calculateNewNodePosition = (data: NodeType): IPointType => {
     const { x, y, height } = data;
-    const newNodeY = y + height / 2 + DEFAULT_NODE_INDENT;
+    const newY = y + height / 2 + DEFAULT_NODE_INDENT;
 
-    return { x, newNodeY };
+    return { x, y: newY };
   }
 
   callElementAction = (action: string) => {
