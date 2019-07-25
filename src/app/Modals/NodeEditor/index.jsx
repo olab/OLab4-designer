@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { DragSource } from 'react-dnd';
 import { withStyles } from '@material-ui/core/styles';
 import { Button } from '@material-ui/core';
+import isEqual from 'lodash.isequal';
 
 import TextEditor from './TextEditor';
 import OutlinedInput from '../../../shared/components/OutlinedInput';
@@ -17,6 +18,7 @@ import type { INodeEditorProps, INodeEditorState } from './types';
 
 import * as modalActions from '../action';
 import * as mapActions from '../../reducers/map/action';
+import { KEY_S } from './config';
 import { DND_CONTEXTS, MODALS_NAMES, LINK_STYLES } from '../config';
 
 import {
@@ -30,26 +32,41 @@ class NodeEditor extends PureComponent<INodeEditorProps, INodeEditorState> {
 
   constructor(props: INodeEditorProps) {
     super(props);
-
-    this.state = {
-      ...props.node,
-    };
-
+    this.state = { ...props.node };
     this.textEditorRef = React.createRef();
   }
 
-  componentDidUpdate(prevProps) {
-    const { node } = this.props;
-    const { node: prevNode } = prevProps;
+  componentDidUpdate() {
+    const {
+      node,
+      node: {
+        id, title, linkStyle, color, isVisitOnce, text, ...restNode
+      },
+    } = this.props;
+    const {
+      id: idPrev,
+      title: titlePrev,
+      linkStyle: linkStylePrev,
+      color: colorPrev,
+      isVisitOnce: isVisitOncePrev,
+      text: textPrev,
+      ...restNodePrev
+    } = this.state;
     const { current: currentTextEditorRef } = this.textEditorRef;
 
-    if (node.id !== prevNode.id) {
+
+    if (id !== idPrev) {
       // eslint-disable-next-line react/no-did-update-set-state
       this.setState({ ...node });
 
       if (currentTextEditorRef) {
-        currentTextEditorRef.updateComponent(node.text);
+        currentTextEditorRef.updateComponent(text);
       }
+    }
+
+    if (!isEqual(restNode, restNodePrev)) {
+      // eslint-disable-next-line react/no-did-update-set-state
+      this.setState({ ...restNode });
     }
   }
 
@@ -97,12 +114,28 @@ class NodeEditor extends PureComponent<INodeEditorProps, INodeEditorState> {
     ACTION_UPDATE_NODE(this.state, true);
   }
 
+  handleKeyPressed = (e: KeyboardEvent): void => {
+    if (e.keyCode === KEY_S && e.ctrlKey) {
+      e.preventDefault();
+      this.applyChanges();
+    }
+  }
+
+  handleModalRef = (instance) => {
+    const { connectDragPreview } = this.props;
+    connectDragPreview(instance);
+
+    if (instance) {
+      instance.focus();
+    }
+  }
+
   render() {
     const {
       color, title, isVisitOnce, linkStyle, text,
     } = this.state;
     const {
-      x, y, isDragging, connectDragSource, connectDragPreview, classes,
+      x, y, isDragging, connectDragSource, classes,
     } = this.props;
 
     if (isDragging) {
@@ -111,7 +144,9 @@ class NodeEditor extends PureComponent<INodeEditorProps, INodeEditorState> {
 
     return (
       <ModalWrapper
-        ref={instance => connectDragPreview(instance)}
+        ref={this.handleModalRef}
+        onKeyDown={this.handleKeyPressed}
+        tabIndex="0"
         x={x}
         y={y}
       >

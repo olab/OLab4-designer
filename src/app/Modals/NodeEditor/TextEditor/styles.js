@@ -23,7 +23,7 @@ export const editorStyle = {
 };
 
 export const wrapperStyle = {
-  width: 410,
+  width: 400,
 };
 
 export const toolbarStyle = {

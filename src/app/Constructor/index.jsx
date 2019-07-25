@@ -49,7 +49,7 @@ export class Constructor extends PureComponent<IConstructorProps, IConstructorSt
   }
 
   static getDerivedStateFromProps(nextProps: IConstructorProps, state: IConstructorState) {
-    const { nodes, edges } = nextProps.map;
+    const { nodes, edges } = nextProps;
 
     const focusedNode = getFocusedNode(nodes);
     if (!isEqual(state.focusedNode, focusedNode)) {
@@ -70,10 +70,10 @@ export class Constructor extends PureComponent<IConstructorProps, IConstructorSt
 
   validateUrl = (): void => {
     const {
-      map, match, history, ACTION_GET_MAP_REQUESTED,
+      mapId, match, history, ACTION_GET_MAP_REQUESTED,
     } = this.props;
     const mapIdUrl = match.params.mapId;
-    const pageRefreshed = !map.id && mapIdUrl;
+    const pageRefreshed = !mapId && mapIdUrl;
 
     if (pageRefreshed) {
       ACTION_GET_MAP_REQUESTED(mapIdUrl);
@@ -185,7 +185,9 @@ export class Constructor extends PureComponent<IConstructorProps, IConstructorSt
 const mapStateToProps = ({
   map, modals, templates, constructor,
 }) => ({
-  map,
+  mapId: map.id,
+  nodes: map.nodes,
+  edges: map.edges,
   isShowSOPicker: modals[MODALS_NAMES.SO_PICKER_MODAL].isShow,
   templates: templates.list,
   isTemplatesFetching: templates.isFetching,

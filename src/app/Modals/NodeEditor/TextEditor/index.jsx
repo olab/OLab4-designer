@@ -7,7 +7,7 @@ import type { ITextEditorProps, ITextEditorState } from './types';
 
 import { createEditorState } from './utils';
 import {
-  BASIC_TEXT_EDITOR_OPTIONS, LIST_OPTION, INLINE_OPTION,
+  BASIC_TEXT_EDITOR_OPTIONS, LIST_OPTION, INLINE_OPTION, IMAGE_OPTION,
 } from './config';
 
 import {
@@ -51,6 +51,7 @@ class TextEditor extends Component<ITextEditorProps, ITextEditorState> {
             options: BASIC_TEXT_EDITOR_OPTIONS,
             inline: INLINE_OPTION,
             list: LIST_OPTION,
+            image: IMAGE_OPTION,
           }}
           editorState={editorState}
           wrapperStyle={wrapperStyle}

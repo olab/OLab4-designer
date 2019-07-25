@@ -1,11 +1,12 @@
 // @flow
-import type { Map as MapType } from '../reducers/map/types';
 import type { Node as NodeType } from './Graph/Node/types';
 import type { Edge as EdgeType } from './Graph/Edge/types';
 import type { Template as TemplateType } from '../reducers/templates/types';
 
 export type IConstructorProps = {
-  map: MapType,
+  mapId: string,
+  nodes: Array<NodeType>,
+  edges: Array<EdgeType>,
   isShowSOPicker: boolean,
   match: any,
   history: any,

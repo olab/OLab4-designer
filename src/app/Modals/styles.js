@@ -13,6 +13,7 @@ export const ModalWrapper = styled.div`
   min-height: ${MIN_MODAL_HEIGHT}px;
   background-color: ${WHITE};
   color: ${WHITE};
+  outline: none;
   position: absolute;
   z-index: 500;
   font-size: 16px;
