@@ -5,6 +5,8 @@ import debounce from 'lodash.debounce';
 
 import NodeComponent from './NodeComponent';
 
+import { isString } from '../../../../helpers/dataTypes';
+
 import {
   ACTION_COLLAPSE,
   ACTION_LOCK,
@@ -23,6 +25,8 @@ import type {
   INodeProps,
   INodeState,
 } from './types';
+
+import { ForeignObject } from './styles';
 
 export class Node extends PureComponent<INodeProps, INodeState> {
   nodeRef: any;
@@ -255,19 +259,20 @@ export class Node extends PureComponent<INodeProps, INodeState> {
     const {
       isLinkSource,
       data: {
-        isCollapsed, isLocked, width: currentWidth, height, type, title, text, color,
+        isCollapsed, isLocked, width: currentWidth, height, type, title, text, color, id,
       },
     } = this.props;
 
     const currentHeight = isCollapsed ? COLLAPSED_HEIGHT : height;
 
     return (
-      <foreignObject
+      <ForeignObject
         x={-currentWidth / 2}
         y={-currentHeight / 2}
         width={currentWidth}
         height={currentHeight}
         viewBox={`0 0 ${currentWidth} ${currentHeight}`}
+        isDisabled={isString(id)}
       >
         <NodeComponent
           isLinked={isLinkSource}
@@ -281,7 +286,7 @@ export class Node extends PureComponent<INodeProps, INodeState> {
           text={text}
           color={color}
         />
-      </foreignObject>
+      </ForeignObject>
     );
   }
 
