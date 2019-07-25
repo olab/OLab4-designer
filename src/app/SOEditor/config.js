@@ -11,6 +11,7 @@ export const EDITORS_FIELDS = {
   SCOPE_LEVEL: 'Scope Level',
   PARENT: 'Parent',
   STARTING_VALUE: 'Starting value (optional)',
+  SCOPED_OBJECT_STATUS: 'Status',
   VISIBLE: 'Visible',
   COUNTER_STATUS: 'Counter status',
   STEM: 'Stem',
