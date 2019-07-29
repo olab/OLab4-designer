@@ -8,7 +8,7 @@ import type { IScopedObjectProps, IScopedObjectState, Icons } from './types';
 import type { ScopeLevel as ScopeLevelType } from '../reducers/scopeLevels/types';
 import type { ScopedObjectBase as ScopedObjectBaseType } from '../reducers/scopedObjects/types';
 
-import { SCOPE_LEVELS } from '../config';
+import { SCOPE_LEVELS, PAGE_TITLES } from '../config';
 import { getIconsByScopeLevel, toLowerCaseAndPlural } from './utils';
 
 import * as scopedObjectsActions from '../reducers/scopedObjects/action';
@@ -32,6 +32,7 @@ class ScopedObjectService extends PureComponent<IScopedObjectProps, IScopedObjec
 
     this.checkIfEditMode();
     this.scopedObjectType = scopedObjectType;
+    this.setPageTitle();
     this.icons = getIconsByScopeLevel(SCOPE_LEVELS[0]);
   }
 
@@ -89,17 +90,6 @@ class ScopedObjectService extends PureComponent<IScopedObjectProps, IScopedObjec
     }
   }
 
-  handleInputChange = (e: Event): void => {
-    const { value, name } = (e.target: window.HTMLInputElement);
-    this.setState({ [name]: value });
-  }
-
-  toggleDisableFields = (): void => {
-    this.setState(({ isFieldsDisabled }) => ({
-      isFieldsDisabled: !isFieldsDisabled,
-    }));
-  }
-
   checkIfEditMode = (): void => {
     const {
       match: { params: { scopedObjectId } }, ACTION_SCOPED_OBJECT_DETAILS_REQUESTED,
@@ -110,6 +100,30 @@ class ScopedObjectService extends PureComponent<IScopedObjectProps, IScopedObjec
 
       this.isEditMode = true;
     }
+  }
+
+  setPageTitle = (): void => {
+    const title = this.isEditMode ? PAGE_TITLES.EDIT_SO : PAGE_TITLES.ADD_SO;
+    document.title = title(this.scopedObjectType);
+  }
+
+  blurParentInput = (): void => {
+    this.parentIdRef.blur();
+  }
+
+  setParentRef = (ref: HTMLElement): void => {
+    this.parentIdRef = ref;
+  }
+
+  handleInputChange = (e: Event): void => {
+    const { value, name } = (e.target: window.HTMLInputElement);
+    this.setState({ [name]: value });
+  }
+
+  toggleDisableFields = (): void => {
+    this.setState(({ isFieldsDisabled }) => ({
+      isFieldsDisabled: !isFieldsDisabled,
+    }));
   }
 
   handleSubmitScopedObject = (): void => {
@@ -150,14 +164,6 @@ class ScopedObjectService extends PureComponent<IScopedObjectProps, IScopedObjec
   handleLevelObjChoose = (level: ScopeLevelType): void => {
     this.scopeLevelObj = level;
     this.setState({ isShowModal: false });
-  }
-
-  blurParentInput = (): void => {
-    this.parentIdRef.blur();
-  }
-
-  setParentRef = (ref: HTMLElement): void => {
-    this.parentIdRef = ref;
   }
 
   handleParentRemove = (): void => {

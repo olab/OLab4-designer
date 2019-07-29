@@ -5,6 +5,7 @@ import type { Template as TemplateType } from '../reducers/templates/types';
 
 export type IConstructorProps = {
   mapId: string,
+  mapName: string,
   nodes: Array<NodeType>,
   edges: Array<EdgeType>,
   isShowSOPicker: boolean,

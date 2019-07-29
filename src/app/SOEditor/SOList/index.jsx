@@ -20,6 +20,8 @@ import { toLowerCaseAndPlural, toUpperCaseAndPlural } from '../utils';
 import styles, {
   HeaderWrapper, ProgressWrapper, ListWithSearchWrapper,
 } from './styles';
+import { PAGE_TITLES } from '../../config';
+import capitalizeFirstLetter from '../../../helpers/capitalizeFirstLetter';
 
 class SOList extends PureComponent<ISOListProps, ISOListState> {
   listWithSearchRef: null | React.RefObject<any>;
@@ -56,8 +58,9 @@ class SOList extends PureComponent<ISOListProps, ISOListState> {
       scopedObjects: scopedObjectsPrev,
       match: { params: { scopedObjectType: scopedObjectTypePrev } },
     } = prevProps;
-
     const { query } = this.listWithSearchRef.state;
+
+    this.setPageTitle();
 
     if (scopedObjectType !== scopedObjectTypePrev) {
       this.SOTypeLowerCasedAndPluralled = toLowerCaseAndPlural(scopedObjectType);
@@ -72,6 +75,14 @@ class SOList extends PureComponent<ISOListProps, ISOListState> {
       // eslint-disable-next-line react/no-did-update-set-state
       this.setState({ scopedObjectsFiltered });
     }
+  }
+
+  setPageTitle = (): void => {
+    const {
+      match: { params: { scopedObjectType } },
+    } = this.props;
+
+    document.title = PAGE_TITLES.SO_LIST(capitalizeFirstLetter(scopedObjectType));
   }
 
   handleItemsSearch = (query: string): void => {

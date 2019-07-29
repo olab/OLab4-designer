@@ -20,6 +20,7 @@ import * as templatesActions from '../reducers/templates/action';
 
 import type { Template as TemplateType } from '../reducers/templates/types';
 import type { IHomeProps, IHomeState } from './types';
+import { PAGE_TITLES } from '../config';
 import { PANEL_NAMES } from './config';
 
 import styles, {
@@ -27,11 +28,16 @@ import styles, {
 } from './styles';
 
 class Home extends PureComponent<IHomeProps, IHomeState> {
-  state: IHomeState = {
-    expandedPanel: null,
-    isButtonsDisabled: false,
-    isShowTemplatesListModal: false,
-  };
+  constructor(props: IHomeProps) {
+    super(props);
+    this.state = {
+      expandedPanel: null,
+      isButtonsDisabled: false,
+      isShowTemplatesListModal: false,
+    };
+
+    this.setPageTitle();
+  }
 
   componentDidUpdate(prevProps: IHomeProps) {
     const { mapId, isMapFetching, history } = this.props;
@@ -46,6 +52,10 @@ class Home extends PureComponent<IHomeProps, IHomeState> {
     if (isMapRetrieved) {
       history.push(`/${mapId}`);
     }
+  }
+
+  setPageTitle = (): void => {
+    document.title = PAGE_TITLES.HOME;
   }
 
   handleChange = (panelName: string): Function => (event: Event, expanded: boolean): void => {
