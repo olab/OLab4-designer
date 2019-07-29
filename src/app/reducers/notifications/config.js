@@ -15,6 +15,9 @@ export const MESSAGES = {
     SCOPED_OBJECT: 'Object has been created',
   },
   ON_DELETE: {
+    NODE: {
+      INFO: 'Root node can not be deleted',
+    },
     SCOPED_OBJECT: 'Object has been deleted',
   },
 };

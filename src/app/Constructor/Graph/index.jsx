@@ -12,9 +12,12 @@ import GraphView from './GraphView';
 import { createNewEdge, createNewNode } from './utils';
 import { EDGE_TYPES, NODE_CREATION_OFFSET } from './config';
 import { DND_CONTEXTS, MODALS_NAMES } from '../../Modals/config';
+import { ROOT_TYPE as ROOT_NODE_TYPE } from './Node/config';
+import { MESSAGES } from '../../reducers/notifications/config';
 
 import * as mapActions from '../../reducers/map/action';
 import * as modalActions from '../../Modals/action';
+import * as notificationActions from '../../reducers/notifications/action';
 
 import type { IGraphProps, IGraphState } from './types';
 import type { Edge as EdgeType } from './Edge/types';
@@ -147,9 +150,14 @@ export class Graph extends Component<IGraphProps, IGraphState> {
     ACTION_UPDATE_NODE(node);
   }
 
-  onDeleteNode = (nodeId: number) => {
-    const { ACTION_DELETE_NODE } = this.props;
-    ACTION_DELETE_NODE(nodeId);
+  onDeleteNode = (node: NodeType) => {
+    const { ACTION_DELETE_NODE, ACTION_NOTIFICATION_INFO } = this.props;
+
+    if (node.type === ROOT_NODE_TYPE) {
+      ACTION_NOTIFICATION_INFO(MESSAGES.ON_DELETE.NODE.INFO);
+    } else {
+      ACTION_DELETE_NODE(node.id);
+    }
   }
 
   onDeleteEdge = (edge: EdgeType) => {
@@ -312,6 +320,9 @@ const mapDispatchToProps = dispatch => ({
   },
   ACTION_UNDO_MAP: () => {
     dispatch(mapActions.ACTION_UNDO_MAP());
+  },
+  ACTION_NOTIFICATION_INFO: (message: string) => {
+    dispatch(notificationActions.ACTION_NOTIFICATION_INFO(message));
   },
 });
 

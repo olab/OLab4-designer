@@ -13,7 +13,7 @@ export const EXTRA_PADDINGS = 20;
 export const DEFAULT_NODE_INDENT = 400;
 export const FOOTER_WIDTH = 105;
 export const LINK_ICON_SIZE = 32;
-export const TYPE_ROOT = 1;
+export const ROOT_TYPE = 1;
 export const BORDER_SIZE = 2;
 
 export const SALT = 'tmp-node';

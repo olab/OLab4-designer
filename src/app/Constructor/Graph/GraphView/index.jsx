@@ -503,7 +503,7 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
   deleteNode(selectedNode: NodeType) {
     const { onDeleteNode } = this.props;
 
-    onDeleteNode(selectedNode.id);
+    onDeleteNode(selectedNode);
 
     this.setState({
       componentUpToDate: false,

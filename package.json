@@ -1,6 +1,6 @@
 {
   "name": "olab-4",
-  "version": "0.5.2",
+  "version": "0.5.3",
   "private": true,
   "dependencies": {
     "@material-ui/core": "^3.9.2",
