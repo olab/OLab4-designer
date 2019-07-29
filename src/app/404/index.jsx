@@ -3,7 +3,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@material-ui/core';
 
-import Icon404 from '../../shared/assets/icons/tmp.svg';
+import Icon404 from '../../shared/assets/icons/not_found.svg';
 
 import { Wrapper, Header, Text } from './styles';
 

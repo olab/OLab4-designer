@@ -1,24 +1,20 @@
 // @flow
 export type ToolbarItem = {
   id: string,
-  name: string,
-  icon: string,
-  mouseIcon: string,
-  order: number,
+  icon: any,
   label: string,
-  onClick?: Function,
+  onClick: Function,
 };
 
 export type ToolbarGroup = {
   id: string,
-  order: number,
   itemList: Array<ToolbarItem>,
-  onClick: Function,
 };
 
 export type IToolbarsProps = {
   classes: any,
   showModal: Function,
+  isFullScreen: boolean,
   isUndoAvailable: boolean,
   isRedoAvailable: boolean,
   ACTION_UNDO_MAP: Function,
@@ -28,9 +24,6 @@ export type IToolbarsProps = {
 };
 
 export type IToolbarsState = {
-  expand: string,
-  preview: ToolbarGroup,
-  toolbars: ToolbarGroup,
-  meta: ToolbarGroup,
-  right: ToolbarGroup,
+  toolbarRight: ToolbarGroup,
+  toolbarLeft: ToolbarGroup,
 };

@@ -12,6 +12,7 @@ const undoRedoPseudoCommon = {
 
 export const Wrapper = styled.div`
   position: relative;
+  margin-left: 8px;
 `;
 
 export const Container = styled.div`

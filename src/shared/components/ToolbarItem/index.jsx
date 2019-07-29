@@ -1,19 +1,23 @@
 // @flow
 import React from 'react';
+import { withStyles } from '@material-ui/core/styles';
+import { IconButton } from '@material-ui/core';
 
-import type { ToolbarItem as ToolbarItemType } from '../../../app/Constructor/Toolbars/types';
+import type { IToolbarItemProps } from './types';
 
-import { Item, Icon } from './styles';
+import styles from './styles';
 
-const ToolbarItem = (item: ToolbarItemType) => (
-  <Item
-    key={item.id}
-    className="toolbar-item"
-    onClick={item.onClick}
-    aria-hidden="true"
+const ToolbarItem = ({
+  id, label, onClick, icon: Icon, classes,
+}: IToolbarItemProps) => (
+  <IconButton
+    title={label}
+    aria-label={label}
+    onClick={() => onClick(id)}
+    className={classes.iconButton}
   >
-    <Icon alt={item.label} src={item.icon} />
-  </Item>
+    <Icon />
+  </IconButton>
 );
 
-export default ToolbarItem;
+export default withStyles(styles)(ToolbarItem);

@@ -6,7 +6,7 @@ import {
   FormControl, Input, FormHelperText, InputAdornment,
 } from '@material-ui/core';
 
-import PencilIcon from '../../../../shared/assets/icons/toolbar/pencil.svg';
+import PencilIcon from '../../../../shared/assets/icons/pencil.svg';
 
 import * as actions from '../../../reducers/map/action';
 import type { IMapTitleProps, IMapTitleState } from './types';

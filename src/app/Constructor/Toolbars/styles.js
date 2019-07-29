@@ -28,8 +28,8 @@ export const LabTitle = styled.span`
 `;
 
 export const Block = styled.div`
-   display: flex;
-   align-items: center;
+  display: flex;
+  align-items: center;
 `;
 
 const styles = () => ({

@@ -4,7 +4,8 @@ import { connect } from 'react-redux';
 import { IconButton } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 
-import UndoRedoIcon from '../../../../shared/assets/icons/toolbar/templates/undo-redo-icon';
+import UndoIcon from '../../../../shared/assets/icons/undo.svg';
+import RedoIcon from '../../../../shared/assets/icons/redo.svg';
 
 import * as actions from '../../../reducers/map/action';
 import type { IUndoRedoButtonsProps } from './types';
@@ -21,7 +22,7 @@ export const GraphUndoRedoButtons = ({
         disabled={!isUndoAvailable}
         className={classes.undoRedo}
       >
-        <UndoRedoIcon undo />
+        <UndoIcon />
       </IconButton>
       <IconButton
         aria-label="Redo Button"
@@ -29,7 +30,7 @@ export const GraphUndoRedoButtons = ({
         disabled={!isRedoAvailable}
         className={classes.undoRedo}
       >
-        <UndoRedoIcon redo />
+        <RedoIcon />
       </IconButton>
     </Container>
   </Wrapper>

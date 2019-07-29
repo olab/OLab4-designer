@@ -1,5 +1,5 @@
 // @flow
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { AppBar } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
@@ -8,16 +8,21 @@ import ToolbarGroup from '../../../shared/components/ToolbarGroup';
 import GraphUndoRedoButtons from '../Graph/UndoRedo';
 import MapTitle from './MapTitle';
 
-import type { IToolbarsProps, IToolbarsState } from './types';
+import templateIcon from '../../../shared/assets/icons/toolbar_template.svg';
+import fullscreenIcon from '../../../shared/assets/icons/toolbar_fullscreen.svg';
+import unfullscreenIcon from '../../../shared/assets/icons/toolbar_unfullscreen.svg';
+import SOPickerIcon from '../../../shared/assets/icons/toolbar_so_picker.svg';
+import createTemplateFromMapIcon from '../../../shared/assets/icons/toolbar_create_template.svg';
+
+import type {
+  ToolbarItem as ToolbarItemType,
+  ToolbarGroup as ToolbarGroupType,
+  IToolbarsProps,
+  IToolbarsState,
+} from './types';
 
 import { ZOOM_CONTROLS_ID, CONFIRMATION_MODALS } from '../config';
 import { MODALS_NAMES } from '../../Modals/config';
-
-import addNewIcon from '../../../shared/assets/icons/toolbar/templates/toolbar-addnew.png';
-import templateIcon from '../../../shared/assets/icons/toolbar/templates/toolbar-template.png';
-import fullscreenIcon from '../../../shared/assets/icons/toolbar/templates/toolbar-fullscreen.png';
-import questionIcon from '../../../shared/assets/icons/toolbar/templates/meta-question.png';
-import createTemplateFromMapIcon from '../../../shared/assets/icons/create_template.png';
 
 import * as constructorActions from '../action';
 import * as mapActions from '../../reducers/map/action';
@@ -25,76 +30,20 @@ import * as modalActions from '../../Modals/action';
 
 import styles, { Block, LabTitleItem } from './styles';
 
-export class Toolbars extends Component<IToolbarsProps, IToolbarsState> {
-  constructor(props: IToolbarsProps) {
-    super(props);
+export class Toolbars extends PureComponent<IToolbarsProps, IToolbarsState> {
+  componentDidUpdate(prevProps: IToolbarsProps) {
+    const { isFullScreen: isFullScreenPrev } = prevProps;
+    const { isFullScreen } = this.props;
+    const isToFullScreen = !isFullScreenPrev && isFullScreen;
+    const isFromFullScreen = isFullScreenPrev && !isFullScreen;
 
-    const { ACTION_TOGGLE_FULLSCREEN, showModal } = props;
-
-    this.state = {
-      toolbars: {
-        id: 'toolbars',
-        order: 10,
-        itemList: [
-          {
-            id: 'addNew',
-            name: 'add_new',
-            icon: addNewIcon,
-            mouseIcon: 'template_mouse_icon',
-            order: 30,
-            label: 'Add New',
-          },
-          {
-            id: 'template',
-            name: 'template',
-            icon: templateIcon,
-            mouseIcon: 'template_mouse_icon',
-            order: 40,
-            label: 'Choose template',
-            onClick: () => showModal(CONFIRMATION_MODALS.PRE_BUILT_TEMPLATES),
-          },
-          {
-            id: 'createTemplateFromMap',
-            name: 'createTemplateFromMap',
-            icon: createTemplateFromMapIcon,
-            mouseIcon: 'template_mouse_icon',
-            order: 60,
-            label: 'Create Template From Map',
-            onClick: () => showModal(CONFIRMATION_MODALS.CREATE_TEMPLATE),
-          },
-          {
-            id: 'question',
-            name: 'question',
-            icon: questionIcon,
-            mouseIcon: 'template_mouse_icon',
-            order: 10,
-            label: 'Tutorial',
-            onClick: this.toggleShowSOPickerModal,
-          },
-        ],
-      },
-      right: {
-        id: 'right',
-        order: 20,
-        itemList: [
-          {
-            id: 'fullscreen',
-            name: 'fullscreen',
-            icon: fullscreenIcon,
-            mouseIcon: 'template_mouse_icon',
-            onClick: ACTION_TOGGLE_FULLSCREEN,
-            order: 10,
-            label: 'Go to fullscreen',
-          },
-        ],
-      },
-    };
-  }
-
-  toggleShowSOPickerModal = () => {
-    const { ACTION_TOGGLE_MODAL } = this.props;
-
-    ACTION_TOGGLE_MODAL();
+    if (isToFullScreen) {
+      this.toolbarRight.itemList = [this.unfullScreenItem];
+      this.forceUpdate();
+    } else if (isFromFullScreen) {
+      this.toolbarRight.itemList = [this.fullScreenItem];
+      this.forceUpdate();
+    }
   }
 
   onUndo = () => {
@@ -117,41 +66,100 @@ export class Toolbars extends Component<IToolbarsProps, IToolbarsState> {
     ACTION_REDO_MAP();
   }
 
+  handleToolbarClick = (toolbarItemId: string): void => {
+    const { showModal, ACTION_TOGGLE_MODAL, ACTION_TOGGLE_FULLSCREEN } = this.props;
+
+    switch (toolbarItemId) {
+      case 'template':
+        showModal(CONFIRMATION_MODALS.PRE_BUILT_TEMPLATES);
+        break;
+      case 'createTemplateFromMap':
+        showModal(CONFIRMATION_MODALS.CREATE_TEMPLATE);
+        break;
+      case 'so_picker':
+        ACTION_TOGGLE_MODAL();
+        break;
+      case 'fullscreen':
+      case 'unfullscreen':
+        ACTION_TOGGLE_FULLSCREEN();
+        break;
+      default: break;
+    }
+  }
+
+  toolbarLeft: ToolbarGroupType = {
+    id: 'toolbarLeft',
+    itemList: [
+      {
+        id: 'template',
+        icon: templateIcon,
+        label: 'Choose template',
+        onClick: this.handleToolbarClick,
+      },
+      {
+        id: 'createTemplateFromMap',
+        icon: createTemplateFromMapIcon,
+        label: 'Create Template From Map',
+        onClick: this.handleToolbarClick,
+      },
+      {
+        id: 'so_picker',
+        icon: SOPickerIcon,
+        label: 'Open/Close Object Picker',
+        onClick: this.handleToolbarClick,
+      },
+    ],
+  };
+
+  fullScreenItem: ToolbarItemType = {
+    id: 'fullscreen',
+    icon: fullscreenIcon,
+    label: 'Go to Fullscreen',
+    onClick: this.handleToolbarClick,
+  };
+
+  unfullScreenItem: ToolbarItemType = {
+    id: 'unfullscreen',
+    icon: unfullscreenIcon,
+    label: 'Exit from Fullscreen',
+    onClick: this.handleToolbarClick,
+  };
+
+  toolbarRight: ToolbarGroupType = {
+    id: 'toolbarRight',
+    itemList: [this.fullScreenItem],
+  };
+
   render() {
-    const { expand, toolbars, right } = this.state;
     const { isUndoAvailable, isRedoAvailable, classes } = this.props;
 
     return (
-      <>
-        <AppBar className={classes.positionRelative} position="fixed">
-          <Block>
-            <ToolbarGroup
-              group={toolbars}
-              expand={expand}
-            />
-            <GraphUndoRedoButtons
-              isUndoAvailable={isUndoAvailable}
-              isRedoAvailable={isRedoAvailable}
-              onUndo={this.onUndo}
-              onRedo={this.onRedo}
-            />
-          </Block>
-          <Block>
-            <LabTitleItem>
-              <MapTitle />
-            </LabTitleItem>
-            <div id={ZOOM_CONTROLS_ID} />
-            <ToolbarGroup group={right} />
-          </Block>
-        </AppBar>
-      </>
+      <AppBar className={classes.positionRelative} position="fixed">
+        <Block>
+          <ToolbarGroup group={this.toolbarLeft} />
+          <GraphUndoRedoButtons
+            isUndoAvailable={isUndoAvailable}
+            isRedoAvailable={isRedoAvailable}
+            onUndo={this.onUndo}
+            onRedo={this.onRedo}
+          />
+        </Block>
+        <Block>
+          <LabTitleItem>
+            <MapTitle />
+          </LabTitleItem>
+          <div id={ZOOM_CONTROLS_ID} />
+          <ToolbarGroup group={this.toolbarRight} />
+        </Block>
+      </AppBar>
     );
   }
 }
 
-const mapStateToProps = ({ map: { undo, redo } }) => ({
+const mapStateToProps = ({ map: { undo, redo }, constructor }) => ({
   isUndoAvailable: !!undo.length,
   isRedoAvailable: !!redo.length,
+  isFullScreen: constructor.isFullScreen,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -165,9 +173,7 @@ const mapDispatchToProps = dispatch => ({
     dispatch(mapActions.ACTION_REDO_MAP());
   },
   ACTION_TOGGLE_MODAL: () => {
-    dispatch(modalActions.ACTION_TOGGLE_MODAL(
-      MODALS_NAMES.SO_PICKER_MODAL,
-    ));
+    dispatch(modalActions.ACTION_TOGGLE_MODAL(MODALS_NAMES.SO_PICKER_MODAL));
   },
 });
 

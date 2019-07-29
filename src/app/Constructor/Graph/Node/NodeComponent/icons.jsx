@@ -79,8 +79,8 @@ export const LockIcon = () => (
     xmlns="http://www.w3.org/2000/svg"
   >
     <mask
-      id="mask0"
-      mask-type="alpha"
+      id="lock_icon"
+      masktype="alpha"
       maskUnits="userSpaceOnUse"
       x="0"
       y="0"
@@ -94,7 +94,7 @@ export const LockIcon = () => (
         fill="white"
       />
     </mask>
-    <g mask="url(#mask0)">
+    <g mask="url(#lock_icon)">
       <rect x="-6" y="-5" width="24" height="24" fill="white" />
     </g>
   </svg>
@@ -119,8 +119,8 @@ export const MoreActionsIcon = () => (
 export const MinimizeIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" width="12" height="2" viewBox="0 0 12 2" fill="none">
     <mask
-      id="mask01"
-      mask-type="alpha"
+      id="minimize_icon"
+      masktype="alpha"
       maskUnits="userSpaceOnUse"
       x="0"
       y="0"
@@ -134,7 +134,7 @@ export const MinimizeIcon = () => (
         fill="white"
       />
     </mask>
-    <g mask="url(#mask01)">
+    <g mask="url(#minimize_icon)">
       <rect x="-6" y="-11" width="24" height="24" fill="white" />
     </g>
   </svg>
