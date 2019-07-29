@@ -20,3 +20,32 @@ To make production build:
 ```bash
 npm build
 ```
+
+## Production runbook
+
+Clone your repository and Open the folder
+```bash
+git clone <remote_url> <directory_folder> && cd <directory_folder>
+```
+
+Run downloading of npm modules
+```bash
+npm i
+```
+
+Run the generating of the production build
+```bash
+API_URL=<api_url> PUBLIC_URL=<subpath_url> npm run build
+```
+env variables are optional, and default values will be get from `./env/.env.production`
+
+Copy/move the `*` from `./build` folder to web hosts directory
+```bash
+mv ./build/* /var/www/olab4/
+```
+
+So your application will be available by `/var/www/olab4/index.html`
+
+## Releases
+
+In the root placed files `release_<N>.patch` and relative to npm git tag
