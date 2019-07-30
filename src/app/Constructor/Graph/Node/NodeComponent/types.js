@@ -1,6 +1,9 @@
 // @flow
 
 export type INodeProps = {
+  classes: {
+    [props: string]: any,
+  },
   color: string,
   text: string,
   title: string,

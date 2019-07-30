@@ -2,6 +2,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { sanitize } from 'dompurify';
+import { withStyles } from '@material-ui/core/styles';
 import {
   Card, CardHeader, CardContent, RootRef,
 } from '@material-ui/core';
@@ -17,9 +18,10 @@ import {
 
 import type { INodeProps } from './types';
 
-import useStyles from './styles';
+import styles from './styles';
 
 const NodeComponent = ({
+  classes,
   isCollapsed,
   isSelected,
   nodeComponentRef,
@@ -32,8 +34,6 @@ const NodeComponent = ({
   color,
   isLinked,
 }: INodeProps) => {
-  const classes = useStyles({ borderColor: color });
-
   const cardContentMain = classNames(
     classes.cardContent,
     { [classes.cardContentLocked]: isLocked },
@@ -104,4 +104,4 @@ const NodeComponent = ({
   );
 };
 
-export default NodeComponent;
+export default withStyles(styles)(NodeComponent);
