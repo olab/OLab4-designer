@@ -25,7 +25,7 @@ npm build
 
 Clone your repository and Open the folder
 ```bash
-git clone <remote_url> <directory_folder> && cd <directory_folder>
+git clone <remote_url> <branch> <directory_folder> && cd <directory_folder>
 ```
 
 Run downloading of npm modules
@@ -33,15 +33,17 @@ Run downloading of npm modules
 npm i
 ```
 
+If you need update the API_URL update it `./env/.env.production`
+
 Run the generating of the production build
 ```bash
-API_URL=<api_url> PUBLIC_URL=<subpath_url> npm run build
+PUBLIC_URL=<subpath_url> npm run build
 ```
 env variables are optional, and default values will be get from `./env/.env.production`
 
 Copy/move the `*` from `./build` folder to web hosts directory
 ```bash
-mv ./build/* /var/www/olab4/
+cp ./build/* -R /var/www/olab4/
 ```
 
 So your application will be available by `/var/www/olab4/index.html`
