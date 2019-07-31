@@ -1,6 +1,7 @@
 // @flow
 import React, { PureComponent } from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import { MenuItem, Menu, Button } from '@material-ui/core';
 import { ExpandMore as ExpandMoreIcon } from '@material-ui/icons';
@@ -12,12 +13,9 @@ import { SCOPED_OBJECTS } from '../../config';
 import styles from './styles';
 
 class NavigationBar extends PureComponent<INavigationProps, INavigationState> {
-  constructor(props: INavigationProps) {
-    super(props);
-    this.state = {
-      anchorEl: null,
-    };
-  }
+  state: INavigationState = {
+    anchorEl: null,
+  };
 
   handleClick = (event: Event): void => {
     this.setState({ anchorEl: event.currentTarget });
@@ -29,7 +27,7 @@ class NavigationBar extends PureComponent<INavigationProps, INavigationState> {
 
   render() {
     const { anchorEl } = this.state;
-    const { classes } = this.props;
+    const { classes, mapId } = this.props;
 
     return (
       <div className={classes.wrapper}>
@@ -42,6 +40,7 @@ class NavigationBar extends PureComponent<INavigationProps, INavigationState> {
           Objects
           <ExpandMoreIcon />
         </Button>
+
         <Menu
           anchorEl={anchorEl}
           keepMounted
@@ -61,9 +60,24 @@ class NavigationBar extends PureComponent<INavigationProps, INavigationState> {
             </MenuItem>
           ))}
         </Menu>
+
+
+        {mapId && (
+          <Button
+            className={classes.link}
+            component={Link}
+            to={`/${mapId}`}
+          >
+            Your Map
+          </Button>
+        )}
       </div>
     );
   }
 }
 
-export default withStyles(styles)(NavigationBar);
+const mapStateToProps = ({ map }) => ({ mapId: map.id });
+
+export default connect(mapStateToProps)(
+  withStyles(styles)(NavigationBar),
+);

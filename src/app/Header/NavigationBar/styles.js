@@ -1,20 +1,12 @@
-import styled from 'styled-components';
-
 import { DARK_BLUE, BLUE } from '../../../shared/colors';
-
-export const FieldLabel = styled.p`
-  color: ${DARK_BLUE};
-  font-weight: 600;
-  margin-top: 0.7rem;
-  margin-bottom: 0.5rem;
-`;
 
 const styles = () => ({
   wrapper: {
-    marginLeft: 40,
+    marginLeft: '2rem',
+    display: 'flex',
+    alignItems: 'center',
   },
   button: {
-    marginLeft: '1rem',
     color: BLUE,
     '& > span': {
       fontWeight: 400,
@@ -28,8 +20,12 @@ const styles = () => ({
     width: '127px',
   },
   link: {
-    color: DARK_BLUE,
+    color: BLUE,
     textDecoration: 'none',
+    fontWeight: 400,
+    marginLeft: '1rem',
+    fontSize: '0.875rem',
+    textTransform: 'uppercase',
   },
 });
 
