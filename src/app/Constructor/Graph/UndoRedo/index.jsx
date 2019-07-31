@@ -9,31 +9,29 @@ import RedoIcon from '../../../../shared/assets/icons/redo.svg';
 
 import * as actions from '../../../reducers/map/action';
 import type { IUndoRedoButtonsProps } from './types';
-import styles, { Wrapper, Container } from './styles';
+import styles, { Container } from './styles';
 
 export const GraphUndoRedoButtons = ({
   classes, isUndoAvailable, isRedoAvailable, ACTION_REDO_MAP, ACTION_UNDO_MAP,
 }: IUndoRedoButtonsProps) => (
-  <Wrapper>
-    <Container>
-      <IconButton
-        aria-label="Undo Button"
-        onClick={ACTION_UNDO_MAP}
-        disabled={!isUndoAvailable}
-        className={classes.undoRedo}
-      >
-        <UndoIcon />
-      </IconButton>
-      <IconButton
-        aria-label="Redo Button"
-        onClick={ACTION_REDO_MAP}
-        disabled={!isRedoAvailable}
-        className={classes.undoRedo}
-      >
-        <RedoIcon />
-      </IconButton>
-    </Container>
-  </Wrapper>
+  <Container>
+    <IconButton
+      aria-label="Undo Button"
+      onClick={ACTION_UNDO_MAP}
+      disabled={!isUndoAvailable}
+      className={classes.undoRedo}
+    >
+      <UndoIcon />
+    </IconButton>
+    <IconButton
+      aria-label="Redo Button"
+      onClick={ACTION_REDO_MAP}
+      disabled={!isRedoAvailable}
+      className={classes.undoRedo}
+    >
+      <RedoIcon />
+    </IconButton>
+  </Container>
 );
 
 const mapStateToProps = ({ map: { undo, redo } }) => ({

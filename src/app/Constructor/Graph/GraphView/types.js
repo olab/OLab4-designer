@@ -51,7 +51,7 @@ export type IGraphViewProps = {
   gridDotSize?: number,
   gridSize?: number,
   gridSpacing?: number,
-  layoutEngineType?: string,
+  layoutEngine?: string,
   maxZoom?: number,
   minZoom?: number,
   nodes: any[],

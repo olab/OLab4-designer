@@ -1,31 +1,8 @@
 import styled from 'styled-components';
 
-const undoRedoPseudoCommon = {
-  display: 'block',
-  height: '60%',
-  width: '1px',
-  background: '#24446A',
-  position: 'absolute',
-  top: '50%',
-  transform: 'translate(-50%, -50%)',
-};
+import { ContainerWithPseudoBlocks } from '../../Toolbars/styles';
 
-export const Wrapper = styled.div`
-  position: relative;
-  margin-left: 8px;
-`;
-
-export const Container = styled.div`
-  &::before {
-    content: '';
-    left: 0;
-    ${undoRedoPseudoCommon};
-  }
-  &:after {
-    content: '';
-    right: 0;
-    ${undoRedoPseudoCommon};
-  }
+export const Container = styled(ContainerWithPseudoBlocks)`
   & > button {
     margin-right: 10px;
     &:hover:enabled {

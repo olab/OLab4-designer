@@ -18,7 +18,7 @@ import Background from '../Background';
 import ZoomControls from '../ZoomControls';
 
 import {
-  CURSOR_DEFAULT, CURSOR_CUSTOM_CROSSHAIR, LAYOUT_ENGINE, ZOOM_CONTROLS_ID,
+  CURSOR_DEFAULT, CURSOR_CUSTOM_CROSSHAIR, ZOOM_CONTROLS_ID,
 } from '../../config';
 
 import * as constructorActions from '../../action';
@@ -43,8 +43,8 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
     this.viewWrapper = React.createRef();
     this.graphSvg = React.createRef();
 
-    if (props.layoutEngineType) {
-      this.layoutEngine = new LayoutEngines[props.layoutEngineType](props);
+    if (props.layoutEngine) {
+      this.layoutEngine = new LayoutEngines[props.layoutEngine](props);
     }
 
     this.state = {
@@ -69,7 +69,6 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
   static defaultProps = {
     edgeArrowSize: 6,
     gridSpacing: 36,
-    layoutEngineType: LAYOUT_ENGINE.NONE,
     maxZoom: 1.5,
     minZoom: 0.15,
     readOnly: false,
@@ -93,10 +92,10 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
 
     // Handle layoutEngine on initial render
     if (prevState.nodes.length === 0
-        && nextProps.layoutEngineType
-        && LayoutEngines[nextProps.layoutEngineType]
+        && nextProps.layoutEngine
+        && LayoutEngines[nextProps.layoutEngine]
     ) {
-      const layoutEngine = new LayoutEngines[nextProps.layoutEngineType](nextProps);
+      const layoutEngine = new LayoutEngines[nextProps.layoutEngine](nextProps);
       nodes = layoutEngine.adjustNodes(nodes, nodesMap);
     }
 
@@ -215,7 +214,7 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
   shouldComponentUpdate(nextProps: IGraphViewProps, nextState: IGraphViewState) {
     const { sourceNode, isLinkingStarted, isResizingStarted } = this.state;
     const {
-      nodes, edges, selected, readOnly, layoutEngineType, cursor,
+      nodes, edges, selected, readOnly, layoutEngine, cursor,
     } = this.props;
 
     if (nextProps.nodes !== nodes
@@ -223,7 +222,7 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
       || !nextState.componentUpToDate
       || nextProps.selected !== selected
       || nextProps.readOnly !== readOnly
-      || nextProps.layoutEngineType !== layoutEngineType
+      || nextProps.layoutEngine !== layoutEngine
       || nextState.isLinkingStarted !== isLinkingStarted
       || nextState.isResizingStarted !== isResizingStarted
       || nextState.sourceNode !== sourceNode
@@ -251,7 +250,7 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
     const {
       edges: propsEdges,
       nodes: propsNodes,
-      layoutEngineType,
+      layoutEngine,
       ACTION_SET_CURSOR,
     } = this.props;
 
@@ -271,8 +270,8 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
       ACTION_SET_CURSOR(CURSOR_CUSTOM_CROSSHAIR);
     }
 
-    if (layoutEngineType && LayoutEngines[layoutEngineType]) {
-      this.layoutEngine = new LayoutEngines[layoutEngineType](this.props);
+    if (layoutEngine && LayoutEngines[layoutEngine]) {
+      this.layoutEngine = new LayoutEngines[layoutEngine](this.props);
 
       const newNodes = this.layoutEngine.adjustNodes(stateNodes, nodesMap);
       if (!isEqual(stateNodes, newNodes)) {
@@ -287,10 +286,12 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
       || propsEdges !== prevProps.edges
       || !componentUpToDate
       || sourceNode !== prevState.sourceNode
+      || layoutEngine !== prevProps.layoutEngine
       || isLinkingStarted !== prevState.isLinkingStarted
       || isResizingStarted !== prevState.isResizingStarted;
-    const isMapItemsCountChanged = propsEdges.length !== prevProps.edges.length
-      || propsNodes.length !== prevProps.nodes.length;
+    const shouldZoomToFit = propsEdges.length !== prevProps.edges.length
+      || propsNodes.length !== prevProps.nodes.length
+      || layoutEngine !== prevProps.layoutEngine;
 
     // Note: the order is intentional
     // remove old edges
@@ -317,7 +318,7 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
       forceReRender,
     );
 
-    if (isMapItemsCountChanged) {
+    if (shouldZoomToFit) {
       this.asyncHandleZoomToFit(50);
     }
 

@@ -173,10 +173,10 @@ class LinkEditor extends PureComponent<ILinkEditorProps, ILinkEditorState> {
       label, color, variant, thickness, linkStyle, isHidden, isFollowOnce,
     } = this.state;
     const {
-      x, y, isDragging, connectDragSource, connectDragPreview, layoutEngineType,
+      x, y, isDragging, connectDragSource, connectDragPreview, layoutEngine,
     } = this.props;
 
-    const isShowChangeDirection = layoutEngineType !== LAYOUT_ENGINE.NONE && !this.isLinkHasSibling;
+    const isShowChangeDirection = layoutEngine !== LAYOUT_ENGINE.NONE && !this.isLinkHasSibling;
 
     if (isDragging) {
       return null;
@@ -286,7 +286,7 @@ class LinkEditor extends PureComponent<ILinkEditorProps, ILinkEditorState> {
 const mapStateToProps = ({ map, modals, constructor }) => ({
   ...modals[MODALS_NAMES.LINK_EDITOR_MODAL],
   links: map.edges,
-  layoutEngineType: constructor.layoutEngineType,
+  layoutEngine: constructor.layoutEngine,
 });
 
 const mapDispatchToProps = dispatch => ({

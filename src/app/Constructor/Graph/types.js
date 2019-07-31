@@ -12,7 +12,7 @@ export type IGraphProps = {
   map: MapType,
   isUndoAvailable: boolean,
   isRedoAvailable: boolean,
-  layoutEngineType: string,
+  layoutEngine: string,
   connectDropTarget: Function,
   ACTION_SET_POSITION_MODAL: (modalName: string, x: number, y: number) => void,
   ACTION_UNDO_MAP: () => void,
@@ -34,6 +34,6 @@ export type IGraphProps = {
 };
 
 export type IGraphState = {
-  layoutEngineType: LayoutEngineType;
+  layoutEngine: LayoutEngineType;
   copiedNode: NodeType;
 };

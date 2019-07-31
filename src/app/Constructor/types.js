@@ -29,7 +29,7 @@ export type IConstructorState = {
 
 export type Constructor = {
   cursor: string,
-  layoutEngineType: 'None' | 'SnapToGrid' | 'VerticalTree',
+  layoutEngine: 'None' | 'SnapToGrid' | 'VerticalTree',
   zoom: {
     index: number,
     zoomStep: number,
@@ -55,16 +55,24 @@ type SetFullscreen = {
   isFullScreen: boolean,
 };
 
+const SET_LAYOUT_ENGINE = 'SET_LAYOUT_ENGINE';
+type SetLayoutEngine = {
+  type: 'SET_LAYOUT_ENGINE',
+  layoutEngine: string,
+};
+
 const TOGGLE_FULLSCREEN = 'TOGGLE_FULLSCREEN';
 type ToggleFullscreen = {
   type: 'TOGGLE_FULLSCREEN',
 };
 
 export type ConstructorActions = SetFullscreen |
-  ToggleFullscreen | SetCursor;
+  ToggleFullscreen | SetCursor |
+  SetLayoutEngine;
 
 export {
   SET_CURSOR,
   SET_FULLSCREEN,
+  SET_LAYOUT_ENGINE,
   TOGGLE_FULLSCREEN,
 };

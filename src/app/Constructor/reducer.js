@@ -4,6 +4,7 @@ import {
   type Constructor as ConstructorType,
   SET_CURSOR,
   SET_FULLSCREEN,
+  SET_LAYOUT_ENGINE,
   TOGGLE_FULLSCREEN,
 } from './types';
 
@@ -11,7 +12,7 @@ import { LAYOUT_ENGINE } from './config';
 
 export const initialConstructorState: ConstructorType = {
   cursor: 'default',
-  layoutEngineType: LAYOUT_ENGINE.NONE,
+  layoutEngine: LAYOUT_ENGINE.NONE,
   zoom: {
     index: 50,
     zoomStep: 1,
@@ -52,6 +53,14 @@ const constructor = (
       return {
         ...state,
         isFullScreen,
+      };
+    }
+    case SET_LAYOUT_ENGINE: {
+      const { layoutEngine } = action;
+
+      return {
+        ...state,
+        layoutEngine,
       };
     }
     default:

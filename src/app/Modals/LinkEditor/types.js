@@ -12,7 +12,7 @@ export type ILinkEditorProps = {
   ACTION_UPDATE_EDGE: Function;
   ACTION_DESELECT_EDGE: Function;
   ACTION_SET_POSITION_MODAL: Function;
-  layoutEngineType: string,
+  layoutEngine: string,
 };
 
 export type ILinkEditorState = EdgeType;

@@ -223,7 +223,7 @@ export class Graph extends Component<IGraphProps, IGraphState> {
 
   render() {
     const {
-      isFullScreen, map: { nodes, edges }, minZoom, maxZoom, layoutEngineType,
+      isFullScreen, map: { nodes, edges }, minZoom, maxZoom, layoutEngine,
     } = this.props;
 
     return (
@@ -257,7 +257,7 @@ export class Graph extends Component<IGraphProps, IGraphState> {
           onCopySelected={this.onCopySelected}
           onPasteSelected={this.onPasteSelected}
           onCreateNodeWithEdge={this.onCreateNodeWithEdge}
-          layoutEngineType={layoutEngineType}
+          layoutEngine={layoutEngine}
         />
       </Wrapper>
     );
@@ -271,7 +271,7 @@ const mapStateToProps = ({ map, defaults, constructor }) => ({
   maxZoom: constructor.zoom.maxZoom,
   isUndoAvailable: !!map.undo.length,
   isRedoAvailable: !!map.redo.length,
-  layoutEngineType: constructor.layoutEngineType,
+  layoutEngine: constructor.layoutEngine,
   isFullScreen: constructor.isFullScreen,
 });
 
