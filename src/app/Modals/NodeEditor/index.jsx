@@ -146,7 +146,6 @@ class NodeEditor extends PureComponent<INodeEditorProps, INodeEditorState> {
       <ModalWrapper
         ref={this.handleModalRef}
         onKeyDown={this.handleKeyPressed}
-        tabIndex="0"
         x={x}
         y={y}
       >
