@@ -64,6 +64,7 @@ export const SOItem = styled.li`
   letter-spacing: 0.06em;
   color: ${colorDarkWithOpacity};
   border-top: 1px solid ${colorDarkBorder};
+  padding: 3px 0;
 `;
 
 export const SOItemHeader = styled.div`

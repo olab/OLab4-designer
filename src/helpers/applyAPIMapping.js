@@ -149,7 +149,7 @@ export const scopedObjectToServer = (SO) => {
 };
 
 export const scopedObjectDetailsFromServer = ({
-  id, name, parentId, wiki, url, ...restSODetails
+  id, name, parentId, url, ...restSODetails
 }) => ({
   id,
   name,

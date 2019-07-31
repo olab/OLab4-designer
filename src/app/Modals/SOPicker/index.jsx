@@ -203,7 +203,7 @@ export class SOPicker extends PureComponent<ISOPickerProps, ISOPickerState> {
             {scopedObjectsFiltered.slice(0, SO_ITEMS_LIMIT).map(SO => (
               <SOItem key={SO.id}>
                 <SOItemHeader>
-                  <span>{SO.wiki}</span>
+                  <SOItemTitle title={SO.name}>{SO.name}</SOItemTitle>
                   <CopyToClipboard text={SO.wiki} />
                   {SO.isShowEyeIcon && (
                     <EyeComponent
@@ -214,7 +214,6 @@ export class SOPicker extends PureComponent<ISOPickerProps, ISOPickerState> {
                     />
                   )}
                 </SOItemHeader>
-                <SOItemTitle title={SO.name}>{SO.name}</SOItemTitle>
               </SOItem>
             ))}
           </SOList>
