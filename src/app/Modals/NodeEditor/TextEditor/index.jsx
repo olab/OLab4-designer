@@ -1,7 +1,8 @@
 // @flow
 import React, { Component } from 'react';
 import { Editor } from 'react-draft-wysiwyg';
-import { stateToHTML } from 'draft-js-export-html';
+import { convertToRaw } from 'draft-js';
+import draftToHtml from 'draftjs-to-html';
 
 import type { ITextEditorProps, ITextEditorState } from './types';
 
@@ -35,7 +36,7 @@ class TextEditor extends Component<ITextEditorProps, ITextEditorState> {
     const { onChange } = this.props;
     const currentContent = editorState.getCurrentContent();
 
-    const contentHTML = stateToHTML(currentContent);
+    const contentHTML = draftToHtml(convertToRaw(currentContent));
 
     onChange(contentHTML);
     this.setState({ editorState });
