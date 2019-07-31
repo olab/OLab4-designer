@@ -4,9 +4,9 @@ export const LAYOUT_TYPES = [
 
 export const QUESTION_TYPES = {
   2: 'Multi-line',
-  3: 'Multiple Choice',
+  4: 'Pick Choice',
+  5: 'Multiple Choice',
   7: 'Script Concordance Testing',
-  14: 'Pick Choice',
 };
 
 export const DEFAULT_WIDTH = {
