@@ -26,9 +26,10 @@ export type ILoginProps = {
     [props: string]: any,
   },
   handleChange: (e: Event) => void,
+  history: any,
+  values: UserLoginData,
   isAuth: boolean,
   isFetching: boolean,
-  values: UserLoginData,
 };
 
 export type PropsAuthAction = {

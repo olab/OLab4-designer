@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import { withFormik, Form } from 'formik';
 import { withStyles } from '@material-ui/core/styles';
 import {
@@ -16,10 +16,12 @@ import type { UserLoginData, ILoginProps, PropsAuthAction } from './types';
 import styles from './styles';
 
 const Login = ({
-  classes, isAuth, values, handleChange,
+  classes, isAuth, values, handleChange, history,
 }: ILoginProps) => {
   if (isAuth) {
-    return <Redirect to="/" />;
+    history.goBack();
+
+    return null;
   }
 
   return (
@@ -92,4 +94,8 @@ const mapStateToProps = ({ user: { isAuth, isFetching } }) => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(withStyles(styles)(loginFormikWrapper));
+)(
+  withStyles(styles)(
+    withRouter(loginFormikWrapper),
+  ),
+);

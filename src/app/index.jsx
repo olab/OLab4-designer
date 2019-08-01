@@ -25,11 +25,7 @@ const ProtectedRoute = ({
     render={props => (isAuth ? (
       <Component {...props} {...rest} />
     ) : (
-      <Redirect
-        to={{
-          pathname: '/login',
-        }}
-      />
+      <Redirect push to="/login" />
     ))}
   />
 );
