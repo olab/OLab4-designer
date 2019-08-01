@@ -88,6 +88,11 @@ const styles = () => ({
     transform: 'translate(0, -50%)',
     transition: 'opacity .25s ease',
   },
+  secondaryText: {
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+  },
 });
 
 export default styles;

@@ -41,6 +41,7 @@ const styles = () => ({
   },
   root: {
     height: '100vh',
+    overflow: 'auto',
   },
   leftPanel: {
     backgroundColor: LIGHT_BLUE,

@@ -121,6 +121,7 @@ class ListWithSearch extends PureComponent<IListWithSearchProps, IListWithSearch
                   <ListItemText
                     primary={listItem.name}
                     secondary={removeHTMLTags(listItem.description || '')}
+                    classes={{ secondary: classes.secondaryText }}
                   />
                 </Button>
                 {onItemDelete && (
