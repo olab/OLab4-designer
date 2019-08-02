@@ -3,9 +3,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { sanitize } from 'dompurify';
 import { withStyles } from '@material-ui/core/styles';
-import {
-  Card, CardHeader, CardContent, RootRef,
-} from '@material-ui/core';
+import { Card, CardHeader, RootRef } from '@material-ui/core';
 
 import CardFooter from './CardFooter';
 import ActionBar from './HeaderActionBar';
@@ -18,7 +16,7 @@ import {
 
 import type { INodeProps } from './types';
 
-import styles from './styles';
+import styles, { CardContent } from './styles';
 
 const NodeComponent = ({
   classes,
@@ -34,11 +32,6 @@ const NodeComponent = ({
   color,
   isLinked,
 }: INodeProps) => {
-  const cardContentMain = classNames(
-    classes.cardContent,
-    { [classes.cardContentLocked]: isLocked },
-  );
-
   const cardHeader = classNames(
     classes.cardHeader,
     { [classes.cardHeaderCollapsed]: isCollapsed },
@@ -50,10 +43,7 @@ const NodeComponent = ({
 
   return (
     <RootRef rootRef={nodeComponentRef}>
-      <Card
-        className={classes.card}
-        data-selected={isSelected}
-      >
+      <Card className={classes.card}>
         <CardHeader
           className={cardHeader}
           classes={{
@@ -83,7 +73,9 @@ const NodeComponent = ({
               style={{ width, height: cardContentHeigth }}
               data-active="true"
               data-action={ACTION_RESIZE}
-              className={cardContentMain}
+              borderColor={color}
+              isLocked={isLocked}
+              isSelected={isSelected}
             >
               <div
                 data-active="true"
