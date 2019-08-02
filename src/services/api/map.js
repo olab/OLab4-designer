@@ -20,7 +20,9 @@ export const createMap = templateId => API
   })
   .then(({ data: { data: map } }) => mapFromServer(map))
   .catch((error) => {
-    throw error;
+    if (!error.response || error.response.status !== 401) {
+      throw error;
+    }
   });
 
 export const extendMap = (mapId, templateId) => API

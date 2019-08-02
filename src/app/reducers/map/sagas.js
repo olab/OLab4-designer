@@ -42,14 +42,18 @@ function* createMapSaga({ templateId }) {
   try {
     const newMap = yield call(createMap, templateId);
 
-    yield put(ACTION_CREATE_MAP_SUCCEEDED(newMap));
+    if (newMap) {
+      yield put(ACTION_CREATE_MAP_SUCCEEDED(newMap));
+      return;
+    }
   } catch (error) {
     const { response, message } = error;
     const errorMessage = response ? response.statusText : message;
 
-    yield put(ACTION_CREATE_MAP_FAILED());
     yield put(ACTION_NOTIFICATION_ERROR(errorMessage));
   }
+
+  yield put(ACTION_CREATE_MAP_FAILED());
 }
 
 function* updateMapSaga({ name: newName }) {
