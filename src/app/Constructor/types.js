@@ -15,10 +15,8 @@ export type IConstructorProps = {
   ACTION_TEMPLATE_UPLOAD_REQUESTED: Function,
   ACTION_TEMPLATES_REQUESTED: Function,
   ACTION_EXTEND_MAP_REQUESTED: Function,
-  ACTION_SET_FULLSCREEN: Function,
   templates: Array<TemplateType>,
   isTemplatesFetching: boolean,
-  isFullScreen: boolean,
 };
 export type IConstructorState = {
   selectedLink: EdgeType | null,

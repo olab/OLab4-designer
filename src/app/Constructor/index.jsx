@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
-import Fullscreen from 'react-full-screen';
 import isEqual from 'lodash.isequal';
 import {
   Dashboard as TemplateIcon,
@@ -22,7 +21,6 @@ import SearchModal from '../../shared/components/SearchModal';
 
 import * as mapActions from '../reducers/map/action';
 import * as templatesActions from '../reducers/templates/action';
-import * as constructorActions from './action';
 
 import type { Template as TemplateType } from '../reducers/templates/types';
 import type { IConstructorProps, IConstructorState } from './types';
@@ -141,14 +139,11 @@ export class Constructor extends PureComponent<IConstructorProps, IConstructorSt
       focusedNode, selectedLink, isShowCreateTemplateModal, isShowPreBuiltTemplatesModal,
     } = this.state;
     const {
-      isShowSOPicker, templates, isTemplatesFetching, isFullScreen, ACTION_SET_FULLSCREEN,
+      isShowSOPicker, templates, isTemplatesFetching,
     } = this.props;
 
     return (
-      <Fullscreen
-        enabled={isFullScreen}
-        onChange={ACTION_SET_FULLSCREEN}
-      >
+      <>
         <ToolbarTemplates showModal={this.showModal} />
 
         <Graph />
@@ -187,14 +182,12 @@ export class Constructor extends PureComponent<IConstructorProps, IConstructorSt
             iconOdd={TemplateOutlinedIcon}
           />
         )}
-      </Fullscreen>
+      </>
     );
   }
 }
 
-const mapStateToProps = ({
-  map, modals, templates, constructor,
-}) => ({
+const mapStateToProps = ({ map, modals, templates }) => ({
   mapId: map.id,
   mapName: map.name,
   nodes: map.nodes,
@@ -202,7 +195,6 @@ const mapStateToProps = ({
   isShowSOPicker: modals[MODALS_NAMES.SO_PICKER_MODAL].isShow,
   templates: templates.list,
   isTemplatesFetching: templates.isFetching,
-  isFullScreen: constructor.isFullScreen,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -217,9 +209,6 @@ const mapDispatchToProps = dispatch => ({
   },
   ACTION_TEMPLATES_REQUESTED: () => {
     dispatch(templatesActions.ACTION_TEMPLATES_REQUESTED());
-  },
-  ACTION_SET_FULLSCREEN: (isFullScreen: boolean) => {
-    dispatch(constructorActions.ACTION_SET_FULLSCREEN(isFullScreen));
   },
 });
 

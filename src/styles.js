@@ -10,6 +10,12 @@ const GlobalStyle = createGlobalStyle`
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     overflow: hidden;
+
+    &:fullscreen {
+      header {
+        display: none;
+      }
+    }
   }
 
   code {
