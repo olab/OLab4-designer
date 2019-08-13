@@ -22,7 +22,7 @@ import { KEY_S } from './config';
 import { DND_CONTEXTS, MODALS_NAMES, LINK_STYLES } from '../config';
 
 import {
-  ModalWrapper, ModalHeader, ModalBody,
+  NodeEditorWrapper, ModalHeader, ModalBody,
   ModalFooter, ArticleItem, ModalHeaderButton,
 } from '../styles';
 import styles from './styles';
@@ -143,7 +143,7 @@ class NodeEditor extends PureComponent<INodeEditorProps, INodeEditorState> {
     }
 
     return (
-      <ModalWrapper
+      <NodeEditorWrapper
         ref={this.handleModalRef}
         onKeyDown={this.handleKeyPressed}
         x={x}
@@ -216,7 +216,7 @@ class NodeEditor extends PureComponent<INodeEditorProps, INodeEditorState> {
             Save
           </Button>
         </ModalFooter>
-      </ModalWrapper>
+      </NodeEditorWrapper>
     );
   }
 }
@@ -262,8 +262,8 @@ const spec = {
     }
 
     const { x: offsetX, y: offsetY } = dropResult;
-    const x = offsetX + props.x;
-    const y = offsetY + props.y;
+    const x = props.x - offsetX;
+    const y = props.y - offsetY;
 
     component.handleModalMove(x, y);
   },

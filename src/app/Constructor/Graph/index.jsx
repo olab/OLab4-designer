@@ -69,14 +69,8 @@ export class Graph extends Component<IGraphProps, IGraphState> {
     return edges.find(({ isSelected }) => isSelected) || null;
   }
 
-  onNodeFocused = (nodeId: number, posX: number = 0, posY: number = 0) => {
-    const {
-      ACTION_FOCUS_NODE,
-      ACTION_SET_POSITION_MODAL,
-    } = this.props;
-
-    ACTION_SET_POSITION_MODAL(MODALS_NAMES.NODE_EDITOR_MODAL, posX, posY);
-
+  onNodeFocused = (nodeId: number) => {
+    const { ACTION_FOCUS_NODE } = this.props;
     ACTION_FOCUS_NODE(nodeId);
   }
 

@@ -6,9 +6,7 @@ import { DARK_BLUE, WHITE } from '../../shared/colors';
 const colorLightGray = 'rgb(168,168,168)';
 const colorLightGrayWOpacity = 'rgb(168,168,168,0.3)';
 
-export const ModalWrapper = styled.div`
-  left: ${({ x }) => x || 0}px;
-  top: ${({ y }) => y || 0}px;
+const ModalCommonStyles = styled.div`
   min-width: ${MIN_MODAL_WIDTH}px;
   min-height: ${MIN_MODAL_HEIGHT}px;
   background-color: ${WHITE};
@@ -22,6 +20,16 @@ export const ModalWrapper = styled.div`
   border-radius: 0.25rem;
   -webkit-box-shadow: 2px 2px 5px 0 ${colorLightGray};
   box-shadow: 2px 2px 5px 0 ${colorLightGray};
+`;
+
+export const ModalWrapper = styled(ModalCommonStyles)`
+  left: ${({ x }) => x || 0}px;
+  top: ${({ y }) => y || 0}px;
+`;
+
+export const NodeEditorWrapper = styled(ModalCommonStyles)`
+  right: ${({ x }) => x || 0}px;
+  bottom: ${({ y }) => y || 0}px;
 `;
 
 export const ModalHeaderButton = styled.button`

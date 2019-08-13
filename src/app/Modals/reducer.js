@@ -5,7 +5,13 @@ import {
   UPDATE_MODAL,
 } from './types';
 
-import { MODALS_NAMES, PICKER_OFFSET_Y, PICKER_OFFSET_X } from './config';
+import {
+  MODALS_NAMES,
+  PICKER_OFFSET_Y,
+  PICKER_OFFSET_X,
+  NODE_EDITOR_OFFSET_X,
+  NODE_EDITOR_OFFSET_Y,
+} from './config';
 
 export const initialModalsState: ModalsType = {
   [MODALS_NAMES.SO_PICKER_MODAL]: {
@@ -13,11 +19,11 @@ export const initialModalsState: ModalsType = {
     x: PICKER_OFFSET_X,
     y: PICKER_OFFSET_Y,
   },
-  [MODALS_NAMES.LINK_EDITOR_MODAL]: {
-    x: 0,
-    y: 0,
-  },
   [MODALS_NAMES.NODE_EDITOR_MODAL]: {
+    x: NODE_EDITOR_OFFSET_X,
+    y: NODE_EDITOR_OFFSET_Y,
+  },
+  [MODALS_NAMES.LINK_EDITOR_MODAL]: {
     x: 0,
     y: 0,
   },

@@ -797,13 +797,6 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
     });
   }
 
-  handleNodeFocused = (nodeId: number) => {
-    const { onNodeFocused } = this.props;
-    const { clientX: x, clientY: y } = d3.event.sourceEvent || d3.event;
-
-    onNodeFocused(nodeId, x, y);
-  }
-
   // One can't attach handlers to 'markers' or obtain them from the event.target
   // If the click occurs within a certain radius of edge target, assume the click
   // occurred on the arrow
@@ -1090,7 +1083,7 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
       selectedNodeObj, sourceNode, isLinkingStarted, isResizingStarted,
     } = this.state;
     const {
-      onCreateNodeWithEdge, onCollapseNode, onLockNode, onResizeNode,
+      onCreateNodeWithEdge, onCollapseNode, onLockNode, onResizeNode, onNodeFocused,
     } = this.props;
 
     return (
@@ -1101,7 +1094,7 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
         onNodeMove={this.handleNodeMove}
         onNodeUpdate={this.handleNodeUpdate}
         onNodeSelected={this.handleNodeSelected}
-        onNodeFocused={this.handleNodeFocused}
+        onNodeFocused={onNodeFocused}
         onNodeCollapsed={onCollapseNode}
         onNodeResizeEnded={onResizeNode}
         onNodeResizeStarted={this.startResizing}
