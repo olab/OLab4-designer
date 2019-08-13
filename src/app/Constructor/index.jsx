@@ -81,9 +81,9 @@ export class Constructor extends PureComponent<IConstructorProps, IConstructorSt
       mapId, match, history, ACTION_GET_MAP_REQUESTED,
     } = this.props;
     const mapIdUrl = match.params.mapId;
-    const pageRefreshed = !mapId && mapIdUrl;
+    const isPageRefreshed = !mapId && mapIdUrl;
 
-    if (pageRefreshed) {
+    if (isPageRefreshed) {
       ACTION_GET_MAP_REQUESTED(mapIdUrl);
     } else if (!mapIdUrl) {
       history.push('/404');

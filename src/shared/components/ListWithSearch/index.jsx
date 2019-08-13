@@ -27,6 +27,7 @@ class ListWithSearch extends PureComponent<IListWithSearchProps, IListWithSearch
     iconOdd: DefaultOutlinedIcon,
     isForModal: false,
     isWithSpinner: true,
+    isItemsDisabled: false,
   };
 
   state: IListWithSearchState = {
@@ -60,6 +61,7 @@ class ListWithSearch extends PureComponent<IListWithSearchProps, IListWithSearch
       isWithSpinner,
       isHideSearch,
       isItemsFetching,
+      isItemsDisabled,
       iconEven: IconEven,
       iconOdd: IconOdd,
     } = this.props;
@@ -111,11 +113,13 @@ class ListWithSearch extends PureComponent<IListWithSearchProps, IListWithSearch
             <ListItem
               key={listItem.id}
               classes={{ root: classes.listItem }}
+              disabled={isItemsDisabled}
             >
               <ListItemContentWrapper>
                 <Button
                   classes={{ text: classes.listButton }}
                   onClick={() => onItemClick(listItem)}
+                  disabled={isItemsDisabled}
                 >
                   {i % 2 === 0 ? <IconEven /> : <IconOdd />}
                   <ListItemText
@@ -126,11 +130,12 @@ class ListWithSearch extends PureComponent<IListWithSearchProps, IListWithSearch
                 </Button>
                 {onItemDelete && (
                   <IconButton
-                    aria-label="Delete Scoped Object"
-                    title={`Delete ${listItem.name}`}
                     size="small"
+                    title={`Delete ${listItem.name}`}
+                    aria-label="Delete Scoped Object"
                     onClick={() => onItemDelete(listItem.id)}
                     classes={{ root: classes.deleteIcon }}
+                    disabled={isItemsDisabled}
                   >
                     <DeleteIcon />
                   </IconButton>

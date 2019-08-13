@@ -16,6 +16,7 @@ export type IListWithSearchProps = {
   isItemsFetching: boolean,
   isForModal: boolean,
   isWithSpinner: boolean,
+  isItemsDisabled: boolean,
 };
 
 export type IListWithSearchState = {

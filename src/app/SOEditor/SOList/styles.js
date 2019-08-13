@@ -40,7 +40,7 @@ const styles = () => ({
     margin: '1rem',
   },
   root: {
-    height: '100vh',
+    height: '94.5vh',
     overflow: 'auto',
   },
   leftPanel: {

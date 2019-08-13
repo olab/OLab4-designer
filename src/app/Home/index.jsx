@@ -2,51 +2,69 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { withStyles } from '@material-ui/core/styles';
 import {
-  ExpandMore as ExpandMoreIcon,
-  ArrowForward as ArrowForwardIcon,
+  Spa as MapsIcon,
+  SpaOutlined as MapsOutlinedIcon,
   Dashboard as TemplateIcon,
   DashboardOutlined as TemplateOutlinedIcon,
 } from '@material-ui/icons';
-import {
-  Button, Typography, ExpansionPanel, ExpansionPanelDetails, ExpansionPanelSummary,
-} from '@material-ui/core';
 
+import ExpansionPanel from './ExpansionPanel';
 import SearchModal from '../../shared/components/SearchModal';
+import ListWithSearch from '../../shared/components/ListWithSearch';
 
 import * as mapActions from '../reducers/map/action';
 import * as templatesActions from '../reducers/templates/action';
+import * as scopedLevelsActions from '../reducers/scopeLevels/action';
 
-import type { Template as TemplateType } from '../reducers/templates/types';
 import type { IHomeProps, IHomeState } from './types';
-import { PAGE_TITLES } from '../config';
-import { PANEL_NAMES } from './config';
+import type { Template as TemplateType } from '../reducers/templates/types';
+import type { ScopeLevel as ScopeLevelType } from '../reducers/scopeLevels/types';
+import { PAGE_TITLES, SCOPE_LEVELS } from '../config';
 
-import styles, {
-  HomeWrapper, HomeHeader, ExpansionPanelWrapper,
-} from './styles';
+import filterByName from '../../helpers/filterByName';
+
+import { HomeWrapper, HomeHeader, MapListWrapper } from './styles';
 
 class Home extends PureComponent<IHomeProps, IHomeState> {
+  listWithSearchRef: null | React.RefObject<any>;
+
   constructor(props: IHomeProps) {
     super(props);
     this.state = {
-      expandedPanel: null,
+      mapsFiltered: props.maps,
       isButtonsDisabled: false,
       isShowTemplatesListModal: false,
     };
 
+    this.listWithSearchRef = React.createRef();
+
     this.setPageTitle();
+
+    props.ACTION_MAPS_REQUESTED();
   }
 
   componentDidUpdate(prevProps: IHomeProps) {
-    const { mapId, isMapFetching, history } = this.props;
+    const {
+      mapId, maps, isMapFetching, history,
+    } = this.props;
+    const {
+      maps: mapsPrev, isMapFetching: isMapFetchingPrev,
+    } = prevProps;
 
-    const isFetchingStopped = prevProps.isMapFetching && !isMapFetching;
+    const isFetchingStopped = isMapFetchingPrev && !isMapFetching;
     const isMapRetrieved = isFetchingStopped && mapId;
 
     if (isFetchingStopped) {
       this.toggleDisableButtons();
+    }
+
+    if (maps !== mapsPrev) {
+      const { query } = this.listWithSearchRef.state;
+      const mapsFiltered = filterByName(maps, query);
+
+      // eslint-disable-next-line react/no-did-update-set-state
+      this.setState({ mapsFiltered });
     }
 
     if (isMapRetrieved) {
@@ -58,15 +76,7 @@ class Home extends PureComponent<IHomeProps, IHomeState> {
     document.title = PAGE_TITLES.HOME;
   }
 
-  handleChange = (panelName: string): Function => (event: Event, expanded: boolean): void => {
-    this.setState({
-      expandedPanel: expanded
-        ? panelName
-        : null,
-    });
-  }
-
-  handleTemplateChoose = (template?: TemplateType): void => {
+  handleTemplateChoose = (template: TemplateType): void => {
     const templateId = template ? template.id : null;
 
     const { ACTION_CREATE_MAP_REQUESTED } = this.props;
@@ -83,7 +93,6 @@ class Home extends PureComponent<IHomeProps, IHomeState> {
 
   showTemplatesListModal = (): void => {
     const { ACTION_TEMPLATES_REQUESTED } = this.props;
-
     ACTION_TEMPLATES_REQUESTED();
 
     this.setState({ isShowTemplatesListModal: true });
@@ -93,89 +102,61 @@ class Home extends PureComponent<IHomeProps, IHomeState> {
     this.setState({ isShowTemplatesListModal: false });
   }
 
+  handleItemsSearch = (query: string): void => {
+    const { maps } = this.props;
+    const mapsFiltered = filterByName(maps, query);
+
+    this.setState({ mapsFiltered });
+  }
+
+  clearSearchInput = (): void => {
+    const { maps: mapsFiltered } = this.props;
+    this.setState({ mapsFiltered });
+  }
+
+  handleMapItemClick = (map: ScopeLevelType): void => {
+    const { ACTION_GET_MAP_REQUESTED } = this.props;
+    ACTION_GET_MAP_REQUESTED(map.id);
+
+    this.toggleDisableButtons();
+  }
+
+  setListWithSearchRef = (ref: any): void => {
+    this.listWithSearchRef = ref;
+  }
+
   render() {
     const {
-      expandedPanel, isButtonsDisabled, isShowTemplatesListModal,
+      mapsFiltered, isButtonsDisabled, isShowTemplatesListModal,
     } = this.state;
     const {
-      classes, templates, isTemplatesFetching,
+      templates, isMapsFetching, isTemplatesFetching,
     } = this.props;
 
     return (
       <HomeWrapper>
         <HomeHeader>Welcome home!</HomeHeader>
-        <ExpansionPanelWrapper>
-          <ExpansionPanel
-            expanded={expandedPanel === PANEL_NAMES.MANUAL}
-            onChange={this.handleChange(PANEL_NAMES.MANUAL)}
-          >
-            <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-              <Typography className={classes.heading}>Manual Map Creation</Typography>
-              <Typography className={classes.secondaryHeading}>More experienced authors</Typography>
-            </ExpansionPanelSummary>
-            <ExpansionPanelDetails>
-              <Typography className={classes.content}>
-                A single pre-populated root node (named ‘Start node’)
-                is created and positioned in middle of Layout Editor window.
-                <br />
-                <br />
-                Then you will be prompted for a Map name to save to before proceeding;
-              </Typography>
-              <Button
-                variant="outlined"
-                color="primary"
-                size="small"
-                aria-label="Create"
-                classes={{ root: classes.fab }}
-                onClick={() => this.handleTemplateChoose()}
-                disabled={isButtonsDisabled}
-              >
-                Create Map
-                <ArrowForwardIcon
-                  fontSize="small"
-                  classes={{ root: classes.icon }}
-                />
-              </Button>
-            </ExpansionPanelDetails>
-          </ExpansionPanel>
-          <ExpansionPanel
-            expanded={expandedPanel === PANEL_NAMES.FROM_TEMPLATE}
-            onChange={this.handleChange(PANEL_NAMES.FROM_TEMPLATE)}
-          >
-            <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-              <Typography className={classes.heading}>Create Map from Template</Typography>
-              <Typography className={classes.secondaryHeading}>General map creation</Typography>
-            </ExpansionPanelSummary>
-            <ExpansionPanelDetails>
-              <Typography className={classes.content}>
-                Allows for the creation of a map from a predefined template.
-                <br />
-                <br />
-                Once a template is selected, the Map Layout Editor window
-                appears with pre-defined nodes.
-                <br />
-                <br />
-                The Simple Template consists of a root node (named ‘Start Node’)
-                linked to a second node with a one-way, single arrow link icon.
-              </Typography>
-              <Button
-                variant="outlined"
-                color="primary"
-                size="small"
-                aria-label="Create"
-                classes={{ root: classes.fab }}
-                onClick={this.showTemplatesListModal}
-                disabled={isButtonsDisabled}
-              >
-                Choose Template
-                <ArrowForwardIcon
-                  fontSize="small"
-                  classes={{ root: classes.icon }}
-                />
-              </Button>
-            </ExpansionPanelDetails>
-          </ExpansionPanel>
-        </ExpansionPanelWrapper>
+
+        <ExpansionPanel
+          showModal={this.showTemplatesListModal}
+          onChoose={this.handleTemplateChoose}
+          isDisabled={isButtonsDisabled}
+        />
+
+        <MapListWrapper>
+          <ListWithSearch
+            label="Search for existing Maps"
+            innerRef={this.setListWithSearchRef}
+            onSearch={this.handleItemsSearch}
+            onClear={this.clearSearchInput}
+            onItemClick={this.handleMapItemClick}
+            list={mapsFiltered}
+            isItemsFetching={isMapsFetching}
+            isItemsDisabled={isButtonsDisabled}
+            iconEven={MapsIcon}
+            iconOdd={MapsOutlinedIcon}
+          />
+        </MapListWrapper>
 
         {isShowTemplatesListModal && (
           <SearchModal
@@ -195,10 +176,12 @@ class Home extends PureComponent<IHomeProps, IHomeState> {
   }
 }
 
-const mapStateToProps = ({ map, templates }) => ({
+const mapStateToProps = ({ map, templates, scopeLevels }) => ({
   mapId: map.id,
-  isMapFetching: map.isFetching,
+  maps: scopeLevels.maps,
   templates: templates.list,
+  isMapFetching: map.isFetching,
+  isMapsFetching: scopeLevels.isFetching,
   isTemplatesFetching: templates.isFetching,
 });
 
@@ -206,8 +189,16 @@ const mapDispatchToProps = dispatch => ({
   ACTION_CREATE_MAP_REQUESTED: (templateId?: number) => {
     dispatch(mapActions.ACTION_CREATE_MAP_REQUESTED(templateId));
   },
+  ACTION_GET_MAP_REQUESTED: (mapId: string) => {
+    dispatch(mapActions.ACTION_GET_MAP_REQUESTED(mapId));
+  },
   ACTION_TEMPLATES_REQUESTED: () => {
     dispatch(templatesActions.ACTION_TEMPLATES_REQUESTED());
+  },
+  ACTION_MAPS_REQUESTED: () => {
+    dispatch(scopedLevelsActions.ACTION_SCOPE_LEVELS_REQUESTED(
+      SCOPE_LEVELS[0].toLowerCase(),
+    ));
   },
 });
 
@@ -215,7 +206,5 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps,
 )(
-  withStyles(styles)(
-    withRouter(Home),
-  ),
+  withRouter(Home),
 );
