@@ -18,7 +18,7 @@ export const CardContent = styled(({
   min-height: 80px;
   letter-spacing: 0.06em;
   padding: 0 !important;
-  border-top: none;
+  border-top: none !important;
   border: ${BORDER_SIZE}px solid transparent;
   resize: ${({ isLocked }) => (isLocked ? 'none' : 'both')}
 

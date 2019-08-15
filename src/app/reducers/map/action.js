@@ -85,13 +85,15 @@ export const ACTION_SELECT_NODE = (nodeId: number | null) => {
       return {
         ...node,
         isSelected: true,
+        isFocused: false,
       };
     }
 
-    if (node.isSelected) {
+    if (node.isSelected || node.isFocused) {
       return {
         ...node,
         isSelected: false,
+        ...(nodeId && { isFocused: false }),
       };
     }
 
