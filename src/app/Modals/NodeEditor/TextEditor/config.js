@@ -2,8 +2,8 @@ import uploadImage from '../../../../helpers/uploadImage';
 
 export const BASIC_TEXT_EDITOR_OPTIONS = [
   'inline',
-  'blockType',
   'list',
+  'blockType',
   'link',
   'image',
 ];
@@ -15,6 +15,9 @@ export const INLINE_OPTION = {
     'underline',
     'strikethrough',
   ],
+  bold: { className: 'hide' },
+  italic: { className: 'hide' },
+  underline: { className: 'hide' },
 };
 
 export const LIST_OPTION = {

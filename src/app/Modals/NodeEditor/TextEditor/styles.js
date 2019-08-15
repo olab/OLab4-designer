@@ -4,8 +4,8 @@ import { GREY, BLACK } from '../../../../shared/colors';
 
 export const EditorContainer = styled.div`
   & .public-DraftEditor-content {
-    height: 250px;
-    max-height: 250px;
+    height: 200px;
+    max-height: 200px;
     overflow: auto;
   };
 

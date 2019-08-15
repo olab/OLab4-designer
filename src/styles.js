@@ -16,6 +16,10 @@ const GlobalStyle = createGlobalStyle`
         display: none;
       }
     }
+
+    .hide {
+      display: none;
+    }
   }
 
   code {

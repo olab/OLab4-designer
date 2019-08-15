@@ -61,7 +61,7 @@ export const ModalBody = styled.div`
   padding: 0 1rem;
 
   > article {
-    margin: 1rem 0;
+    margin: .75rem 0;
   }
 `;
 
