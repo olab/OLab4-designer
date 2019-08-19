@@ -558,7 +558,7 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
       selectedNodeObj, isLinkingStarted, focused,
     } = this.state;
     const {
-      selected, onUndo, onRedo, onCopySelected, onPasteSelected,
+      onUndo, onRedo, onCopySelected, onPasteSelected,
     } = this.props;
 
     if (!focused) {
@@ -567,15 +567,19 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
 
     const isCtrlKeyPressed = d.metaKey || d.ctrlKey;
 
+    // todo: Temporary disable, because of https://pm.itrexgroup.com/browse/OLAB-151
     switch (d.key) {
+      /**
       case 'Delete':
       case 'Backspace': {
+
         const isMapItemSelected = (selectedNodeObj && selectedNodeObj.node) || selected;
 
         if (isMapItemSelected) {
           this.handleDelete(selectedNodeObj.node || selected);
         }
       } break;
+      */
       case 'Escape':
         if (isLinkingStarted) {
           this.toggleDraggingEdgeByIcon();
