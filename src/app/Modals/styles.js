@@ -13,7 +13,7 @@ const ModalCommonStyles = styled.div`
   color: ${WHITE};
   outline: none;
   position: absolute;
-  z-index: 500;
+  z-index: 1200;
   font-size: 16px;
   display: flex;
   flex-direction: column;
