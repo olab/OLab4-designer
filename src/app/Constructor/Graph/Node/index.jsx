@@ -40,6 +40,8 @@ export class Node extends PureComponent<INodeProps, INodeState> {
       isResizeStart: false,
       x: props.data.x || 0,
       y: props.data.y || 0,
+      deltaMouseX: 0,
+      deltaMouseY: 0,
     };
 
     this.nodeRef = React.createRef();
@@ -186,9 +188,12 @@ export class Node extends PureComponent<INodeProps, INodeState> {
   }
 
   handleDragMove = () => {
+    const { deltaMouseX, deltaMouseY } = this.state;
     const {
       data: { id: dataId, isLocked }, layoutEngine, onNodeMove, isLinkingStarted,
     } = this.props;
+    const { offsetWidth, offsetHeight } = this.nodeComponentRef.current;
+    const { x, y } = d3.event;
     const { buttons, shiftKey } = d3.event.sourceEvent;
     const mouseButtonDown = buttons === 1;
 
@@ -197,8 +202,8 @@ export class Node extends PureComponent<INodeProps, INodeState> {
     }
 
     const position = {
-      x: d3.event.x,
-      y: d3.event.y,
+      x: x - deltaMouseX + offsetWidth / 2,
+      y: y - deltaMouseY + offsetHeight / 2,
     };
 
     if (layoutEngine) {
@@ -220,9 +225,14 @@ export class Node extends PureComponent<INodeProps, INodeState> {
       isLinkingStarted,
       onNodeLink,
     } = this.props;
-    const { shiftKey } = d3.event.sourceEvent;
+    const { shiftKey, offsetX: deltaMouseX, offsetY: deltaMouseY } = d3.event.sourceEvent;
     const { current: currentNodeRef } = this.nodeRef;
     const { parentElement: currentNodeRefParent } = currentNodeRef;
+
+    this.setState({
+      deltaMouseX,
+      deltaMouseY,
+    });
 
     if (shiftKey && !isLinkSource) {
       onNodeLink(data);
