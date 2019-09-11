@@ -558,7 +558,7 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
       selectedNodeObj, isLinkingStarted, focused,
     } = this.state;
     const {
-      onUndo, onRedo, onCopySelected, onPasteSelected,
+      onUndo, onRedo, onCopySelected, onPasteSelected, selected,
     } = this.props;
 
     if (!focused) {
@@ -567,19 +567,15 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
 
     const isCtrlKeyPressed = d.metaKey || d.ctrlKey;
 
-    // todo: Temporary disable, because of https://pm.itrexgroup.com/browse/OLAB-151
     switch (d.key) {
-      /**
       case 'Delete':
       case 'Backspace': {
-
         const isMapItemSelected = (selectedNodeObj && selectedNodeObj.node) || selected;
 
         if (isMapItemSelected) {
           this.handleDelete(selectedNodeObj.node || selected);
         }
       } break;
-      */
       case 'Escape':
         if (isLinkingStarted) {
           this.toggleDraggingEdgeByIcon();
@@ -686,8 +682,9 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
     // Ignore document click if it's in the SVGElement
     const { selected: isItemSelected, focused: isNodeFocused } = this.props;
     const isTargetEqualsToViewport = e && e.target && this.graphSvg.current.contains(e.target);
+    const shouldLeaveFocus = !isItemSelected && (isTargetEqualsToViewport || !isNodeFocused);
 
-    if (isItemSelected || isNodeFocused || isTargetEqualsToViewport) {
+    if (shouldLeaveFocus || isTargetEqualsToViewport) {
       return;
     }
 
@@ -793,6 +790,7 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
     onSelectNode(node);
 
     this.setState({
+      focused: true,
       componentUpToDate: false,
       selectedNodeObj: {
         nodeId: node.id,
