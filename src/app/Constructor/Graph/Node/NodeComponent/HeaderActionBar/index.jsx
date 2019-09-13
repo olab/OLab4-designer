@@ -3,7 +3,8 @@ import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import { Fab } from '@material-ui/core';
 
-import { LockIcon, MinimizeIcon } from '../icons';
+import LockIcon from '../../../../../../shared/assets/icons/lock.svg';
+import MinimizeIcon from '../../../../../../shared/assets/icons/minimize.svg';
 
 import { ACTION_COLLAPSE, ACTION_LOCK } from '../../config';
 

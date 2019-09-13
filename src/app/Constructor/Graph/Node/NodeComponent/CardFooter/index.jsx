@@ -4,7 +4,9 @@ import classNames from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
 import { Fab } from '@material-ui/core';
 
-import { LinkIcon, AddIcon } from '../icons';
+import AddIcon from '../../../../../../shared/assets/icons/add_node.svg';
+import LinkIcon from '../../../../../../shared/assets/icons/link.svg';
+
 import { ACTION_ADD, ACTION_LINK } from '../../config';
 
 import type { ICardFooterProps } from './types';
