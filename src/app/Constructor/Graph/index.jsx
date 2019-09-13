@@ -9,7 +9,9 @@ import { DropTarget } from 'react-dnd';
 
 import GraphView from './GraphView';
 
-import { createNewEdge, createNewNode } from './utils';
+import {
+  createNewEdge, createNewNode, spec, collect,
+} from './utils';
 import { EDGE_TYPES, NODE_CREATION_OFFSET } from './config';
 import { DND_CONTEXTS, MODALS_NAMES } from '../../Modals/config';
 import { ROOT_TYPE as ROOT_NODE_TYPE } from './Node/config';
@@ -318,29 +320,6 @@ const mapDispatchToProps = dispatch => ({
   ACTION_NOTIFICATION_INFO: (message: string) => {
     dispatch(notificationActions.ACTION_NOTIFICATION_INFO(message));
   },
-});
-
-/*
-  It describes how the drop target reacts to the drag and drop events.
-  See docs here: http://react-dnd.github.io/react-dnd/docs/api/drop-target#parameters
-*/
-const spec = {
-  drop: (props, monitor, component) => {
-    if (!component) {
-      return null;
-    }
-
-    return monitor.getDifferenceFromInitialOffset();
-  },
-};
-
-/*
-  It should return a plain object of the props to inject into your component.
-  It receives two parameters: connect and monitor.
-  See docs here: http://react-dnd.github.io/react-dnd/docs/api/drop-target#parameters
-*/
-const collect = conn => ({
-  connectDropTarget: conn.dropTarget(),
 });
 
 export default DropTarget(

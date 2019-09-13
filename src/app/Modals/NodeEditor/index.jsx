@@ -18,6 +18,7 @@ import type { INodeEditorProps, INodeEditorState } from './types';
 
 import * as modalActions from '../action';
 import * as mapActions from '../../reducers/map/action';
+import { spec, collect } from '../utils';
 import { KEY_S } from './config';
 import { DND_CONTEXTS, MODALS_NAMES, LINK_STYLES } from '../config';
 
@@ -242,42 +243,6 @@ const mapDispatchToProps = dispatch => ({
       MODALS_NAMES.SO_PICKER_MODAL,
     ));
   },
-});
-
-/*
-  It describes how the drop target reacts to the drag and drop events.
-  See docs here: http://react-dnd.github.io/react-dnd/docs/api/drag-source#parameters
-*/
-const spec = {
-  beginDrag: props => props,
-  endDrag: (props, monitor, component) => {
-    if (!monitor.didDrop()) {
-      return;
-    }
-
-    const dropResult = monitor.getDropResult();
-
-    if (!dropResult) {
-      return;
-    }
-
-    const { x: offsetX, y: offsetY } = dropResult;
-    const x = props.x - offsetX;
-    const y = props.y - offsetY;
-
-    component.handleModalMove(x, y);
-  },
-};
-
-/*
-  It should return a plain object of the props to inject into your component.
-  It receives two parameters: connect and monitor.
-  See docs here: http://react-dnd.github.io/react-dnd/docs/api/drag-source#parameters
-*/
-const collect = (conn, monitor) => ({
-  connectDragSource: conn.dragSource(),
-  connectDragPreview: conn.dragPreview(),
-  isDragging: monitor.isDragging(),
 });
 
 export default connect(

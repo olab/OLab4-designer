@@ -4,17 +4,7 @@ import generateTmpId from '../../../helpers/generateTmpId';
 import { SALT as NODE_SALT } from './Node/config';
 import { SALT as EDGE_SALT } from './Edge/config';
 
-import type {
-  DefaultEdge as DefaultsEdgeType,
-  DefaultNode as DefaultsNodeType,
-} from '../../reducers/defaults/types';
-
-export const createNewNode = (
-  mapId: number,
-  x: number,
-  y: number,
-  defaultNodeBody: DefaultsNodeType,
-) => {
+export const createNewNode = (mapId, x, y, defaultNodeBody) => {
   const newNodeId = generateTmpId(NODE_SALT);
 
   return {
@@ -28,11 +18,7 @@ export const createNewNode = (
   };
 };
 
-export const createNewEdge = (
-  sourceId: number,
-  targetId: number,
-  defaultEdgeBody: DefaultsEdgeType,
-) => {
+export const createNewEdge = (sourceId, targetId, defaultEdgeBody) => {
   const newEdgeId = generateTmpId(EDGE_SALT);
 
   return {
@@ -43,3 +29,17 @@ export const createNewEdge = (
     isSelected: false,
   };
 };
+
+export const spec = {
+  drop: (props, monitor, component) => {
+    if (!component) {
+      return null;
+    }
+
+    return monitor.getDifferenceFromInitialOffset();
+  },
+};
+
+export const collect = conn => ({
+  connectDropTarget: conn.dropTarget(),
+});
