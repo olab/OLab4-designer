@@ -1,10 +1,10 @@
 import styled from 'styled-components';
 
-const primaryColor = '#D3DAE1';
+import { BLUE_GREY } from '../../../../shared/colors';
 
 export const EdgeWrapper = styled.g`
-  color: ${primaryColor};
-  stroke: ${primaryColor};
+  color: ${BLUE_GREY};
+  stroke: ${BLUE_GREY};
   stroke-width: 5px;
 
   & > use {

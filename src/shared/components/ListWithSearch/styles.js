@@ -2,8 +2,6 @@ import styled from 'styled-components';
 
 import { GREY, DARK_GREY } from '../../colors';
 
-const colorGray = 'rgba(0, 0, 0, 0.42)';
-
 export const SearchWrapper = styled.div`
   position: relative;
 `;
@@ -73,7 +71,7 @@ const styles = () => ({
     right: 0,
     bottom: 7,
     padding: 3,
-    fill: colorGray,
+    fill: 'rgba(0, 0, 0, 0.42)',
     boxSizing: 'content-box',
   },
   spinnerCaption: {

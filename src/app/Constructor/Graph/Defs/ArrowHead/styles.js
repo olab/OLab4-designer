@@ -1,9 +1,9 @@
 import styled from 'styled-components';
 
-const lightColor = '#fff';
+import { WHITE } from '../../../../../shared/colors';
 
 export const ArrowWrapper = styled.path`
-    fill: ${lightColor};
+    fill: ${WHITE};
 `;
 
 export default ArrowWrapper;

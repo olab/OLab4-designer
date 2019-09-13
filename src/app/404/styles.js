@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 
-const colorBlue = '#0089EC';
-const colorGrey = '#7C8FA6';
+import { BLUE, DARK_GREY } from '../../shared/colors';
 
 export const Wrapper = styled.div`
   display: flex;
@@ -22,7 +21,7 @@ export const Header = styled.h1`
   font-size: 48px;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: ${colorBlue};
+  color: ${BLUE};
   margin: 2rem 0 0;
 `;
 
@@ -30,5 +29,5 @@ export const Text = styled.h3`
   font-size: 20px;
   line-height: 24px;
   letter-spacing: 0.06em;
-  color: ${colorGrey};
+  color: ${DARK_GREY};
 `;

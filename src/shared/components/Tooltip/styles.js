@@ -1,16 +1,18 @@
 import arrowGenerator from '../../../helpers/arrowGenerator';
 
+import { BLUE, WHITE } from '../../colors';
+
 const styles = theme => ({
   button: {
     margin: theme.spacing.unit,
   },
   styleTooltip: {
-    backgroundColor: '#0089EC',
-    color: '#fff',
+    backgroundColor: BLUE,
+    color: WHITE,
     boxShadow: theme.shadows[1],
     fontSize: 11,
   },
-  arrowPopper: arrowGenerator('#0089EC'),
+  arrowPopper: arrowGenerator(BLUE),
   arrow: {
     position: 'absolute',
     fontSize: 6,

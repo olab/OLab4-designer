@@ -3,7 +3,7 @@ import styled, { css } from 'styled-components';
 export const ExpandableItemStyle = styled.p`
   font-family: "Roboto", "Helvetica", "Arial", sans-serif;
   margin: 0;
-  color: rgba(0, 0, 0, 0.54);
+  color: rgba(0, 0, 0, .54);
   font-size: 0.75rem;
   font-weight: 400;
 

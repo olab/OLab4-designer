@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { setCursorCSS } from './utils';
 
-const backgroundColor = '#f9f9f9';
+import { LIGHT_GREY } from '../../../../shared/colors';
 
 export const ViewWrapper = styled.div`
   height: 100%;
@@ -9,7 +9,7 @@ export const ViewWrapper = styled.div`
   margin: 0;
   display: flex;
   box-shadow: none;
-  background: ${backgroundColor};
+  background: ${LIGHT_GREY};
   transition: opacity 0.167s;
   opacity: 1;
   outline: none;

@@ -1,8 +1,6 @@
 import styled from 'styled-components';
 
-const colorGreen = '#03B595';
-const colorLightGray = '#F0F8FE';
-const colorDarkGray = '#7C8FA6';
+import { GREEN, LIGHT_BLUE, DARK_GREY } from '../../../../shared/colors';
 
 export const SearchBoxWrapper = styled.div`
   position: relative;
@@ -10,7 +8,7 @@ export const SearchBoxWrapper = styled.div`
 
   > input {
     border-radius: 16px;
-    background: ${colorLightGray};
+    background: ${LIGHT_BLUE};
     border: none;
     outline: none;
     height: 30px;
@@ -22,11 +20,11 @@ export const SearchBoxWrapper = styled.div`
     font-family: SF Pro Display;
     font-size: 14px;
     letter-spacing: 0.06em;
-    color: ${colorDarkGray};
+    color: ${DARK_GREY};
 
     &:focus {
-      border-color: ${colorGreen};
-      box-shadow: 0 0 3px ${colorGreen};
+      border-color: ${GREEN};
+      box-shadow: 0 0 3px ${GREEN};
     }
   }
 `;
@@ -42,7 +40,7 @@ export const ConfigArticle = styled.article`
   display: flex;
   justify-content: space-between;
   padding: .7rem 1rem .5rem 1rem;
-  border-bottom: 2px solid ${colorLightGray};
+  border-bottom: 2px solid ${LIGHT_BLUE};
 
   > div:first-of-type {
     margin-right: .5rem;
