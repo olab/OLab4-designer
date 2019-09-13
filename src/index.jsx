@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
+import { CssBaseline } from '@material-ui/core';
 import store, { history } from './store/store';
 import * as serviceWorker from './serviceWorker';
 import { ACTION_USER_AUTH_SUCCEEDED } from './app/Login/action';
@@ -17,6 +18,7 @@ const target = document.getElementById('root');
 
 const Root = (
   <Provider store={store}>
+    <CssBaseline />
     <GlobalStyles />
     <App history={history} />
   </Provider>

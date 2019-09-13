@@ -3,7 +3,7 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 import {
-  Button, CssBaseline, Paper, Grid, Typography, IconButton,
+  Button, Paper, Grid, Typography, IconButton,
 } from '@material-ui/core';
 import { ArrowBackRounded as ArrowBackIcon } from '@material-ui/icons';
 
@@ -15,7 +15,6 @@ const EditorWrapper = ({
   classes, children, history, scopedObject, onSubmit, isEditMode, isDisabled,
 }: IEditorWrapperProps) => (
   <Grid container component="main" className={classes.root}>
-    <CssBaseline />
     <Grid item xs={false} sm={1} md={1} className={classes.leftPanel} />
     <Grid item xs={12} sm={11} md={11} component={Paper} className={classes.rightPanel}>
       <div className={classes.paper}>

@@ -5,7 +5,7 @@ import { withRouter } from 'react-router-dom';
 import { withFormik, Form } from 'formik';
 import { withStyles } from '@material-ui/core/styles';
 import {
-  Button, CssBaseline, FormControl, Input,
+  Button, FormControl, Input,
   InputLabel, Paper, Typography,
 } from '@material-ui/core';
 
@@ -26,7 +26,6 @@ const Login = ({
 
   return (
     <main className={classes.main}>
-      <CssBaseline />
       <Paper className={classes.paper}>
         <Typography component="h1" variant="h5">
           Sign in
