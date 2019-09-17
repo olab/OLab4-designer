@@ -23,7 +23,13 @@ import {
 
 import * as constructorActions from '../../action';
 
-import GraphUtils from '../utilities/graph-utils';
+import {
+  getEdgePathElement, parsePathToXY, calculateOffset,
+} from '../Edge/utils';
+import {
+  removeEdgeElement, isPartOfEdge, zoomFilter, getClickedDOMNodeId, yieldingLoop,
+  removeElementFromDom, linkNodesAndEdges, getEdgesMap, getNodesMap,
+} from './utils';
 import LayoutEngines from '../utilities/layout-engine/layout-engine-config';
 
 import type { Edge as EdgeType } from '../Edge/types';
@@ -79,9 +85,9 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
   static getDerivedStateFromProps(nextProps: IGraphViewProps, prevState: IGraphViewState) {
     let { nodes } = nextProps;
     const { edges } = nextProps;
-    const nodesMap = GraphUtils.getNodesMap(nodes);
-    const edgesMap = GraphUtils.getEdgesMap(edges);
-    GraphUtils.linkNodesAndEdges(nodesMap, edges);
+    const nodesMap = getNodesMap(nodes);
+    const edgesMap = getEdgesMap(edges);
+    linkNodesAndEdges(nodesMap, edges);
 
     const selectedNodeMap = nextProps.selected && nodesMap[`key-${nextProps.selected.id}`]
       ? nodesMap[`key-${nextProps.selected.id}`]
@@ -119,68 +125,6 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
     return nextState;
   }
 
-  /**
-   *
-   *
-   * @static
-   * @param {string} source
-   * @param {string} target
-   * @memberof GraphView
-   *
-   * Removes Edge from DOM.
-   */
-  static removeEdgeElement(source: string | number, target: string | number) {
-    const id = `${source}-${target}`;
-    GraphUtils.removeElementFromDom(`edge-${id}-container`);
-  }
-
-  /**
-   *
-   *
-   * @static
-   * @param {*} element
-   * @returns
-   * @memberof GraphView
-   *
-   * Checks whether clicked item is in the edge.
-   */
-  static isPartOfEdge(element: any) {
-    return !!GraphUtils.findParent(element, '.edge-container');
-  }
-
-  /**
-   *
-   *
-   * @static
-   * @returns
-   * @memberof GraphView
-   *
-   * Stops zoom whether if ctrl or some button on keyboard is pressed.
-   */
-  static zoomFilter() {
-    const { button, ctrlKey } = d3.event;
-
-    if (button || ctrlKey) {
-      return false;
-    }
-
-    return true;
-  }
-
-  static getClickedDOMNodeId() {
-    const { sourceEvent: sourceEventD3, target: targetD3 } = d3.event;
-    const target = sourceEventD3 ? sourceEventD3.target : targetD3;
-    const targetNodeDOM = target.closest('g[id^="node-"]');
-
-    if (targetNodeDOM) {
-      const nodeDOMId = targetNodeDOM.id.replace('node-', '');
-
-      return nodeDOMId;
-    }
-
-    return null;
-  }
-
   componentDidMount() {
     const { minZoom = 0, maxZoom = 0, zoomDelay } = this.props;
 
@@ -190,7 +134,7 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
 
     this.zoom = d3
       .zoom()
-      .filter(GraphView.zoomFilter)
+      .filter(zoomFilter)
       .scaleExtent([minZoom, maxZoom])
       .on('start', this.handleZoomStart)
       .on('zoom', this.handleZoom)
@@ -261,7 +205,7 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
 
       ACTION_SET_CURSOR(CURSOR_DEFAULT);
 
-      GraphUtils.removeElementFromDom('edge-custom-container');
+      removeElementFromDom('edge-custom-container');
     } else if (isLinkingStarted && !prevState.isLinkingStarted) {
       d3
         .select(this.viewWrapper.current)
@@ -409,7 +353,7 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
     let node = null;
     let prevNode = null;
 
-    GraphUtils.yieldingLoop(nodes.length, 50, (i: number) => {
+    yieldingLoop(nodes.length, 50, (i: number) => {
       node = nodes[i];
       prevNode = this.getNodeById(node.id, oldNodesMap);
 
@@ -438,18 +382,18 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
         const prevNodeMapNode = this.getNodeById(nodeId, prevNodesMap);
         // remove all outgoing edges
         prevNodeMapNode.outgoingEdges.forEach((edge) => {
-          GraphView.removeEdgeElement(edge.source, edge.target);
+          removeEdgeElement(edge.source, edge.target);
         });
 
         // remove all incoming edges
         prevNodeMapNode.incomingEdges.forEach((edge) => {
-          GraphView.removeEdgeElement(edge.source, edge.target);
+          removeEdgeElement(edge.source, edge.target);
         });
 
         // remove node
         // The timeout avoids a race condition
         setTimeout(() => {
-          GraphUtils.removeElementFromDom(`node-${nodeId}-container`);
+          removeElementFromDom(`node-${nodeId}-container`);
         });
       }
     });
@@ -496,7 +440,7 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
     prevEdges.forEach((edge: EdgeType) => {
       if (!edge.source || !edge.target || !edgesMap[`${edge.source}_${edge.target}`]) {
         // remove edge
-        GraphView.removeEdgeElement(edge.source, edge.target);
+        removeEdgeElement(edge.source, edge.target);
       }
     });
   }
@@ -638,7 +582,7 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
     const { target, shiftKey } = event;
     const { selectedNodeObj, isLinkingStarted } = this.state;
 
-    const nodeDOMId = GraphView.getClickedDOMNodeId();
+    const nodeDOMId = getClickedDOMNodeId();
 
     if (isLinkingStarted && !nodeDOMId) {
       this.setState({
@@ -647,7 +591,7 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
       });
     }
 
-    if (GraphView.isPartOfEdge(target)) {
+    if (isPartOfEdge(target)) {
       this.handleEdgeSelected(event);
 
       return;
@@ -717,7 +661,7 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
   createNewEdge() {
     const { edgesMap, sourceNode } = this.state;
     const { onCreateEdge } = this.props;
-    const nodeDOMId = GraphView.getClickedDOMNodeId();
+    const nodeDOMId = getClickedDOMNodeId();
     const newState = {
       draggedEdge: null,
       draggingEdge: false,
@@ -750,7 +694,7 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
       onCreateEdge(sourceNode, targetNode);
     }
 
-    GraphUtils.removeElementFromDom('edge-custom-container');
+    removeElementFromDom('edge-custom-container');
 
     this.setState(newState);
   }
@@ -810,7 +754,7 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
     }
 
     const source = d3.mouse(eventTarget);
-    const edgeCoords = Edge.parsePathToXY(Edge.getEdgePathElement(edge, this.viewWrapper.current));
+    const edgeCoords = parsePathToXY(getEdgePathElement(edge, this.viewWrapper.current));
 
     // the arrow is clicked if the xyCoords are within edgeArrowSize of edgeCoords.target[x,y]
     return (
@@ -848,7 +792,7 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
       return;
     }
 
-    GraphView.removeEdgeElement(edge.source, edge.target);
+    removeEdgeElement(edge.source, edge.target);
 
     this.dragEdge(edge);
 
@@ -884,7 +828,7 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
     }
 
     const targetPosition = this.getMouseCoordinates();
-    const offset = Edge.calculateOffset(
+    const offset = calculateOffset(
       this.getNodeById(draggedEdge.source).node,
       targetPosition,
       this.viewWrapper.current,
@@ -945,7 +889,7 @@ export class GraphView extends React.Component<IGraphViewProps, IGraphViewState>
     // was clicked and deal with that scenario.
 
     // remove custom edge
-    GraphUtils.removeElementFromDom('edge-custom-container');
+    removeElementFromDom('edge-custom-container');
 
     this.setState({
       draggedEdge: null,

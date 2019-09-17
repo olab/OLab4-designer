@@ -27,8 +27,7 @@ import type { IConstructorProps, IConstructorState } from './types';
 
 import { MODALS_NAMES } from '../Modals/config';
 import { CONFIRMATION_MODALS } from './config';
-import { PAGE_TITLES } from '../config';
-import { getFocusedNode, getSelectedEdge } from './utils';
+import { getFocusedNode, getSelectedEdge, setPageTitle } from './utils';
 
 export class Constructor extends PureComponent<IConstructorProps, IConstructorState> {
   templateInputName: { current: null | React$Element<any> };
@@ -50,7 +49,7 @@ export class Constructor extends PureComponent<IConstructorProps, IConstructorSt
   static getDerivedStateFromProps(nextProps: IConstructorProps, state: IConstructorState) {
     const { nodes, edges, mapName } = nextProps;
 
-    Constructor.setPageTitle(mapName);
+    setPageTitle(mapName);
 
     const focusedNode = getFocusedNode(nodes);
     if (!isEqual(state.focusedNode, focusedNode)) {
@@ -67,13 +66,6 @@ export class Constructor extends PureComponent<IConstructorProps, IConstructorSt
     }
 
     return null;
-  }
-
-  static setPageTitle(mapName: string): void{
-    const newTitle = PAGE_TITLES.DESIGNER(mapName);
-    if (newTitle !== document.title) {
-      document.title = newTitle;
-    }
   }
 
   validateUrl = (): void => {
