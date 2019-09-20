@@ -93,7 +93,7 @@ export const linkNodesAndEdges = (nodesMap: any, edges: Array<EdgeType>) => {
  *
  * Removes an element from DOM using an id.
  */
-export const removeElementFromDom = (id: string) => {
+export const removeElementFromDom = (id: string): boolean => {
   const container = document.getElementById(id);
   if (container && container.parentNode) {
     container.parentNode.removeChild(container);
@@ -152,7 +152,7 @@ export const yieldingLoop = (
  *
  * Finds shallow differences in 2 objects.
  */
-export const hasNodeShallowChanged = (prevNode: NodeType, newNode: NodeType) => {
+export const hasNodeShallowChanged = (prevNode: NodeType, newNode: NodeType): boolean => {
   const prevNodeKeys = Object.keys(prevNode);
   const newNodeKeys = Object.keys(prevNode);
   const checkedKeys = {};
@@ -197,7 +197,7 @@ export const removeEdgeElement = (source: string | number, target: string | numb
  *
  * Checks whether clicked item is in the edge.
  */
-export const isPartOfEdge = (element: any) => !!findParent(element, '.edge-container');
+export const isPartOfEdge = (element: HTMLElement): boolean => !!findParent(element, '.edge-container');
 
 /**
  *
@@ -207,7 +207,7 @@ export const isPartOfEdge = (element: any) => !!findParent(element, '.edge-conta
  *
  * Stops zoom whether if ctrl or some button on keyboard is pressed.
  */
-export const zoomFilter = () => {
+export const zoomFilter = (): boolean => {
   const { button, ctrlKey } = d3.event;
 
   if (button || ctrlKey) {
@@ -231,7 +231,7 @@ export const getClickedDOMNodeId = () => {
   return null;
 };
 
-export const setCursorCSS = (cursor) => {
+export const setCursorCSS = (cursor: string): string => {
   switch (cursor) {
     case 'customCrosshair':
       return `url('${crosshair}') 12 12, auto`;

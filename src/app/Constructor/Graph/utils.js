@@ -4,7 +4,19 @@ import generateTmpId from '../../../helpers/generateTmpId';
 import { SALT as NODE_SALT } from './Node/config';
 import { SALT as EDGE_SALT } from './Edge/config';
 
-export const createNewNode = (mapId, x, y, defaultNodeBody) => {
+import type {
+  DefaultEdge as DefaultsEdgeType,
+  DefaultNode as DefaultsNodeType,
+} from '../../reducers/defaults/types';
+import type { Node as NodeType } from './Node/types';
+import type { Edge as EdgeType } from './Edge/types';
+
+export const createNewNode = (
+  mapId: number,
+  x: number,
+  y: number,
+  defaultNodeBody: DefaultsNodeType,
+): NodeType => {
   const newNodeId = generateTmpId(NODE_SALT);
 
   return {
@@ -18,7 +30,11 @@ export const createNewNode = (mapId, x, y, defaultNodeBody) => {
   };
 };
 
-export const createNewEdge = (sourceId, targetId, defaultEdgeBody) => {
+export const createNewEdge = (
+  sourceId: number,
+  targetId: number,
+  defaultEdgeBody: DefaultsEdgeType,
+): EdgeType => {
   const newEdgeId = generateTmpId(EDGE_SALT);
 
   return {

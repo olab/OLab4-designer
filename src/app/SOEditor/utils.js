@@ -1,3 +1,4 @@
+// @flow
 import {
   Spa as MapsIcon,
   SpaOutlined as MapsOutlinedIcon,
@@ -11,9 +12,10 @@ import {
   FilterVintageOutlined as DefaultOutlinedIcon,
 } from '@material-ui/icons';
 
+import { Icons } from './types';
 import { SCOPE_LEVELS } from '../config';
 
-export const getIconsByScopeLevel = (level) => {
+export const getIconsByScopeLevel = (level: string): Icons => {
   switch (level) {
     case SCOPE_LEVELS[0]:
       return {
@@ -43,6 +45,6 @@ export const getIconsByScopeLevel = (level) => {
   }
 };
 
-export const toLowerCaseAndPlural = str => `${str}s`.toLowerCase();
+export const toLowerCaseAndPlural = (str: string): string => `${str}s`.toLowerCase();
 
-export const toUpperCaseAndPlural = str => `${str}s`.toUpperCase();
+export const toUpperCaseAndPlural = (str: string): string => `${str}s`.toUpperCase();

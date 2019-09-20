@@ -1,4 +1,5 @@
-const arrowGenerator = color => ({
+// @flow
+const arrowGenerator = (color: string): any => ({
   '&[x-placement*="bottom"] $arrow': {
     top: 0,
     left: 0,

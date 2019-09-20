@@ -22,3 +22,8 @@ export type ISOPickerState = {
   scopedObjectsFiltered: Array<ScopedObjectType>,
   isScrollbarVisible: boolean,
 };
+
+export type FilterObject = {
+  name: string,
+  scopeLevel: string,
+};

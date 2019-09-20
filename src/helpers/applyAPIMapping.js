@@ -1,7 +1,16 @@
+// @flow
 import { isBoolean, isNumber } from './dataTypes';
 import { QUESTION_TYPES } from '../app/SOEditor/Questions/config';
 
-export const edgeToServer = edgeData => ({
+import { MapItem } from '../app/reducers/map/types';
+import { Edge } from '../app/Constructor/Graph/Edge/types';
+import { Node } from '../app/Constructor/Graph/Node/types';
+import { MapDetails } from '../app/reducers/mapDetails/types';
+import { CounterActions } from '../app/reducers/counterGrid/types';
+import { DefaultNode, DefaultEdge } from '../app/reducers/defaults/types';
+import { ScopedObject, ScopedObjectListItem, ScopedObjectBase } from '../app/reducers/scopedObjects/types';
+
+export const edgeToServer = (edgeData: Edge): Edge => ({
   id: edgeData.id,
   text: edgeData.label,
   linkStyleId: edgeData.linkStyle,
@@ -14,7 +23,7 @@ export const edgeToServer = edgeData => ({
   followOnce: Number(edgeData.isFollowOnce),
 });
 
-export const edgeFromServer = edgeData => ({
+export const edgeFromServer = (edgeData: Edge): Edge => ({
   id: edgeData.id,
   label: edgeData.text || '',
   color: edgeData.color,
@@ -28,7 +37,7 @@ export const edgeFromServer = edgeData => ({
   isSelected: false,
 });
 
-export const edgeDefaultsFromServer = edgeDefault => ({
+export const edgeDefaultsFromServer = (edgeDefault: DefaultEdge): DefaultEdge => ({
   label: edgeDefault.text,
   color: edgeDefault.color,
   variant: edgeDefault.lineType,
@@ -38,7 +47,7 @@ export const edgeDefaultsFromServer = edgeDefault => ({
   isFollowOnce: Boolean(edgeDefault.followOnce),
 });
 
-export const nodeToServer = nodeData => ({
+export const nodeToServer = (nodeData: Node): Node => ({
   id: nodeData.id,
   mapId: nodeData.mapId,
   title: nodeData.title,
@@ -60,7 +69,7 @@ export const nodeToServer = nodeData => ({
   info: nodeData.info,
 });
 
-export const nodeFromServer = nodeData => ({
+export const nodeFromServer = (nodeData: Node): Node => ({
   id: nodeData.id,
   mapId: nodeData.mapId,
   title: nodeData.title,
@@ -84,7 +93,7 @@ export const nodeFromServer = nodeData => ({
   info: nodeData.info,
 });
 
-export const nodeDefaultsFromServer = nodeDefault => ({
+export const nodeDefaultsFromServer = (nodeDefault: DefaultNode): DefaultNode => ({
   title: nodeDefault.title,
   text: nodeDefault.text,
   x: nodeDefault.x,
@@ -99,7 +108,7 @@ export const nodeDefaultsFromServer = nodeDefault => ({
   color: nodeDefault.color,
 });
 
-export const mapDetailsFromServer = mapData => ({
+export const mapDetailsFromServer = (mapData: MapDetails): MapDetails => ({
   id: mapData.id,
   name: mapData.name,
   notes: mapData.notes,
@@ -120,7 +129,7 @@ export const mapDetailsFromServer = mapData => ({
   isInstructorGuideComplete: Boolean(mapData.instructorGuideComplete),
 });
 
-export const mapDetailsToServer = mapData => ({
+export const mapDetailsToServer = (mapData: MapDetails): MapDetails => ({
   id: mapData.id,
   name: mapData.name,
   notes: mapData.notes,
@@ -140,7 +149,7 @@ export const mapDetailsToServer = mapData => ({
   instructorGuideComplete: Number(mapData.isInstructorGuideComplete),
 });
 
-export const mapFromServer = mapData => ({
+export const mapFromServer = (mapData: MapItem): MapItem => ({
   nodes: mapData.nodes
     ? mapData.nodes.map(node => nodeFromServer(node))
     : [],
@@ -149,14 +158,18 @@ export const mapFromServer = mapData => ({
     : [],
 });
 
-export const mapFromServerOnCreate = ({ nodes, edges, ...mapDetails }) => ({
+export const mapFromServerOnCreate = (
+  { nodes, edges, ...mapDetails }: { nodes: Node, edges: Edge, mapDetails: MapDetails },
+) => ({
   ...mapDetailsFromServer(mapDetails),
   ...mapFromServer({ nodes, edges }),
 });
 
 export const templateFromServer = mapFromServer;
 
-export const scopedObjectFromServer = ({ url, ...restSO }) => ({
+export const scopedObjectFromServer = (
+  { url, ...restSO }: ScopedObject | ScopedObjectListItem,
+): ScopedObject => ({
   ...restSO,
   details: null,
   isShowEyeIcon: Boolean(url),
@@ -165,13 +178,13 @@ export const scopedObjectFromServer = ({ url, ...restSO }) => ({
 
 export const scopedObjectByTypeFromServer = ({
   url, showAnswer, showSubmit, ...restSO
-}) => ({
+}: ScopedObjectListItem): ScopedObjectListItem => ({
   ...restSO,
   ...(isNumber(showAnswer) && { isShowAnswer: Number(showAnswer) }),
   ...(isNumber(showAnswer) && { isShowSubmit: Number(showAnswer) }),
 });
 
-export const scopedObjectToServer = (SO) => {
+export const scopedObjectToServer = (SO: ScopedObjectBase): ScopedObjectBase => {
   if (Number(Object.keys(QUESTION_TYPES)[0]) === SO.questionType) {
     const {
       feedback, layoutType, isShowAnswer, isShowSubmit, ...restSO
@@ -196,7 +209,7 @@ export const scopedObjectToServer = (SO) => {
 
 export const scopedObjectDetailsFromServer = ({
   id, name, parentId, url, ...restSODetails
-}) => ({
+}: ScopedObject): ScopedObject => ({
   id,
   name,
   ...(parentId && { parentId }),
@@ -207,12 +220,16 @@ export const scopedObjectDetailsFromServer = ({
   ...(url && { isShowEyeIcon: Boolean(url) }),
 });
 
-export const counterGridActionsFromServer = ({ visible, ...restActions }) => ({
+export const counterGridActionsFromServer = (
+  { visible, ...restActions }: CounterActions,
+): CounterActions => ({
   ...restActions,
   isVisible: Boolean(visible),
 });
 
-export const counterGridActionsToServer = ({ isVisible, ...restActions }) => ({
+export const counterGridActionsToServer = (
+  { isVisible, ...restActions }: CounterActions,
+): CounterActions => ({
   ...restActions,
   visible: Number(isVisible),
 });

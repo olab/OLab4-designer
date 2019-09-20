@@ -1,4 +1,9 @@
-const getFilterCallback = (level, queryStr) => ({ name, scopeLevel }) => {
+// @flow
+import { FilterObject as FilterObjectType } from './types';
+
+const getFilterCallback = (level: string, queryStr: string) => (
+  { name, scopeLevel }: FilterObjectType,
+): boolean => {
   const isLevelMatches = level === 'All' || scopeLevel === level;
 
   if (!isLevelMatches) {

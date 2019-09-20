@@ -1,4 +1,5 @@
-const removeHTMLTags = (text) => {
+// @flow
+const removeHTMLTags = (text: string): string => {
   const regex = /(<([^>]+)>)/ig;
   const result = text.replace(regex, '');
 

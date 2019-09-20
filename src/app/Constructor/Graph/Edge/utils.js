@@ -8,7 +8,11 @@ import { COLLAPSED_HEIGHT } from '../Node/config';
 import { VARIANT, EDGE_HANDLE_SIZE } from './config';
 
 import type { Node as NodeType } from '../Node/types';
-import type { ITargetPosition, Edge as EdgeType } from './types';
+import type {
+  Edge as EdgeType,
+  ITargetPosition as ITargetPositionType,
+  IntersectResponse as IntersectResponseType,
+} from './types';
 
 export const getVariantValueDOM = (variant: number): string => {
   switch (variant) {
@@ -23,7 +27,10 @@ export const getVariantValueDOM = (variant: number): string => {
   }
 };
 
-export const getMinRadius = (sourceNode: NodeType, targetNode: NodeType): number => {
+export const getMinRadius = (
+  sourceNode: NodeType,
+  targetNode: NodeType,
+): number => {
   const {
     width: sourceWidth, height: sourceHeight, isCollapsed: isSourceCollapsed,
   } = sourceNode;
@@ -49,8 +56,8 @@ export const getEdgeHandleOffsetTranslation = (): string => {
 };
 
 export const getOffset = (
-  sourceNodeXY: ITargetPosition,
-  targetNodeXY: ITargetPosition,
+  sourceNodeXY: ITargetPositionType,
+  targetNodeXY: ITargetPositionType,
   offset: number,
 ): Array<number> => {
   const { x: sourceX, y: sourceY } = sourceNodeXY;
@@ -75,7 +82,10 @@ export const getOffset = (
  *
  * Calculates angle between 2 dots.
  */
-export const calculateAngle = (src: any, trg: any) => {
+export const calculateAngle = (
+  src: ITargetPositionType,
+  trg: ITargetPositionType,
+): number => {
   const xComp = (trg.x || 0) - (src.x || 0);
   const yComp = (trg.y || 0) - (src.y || 0);
 
@@ -108,7 +118,7 @@ export const lineFunction = (srcTrgDataArray: any) => d3.line()(srcTrgDataArray)
 export const getEdgePathElement = (
   edge: EdgeType,
   viewWrapperElem: HTMLDivElement,
-) => viewWrapperElem.querySelector(
+): HTMLElement => viewWrapperElem.querySelector(
   `#edge-${edge.source}-${edge.target}-container>.edge-container>.edge>.edge-path`,
 );
 
@@ -157,7 +167,7 @@ export const parsePathToXY = (edgePathElement: Element | null) => {
  *
  * Returns a default intersect object.
  */
-export const getDefaultIntersectResponse = () => ({
+export const getDefaultIntersectResponse = (): IntersectResponseType => ({
   xOff: 0,
   yOff: 0,
   intersect: {
@@ -169,7 +179,12 @@ export const getDefaultIntersectResponse = () => ({
   },
 });
 
-export const changeIntersect = (response, points, trgX, trgY) => {
+export const changeIntersect = (
+  response: IntersectResponseType,
+  points: ITargetPositionType,
+  trgX: number,
+  trgY: number,
+): IntersectResponseType => {
   const [intersectPoint] = points;
   const xIntersect = intersectPoint.x;
   const yIntersect = intersectPoint.y;
@@ -191,10 +206,10 @@ export const changeIntersect = (response, points, trgX, trgY) => {
  * @memberof Edge
  */
 export const getRotatedRectIntersect = (
-  defSvgRotatedRectElement: any,
-  src: any,
-  trg: any,
-) => {
+  defSvgRotatedRectElement: HTMLElement,
+  src: ITargetPositionType,
+  trg: ITargetPositionType,
+): IntersectResponseType => {
   const response = getDefaultIntersectResponse();
   const clientRect = defSvgRotatedRectElement.getBoundingClientRect();
 
@@ -275,10 +290,10 @@ export const getRotatedRectIntersect = (
  * Finds the path intersect.
  */
 export const getPathIntersect = (
-  defSvgPathElement: any,
-  src: any,
-  trg: any,
-) => {
+  defSvgPathElement: HTMLElement,
+  src: ITargetPositionType,
+  trg: ITargetPositionType,
+): IntersectResponseType => {
   const response = getDefaultIntersectResponse();
   const { width: w, height: h } = defSvgPathElement.getBoundingClientRect();
 
@@ -344,10 +359,10 @@ export const getPathIntersect = (
  * Finds the circle intersect.
  */
 export const getCircleIntersect = (
-  defSvgCircleElement: any,
-  src: any,
-  trg: any,
-) => {
+  defSvgCircleElement: HTMLElement,
+  src: ITargetPositionType,
+  trg: ITargetPositionType,
+): IntersectResponseType => {
   const response = getDefaultIntersectResponse();
   const { width, height } = defSvgCircleElement.getBoundingClientRect();
 
@@ -407,8 +422,8 @@ export const getCircleIntersect = (
  * Returns rect intersects depending on type of svg item.
  */
 export const calculateOffset = (
-  src: any,
-  trg: any,
+  src: ITargetPositionType,
+  trg: ITargetPositionType,
   viewWrapperElem: HTMLDivElement,
 ) => {
   const response = getDefaultIntersectResponse();
@@ -484,7 +499,7 @@ export const calculateOffset = (
  *
  * Returns a shapeId from the edge type.
  */
-export const getXlinkHref = (edgeTypes: any, data: any) => {
+export const getXlinkHref = (edgeTypes: any, data: EdgeType): string | null => {
   if (data.type && edgeTypes[data.type]) {
     return edgeTypes[data.type].shapeId;
   }

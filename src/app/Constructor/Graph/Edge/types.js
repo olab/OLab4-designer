@@ -32,3 +32,14 @@ export type IEdgeProps = {
   viewWrapperElem: HTMLDivElement,
   edgeDefaults: DefaultEdgeType,
 };
+
+export type Intersect = {
+  type: string,
+  point: ITargetPosition,
+};
+
+export type IntersectResponse = {
+  xOff: number,
+  yOff: number,
+  intersect: Intersect,
+};
