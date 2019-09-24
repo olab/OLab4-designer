@@ -168,3 +168,13 @@ export const scopedObjectDetailsFromServer = ({
   },
   ...(url && { isShowEyeIcon: Boolean(url) }),
 });
+
+export const counterGridActionsFromServer = ({ visible, ...restActions }) => ({
+  ...restActions,
+  isVisible: Boolean(visible),
+});
+
+export const counterGridActionsToServer = ({ isVisible, ...restActions }) => ({
+  ...restActions,
+  visible: Number(isVisible),
+});

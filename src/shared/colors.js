@@ -3,6 +3,7 @@ export const ORANGE = '#F78749';
 export const BLUE = '#0089EC';
 export const DARK_BLUE = '#24446A';
 export const GREY = '#F5F5F5';
+export const MIDDLE_GREY = '#E0E0E0';
 export const DARK_GREY = '#7C8FA6';
 export const BLUE_GREY = '#D3DAE1';
 export const LIGHT_BLUE = '#F0F8FE';

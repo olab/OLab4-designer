@@ -8,6 +8,7 @@ import { Notify } from 'react-redux-notify';
 import Login from './Login';
 import Home from './Home';
 import Constructor from './Constructor';
+import CounterGrid from './CounterGrid';
 import PageNotFound from './404';
 import Header from './Header';
 import SOEditor from './SOEditor';
@@ -70,6 +71,7 @@ export class App extends PureComponent<IAppProps> {
             <ProtectedRoute exact isAuth={isAuth} path="/:mapId" component={Constructor} />
             <ProtectedRoute isAuth={isAuth} path="/scopedObject/:scopedObjectType" component={SOEditor} />
             <ProtectedRoute exact isAuth={isAuth} path="/:mapId/:nodeId/ane" component={AdvancedNodeEditor} />
+            <ProtectedRoute exact isAuth={isAuth} path="/:mapId/countergrid" component={CounterGrid} />
             <ProtectedRoute exact isAuth={isAuth} path="*" component={PageNotFound} />
           </Switch>
           <Notify />

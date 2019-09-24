@@ -9,6 +9,7 @@ import defaultsSaga from '../app/reducers/defaults/sagas';
 import templatesSaga from '../app/reducers/templates/sagas';
 import scopedObjectsSaga from '../app/reducers/scopedObjects/sagas';
 import scopeLevelsSaga from '../app/reducers/scopeLevels/sagas';
+import counterGridSaga from '../app/reducers/counterGrid/sagas';
 
 export default function* rootSaga(): Generator<any, void, void> {
   yield all([
@@ -20,5 +21,6 @@ export default function* rootSaga(): Generator<any, void, void> {
     templatesSaga(),
     scopedObjectsSaga(),
     scopeLevelsSaga(),
+    counterGridSaga(),
   ]);
 }

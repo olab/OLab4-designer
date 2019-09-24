@@ -6,6 +6,7 @@ import templates from '../app/reducers/templates/reducer';
 import scopedObjects from '../app/reducers/scopedObjects/reducer';
 import defaults from '../app/reducers/defaults/reducer';
 import scopeLevels from '../app/reducers/scopeLevels/reducer';
+import counterGrid from '../app/reducers/counterGrid/reducer';
 
 export default {
   user,
@@ -16,4 +17,5 @@ export default {
   defaults,
   scopedObjects,
   scopeLevels,
+  counterGrid,
 };

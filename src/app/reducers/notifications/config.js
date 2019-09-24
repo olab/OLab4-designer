@@ -9,6 +9,7 @@ export const MESSAGES = {
     NODE: 'Node has been updated',
     EDGE: 'Link has been updated',
     MAP: 'Map\'s name successfully updated',
+    COUNTER_ACTIONS: 'Actions have been updated',
   },
   ON_CREATE: {
     TEMPLATE: 'Template has been created',

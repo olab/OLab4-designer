@@ -61,15 +61,15 @@ class NavigationBar extends PureComponent<INavigationProps, INavigationState> {
           ))}
         </Menu>
 
-
         {mapId && (
-          <Button
-            className={classes.link}
-            component={Link}
-            to={`/${mapId}`}
-          >
-            Your Map
-          </Button>
+          <>
+            <Button className={classes.link} component={Link} to={`/${mapId}`}>
+              Your Map
+            </Button>
+            <Button className={classes.link} component={Link} to={`/${mapId}/countergrid`}>
+              Counter grid
+            </Button>
+          </>
         )}
       </div>
     );
