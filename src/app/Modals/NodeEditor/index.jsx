@@ -1,6 +1,7 @@
 // @flow
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { DragSource } from 'react-dnd';
 import { withStyles } from '@material-ui/core/styles';
 import { Button } from '@material-ui/core';
@@ -20,7 +21,8 @@ import * as modalActions from '../action';
 import * as mapActions from '../../reducers/map/action';
 import { spec, collect } from '../utils';
 import { KEY_S } from './config';
-import { DND_CONTEXTS, MODALS_NAMES, LINK_STYLES } from '../config';
+import { DND_CONTEXTS, MODALS_NAMES } from '../config';
+import { LINK_STYLES } from '../../config';
 
 import {
   NodeEditorWrapper, ModalHeader, ModalBody,
@@ -136,7 +138,7 @@ class NodeEditor extends PureComponent<INodeEditorProps, INodeEditorState> {
       color, title, isVisitOnce, linkStyle, text,
     } = this.state;
     const {
-      x, y, isDragging, connectDragSource, classes,
+      x, y, isDragging, connectDragSource, classes, node: { id: nodeId }, mapId,
     } = this.props;
 
     if (isDragging) {
@@ -152,6 +154,17 @@ class NodeEditor extends PureComponent<INodeEditorProps, INodeEditorState> {
       >
         <ModalHeader ref={instance => connectDragSource(instance)}>
           <h4>Node Editor</h4>
+          <Button
+            size="small"
+            variant="outlined"
+            color="primary"
+            className={classes.button}
+            component={Link}
+            to={`/${mapId}/${nodeId}/ane`}
+            target="_blank"
+          >
+            Advanced
+          </Button>
           <Button
             size="small"
             variant="outlined"
@@ -222,7 +235,10 @@ class NodeEditor extends PureComponent<INodeEditorProps, INodeEditorState> {
   }
 }
 
-const mapStateToProps = ({ modals }) => ({ ...modals[MODALS_NAMES.NODE_EDITOR_MODAL] });
+const mapStateToProps = ({ modals, map }) => ({
+  ...modals[MODALS_NAMES.NODE_EDITOR_MODAL],
+  mapId: map.id,
+});
 
 const mapDispatchToProps = dispatch => ({
   ACTION_UPDATE_NODE: (nodeData: NodeType, isShowNotification: boolean) => {

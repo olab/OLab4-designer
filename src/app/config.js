@@ -14,3 +14,11 @@ export const PAGE_TITLES = {
   ADD_SO: objectType => `Add ${objectType}`,
   EDIT_SO: objectType => `Edit ${objectType}`,
 };
+
+export const LINK_STYLES = [
+  'Hyperlinks',
+  'Dropdown',
+  'Dropdown + Confidence',
+  'Type in text',
+  'Buttons',
+];

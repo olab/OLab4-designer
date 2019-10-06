@@ -14,13 +14,17 @@ export type Node = {
   height: number,
   color: string,
   text: string,
+  info: string,
+  annotation: string,
   linkStyle: number,
   linkType: number,
+  priorityId: number,
   isCollapsed: boolean,
   isLocked: boolean,
   isVisitOnce: boolean,
   isSelected: boolean,
   isFocused: boolean,
+  isEnd: boolean,
 };
 
 export type INodeProps = {

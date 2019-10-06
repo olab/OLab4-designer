@@ -20,9 +20,8 @@ import * as mapActions from '../../reducers/map/action';
 
 import { spec, collect } from '../utils';
 import { LAYOUT_ENGINE } from '../../Constructor/config';
-import {
-  DND_CONTEXTS, MODALS_NAMES, LINK_STYLES,
-} from '../config';
+import { LINK_STYLES } from '../../config';
+import { DND_CONTEXTS, MODALS_NAMES } from '../config';
 import {
   THICKNESS_MIN, THICKNESS_MAX, THICKNESS_STEP, LINK_VARIANTS,
 } from './config';

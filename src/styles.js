@@ -37,19 +37,23 @@ const GlobalStyle = createGlobalStyle`
 
   /* clears the 'X' from Internet Explorer */
   input[type=search]::-ms-clear,
-    input[type=search]::-ms-reveal {
-      width: 0;
-      height: 0;
-      display: none;
-    }
+  input[type=search]::-ms-reveal {
+    width: 0;
+    height: 0;
+    display: none;
+  }
 
-    /* clears the 'X' from Chrome */
-    input[type="search"]::-webkit-search-decoration,
-    input[type="search"]::-webkit-search-cancel-button,
-    input[type="search"]::-webkit-search-results-button,
-    input[type="search"]::-webkit-search-results-decoration {
-      display: none;
-    }
+  /* clears the 'X' from Chrome */
+  input[type="search"]::-webkit-search-decoration,
+  input[type="search"]::-webkit-search-cancel-button,
+  input[type="search"]::-webkit-search-results-button,
+  input[type="search"]::-webkit-search-results-decoration {
+    display: none;
+  }
+
+  div.tox-tinymce {
+    border-radius: 5px;
+  }
 `;
 
 export default GlobalStyle;

@@ -18,11 +18,3 @@ export const MODALS_NAMES = {
   LINK_EDITOR_MODAL: 'LinkEditorModal',
   NODE_EDITOR_MODAL: 'NodeEditorModal',
 };
-
-export const LINK_STYLES = [
-  'Hyperlinks',
-  'Dropdown',
-  'Dropdown + Confidence',
-  'Type in text',
-  'Buttons',
-];

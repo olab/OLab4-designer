@@ -11,6 +11,7 @@ import Constructor from './Constructor';
 import PageNotFound from './404';
 import Header from './Header';
 import SOEditor from './SOEditor';
+import AdvancedNodeEditor from './AdvancedNodeEditor';
 
 import type { IAppProps, IProtectedRouteProps } from './types';
 
@@ -39,6 +40,7 @@ export const App = ({ isAuth, history }: IAppProps) => (
         <ProtectedRoute exact isAuth={isAuth} path="/" component={Home} />
         <ProtectedRoute exact isAuth={isAuth} path="/:mapId" component={Constructor} />
         <ProtectedRoute isAuth={isAuth} path="/scopedObject/:scopedObjectType" component={SOEditor} />
+        <ProtectedRoute exact isAuth={isAuth} path="/:mapId/:nodeId/ane" component={AdvancedNodeEditor} />
         <ProtectedRoute exact isAuth={isAuth} path="*" component={PageNotFound} />
       </Switch>
       <Notify />
