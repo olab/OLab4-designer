@@ -5,16 +5,14 @@ import {
 
 export const Container = styled.div`
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
   height: 94.5vh;
-  overflow: auto;
 `;
 
 export const ScrollingContainer = styled.div`
   flex: 1 1 100%;
-  min-height: 94.5vh;
-  height: max-content;
   background-color: ${WHITE};
+  overflow: auto;
 `;
 
 export const Header = styled.div`
@@ -38,6 +36,10 @@ export const TabContainer = styled.div`
   display: flex;
   justify-content: flex-start;
   padding: 24px 0 0 100px;
+
+  @media only screen and (max-width: 1199px) {
+    flex-direction: column;
+  }
 `;
 
 const styles = () => ({

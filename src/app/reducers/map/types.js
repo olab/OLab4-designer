@@ -25,6 +25,13 @@ export type Map = {
   isFetching: boolean,
 };
 
+const GET_NODE = 'GET_NODE';
+type GetNode = {
+  type: 'GET_NODE',
+  mapId: number,
+  nodeId: number,
+};
+
 const FOCUS_NODE = 'FOCUS_NODE';
 type FocusNode = {
   type: 'FOCUS_NODE',
@@ -168,6 +175,13 @@ type RedoMap = {
   next: MapItem,
 };
 
+const GET_NODE_FULLFILLED = 'GET_NODE_FULLFILLED';
+type GetNodeFullfilled = {
+  type: 'GET_NODE_FULLFILLED',
+  index: number,
+  node: Node,
+};
+
 const GET_MAP_SUCCEEDED = 'GET_MAP_SUCCEEDED';
 type GetMapSucceeded = {
   type: 'GET_MAP_SUCCEEDED',
@@ -210,9 +224,12 @@ export type MapActions = SelectNode | SelectEdge |
   CreateMapFromTemplateRequested | CreateMapFromTemplateSucceeded |
   CreateMapFromTemplateFailed | CreateNodeWithEdge | ExchangeEdgeId |
   ExtendMapRequested | ExtendMapFailed | ExtendMapSucceeded |
-  UpdateEdgeVisual | FocusNode | UnfocusNode;
+  UpdateEdgeVisual | FocusNode | UnfocusNode |
+  GetNode | GetNodeFullfilled;
 
 export {
+  GET_NODE,
+  GET_NODE_FULLFILLED,
   FOCUS_NODE,
   UNFOCUS_NODE,
   SELECT_NODE,

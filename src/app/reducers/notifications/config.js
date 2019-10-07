@@ -21,3 +21,9 @@ export const MESSAGES = {
     SCOPED_OBJECT: 'Object has been deleted',
   },
 };
+
+export const ERROR_MESSAGES = {
+  LOCAL_STORAGE: {
+    FULL_MEMORY: 'Memory is full. Cannot save.',
+  },
+};

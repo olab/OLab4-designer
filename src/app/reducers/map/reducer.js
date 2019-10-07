@@ -29,6 +29,7 @@ import {
   CREATE_MAP_FAILED,
   CREATE_MAP_SUCCEEDED,
   CREATE_MAP_REQUESTED,
+  GET_NODE_FULLFILLED,
 } from './types';
 
 export const initialMapState: MapType = {
@@ -132,6 +133,19 @@ const map = (state: MapType = initialMapState, action: MapActions) => {
         nodes,
         edges,
         isFetching: false,
+      };
+    }
+    case GET_NODE_FULLFILLED: {
+      const { index, node } = action;
+      const { nodes, ...restState } = state;
+
+      return {
+        ...restState,
+        nodes: [
+          ...nodes.slice(0, index),
+          node,
+          ...nodes.slice(index + 1),
+        ],
       };
     }
     case SELECT_NODE:

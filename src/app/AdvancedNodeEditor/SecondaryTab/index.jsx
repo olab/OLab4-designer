@@ -18,7 +18,7 @@ import styles, {
 
 const SecondaryTab = ({
   classes, info = '', nodeId = 0, annotation = '', linkStyle = 1, priorityId = 1,
-  handleStyleChange, handleEditorChange, handlePrioritiesChange,
+  handleSelectChange, handleEditorChange,
 }: IProps) => {
   const keyword = `[[INFO:${nodeId}]]`;
 
@@ -40,7 +40,7 @@ const SecondaryTab = ({
             className={classes.textField}
             value={keyword}
           />
-          <CopyToClipboard className={classes.copyToClipboard} text={keyword} />
+          <CopyToClipboard text={keyword} medium />
         </TextFieldContainer>
       </div>
       <div>
@@ -55,12 +55,12 @@ const SecondaryTab = ({
         <BlockCheckbox>
           <CheckBoxContainer>
             <OutlinedSelect
-              label="Node priorities"
-              name="probability"
+              label="Node Priorities"
+              name="priorityId"
               labelWidth={110}
               value={NODE_PRIORITIES[priorityId - 1]}
               values={NODE_PRIORITIES}
-              onChange={handlePrioritiesChange}
+              onChange={handleSelectChange}
               fullWidth
             />
           </CheckBoxContainer>
@@ -70,7 +70,7 @@ const SecondaryTab = ({
             labelWidth={80}
             value={LINK_STYLES[linkStyle - 1]}
             values={LINK_STYLES}
-            onChange={handleStyleChange}
+            onChange={handleSelectChange}
             fullWidth
           />
         </BlockCheckbox>

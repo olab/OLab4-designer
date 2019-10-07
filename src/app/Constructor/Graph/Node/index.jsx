@@ -286,6 +286,7 @@ export class Node extends PureComponent<INodeProps, INodeState> {
         isCollapsed,
         isLocked,
         isSelected,
+        isEnd,
       },
     } = this.props;
 
@@ -312,6 +313,7 @@ export class Node extends PureComponent<INodeProps, INodeState> {
           title={title}
           text={text}
           color={color}
+          isEnd={isEnd}
         />
       </ForeignObject>
     );

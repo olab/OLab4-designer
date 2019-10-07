@@ -4,6 +4,7 @@ export type ICopyToClipboardProps = {
     [props: string]: any,
   },
   text: string,
+  medium?: boolean,
 };
 
 export type ICopyToClipboardState = {

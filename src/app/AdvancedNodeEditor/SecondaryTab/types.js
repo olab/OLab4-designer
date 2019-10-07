@@ -8,8 +8,6 @@ export type SecondaryTabProps = {
   linkStyle: number,
   annotation: string,
   priorityId: number,
-  nodePriorities: number,
-  handleStyleChange: Function,
+  handleSelectChange: Function,
   handleEditorChange: Function,
-  handlePrioritiesChange: Function,
 };

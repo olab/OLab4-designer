@@ -31,6 +31,7 @@ const NodeComponent = ({
   title,
   color,
   isLinked,
+  isEnd,
 }: INodeProps) => {
   const cardHeader = classNames(
     classes.cardHeader,
@@ -57,6 +58,7 @@ const NodeComponent = ({
           title={(
             <HeaderTitle
               type={type}
+              isEnd={isEnd}
               isLocked={isLocked}
               title={title}
             />

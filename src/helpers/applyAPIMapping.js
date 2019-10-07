@@ -52,8 +52,12 @@ export const nodeToServer = nodeData => ({
   collapsed: Number(nodeData.isCollapsed),
   color: nodeData.color,
   visitOnce: Number(nodeData.isVisitOnce),
+  isEnd: Number(nodeData.isEnd),
   linkStyleId: nodeData.linkStyle,
+  priorityId: nodeData.priorityId,
   linkTypeId: nodeData.linkType,
+  annotation: nodeData.annotation,
+  info: nodeData.info,
 });
 
 export const nodeFromServer = nodeData => ({
@@ -68,12 +72,16 @@ export const nodeFromServer = nodeData => ({
   type: nodeData.typeId,
   text: nodeData.text,
   linkStyle: nodeData.linkStyleId,
+  priorityId: nodeData.priorityId,
   linkType: nodeData.linkTypeId,
   isCollapsed: Boolean(nodeData.collapsed),
   isLocked: Boolean(nodeData.locked),
   isVisitOnce: Boolean(nodeData.visitOnce),
+  isEnd: Boolean(nodeData.isEnd),
   isSelected: false,
   isFocused: false,
+  annotation: nodeData.annotation,
+  info: nodeData.info,
 });
 
 export const nodeDefaultsFromServer = nodeDefault => ({

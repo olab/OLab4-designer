@@ -39,7 +39,7 @@ class NodeEditor extends PureComponent<INodeEditorProps, INodeEditorState> {
     this.textEditorRef = React.createRef();
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(prevProps: INodeEditorProps) {
     const {
       node,
       node: {
@@ -57,8 +57,7 @@ class NodeEditor extends PureComponent<INodeEditorProps, INodeEditorState> {
     } = this.state;
     const { current: currentTextEditorRef } = this.textEditorRef;
 
-
-    if (id !== idPrev) {
+    if (id !== idPrev || prevProps.node !== node) {
       // eslint-disable-next-line react/no-did-update-set-state
       this.setState({ ...node });
 

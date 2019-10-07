@@ -21,7 +21,7 @@ const TextEditor = ({
       selector: `textarea#${editorId}`,
       ...BASIC_TEXT_EDITOR_OPTIONS,
     }}
-    onChange={handleEditorChange}
+    onEditorChange={handleEditorChange}
   />
 );
 

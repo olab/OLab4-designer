@@ -5,23 +5,27 @@ import TextEditor from '../TextEditor';
 import Switch from '../../../shared/components/Switch';
 import OutlinedInput from '../../../shared/components/OutlinedInput';
 
+import { ORDINARY_TYPE as ORDINARY_NODE_TYPE } from '../../Constructor/Graph/Node/config';
+
 import type { MainTabProps as IProps } from './types';
 
-import { LeftContent, RightContent, NodeContentTitle } from './styles';
+import {
+  TextContent, OtherContent, NodeContentTitle, Container,
+} from './styles';
 
 const MainTab = ({
   text = '', title = '', type = false, isEnd = false, isVisitOnce = false,
-  handleTitleChange, handleEditorChange,
+  handleTitleChange, handleEditorChange, handleCheckBoxChange,
 }: IProps) => {
   const checkBoxes = [
     { label: 'Root Node', value: type, name: 'type' },
-    { label: 'End node', value: isEnd, name: 'isEnd' },
+    { label: 'End Node', value: isEnd, name: 'isEnd' },
     { label: 'Visit Once', value: isVisitOnce, name: 'isVisitOnce' },
   ];
 
   return (
-    <>
-      <LeftContent>
+    <Container>
+      <TextContent>
         <OutlinedInput
           name="title"
           label="Title"
@@ -37,18 +41,24 @@ const MainTab = ({
           text={text}
           handleEditorChange={handleEditorChange}
         />
-      </LeftContent>
-      <RightContent>
-        {checkBoxes.map(item => (
-          <Switch
-            key={item.label}
-            label={item.label}
-            labelPlacement="start"
-            checked={item.value}
-          />
-        ))}
-      </RightContent>
-    </>
+      </TextContent>
+      <OtherContent>
+        {checkBoxes.map((item) => {
+          const isChecked = item.value !== ORDINARY_NODE_TYPE && Boolean(item.value);
+
+          return (
+            <Switch
+              name={item.name}
+              key={item.label}
+              label={item.label}
+              labelPlacement="start"
+              checked={isChecked}
+              onChange={handleCheckBoxChange}
+            />
+          );
+        })}
+      </OtherContent>
+    </Container>
   );
 };
 

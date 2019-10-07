@@ -32,7 +32,7 @@ class CopyToClipboard extends PureComponent<ICopyToClipboardProps, ICopyToClipbo
 
   render() {
     const { isCopied } = this.state;
-    const { text, classes } = this.props;
+    const { text, classes, medium = false } = this.props;
 
     return (
       <Clipboard
@@ -42,7 +42,7 @@ class CopyToClipboard extends PureComponent<ICopyToClipboardProps, ICopyToClipbo
         <IconButton
           size="small"
           title={isCopied ? 'Copied' : 'Copy'}
-          classes={{ root: classes.iconButton }}
+          classes={{ root: classes[medium ? 'iconMediumButton' : 'iconButton'] }}
         >
           {isCopied ? <CopiedIcon /> : <CopyIcon />}
         </IconButton>

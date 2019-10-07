@@ -35,11 +35,7 @@ export const CheckBoxContainer = styled.div`
 const styles = () => ({
   textField: {
     marginLeft: 5,
-    marginRight: 5,
     width: '100%',
-  },
-  copyToClipboard: {
-    marginTop: 10,
   },
 });
 

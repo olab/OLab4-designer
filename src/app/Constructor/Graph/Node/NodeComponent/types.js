@@ -10,6 +10,7 @@ export type INodeProps = {
   width: number,
   height: number,
   type: number,
+  isEnd: boolean,
   isCollapsed: boolean,
   isSelected: boolean,
   isLocked: boolean,

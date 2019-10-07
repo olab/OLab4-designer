@@ -8,5 +8,5 @@ export type AdvancedNodeEditorProps = {
   node: Node,
   match: any,
   ACTION_UPDATE_NODE: Function,
-  ACTION_GET_NODE_REQUESTED: Function,
+  ACTION_GET_NODE: Function,
 };

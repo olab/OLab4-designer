@@ -22,3 +22,5 @@ export const LINK_STYLES = [
   'Type in text',
   'Buttons',
 ];
+
+export const LOCAL_STORAGE_KEY = 'node';

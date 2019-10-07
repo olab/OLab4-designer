@@ -1,5 +1,5 @@
 // @flow
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import { ConnectedRouter } from 'connected-react-router';
@@ -12,6 +12,10 @@ import PageNotFound from './404';
 import Header from './Header';
 import SOEditor from './SOEditor';
 import AdvancedNodeEditor from './AdvancedNodeEditor';
+
+import * as mapActions from './reducers/map/action';
+
+import { LOCAL_STORAGE_KEY } from './config';
 
 import type { IAppProps, IProtectedRouteProps } from './types';
 
@@ -31,25 +35,67 @@ const ProtectedRoute = ({
   />
 );
 
-export const App = ({ isAuth, history }: IAppProps) => (
-  <ConnectedRouter history={history}>
-    <>
-      <Header />
-      <Switch>
-        <Route exact path="/login" component={Login} />
-        <ProtectedRoute exact isAuth={isAuth} path="/" component={Home} />
-        <ProtectedRoute exact isAuth={isAuth} path="/:mapId" component={Constructor} />
-        <ProtectedRoute isAuth={isAuth} path="/scopedObject/:scopedObjectType" component={SOEditor} />
-        <ProtectedRoute exact isAuth={isAuth} path="/:mapId/:nodeId/ane" component={AdvancedNodeEditor} />
-        <ProtectedRoute exact isAuth={isAuth} path="*" component={PageNotFound} />
-      </Switch>
-      <Notify />
-    </>
-  </ConnectedRouter>
-);
+export class App extends PureComponent<IAppProps> {
+  componentDidMount(): void {
+    window.addEventListener('storage', this.handleStorageChange);
+  }
 
-const mapStateToProps = ({ user }) => ({
-  isAuth: user.isAuth,
+  handleStorageChange = (event: Event): void => {
+    const { newValue } = event;
+
+    if (!newValue) {
+      return;
+    }
+
+    const { ACTION_GET_NODE, nodeIdFromURL, isANE } = this.props;
+    const { nodeId, mapId } = JSON.parse(newValue);
+    const shouldRetrieveNode = !isANE || Number(nodeIdFromURL) === nodeId;
+
+    if (shouldRetrieveNode) {
+      localStorage.removeItem(LOCAL_STORAGE_KEY);
+      ACTION_GET_NODE(mapId, nodeId);
+    }
+  }
+
+  render() {
+    const { isAuth, history } = this.props;
+
+    return (
+      <ConnectedRouter history={history}>
+        <>
+          <Header />
+          <Switch>
+            <Route exact path="/login" component={Login} />
+            <ProtectedRoute exact isAuth={isAuth} path="/" component={Home} />
+            <ProtectedRoute exact isAuth={isAuth} path="/:mapId" component={Constructor} />
+            <ProtectedRoute isAuth={isAuth} path="/scopedObject/:scopedObjectType" component={SOEditor} />
+            <ProtectedRoute exact isAuth={isAuth} path="/:mapId/:nodeId/ane" component={AdvancedNodeEditor} />
+            <ProtectedRoute exact isAuth={isAuth} path="*" component={PageNotFound} />
+          </Switch>
+          <Notify />
+        </>
+      </ConnectedRouter>
+    );
+  }
+}
+
+const mapStateToProps = ({ user: { isAuth } }, { history: { location: { pathname } } }) => {
+  const [,, nodeIdFromURL, isANE] = pathname.split('/');
+
+  return {
+    isAuth,
+    nodeIdFromURL,
+    isANE,
+  };
+};
+
+const mapDispatchToProps = dispatch => ({
+  ACTION_GET_NODE: (mapId: number, nodeId: number) => {
+    dispatch(mapActions.ACTION_GET_NODE(mapId, nodeId));
+  },
 });
 
-export default connect(mapStateToProps)(App);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(App);

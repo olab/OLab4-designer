@@ -6,6 +6,8 @@ import type { Node as NodeType } from '../../Constructor/Graph/Node/types';
 import type { Edge as EdgeType } from '../../Constructor/Graph/Edge/types';
 import {
   type Map as MapType,
+  GET_NODE,
+  GET_NODE_FULLFILLED,
   SELECT_NODE,
   CREATE_NODE,
   UPDATE_NODE,
@@ -34,6 +36,32 @@ import {
   CREATE_MAP_SUCCEEDED,
   CREATE_MAP_REQUESTED,
 } from './types';
+
+export const ACTION_GET_NODE = (mapId: number, nodeId: number) => ({
+  type: GET_NODE,
+  mapId,
+  nodeId,
+});
+
+export const ACTION_GET_NODE_FULLFILLED = (initialNode: NodeType) => {
+  const { map: { nodes } } = store.getState();
+  const {
+    isFocused = false,
+    isSelected = false,
+  } = nodes.find(item => item.id === initialNode.id) || {};
+  const index = nodes.findIndex(({ id }) => id === initialNode.id);
+  const node = {
+    ...initialNode,
+    isFocused,
+    isSelected,
+  };
+
+  return {
+    type: GET_NODE_FULLFILLED,
+    index,
+    node,
+  };
+};
 
 export const ACTION_FOCUS_NODE = (nodeId: number) => {
   const { map: { nodes } } = store.getState();
@@ -194,7 +222,11 @@ export const ACTION_UPDATE_NODE_RESIZE = (nodeId: number, width: number, height:
   };
 };
 
-export const ACTION_UPDATE_NODE = (nodeData: NodeType, isShowNotification: boolean = false) => {
+export const ACTION_UPDATE_NODE = (
+  nodeData: NodeType,
+  isShowNotification: boolean = false,
+  mapIdFromURL: number,
+) => {
   const { map: { nodes } } = store.getState();
   const index = nodes.findIndex(({ id }) => id === nodeData.id);
   const node = {
@@ -207,6 +239,7 @@ export const ACTION_UPDATE_NODE = (nodeData: NodeType, isShowNotification: boole
     index,
     node,
     isShowNotification,
+    mapIdFromURL,
   };
 };
 
