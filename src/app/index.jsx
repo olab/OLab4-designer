@@ -12,6 +12,7 @@ import CounterGrid from './CounterGrid';
 import PageNotFound from './404';
 import Header from './Header';
 import SOEditor from './SOEditor';
+import MapDetails from './MapDetails';
 import AdvancedNodeEditor from './AdvancedNodeEditor';
 
 import * as mapActions from './reducers/map/action';
@@ -69,9 +70,10 @@ export class App extends PureComponent<IAppProps> {
             <Route exact path="/login" component={Login} />
             <ProtectedRoute exact isAuth={isAuth} path="/" component={Home} />
             <ProtectedRoute exact isAuth={isAuth} path="/:mapId" component={Constructor} />
-            <ProtectedRoute isAuth={isAuth} path={`/${SCOPED_OBJECT}/:scopedObjectType`} component={SOEditor} />
-            <ProtectedRoute exact isAuth={isAuth} path="/:mapId/:nodeId/ane" component={AdvancedNodeEditor} />
+            <ProtectedRoute exact isAuth={isAuth} path="/:mapId/mapdetails" component={MapDetails} />
             <ProtectedRoute exact isAuth={isAuth} path="/:mapId/countergrid" component={CounterGrid} />
+            <ProtectedRoute exact isAuth={isAuth} path="/:mapId/:nodeId/ane" component={AdvancedNodeEditor} />
+            <ProtectedRoute isAuth={isAuth} path={`/${SCOPED_OBJECT}/:scopedObjectType`} component={SOEditor} />
             <ProtectedRoute exact isAuth={isAuth} path="*" component={PageNotFound} />
           </Switch>
           <Notify />

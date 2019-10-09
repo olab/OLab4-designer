@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 
-import TextEditor from '../TextEditor';
+import TextEditor from '../../../shared/components/TextEditor';
 import Switch from '../../../shared/components/Switch';
 import OutlinedInput from '../../../shared/components/OutlinedInput';
 

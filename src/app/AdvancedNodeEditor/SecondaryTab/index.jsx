@@ -3,7 +3,7 @@ import React from 'react';
 import { TextField } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 
-import TextEditor from '../TextEditor';
+import TextEditor from '../../../shared/components/TextEditor';
 import OutlinedSelect from '../../../shared/components/OutlinedSelect';
 import CopyToClipboard from '../../Modals/SOPicker/CopyToClipboard';
 
