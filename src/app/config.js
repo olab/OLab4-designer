@@ -1,5 +1,17 @@
 export const SCOPE_LEVELS = ['Maps', 'Servers', 'Courses', 'Globals'];
 
+export const TOOLS_MENU_ITEMS = {
+  HELP: 'Help',
+  ABOUT: 'About',
+  PREFERENCES: 'Preferences',
+};
+
+export const MAP_MENU_ITEMS = {
+  MAP_DETAILS: 'Map Details ',
+  NODE_GRID: 'Node Grid',
+  COUNTER_GRID: 'Counter Grid',
+};
+
 export const SCOPED_OBJECTS = {
   CONSTANT: 'Constant',
   COUNTER: 'Counter',
@@ -22,5 +34,7 @@ export const LINK_STYLES = [
   'Type in text',
   'Buttons',
 ];
+
+export const SCOPED_OBJECT = 'scopedObject';
 
 export const LOCAL_STORAGE_KEY = 'node';

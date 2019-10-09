@@ -10,10 +10,15 @@ const styles = () => ({
     color: BLUE,
     '& > span': {
       fontWeight: 400,
+      textTransform: 'capitalize',
+      fontSize: '1rem',
     },
   },
   menu: {
     width: '220px',
+  },
+  mapMenu: {
+    left: -65,
   },
   menuItem: {
     color: DARK_BLUE,
@@ -24,8 +29,8 @@ const styles = () => ({
     textDecoration: 'none',
     fontWeight: 400,
     marginLeft: '1rem',
-    fontSize: '0.875rem',
-    textTransform: 'uppercase',
+    fontSize: '1rem',
+    textTransform: 'capitalize',
   },
 });
 

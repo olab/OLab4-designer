@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { LinearProgress } from '@material-ui/core';
 
 import NavigationBar from './NavigationBar';
-import LogoIcon from '../../shared/assets/icons/logo.svg';
+import LogoIcon from '../../shared/assets/icons/olab4_logo.svg';
 
 import type { IHeaderProps } from './types';
 
@@ -17,10 +17,7 @@ const Header = ({ isDataFetching }: IHeaderProps) => (
       <Link to="/" className="route-link">
         <Logo>
           <LogoIcon />
-          <h1>
-            Open
-            <span>Labyrinth</span>
-          </h1>
+          <h1>OLab4</h1>
         </Logo>
       </Link>
       <NavigationBar />

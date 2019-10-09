@@ -116,7 +116,7 @@ class CounterGridTable extends Component<IProps, IState> {
               const headerCellLabel = `[${node.id}] ${node.title}`;
 
               return (
-                <TableRow hover role="checkbox" tabIndex={-1} key={node.id}>
+                <TableRow hover role="checkbox" tabIndex={-1} key={node.id} className={classes.tableRow}>
                   {[node, ...counters].map((counter: CounterType, j: number) => {
                     const value = j ? countersValues[i][j - 1].expression : null;
                     const checked = j ? Boolean(countersValues[i][j - 1].isVisible) : null;

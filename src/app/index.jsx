@@ -16,7 +16,7 @@ import AdvancedNodeEditor from './AdvancedNodeEditor';
 
 import * as mapActions from './reducers/map/action';
 
-import { LOCAL_STORAGE_KEY } from './config';
+import { LOCAL_STORAGE_KEY, SCOPED_OBJECT } from './config';
 
 import type { IAppProps, IProtectedRouteProps } from './types';
 
@@ -69,7 +69,7 @@ export class App extends PureComponent<IAppProps> {
             <Route exact path="/login" component={Login} />
             <ProtectedRoute exact isAuth={isAuth} path="/" component={Home} />
             <ProtectedRoute exact isAuth={isAuth} path="/:mapId" component={Constructor} />
-            <ProtectedRoute isAuth={isAuth} path="/scopedObject/:scopedObjectType" component={SOEditor} />
+            <ProtectedRoute isAuth={isAuth} path={`/${SCOPED_OBJECT}/:scopedObjectType`} component={SOEditor} />
             <ProtectedRoute exact isAuth={isAuth} path="/:mapId/:nodeId/ane" component={AdvancedNodeEditor} />
             <ProtectedRoute exact isAuth={isAuth} path="/:mapId/countergrid" component={CounterGrid} />
             <ProtectedRoute exact isAuth={isAuth} path="*" component={PageNotFound} />

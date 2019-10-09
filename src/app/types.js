@@ -8,6 +8,7 @@ export type IAppProps = {
   isAuth: boolean,
   isDataFetching: boolean,
   notifications: Array<any>,
+  ACTION_GET_NODE: Function,
 };
 
 export type IProtectedRouteProps = {

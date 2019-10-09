@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { WHITE, MIDDLE_GREY } from '../../../../shared/colors';
+import { WHITE, MIDDLE_GREY, MIDDLE_LIGHT_GREY } from '../../../../shared/colors';
 
 export const Cell = styled.div`
   padding: 4px 4px 0 4px;
@@ -42,13 +42,16 @@ const styles = () => ({
     zIndex: 1,
     paddingRight: 0,
     backgroundColor: `${WHITE}`,
+    '&:hover': {
+      backgroundColor: `${MIDDLE_LIGHT_GREY}`,
+    },
   },
   verticalDivider: {
     position: 'absolute',
     top: -6.5,
     right: 0,
     width: 1,
-    height: 67,
+    height: 65,
     backgroundColor: `${MIDDLE_GREY}`,
   },
 });

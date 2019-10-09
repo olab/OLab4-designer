@@ -130,7 +130,6 @@ class SOList extends PureComponent<ISOListProps, ISOListState> {
 
     return (
       <Grid container component="main" className={classes.root}>
-        <Grid item xs={false} sm={1} md={1} className={classes.leftPanel} />
         <Grid item xs={12} sm={11} md={11} component={Paper} className={classes.rightPanel}>
           <HeaderWrapper>
             <Typography variant="h4" className={classes.title}>
@@ -148,7 +147,7 @@ class SOList extends PureComponent<ISOListProps, ISOListState> {
 
             {isScopedObjectsFetching && (
               <ProgressWrapper>
-                <CircularProgress size={24} />
+                <CircularProgress size={14} />
                 <Typography variant="caption" className={classes.spinnerCaption}>
                   Updating list from the server...
                 </Typography>

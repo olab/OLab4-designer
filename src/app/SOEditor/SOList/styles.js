@@ -1,6 +1,5 @@
 import styled from 'styled-components';
-
-import { DARK_BLUE, LIGHT_BLUE, WHITE } from '../../../shared/colors';
+import { DARK_BLUE, WHITE, MIDDLE_GREY } from '../../../shared/colors';
 
 export const FieldLabel = styled.p`
   color: ${DARK_BLUE};
@@ -10,15 +9,23 @@ export const FieldLabel = styled.p`
 `;
 
 export const HeaderWrapper = styled.div`
-  position: relative;
+  position: sticky;
+  z-index: 3;
+  top: 0;
+  display: flex;
+  justify-content: space-between;
+  background-color: ${WHITE};
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+  border-bottom-color: ${MIDDLE_GREY};
 `;
 
 export const ProgressWrapper = styled.div`
   display: flex;
   align-items: flex-end;
   position: absolute;
-  bottom: 10px;
-  right: 1rem;
+  bottom: 1px;
+  right: 1.2rem;
 `;
 
 export const ListWithSearchWrapper = styled.div`
@@ -28,7 +35,7 @@ export const ListWithSearchWrapper = styled.div`
 
 const styles = () => ({
   button: {
-    margin: '1rem',
+    margin: '1.2rem',
     width: '20rem',
   },
   input: {
@@ -42,12 +49,12 @@ const styles = () => ({
   root: {
     height: '94.5vh',
     overflow: 'auto',
-  },
-  leftPanel: {
-    backgroundColor: LIGHT_BLUE,
+    display: 'block',
+    backgroundColor: WHITE,
   },
   rightPanel: {
     boxShadow: 'none',
+    maxWidth: '100%',
   },
   label: {
     color: DARK_BLUE,
