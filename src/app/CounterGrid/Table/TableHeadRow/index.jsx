@@ -51,6 +51,7 @@ const TableHeadRow = ({
                     <IconButton
                       className={classes.icon}
                       onClick={handleColumnCheckReverse(i - 1)}
+                      title="Reverse"
                       disableRipple
                     >
                       &#8635;

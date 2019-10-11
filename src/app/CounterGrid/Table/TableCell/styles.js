@@ -17,7 +17,7 @@ const styles = () => ({
   firstColumnContainer: {
     display: 'flex',
     position: 'relative',
-    width: 345,
+    width: 385,
   },
   firstColumn: {
     paddingRight: 15,
@@ -25,6 +25,8 @@ const styles = () => ({
     whiteSpace: 'nowrap',
     overflow: 'hidden',
     textOverflow: 'ellipsis',
+    fontWeight: 'normal',
+    fontSize: '1.1rem',
   },
   cellContainer: {
     paddingTop: 5,
@@ -34,7 +36,7 @@ const styles = () => ({
   },
   cellContainerSticky: {
     position: 'sticky',
-    width: 345,
+    width: 385,
     top: 0,
     left: 0,
     zIndex: 1,
@@ -43,7 +45,7 @@ const styles = () => ({
   },
   verticalDivider: {
     position: 'absolute',
-    top: -5,
+    top: -6.5,
     right: 0,
     width: 1,
     height: 67,
