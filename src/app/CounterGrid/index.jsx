@@ -5,17 +5,16 @@ import { Divider, Button } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 
 import CounterGridTable from './Table';
+import CircularSpinnerWithText from '../../shared/components/CircularSpinnerWithText';
 
 import * as counterGridActions from '../reducers/counterGrid/action';
 
 import { parseSendingData } from './utils';
 
 import type { CounterGridProps } from './types';
-import type { CounterActions as CounterActionsType } from '../reducers/counterGrid/types';
+import type { Counter as CounterType } from '../reducers/counterGrid/types';
 
-import styles, {
-  Wrapper, Header, Label, PreloaderText,
-} from './styles';
+import styles, { Wrapper, Header, Label } from './styles';
 
 class CounterGrid extends PureComponent<CounterGridProps> {
   constructor(props: CounterGridProps) {
@@ -64,7 +63,7 @@ class CounterGrid extends PureComponent<CounterGridProps> {
         </Header>
         <Divider />
         {isFirstLoading ? (
-          <PreloaderText>Data is being fetched...</PreloaderText>
+          <CircularSpinnerWithText text="Data is being fetched..." large centered />
         ) : (
           <CounterGridTable
             innerRef={this.tableRef}
@@ -90,7 +89,7 @@ const mapDispatchToProps = dispatch => ({
   ACTION_GET_COUNTER_GRID_REQUESTED: (mapId: string) => {
     dispatch(counterGridActions.ACTION_GET_COUNTER_GRID_REQUESTED(mapId));
   },
-  ACTION_UPDATE_COUNTER_GRID_REQUESTED: (mapId: string, counterActions: CounterActionsType) => {
+  ACTION_UPDATE_COUNTER_GRID_REQUESTED: (mapId: string, counterActions: CounterType) => {
     dispatch(
       counterGridActions.ACTION_UPDATE_COUNTER_GRID_REQUESTED(mapId, counterActions),
     );

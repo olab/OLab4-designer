@@ -22,7 +22,8 @@ export const HeaderWrapper = styled.div`
 
 export const ProgressWrapper = styled.div`
   display: flex;
-  align-items: flex-end;
+  flex-direction: column;
+  align-items: center;
   position: absolute;
   bottom: 1px;
   right: 1.2rem;

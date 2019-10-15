@@ -1,10 +1,5 @@
 // @flow
-import type { CounterGridNode, Counter, CounterAction } from '../../reducers/counterGrid/types';
-
-export type CounterValue = {
-  expression: string | null,
-  isVisible: boolean,
-};
+import type { CounterGridNode, Counter, CounterActions } from '../../reducers/counterGrid/types';
 
 export type CounterGridTableProps = {
   classes: {
@@ -12,9 +7,9 @@ export type CounterGridTableProps = {
   },
   nodes: Array<CounterGridNode>,
   counters: Array<Counter>,
-  actions: Array<CounterAction>,
+  actions: Array<CounterActions>,
 };
 
 export type CounterGridTableState = {
-  countersValues: Array<Array<CounterValue>>,
+  countersValues: Array<Array<Counter>>,
 };

@@ -1,16 +1,16 @@
 // @flow
-import type { CounterActions as Actions } from '../../reducers/counterGrid/types';
+import type { CounterActions } from '../../reducers/counterGrid/types';
 
 export const getAction = (
   nodeId: number,
   counterId: number,
-  actions: Array<Actions>,
-): Actions => ({
+  actions: Array<CounterActions>,
+): CounterActions => ({
   ...actions.find(
-    item => item.nodeId === nodeId && item.counterId === counterId,
+    (item: CounterGridNode): boolean => item.nodeId === nodeId && item.counterId === counterId,
   ),
 });
 
-export const getColumnVisibilityValues = (i: number, actions: Array<Actions>): boolean => (
+export const getColumnVisibilityValues = (i: number, actions: Array<CounterGridNode>): boolean => (
   actions.every(item => item[i].isVisible)
 );

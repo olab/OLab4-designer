@@ -18,10 +18,6 @@ export const Label = styled.h1`
   margin: 0.5rem 1.4rem;
 `;
 
-export const PreloaderText = styled(Label)`
-  font-size: 1.5em;
-`;
-
 export const Text = styled.h3`
   font-size: 20px;
   line-height: 24px;

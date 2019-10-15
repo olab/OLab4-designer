@@ -1,27 +1,23 @@
 // @flow
-export type CounterGridNode = {
-  id: number,
-  title: string,
-};
-
 export type Counter = {
   id: number,
   name: string,
+  expression: string,
   description: string,
+  counterId: number,
+  isVisible: boolean,
 };
 
-export type CounterAction = {
-  id: number,
-  counterId: number,
-  expression: string,
+export type CounterGridNode = {
+  ...Counter,
   nodeId: number,
-  isVisible: boolean,
+  title: string,
 };
 
 export type CounterActions = {
   nodes: Array<CounterGridNode>,
   counters: Array<Counter>,
-  actions: Array<CounterAction>,
+  actions: Array<Counter>,
 };
 
 const GET_COUNTER_GRID_SUCCEEDED = 'GET_COUNTER_GRID_SUCCEEDED';
@@ -44,7 +40,7 @@ type GetCounterGridRequested = {
 const UPDATE_COUNTER_GRID_SUCCEEDED = 'UPDATE_COUNTER_GRID_SUCCEEDED';
 type UpdateCounterGridSucceeded = {
   type: 'UPDATE_COUNTER_GRID_SUCCEEDED',
-  updatedCounterActions: Array<CounterAction>,
+  updatedCounterActions: Array<Counter>,
 };
 
 const UPDATE_COUNTER_GRID_FAILED = 'UPDATE_COUNTER_GRID_FAILED';

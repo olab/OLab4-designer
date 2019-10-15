@@ -10,16 +10,16 @@ import {
   FilterVintageOutlined as DefaultOutlinedIcon,
 } from '@material-ui/icons';
 import {
-  List, ListItem, ListItemText, Button, IconButton, TextField, Typography, CircularProgress,
+  List, ListItem, ListItemText, Button, IconButton, TextField, Typography,
 } from '@material-ui/core';
+
+import CircularSpinnerWithText from '../CircularSpinnerWithText';
 
 import removeHTMLTags from '../../../helpers/removeHTMLTags';
 
 import type { IListWithSearchProps, IListWithSearchState } from './types';
 
-import styles, {
-  SearchWrapper, ProgressWrapper, ListItemContentWrapper,
-} from './styles';
+import styles, { SearchWrapper, ListItemContentWrapper } from './styles';
 
 class ListWithSearch extends PureComponent<IListWithSearchProps, IListWithSearchState> {
   static defaultProps = {
@@ -153,14 +153,7 @@ class ListWithSearch extends PureComponent<IListWithSearchProps, IListWithSearch
           )}
         </List>
 
-        {isShowSpinner && (
-          <ProgressWrapper>
-            <CircularProgress size={24} />
-            <Typography variant="caption" className={classes.spinnerCaption}>
-              Updating list from the server...
-            </Typography>
-          </ProgressWrapper>
-        )}
+        {isShowSpinner && <CircularSpinnerWithText text="Updating list from the server..." centered large />}
       </div>
     );
   }

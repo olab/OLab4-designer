@@ -1,12 +1,12 @@
 // @flow
-import type { Counter, CounterAction } from '../../../reducers/counterGrid/types';
+import type { Counter, CounterActions } from '../../../reducers/counterGrid/types';
 
 export type TableHeadRowProps = {
   classes: {
     [props: string]: any,
   },
   counters: Array<Counter>,
-  actions: Array<CounterAction>,
+  actions: Array<CounterActions>,
   handleColumnCheck: Function,
   handleColumnCheckReverse: Function,
 };

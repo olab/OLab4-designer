@@ -6,13 +6,6 @@ export const SearchWrapper = styled.div`
   position: relative;
 `;
 
-export const ProgressWrapper = styled.div`
-  display: flex;
-  align-items: flex-end;
-  position: absolute;
-  bottom: 15px;
-`;
-
 export const ListItemContentWrapper = styled.div`
   width: 100%;
 
@@ -73,9 +66,6 @@ const styles = () => ({
     padding: 3,
     fill: 'rgba(0, 0, 0, 0.42)',
     boxSizing: 'content-box',
-  },
-  spinnerCaption: {
-    marginLeft: 5,
   },
   deleteIcon: {
     position: 'absolute',

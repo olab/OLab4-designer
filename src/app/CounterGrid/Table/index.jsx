@@ -14,7 +14,6 @@ import type { CounterGridTableProps as IProps, CounterGridTableState as IState }
 import type {
   Counter as CounterType,
   CounterGridNode as CounterGridNodeType,
-  CounterAction as CounterActionType,
 } from '../../reducers/counterGrid/types';
 
 import styles from './styles';
@@ -27,7 +26,7 @@ class CounterGridTable extends Component<IProps, IState> {
     this.state = {
       countersValues: [
         ...nodes.map((node: CounterGridNodeType): Array<CounterType> => [
-          ...counters.map((counter: CounterType): CounterActionType => (
+          ...counters.map((counter: CounterType): CounterType => (
             getAction(node.id, counter.id, actions)
           )),
         ]),
@@ -41,9 +40,9 @@ class CounterGridTable extends Component<IProps, IState> {
     checked: boolean,
   ): IState => {
     const countersValues = prevState.countersValues.map(
-      (counters: Array<CounterActionType>): Array<CounterActionType> => (
+      (counters: Array<CounterType>): Array<CounterType> => (
         counters.map(
-          (counterAction: CounterActionType, i: number): CounterActionType => {
+          (counterAction: CounterType, i: number): CounterType => {
             const isCellChoosen = i === index;
             const isCounterVisible = counterAction.isVisible;
             const reverseVisibleValue = isCellChoosen && { isVisible: !isCounterVisible };

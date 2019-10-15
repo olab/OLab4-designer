@@ -1,7 +1,7 @@
 // @flow
 import {
-  type CounterGrid as CounterGridType,
-  type CounterGridActions1 as CounterGridActionsType,
+  type CounterActions as CounterActionsType,
+  type CounterGridActions as CounterGridActionsType,
   GET_COUNTER_GRID_REQUESTED,
   GET_COUNTER_GRID_SUCCEEDED,
   GET_COUNTER_GRID_FAILED,
@@ -19,7 +19,7 @@ export const initialCounterGridState: CounterGridType = {
 };
 
 const counterGrid = (
-  state: CounterGridType = initialCounterGridState,
+  state: CounterActionsType = initialCounterGridState,
   action: CounterGridActionsType,
 ) => {
   switch (action.type) {

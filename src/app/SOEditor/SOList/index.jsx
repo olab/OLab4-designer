@@ -4,10 +4,11 @@ import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 import {
-  Grid, Button, Paper, Typography, Divider, CircularProgress,
+  Grid, Button, Paper, Typography, Divider,
 } from '@material-ui/core';
 
 import ListWithSearch from '../../../shared/components/ListWithSearch';
+import CircularSpinnerWithText from '../../../shared/components/CircularSpinnerWithText';
 
 import type { ISOListProps, ISOListState } from './types';
 import type { ScopedObjectListItem as ScopedObjectListItemType } from '../../reducers/scopedObjects/types';
@@ -135,24 +136,20 @@ class SOList extends PureComponent<ISOListProps, ISOListState> {
             <Typography variant="h4" className={classes.title}>
               {this.SOTypeUpperCasedAndPluralled}
             </Typography>
-            <Button
-              color="primary"
-              variant="contained"
-              className={classes.button}
-              component={Link}
-              to={`${pathname}/add`}
-            >
-              {`Add New ${scopedObjectType}`}
-            </Button>
-
-            {isScopedObjectsFetching && (
-              <ProgressWrapper>
-                <CircularProgress size={14} />
-                <Typography variant="caption" className={classes.spinnerCaption}>
-                  Updating list from the server...
-                </Typography>
-              </ProgressWrapper>
-            )}
+            <ProgressWrapper>
+              <Button
+                color="primary"
+                variant="contained"
+                className={classes.button}
+                component={Link}
+                to={`${pathname}/add`}
+              >
+                {`Add New ${scopedObjectType}`}
+              </Button>
+              {isScopedObjectsFetching && (
+                <CircularSpinnerWithText text="Updating list from the server..." />
+              )}
+            </ProgressWrapper>
           </HeaderWrapper>
           <Divider />
           <ListWithSearchWrapper>
