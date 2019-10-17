@@ -14,12 +14,14 @@ import SearchModal from '../../shared/components/SearchModal';
 import ListWithSearch from '../../shared/components/ListWithSearch';
 
 import * as mapActions from '../reducers/map/action';
+import * as wholeMapActions from '../../middlewares/app/action';
 import * as templatesActions from '../reducers/templates/action';
 import * as scopedLevelsActions from '../reducers/scopeLevels/action';
 
 import type { IHomeProps, IHomeState } from './types';
 import type { Template as TemplateType } from '../reducers/templates/types';
 import type { ScopeLevel as ScopeLevelType } from '../reducers/scopeLevels/types';
+
 import { PAGE_TITLES, SCOPE_LEVELS } from '../config';
 
 import filterByName from '../../helpers/filterByName';
@@ -46,13 +48,13 @@ class Home extends PureComponent<IHomeProps, IHomeState> {
 
   componentDidUpdate(prevProps: IHomeProps) {
     const {
-      mapId, maps, isMapFetching, history,
+      mapId, maps, history, isMapDetailsFetching,
     } = this.props;
     const {
-      maps: mapsPrev, isMapFetching: isMapFetchingPrev,
+      maps: mapsPrev, isMapDetailsFetching: isMapDetailsFetchingPrev,
     } = prevProps;
 
-    const isFetchingStopped = isMapFetchingPrev && !isMapFetching;
+    const isFetchingStopped = isMapDetailsFetchingPrev && !isMapDetailsFetching;
     const isMapRetrieved = isFetchingStopped && mapId;
 
     if (isFetchingStopped) {
@@ -68,7 +70,7 @@ class Home extends PureComponent<IHomeProps, IHomeState> {
     }
 
     if (isMapRetrieved) {
-      history.push(`/${mapId}`);
+      history.push(`/${mapId}`, { isFromHome: true });
     }
   }
 
@@ -114,9 +116,9 @@ class Home extends PureComponent<IHomeProps, IHomeState> {
     this.setState({ mapsFiltered });
   }
 
-  handleMapItemClick = (map: ScopeLevelType): void => {
-    const { ACTION_GET_MAP_REQUESTED } = this.props;
-    ACTION_GET_MAP_REQUESTED(map.id);
+  handleMapItemClick = (scopeLevel: ScopeLevelType): void => {
+    const { ACTION_GET_WHOLE_MAP_REQUESTED } = this.props;
+    ACTION_GET_WHOLE_MAP_REQUESTED(scopeLevel.id);
 
     this.toggleDisableButtons();
   }
@@ -176,11 +178,13 @@ class Home extends PureComponent<IHomeProps, IHomeState> {
   }
 }
 
-const mapStateToProps = ({ map, templates, scopeLevels }) => ({
-  mapId: map.id,
+const mapStateToProps = ({
+  mapDetails, templates, scopeLevels,
+}) => ({
+  mapId: mapDetails.id,
   maps: scopeLevels.maps,
   templates: templates.list,
-  isMapFetching: map.isFetching,
+  isMapDetailsFetching: mapDetails.isFetching,
   isMapsFetching: scopeLevels.isFetching,
   isTemplatesFetching: templates.isFetching,
 });
@@ -189,8 +193,8 @@ const mapDispatchToProps = dispatch => ({
   ACTION_CREATE_MAP_REQUESTED: (templateId?: number) => {
     dispatch(mapActions.ACTION_CREATE_MAP_REQUESTED(templateId));
   },
-  ACTION_GET_MAP_REQUESTED: (mapId: string) => {
-    dispatch(mapActions.ACTION_GET_MAP_REQUESTED(mapId));
+  ACTION_GET_WHOLE_MAP_REQUESTED: (mapId: string) => {
+    dispatch(wholeMapActions.ACTION_GET_WHOLE_MAP_REQUESTED(mapId));
   },
   ACTION_TEMPLATES_REQUESTED: () => {
     dispatch(templatesActions.ACTION_TEMPLATES_REQUESTED());

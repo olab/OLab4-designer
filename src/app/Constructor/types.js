@@ -11,10 +11,10 @@ export type IConstructorProps = {
   isShowSOPicker: boolean,
   match: any,
   history: any,
-  ACTION_GET_MAP_REQUESTED: Function,
-  ACTION_TEMPLATE_UPLOAD_REQUESTED: Function,
   ACTION_TEMPLATES_REQUESTED: Function,
   ACTION_EXTEND_MAP_REQUESTED: Function,
+  ACTION_GET_WHOLE_MAP_REQUESTED: Function,
+  ACTION_TEMPLATE_UPLOAD_REQUESTED: Function,
   templates: Array<TemplateType>,
   isTemplatesFetching: boolean,
 };

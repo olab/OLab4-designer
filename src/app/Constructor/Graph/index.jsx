@@ -113,8 +113,8 @@ export class Graph extends Component<IGraphProps, IGraphState> {
   };
 
   onCreateNode = (x: number, y: number) => {
-    const { map, defaults: { nodeBody }, ACTION_CREATE_NODE } = this.props;
-    const newNode = createNewNode(map.id, x, y, nodeBody);
+    const { mapId, defaults: { nodeBody }, ACTION_CREATE_NODE } = this.props;
+    const newNode = createNewNode(mapId, x, y, nodeBody);
 
     ACTION_CREATE_NODE(newNode);
   }
@@ -132,10 +132,10 @@ export class Graph extends Component<IGraphProps, IGraphState> {
 
   onCreateNodeWithEdge = (x: number, y: number, sourceNode: NodeType) => {
     const {
-      map, defaults: { edgeBody, nodeBody }, ACTION_CREATE_NODE_WITH_EDGE,
+      mapId, defaults: { edgeBody, nodeBody }, ACTION_CREATE_NODE_WITH_EDGE,
     } = this.props;
 
-    const newNode = createNewNode(map.id, x, y, nodeBody);
+    const newNode = createNewNode(mapId, x, y, nodeBody);
     const newEdge = createNewEdge(sourceNode.id, newNode.id, edgeBody);
 
     ACTION_CREATE_NODE_WITH_EDGE(newNode, newEdge, sourceNode.id);
@@ -260,8 +260,11 @@ export class Graph extends Component<IGraphProps, IGraphState> {
   }
 }
 
-const mapStateToProps = ({ map, defaults, constructor }) => ({
+const mapStateToProps = ({
+  map, mapDetails, defaults, constructor,
+}) => ({
   map,
+  mapId: mapDetails.id,
   defaults,
   minZoom: constructor.zoom.minZoom,
   maxZoom: constructor.zoom.maxZoom,

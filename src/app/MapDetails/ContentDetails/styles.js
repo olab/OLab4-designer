@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export const CheckBox = styled.div`
   width: 400px;
-  margin: 7px 0;
+  margin: 0;
 `;
 
 export const ContainerCheckBox = styled.div`

@@ -5,12 +5,14 @@ import { initialModalsState } from '../app/Modals/reducer';
 import { initialDefaultsState } from '../app/reducers/defaults/reducer';
 import { initialTemplatesState } from '../app/reducers/templates/reducer';
 import { initialConstructorState } from '../app/Constructor/reducer';
+import { initialMapDetailsState } from '../app/reducers/mapDetails/reducer';
 import { initialScopeLevelsState } from '../app/reducers/scopeLevels/reducer';
 import { initialScopedObjectsState } from '../app/reducers/scopedObjects/reducer';
 
 import type { Map as MapType } from '../app/reducers/map/types';
 import type { User as UserType } from '../app/Login/types';
 import type { Modals as ModalsType } from '../app/Modals/types';
+import type { MapDetails as MapDetailsType } from '../app/reducers/mapDetails/types';
 import type { Defaults as DefaultsType } from '../app/reducers/defaults/types';
 import type { Templates as TemplatesType } from '../app/reducers/templates/types';
 import type { Constructor as ConstructorType } from '../app/Constructor/types';
@@ -21,6 +23,7 @@ export type Store = {
   user: UserType,
   constructor: ConstructorType,
   map: MapType,
+  mapDetails: MapDetailsType,
   templates: TemplatesType,
   scopedObjects: ScopedObjectsType,
   modals: ModalsType,
@@ -32,6 +35,7 @@ const initialState: Store = {
   user: initialUserState,
   constructor: initialConstructorState,
   map: initialMapState,
+  mapDetails: initialMapDetailsState,
   templates: initialTemplatesState,
   scopedObjects: initialScopedObjectsState,
   modals: initialModalsState,

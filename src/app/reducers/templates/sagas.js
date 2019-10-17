@@ -15,7 +15,7 @@ import { MESSAGES } from '../notifications/config';
 
 function* createTemplateSaga({ templateName }) {
   try {
-    const mapId = yield select(({ map }) => map.id);
+    const mapId = yield select(({ mapDetails }) => mapDetails.id);
 
     yield call(createTemplate, mapId, templateName);
     yield put(ACTION_NOTIFICATION_SUCCESS(MESSAGES.ON_CREATE.TEMPLATE));

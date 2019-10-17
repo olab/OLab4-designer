@@ -3,40 +3,41 @@ import React from 'react';
 
 import Switch from '../../../shared/components/Switch';
 
+import { ADVANCED_DETAILS_CHECKBOXES } from './config';
+
 import { AdvancedDetailsProps as IProps } from './types';
 
-import { ContainerTab, ContentTitle } from '../styles';
-import { ContainerCheckBox, CheckBox } from './styles';
+import { ContainerTab } from '../styles';
+import { ContainerCheckBox, CheckBox, ContentText } from './styles';
 
-const AdvancedDetails = ({ mapId }: IProps) => {
-  const checkBoxes = [
-    { label: 'Template' },
-    { label: 'xAPI realtime' },
-  ];
+const AdvancedDetails = ({ details, handleCheckBoxChange }: IProps): React$Element<any> => (
+  <ContainerTab>
+    <ContentText>
+      <b>Map Id:</b>
+      {` ${details.id}`}
+    </ContentText>
+    <ContentText>
+      <b>OLab version:</b>
+      {` ${process.env.PROJECT_VERSION}`}
+    </ContentText>
+    <ContainerCheckBox>
+      {ADVANCED_DETAILS_CHECKBOXES.map(({ label, name }, index) => {
+        const key = label + index;
 
-  return (
-    <ContainerTab>
-      <ContentTitle>
-        Map Id:
-        {` ${mapId}`}
-      </ContentTitle>
-      <ContentTitle>
-        OLab version:
-        {` ${process.env.PROJECT_VERSION}`}
-      </ContentTitle>
-      <ContainerCheckBox>
-        {checkBoxes.map(item => (
-          <CheckBox>
+        return (
+          <CheckBox key={key}>
             <Switch
-              key={item.label}
-              label={item.label}
               labelPlacement="start"
+              name={name}
+              label={label}
+              checked={details[name]}
+              onChange={handleCheckBoxChange}
             />
           </CheckBox>
-        ))}
-      </ContainerCheckBox>
-    </ContainerTab>
-  );
-};
+        );
+      })}
+    </ContainerCheckBox>
+  </ContainerTab>
+);
 
 export default AdvancedDetails;

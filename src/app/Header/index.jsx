@@ -27,10 +27,11 @@ const Header = ({ isDataFetching }: IHeaderProps) => (
 );
 
 const mapStateToProps = ({
-  user, map, scopedObjects, counterGrid,
+  user, map, mapDetails, scopedObjects, counterGrid,
 }) => ({
   isDataFetching: user.isFetching
     || map.isFetching
+    || mapDetails.isFetching
     || counterGrid.isFetching
     || scopedObjects.isCreating
     || scopedObjects.isUpdating

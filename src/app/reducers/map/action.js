@@ -5,7 +5,6 @@ import store from '../../../store/store';
 import type { Node as NodeType } from '../../Constructor/Graph/Node/types';
 import type { Edge as EdgeType } from '../../Constructor/Graph/Edge/types';
 import {
-  type Map as MapType,
   GET_NODE,
   GET_NODE_FULLFILLED,
   SELECT_NODE,
@@ -22,11 +21,9 @@ import {
   CREATE_NODE_WITH_EDGE,
   UPDATE_EDGE,
   UPDATE_EDGE_VISUAL,
-  RENAME_MAP,
   EXTEND_MAP_REQUESTED,
   EXTEND_MAP_FAILED,
   EXTEND_MAP_SUCCEEDED,
-  SAVE_MAP_TO_UNDO,
   UNDO_MAP,
   REDO_MAP,
   GET_MAP_FAILED,
@@ -342,22 +339,6 @@ export const ACTION_DELETE_EDGE = (edgeId: number, nodeId: number) => {
   };
 };
 
-
-export const ACTION_RENAME_MAP = (name: string) => ({
-  type: RENAME_MAP,
-  name,
-});
-
-export const ACTION_SAVE_MAP_TO_UNDO = () => {
-  const { map: { nodes, edges } } = store.getState();
-  const currentMap = cloneDeep({ nodes, edges });
-
-  return {
-    type: SAVE_MAP_TO_UNDO,
-    currentMap,
-  };
-};
-
 export const ACTION_UNDO_MAP = () => {
   const { map: { undo, nodes, edges } } = store.getState();
   const prev = undo[undo.length - 1];
@@ -386,9 +367,10 @@ export const ACTION_GET_MAP_FAILED = () => ({
   type: GET_MAP_FAILED,
 });
 
-export const ACTION_GET_MAP_SUCCEEDED = (map: MapType) => ({
+export const ACTION_GET_MAP_SUCCEEDED = (nodes: Array<NodeType>, edges: Array<EdgeType>) => ({
   type: GET_MAP_SUCCEEDED,
-  map,
+  nodes,
+  edges,
 });
 
 export const ACTION_GET_MAP_REQUESTED = (mapId: string) => ({
@@ -400,9 +382,10 @@ export const ACTION_CREATE_MAP_FAILED = () => ({
   type: CREATE_MAP_FAILED,
 });
 
-export const ACTION_CREATE_MAP_SUCCEEDED = (map: MapType) => ({
+export const ACTION_CREATE_MAP_SUCCEEDED = (nodes: Array<NodeType>, edges: Array<EdgeType>) => ({
   type: CREATE_MAP_SUCCEEDED,
-  map,
+  nodes,
+  edges,
 });
 
 export const ACTION_CREATE_MAP_REQUESTED = (templateId?: number) => ({

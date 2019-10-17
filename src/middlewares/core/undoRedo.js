@@ -1,3 +1,5 @@
+import { ACTION_SAVE_MAP_TO_UNDO } from './action';
+
 import {
   CREATE_NODE,
   UPDATE_NODE,
@@ -6,11 +8,9 @@ import {
   CREATE_NODE_WITH_EDGE,
   UPDATE_EDGE,
   DELETE_EDGE,
-} from '../app/reducers/map/types';
+} from '../../app/reducers/map/types';
 
-import { ACTION_SAVE_MAP_TO_UNDO } from '../app/reducers/map/action';
-
-const undoRedoMiddleware = store => next => (action) => {
+const undoRedo = store => next => (action) => {
   if ([
     CREATE_NODE,
     UPDATE_NODE,
@@ -26,4 +26,4 @@ const undoRedoMiddleware = store => next => (action) => {
   next(action);
 };
 
-export default undoRedoMiddleware;
+export default undoRedo;

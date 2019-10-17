@@ -12,10 +12,10 @@ export type IHomeProps = {
   isMapFetching: boolean,
   isMapsFetching: boolean,
   showFooterButtons: boolean,
+  ACTION_MAPS_REQUESTED: Function,
   ACTION_TEMPLATES_REQUESTED: Function,
   ACTION_CREATE_MAP_REQUESTED: Function,
-  ACTION_MAPS_REQUESTED: Function,
-  ACTION_GET_MAP_REQUESTED: Function,
+  ACTION_GET_WHOLE_MAP_REQUESTED: Function,
   templates: Array<TemplateType>,
   isTemplatesFetching: boolean,
 };

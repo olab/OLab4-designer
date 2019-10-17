@@ -234,9 +234,9 @@ class NodeEditor extends PureComponent<INodeEditorProps, INodeEditorState> {
   }
 }
 
-const mapStateToProps = ({ modals, map }) => ({
+const mapStateToProps = ({ modals, mapDetails }) => ({
   ...modals[MODALS_NAMES.NODE_EDITOR_MODAL],
-  mapId: map.id,
+  mapId: mapDetails.id,
 });
 
 const mapDispatchToProps = dispatch => ({

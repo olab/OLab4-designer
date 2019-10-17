@@ -35,7 +35,7 @@ function* getNodeSaga({ mapId, nodeId }) {
 
 function* createNodeSaga({ node: { id: oldNodeId, x, y } }) {
   try {
-    const mapId = yield select(({ map }) => map.id);
+    const mapId = yield select(({ mapDetails }) => mapDetails.id);
     const newNodeId = yield call(createNode, mapId, { x, y });
 
     yield put(ACTION_EXCHANGE_NODE_ID(oldNodeId, newNodeId));
@@ -53,7 +53,7 @@ function* createNodeWithEdgeSaga({
   edge: { id: oldEdgeId },
 }) {
   try {
-    const mapId = yield select(({ map }) => map.id);
+    const mapId = yield select(({ mapDetails }) => mapDetails.id);
     const { newNodeId, newEdgeId } = yield call(createNode, mapId, { x, y }, sourceNodeId);
 
     yield put(ACTION_EXCHANGE_NODE_ID(oldNodeId, newNodeId));
@@ -68,7 +68,7 @@ function* createNodeWithEdgeSaga({
 
 function* updateNodeSaga({ node, isShowNotification, mapIdFromURL }) {
   try {
-    const mapIdFromStore = yield select(({ map }) => map.id);
+    const mapIdFromStore = yield select(({ mapDetails }) => mapDetails.id);
     const mapId = mapIdFromURL || mapIdFromStore;
 
     yield call(updateNode, mapId, node);
@@ -99,7 +99,7 @@ function* updateNodeSaga({ node, isShowNotification, mapIdFromURL }) {
 
 function* deleteNodeSaga({ nodeId }) {
   try {
-    const mapId = yield select(({ map }) => map.id);
+    const mapId = yield select(({ mapDetails }) => mapDetails.id);
 
     yield call(deleteNode, mapId, nodeId);
   } catch (error) {

@@ -147,9 +147,9 @@ class NavigationBar extends PureComponent<INavigationProps, INavigationState> {
   }
 }
 
-const mapStateToProps = ({ map }, { location: { pathname } }) => {
+const mapStateToProps = ({ mapDetails }, { location: { pathname } }) => {
   const [, mapIdFromLocation] = pathname.split('/');
-  const mapId = map.id || (mapIdFromLocation === SCOPED_OBJECT ? null : mapIdFromLocation);
+  const mapId = mapDetails.id || (mapIdFromLocation === SCOPED_OBJECT ? null : mapIdFromLocation);
 
   return { mapId };
 };

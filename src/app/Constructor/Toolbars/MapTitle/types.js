@@ -4,7 +4,7 @@ export type IMapTitleProps = {
     [props: string]: any,
   },
   title: string,
-  ACTION_RENAME_MAP: Function,
+  ACTION_UPDATE_MAP_DETAILS_REQUESTED: Function,
 };
 
 export type IMapTitleState = {

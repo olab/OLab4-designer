@@ -8,7 +8,9 @@ import {
 
 import PencilIcon from '../../../../shared/assets/icons/pencil.svg';
 
-import * as actions from '../../../reducers/map/action';
+import * as mapDetailsActions from '../../../reducers/mapDetails/action';
+
+import { MapDetails } from '../../../reducers/mapDetails/types';
 import type { IMapTitleProps, IMapTitleState } from './types';
 
 import styles, { MapTitleWrapper } from './styles';
@@ -55,7 +57,7 @@ class MapTitle extends PureComponent<IMapTitleProps, IMapTitleState> {
 
   handleBlur = (): void => {
     const { title } = this.state;
-    const { ACTION_RENAME_MAP } = this.props;
+    const { ACTION_UPDATE_MAP_DETAILS_REQUESTED } = this.props;
 
     if (!title) {
       this.setState({ isError: true });
@@ -71,7 +73,7 @@ class MapTitle extends PureComponent<IMapTitleProps, IMapTitleState> {
 
     this.blurInput();
 
-    ACTION_RENAME_MAP(title);
+    ACTION_UPDATE_MAP_DETAILS_REQUESTED({ name: title });
   }
 
   handleSubmit = (e: Event): void => {
@@ -106,6 +108,8 @@ class MapTitle extends PureComponent<IMapTitleProps, IMapTitleState> {
           error={isError}
         >
           <Input
+            // TODO Delete the disabled field when the backend is ready
+            disabled
             placeholder="Labyrinth name"
             classes={{
               root: classes.inputRoot,
@@ -141,11 +145,11 @@ class MapTitle extends PureComponent<IMapTitleProps, IMapTitleState> {
   }
 }
 
-const mapStateToProps = ({ map: { name } }) => ({ title: name });
+const mapStateToProps = ({ mapDetails }) => ({ title: mapDetails.name });
 
 const mapDispatchToProps = dispatch => ({
-  ACTION_RENAME_MAP: (name: string) => {
-    dispatch(actions.ACTION_RENAME_MAP(name));
+  ACTION_UPDATE_MAP_DETAILS_REQUESTED: (mapDetails: MapDetails) => {
+    dispatch(mapDetailsActions.ACTION_UPDATE_MAP_DETAILS_REQUESTED(mapDetails));
   },
 });
 

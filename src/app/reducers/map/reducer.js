@@ -16,13 +16,11 @@ import {
   CREATE_NODE_WITH_EDGE,
   UPDATE_EDGE,
   UPDATE_EDGE_VISUAL,
-  RENAME_MAP,
   EXTEND_MAP_REQUESTED,
   EXTEND_MAP_FAILED,
   EXTEND_MAP_SUCCEEDED,
   UNDO_MAP,
   REDO_MAP,
-  SAVE_MAP_TO_UNDO,
   GET_MAP_FAILED,
   GET_MAP_SUCCEEDED,
   GET_MAP_REQUESTED,
@@ -31,17 +29,13 @@ import {
   CREATE_MAP_REQUESTED,
   GET_NODE_FULLFILLED,
 } from './types';
+import { SAVE_MAP_TO_UNDO } from '../../../middlewares/core/types';
 
 export const initialMapState: MapType = {
-  id: null,
-  name: 'New Labyrinth',
-  abstract: '',
-  keywords: '',
   nodes: [],
   edges: [],
   undo: [],
   redo: [],
-  isEnabled: false,
   isFetching: false,
 };
 
@@ -94,14 +88,6 @@ const map = (state: MapType = initialMapState, action: MapActions) => {
         ],
       };
     }
-    case RENAME_MAP: {
-      const { name } = action;
-
-      return {
-        ...state,
-        name,
-      };
-    }
     case GET_MAP_REQUESTED:
     case CREATE_MAP_REQUESTED:
     case EXTEND_MAP_REQUESTED:
@@ -118,10 +104,12 @@ const map = (state: MapType = initialMapState, action: MapActions) => {
       };
     case GET_MAP_SUCCEEDED:
     case CREATE_MAP_SUCCEEDED: {
-      const { map: newMap } = action;
+      const { nodes, edges = [] } = action;
 
       return {
-        ...newMap,
+        ...state,
+        nodes,
+        edges,
         isFetching: false,
       };
     }

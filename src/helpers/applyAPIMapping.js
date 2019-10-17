@@ -99,21 +99,60 @@ export const nodeDefaultsFromServer = nodeDefault => ({
   color: nodeDefault.color,
 });
 
-export const mapFromServer = mapData => ({
+export const mapDetailsFromServer = mapData => ({
   id: mapData.id,
   name: mapData.name,
-  abstract: mapData.abstract,
+  notes: mapData.notes,
+  author: mapData.author,
+  themes: mapData.themes,
+  themeId: mapData.themeId,
   keywords: mapData.keywords,
+  abstract: mapData.abstract,
+  description: mapData.description,
+  securityType: mapData.securityType,
+  isEnabled: Boolean(mapData.enabled),
+  isTemplate: Boolean(mapData.isTemplate),
+  isLinkLogicVerified: Boolean(mapData.linkLogicVerified),
+  isSendXapiStatements: Boolean(mapData.sendXapiStatements),
+  isNodeContentVerified: Boolean(mapData.nodeContentVerified),
+  isMediaContentComplete: Boolean(mapData.mediaContentComplete),
+  isMediaCopyrightVerified: Boolean(mapData.mediaCopyrightVerified),
+  isInstructorGuideComplete: Boolean(mapData.instructorGuideComplete),
+});
+
+export const mapDetailsToServer = mapData => ({
+  id: mapData.id,
+  name: mapData.name,
+  // TODO: Uncomment when this value is added to the backend
+  // notes: mapData.notes,
+  author: mapData.author,
+  themeId: mapData.themeId,
+  keywords: mapData.keywords,
+  abstract: mapData.abstract,
+  description: mapData.description,
+  securityType: mapData.securityType,
+  enabled: Number(mapData.isEnabled),
+  isTemplate: Number(mapData.isTemplate),
+  linkLogicVerified: Number(mapData.isLinkLogicVerified),
+  sendXapiStatements: Number(mapData.isSendXapiStatements),
+  nodeContentVerified: Number(mapData.isNodeContentVerified),
+  mediaContentComplete: Number(mapData.isMediaContentComplete),
+  mediaCopyrightVerified: Number(mapData.isMediaCopyrightVerified),
+  instructorGuideComplete: Number(mapData.isInstructorGuideComplete),
+});
+
+export const mapFromServer = mapData => ({
   nodes: mapData.nodes
     ? mapData.nodes.map(node => nodeFromServer(node))
     : [],
   edges: mapData.links
     ? mapData.links.map(edge => edgeFromServer(edge))
     : [],
-  undo: [],
-  redo: [],
-  isEnabled: Boolean(mapData.enabled),
-  isFetching: false,
+});
+
+export const mapFromServerOnCreate = ({ nodes, edges, ...mapDetails }) => ({
+  ...mapDetailsFromServer(mapDetails),
+  ...mapFromServer({ nodes, edges }),
 });
 
 export const templateFromServer = mapFromServer;

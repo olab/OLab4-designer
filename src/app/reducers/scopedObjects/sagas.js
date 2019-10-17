@@ -10,7 +10,6 @@ import {
   deleteScopedObject,
 } from '../../../services/api/scopedObjects';
 
-import { GET_MAP_SUCCEEDED, CREATE_MAP_SUCCEEDED } from '../map/types';
 import {
   SCOPED_OBJECTS_REQUESTED,
   SCOPED_OBJECTS_TYPED_REQUESTED,
@@ -19,6 +18,7 @@ import {
   SCOPED_OBJECT_UPDATE_REQUESTED,
   SCOPED_OBJECT_DELETE_REQUESTED,
 } from './types';
+import { GET_MAP_DETAILS_SUCCEEDED } from '../mapDetails/types';
 
 import { ACTION_NOTIFICATION_ERROR, ACTION_NOTIFICATION_SUCCESS } from '../notifications/action';
 import {
@@ -39,7 +39,7 @@ import { MESSAGES } from '../notifications/config';
 
 function* getScopedObjectsSaga() {
   try {
-    const mapId = yield select(({ map }) => map.id);
+    const mapId = yield select(({ mapDetails }) => mapDetails.id);
     const scopedObjects = yield call(getScopedObjects, mapId);
 
     yield put(ACTION_SCOPED_OBJECTS_REQUEST_SUCCEEDED(scopedObjects));
@@ -147,9 +147,10 @@ function* deleteScopedObjectSaga({ scopedObjectId, scopedObjectType }) {
 }
 
 function* scopedObjectsSaga() {
-  yield takeLatest(GET_MAP_SUCCEEDED, getScopedObjectsSaga);
-  yield takeLatest(CREATE_MAP_SUCCEEDED, getScopedObjectsSaga);
-  yield takeLatest(SCOPED_OBJECTS_REQUESTED, getScopedObjectsSaga);
+  yield takeLatest([
+    GET_MAP_DETAILS_SUCCEEDED,
+    SCOPED_OBJECTS_REQUESTED,
+  ], getScopedObjectsSaga);
   yield takeLatest(SCOPED_OBJECTS_TYPED_REQUESTED, getScopedObjectsByTypeSaga);
   yield takeLatest(SCOPED_OBJECT_CREATE_REQUESTED, createScopedObjectSaga);
   yield takeLatest(SCOPED_OBJECT_UPDATE_REQUESTED, updateScopedObjectSaga);

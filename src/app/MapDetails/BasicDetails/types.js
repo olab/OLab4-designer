@@ -1,10 +1,11 @@
 // @flow
+import type { MapDetails } from '../../reducers/mapDetails/types';
+
 export type BasicDetailsProps = {
   classes: {
     [prop: string]: any,
   },
-  text: string,
-  nodeId: number,
-  handleSelectChange: Function,
+  details: MapDetails,
+  handleInputChange: Function,
   handleEditorChange: Function,
 };

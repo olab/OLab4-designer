@@ -1,4 +1,7 @@
 // @flow
+import { MapDetails } from '../../reducers/mapDetails/types';
+
 export type AdvancedDetailsProps = {
-  mapId: number,
+  details: MapDetails,
+  handleCheckBoxChange: Function,
 };

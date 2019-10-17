@@ -3,33 +3,44 @@ import React from 'react';
 
 import OutlinedSelect from '../../../shared/components/OutlinedSelect';
 
-import { THEME, ACCESS } from './config';
-import { LINK_STYLES } from '../../config';
+import { ACCESS } from '../config';
+
+import { AppearanceProps as IProps } from './types';
 
 import { ContainerTab } from '../styles';
 import { ContainerSelect } from './styles';
 
-const Appearance = () => {
+const Appearance = ({ details, themes, handleSelectChange }: IProps): React$Element<any> => {
   const selects = [
-    { label: 'Link Style', values: LINK_STYLES, name: 'linkStyle' },
-    { label: 'Theme', values: THEME, name: 'theme' },
-    { label: 'Access', values: ACCESS, name: 'access' },
+    { label: 'Theme', values: themes, name: 'themeId' },
+    { label: 'Access', values: ACCESS, name: 'securityType' },
   ];
 
   return (
     <ContainerTab>
-      {selects.map(item => (
-        <ContainerSelect key={item.label}>
-          <OutlinedSelect
-            label={item.label}
-            name={item.name}
-            labelWidth={80}
-            value={item.values[0]}
-            values={item.values}
-            fullWidth
-          />
-        </ContainerSelect>
-      ))}
+      {selects.map(({ label, name, values }, index) => {
+        // TODO: When valid data arrives from the backend, it will be necessary
+        //  to delete 'isValidValue' and rename 'numberValue' to 'resultValue'
+        const isControlled = name === 'securityType' && details[name] === 4;
+        const isValidvalue = !isControlled && (details[name] <= values.length);
+        const numberValue = isControlled ? values[details[name] - 2] : values[details[name] - 1];
+        const resultValue = isValidvalue ? numberValue : values[0];
+        const key = label + index;
+
+        return (
+          <ContainerSelect key={key}>
+            <OutlinedSelect
+              name={name}
+              label={label}
+              labelWidth={80}
+              values={values}
+              value={resultValue}
+              onChange={handleSelectChange}
+              fullWidth
+            />
+          </ContainerSelect>
+        );
+      })}
     </ContainerTab>
   );
 };

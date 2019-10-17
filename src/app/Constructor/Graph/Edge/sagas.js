@@ -13,7 +13,7 @@ import { MESSAGES } from '../../../reducers/notifications/config';
 
 function* createEdgeSaga({ edge, edge: { id: prevEdgeId } }) {
   try {
-    const mapId = yield select(({ map }) => map.id);
+    const mapId = yield select(({ mapDetails }) => mapDetails.id);
     const newEdgeId = yield call(createEdge, mapId, edge);
 
     yield put(ACTION_EXCHANGE_EDGE_ID(prevEdgeId, newEdgeId));
@@ -27,7 +27,7 @@ function* createEdgeSaga({ edge, edge: { id: prevEdgeId } }) {
 
 function* deleteEdgeSaga({ edgeId, nodeId }) {
   try {
-    const mapId = yield select(({ map }) => map.id);
+    const mapId = yield select(({ mapDetails }) => mapDetails.id);
 
     yield call(deleteEdge, mapId, edgeId, nodeId);
   } catch (error) {
@@ -40,7 +40,7 @@ function* deleteEdgeSaga({ edgeId, nodeId }) {
 
 function* updateEdgeSaga({ edge }) {
   try {
-    const mapId = yield select(({ map }) => map.id);
+    const mapId = yield select(({ mapDetails }) => mapDetails.id);
 
     yield call(updateEdge, mapId, edge);
     yield put(ACTION_NOTIFICATION_SUCCESS(MESSAGES.ON_UPDATE.EDGE));

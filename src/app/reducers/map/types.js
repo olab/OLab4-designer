@@ -13,15 +13,10 @@ export type MapItem = {
 };
 
 export type Map = {
-  id: number | null,
-  name: string,
-  abstract: string,
-  keywords: string,
   nodes: Array<NodeType>,
   edges: Array<EdgeType>,
   undo: Array<MapItem>,
   redo: Array<MapItem>,
-  isEnabled: boolean,
   isFetching: boolean,
 };
 
@@ -131,12 +126,6 @@ type UpdateEdgeVisual = {
   edge: EdgeType,
 };
 
-const RENAME_MAP = 'RENAME_MAP';
-type RenameMap = {
-  type: 'RENAME_MAP',
-  name: string,
-};
-
 const EXTEND_MAP_REQUESTED = 'EXTEND_MAP_REQUESTED';
 type ExtendMapRequested = {
   type: 'EXTEND_MAP_REQUESTED',
@@ -153,12 +142,6 @@ type ExtendMapSucceeded = {
   type: 'EXTEND_MAP_SUCCEEDED',
   nodes: Array<NodeType>,
   edges: Array<EdgeType>,
-};
-
-const SAVE_MAP_TO_UNDO = 'SAVE_MAP_TO_UNDO';
-type MapToUndo = {
-  type: 'SAVE_MAP_TO_UNDO',
-  currentMap: MapItem,
 };
 
 const UNDO_MAP = 'UNDO_MAP';
@@ -179,13 +162,14 @@ const GET_NODE_FULLFILLED = 'GET_NODE_FULLFILLED';
 type GetNodeFullfilled = {
   type: 'GET_NODE_FULLFILLED',
   index: number,
-  node: Node,
+  node: NodeType,
 };
 
 const GET_MAP_SUCCEEDED = 'GET_MAP_SUCCEEDED';
 type GetMapSucceeded = {
   type: 'GET_MAP_SUCCEEDED',
-  map: Map,
+  nodes: Array<NodeType>,
+  edges: Array<EdgeType>,
 };
 
 const GET_MAP_FAILED = 'GET_MAP_FAILED';
@@ -202,7 +186,8 @@ type GetMapRequested = {
 const CREATE_MAP_SUCCEEDED = 'CREATE_MAP_SUCCEEDED';
 type CreateMapFromTemplateSucceeded = {
   type: 'CREATE_MAP_SUCCEEDED',
-  map: Map,
+  nodes: Array<NodeType>,
+  edges: Array<EdgeType>,
 };
 
 const CREATE_MAP_FAILED = 'CREATE_MAP_FAILED';
@@ -219,7 +204,7 @@ type CreateMapFromTemplateRequested = {
 export type MapActions = SelectNode | SelectEdge |
   CreateNode | UpdateNode | DeleteNode |
   CreateEdge | DeleteEdge | UpdateEdge |
-  RenameMap | MapToUndo | UndoMap | RedoMap | ExchangeNodeId |
+  UndoMap | RedoMap | ExchangeNodeId |
   GetMapSucceeded | GetMapFailed | GetMapRequested |
   CreateMapFromTemplateRequested | CreateMapFromTemplateSucceeded |
   CreateMapFromTemplateFailed | CreateNodeWithEdge | ExchangeEdgeId |
@@ -244,11 +229,9 @@ export {
   UPDATE_EDGE,
   UPDATE_EDGE_VISUAL,
   CREATE_NODE_WITH_EDGE,
-  RENAME_MAP,
   EXTEND_MAP_REQUESTED,
   EXTEND_MAP_FAILED,
   EXTEND_MAP_SUCCEEDED,
-  SAVE_MAP_TO_UNDO,
   UNDO_MAP,
   REDO_MAP,
   GET_MAP_FAILED,

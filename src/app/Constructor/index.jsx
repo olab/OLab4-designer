@@ -20,14 +20,16 @@ import ConfirmationModal from '../../shared/components/ConfirmationModal';
 import SearchModal from '../../shared/components/SearchModal';
 
 import * as mapActions from '../reducers/map/action';
+import * as wholeMapActions from '../../middlewares/app/action';
 import * as templatesActions from '../reducers/templates/action';
 
-import type { Template as TemplateType } from '../reducers/templates/types';
-import type { IConstructorProps, IConstructorState } from './types';
+import { getFocusedNode, getSelectedEdge, setPageTitle } from './utils';
 
 import { MODALS_NAMES } from '../Modals/config';
 import { CONFIRMATION_MODALS } from './config';
-import { getFocusedNode, getSelectedEdge, setPageTitle } from './utils';
+
+import type { Template as TemplateType } from '../reducers/templates/types';
+import type { IConstructorProps, IConstructorState } from './types';
 
 export class Constructor extends PureComponent<IConstructorProps, IConstructorState> {
   templateInputName: { current: null | React$Element<any> };
@@ -70,15 +72,27 @@ export class Constructor extends PureComponent<IConstructorProps, IConstructorSt
 
   validateUrl = (): void => {
     const {
-      mapId, match, history, ACTION_GET_MAP_REQUESTED,
+      mapId, history, location, mapIdUrl, nodes,
+      ACTION_GET_MAP_REQUESTED, ACTION_GET_WHOLE_MAP_REQUESTED,
     } = this.props;
-    const mapIdUrl = match.params.mapId;
     const isPageRefreshed = !mapId && mapIdUrl;
+    const isPageNotFound = !isPageRefreshed && !mapIdUrl;
+    const isFromHomePage = location.state && location.state.isFromHome;
+
+    if (isPageNotFound) {
+      history.push('/404');
+    }
+
+    if (isFromHomePage) {
+      history.replace({ ...location, state: { isFromHome: false } });
+    }
 
     if (isPageRefreshed) {
+      ACTION_GET_WHOLE_MAP_REQUESTED(mapIdUrl);
+    }
+
+    if (!isFromHomePage && !nodes.length) {
       ACTION_GET_MAP_REQUESTED(mapIdUrl);
-    } else if (!mapIdUrl) {
-      history.push('/404');
     }
   }
 
@@ -179,9 +193,12 @@ export class Constructor extends PureComponent<IConstructorProps, IConstructorSt
   }
 }
 
-const mapStateToProps = ({ map, modals, templates }) => ({
-  mapId: map.id,
-  mapName: map.name,
+const mapStateToProps = ({
+  map, mapDetails, modals, templates,
+}, { match: { params: { mapId: mapIdUrl } } }) => ({
+  mapIdUrl,
+  mapId: mapDetails.id,
+  mapName: mapDetails.name,
   nodes: map.nodes,
   edges: map.edges,
   isShowSOPicker: modals[MODALS_NAMES.SO_PICKER_MODAL].isShow,
@@ -192,6 +209,9 @@ const mapStateToProps = ({ map, modals, templates }) => ({
 const mapDispatchToProps = dispatch => ({
   ACTION_GET_MAP_REQUESTED: (mapId: string) => {
     dispatch(mapActions.ACTION_GET_MAP_REQUESTED(mapId));
+  },
+  ACTION_GET_WHOLE_MAP_REQUESTED: (mapId: string) => {
+    dispatch(wholeMapActions.ACTION_GET_WHOLE_MAP_REQUESTED(mapId));
   },
   ACTION_EXTEND_MAP_REQUESTED: (templateId: number) => {
     dispatch(mapActions.ACTION_EXTEND_MAP_REQUESTED(templateId));

@@ -1,13 +1,13 @@
 import createInstance from '../createCustomInstance';
 import {
-  mapFromServer, nodeFromServer, edgeFromServer,
+  mapFromServer, nodeFromServer, edgeFromServer, mapFromServerOnCreate,
 } from '../../helpers/applyAPIMapping';
 
 const API = createInstance();
 
 export const getMap = mapId => API
-  .get(`/olab/maps/${mapId}`)
-  .then(({ data: { data: { map } } }) => mapFromServer(map))
+  .get(`/olab/maps/${mapId}/nodes`)
+  .then(({ data: { data: map } }) => mapFromServer(map))
   .catch((error) => {
     throw error;
   });
@@ -18,7 +18,7 @@ export const createMap = templateId => API
       ...(templateId && { templateId }),
     },
   })
-  .then(({ data: { data: map } }) => mapFromServer(map))
+  .then(({ data: { data: { map } } }) => mapFromServerOnCreate(map))
   .catch((error) => {
     if (!error.response || error.response.status !== 401) {
       throw error;
@@ -35,14 +35,6 @@ export const extendMap = (mapId, templateId) => API
     extendedNodes: nodes.map(node => nodeFromServer(node)),
     extendedEdges: links.map(edge => edgeFromServer(edge)),
   }))
-  .catch((error) => {
-    throw error;
-  });
-
-export const updateMap = (mapId, name) => API
-  .put(`/olab/maps/${mapId}`, {
-    data: { name },
-  })
   .catch((error) => {
     throw error;
   });

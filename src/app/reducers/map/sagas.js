@@ -1,18 +1,10 @@
 import {
-  call, put, select, takeLatest, takeEvery,
+  call, put, select, takeLatest,
 } from 'redux-saga/effects';
-import {
-  getMap, createMap, extendMap, updateMap,
-} from '../../../services/api/map';
+import { getMap, createMap, extendMap } from '../../../services/api/map';
 
-import {
-  RENAME_MAP,
-  GET_MAP_REQUESTED,
-  CREATE_MAP_REQUESTED,
-  EXTEND_MAP_REQUESTED,
-} from './types';
+import { GET_MAP_REQUESTED, CREATE_MAP_REQUESTED, EXTEND_MAP_REQUESTED } from './types';
 
-import { ACTION_NOTIFICATION_ERROR, ACTION_NOTIFICATION_SUCCESS } from '../notifications/action';
 import {
   ACTION_GET_MAP_FAILED,
   ACTION_GET_MAP_SUCCEEDED,
@@ -21,14 +13,14 @@ import {
   ACTION_EXTEND_MAP_FAILED,
   ACTION_EXTEND_MAP_SUCCEEDED,
 } from './action';
-
-import { MESSAGES } from '../notifications/config';
+import { ACTION_NOTIFICATION_ERROR } from '../notifications/action';
+import { ACTION_GET_MAP_DETAILS_SUCCEEDED } from '../mapDetails/action';
 
 function* getMapSaga({ mapId }) {
   try {
-    const map = yield call(getMap, mapId);
+    const { nodes, edges } = yield call(getMap, mapId);
 
-    yield put(ACTION_GET_MAP_SUCCEEDED(map));
+    yield put(ACTION_GET_MAP_SUCCEEDED(nodes, edges));
   } catch (error) {
     const { response, message } = error;
     const errorMessage = response ? response.statusText : message;
@@ -43,7 +35,9 @@ function* createMapSaga({ templateId }) {
     const newMap = yield call(createMap, templateId);
 
     if (newMap) {
-      yield put(ACTION_CREATE_MAP_SUCCEEDED(newMap));
+      const { nodes, edges, ...mapDetails } = newMap;
+      yield put(ACTION_GET_MAP_DETAILS_SUCCEEDED(mapDetails));
+      yield put(ACTION_CREATE_MAP_SUCCEEDED(nodes, edges));
       return;
     }
   } catch (error) {
@@ -56,23 +50,9 @@ function* createMapSaga({ templateId }) {
   yield put(ACTION_CREATE_MAP_FAILED());
 }
 
-function* updateMapSaga({ name: newName }) {
-  try {
-    const mapId = yield select(({ map }) => map.id);
-    yield call(updateMap, mapId, newName);
-
-    yield put(ACTION_NOTIFICATION_SUCCESS(MESSAGES.ON_UPDATE.MAP));
-  } catch (error) {
-    const { response, message } = error;
-    const errorMessage = response ? response.statusText : message;
-
-    yield put(ACTION_NOTIFICATION_ERROR(errorMessage));
-  }
-}
-
 function* extendMapSaga({ templateId }) {
   try {
-    const mapId = yield select(({ map }) => map.id);
+    const mapId = yield select(({ mapDetails }) => mapDetails.id);
     const { extendedNodes, extendedEdges } = yield call(extendMap, mapId, templateId);
 
     yield put(ACTION_EXTEND_MAP_SUCCEEDED(extendedNodes, extendedEdges));
@@ -88,7 +68,6 @@ function* extendMapSaga({ templateId }) {
 function* mapSaga() {
   yield takeLatest(GET_MAP_REQUESTED, getMapSaga);
   yield takeLatest(CREATE_MAP_REQUESTED, createMapSaga);
-  yield takeEvery(RENAME_MAP, updateMapSaga);
   yield takeLatest(EXTEND_MAP_REQUESTED, extendMapSaga);
 }
 

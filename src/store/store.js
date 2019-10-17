@@ -6,7 +6,8 @@ import notifyReducer from 'react-redux-notify';
 import createSagaMiddleware from 'redux-saga';
 import { createBrowserHistory } from 'history';
 
-import undoRedoMiddleware from './undoRedoMiddleware';
+import undoRedoMiddleware from '../middlewares/core/undoRedo';
+import getWholeMapMiddleware from '../middlewares/app/getWholeMap';
 
 import config from './storeConfig';
 import rootReducer from './rootReducer';
@@ -23,6 +24,7 @@ const middleware = [
   sagaMiddleware,
   routerMiddleware(history),
   undoRedoMiddleware,
+  getWholeMapMiddleware,
 ];
 
 if (process.env.NODE_ENV === 'development') {

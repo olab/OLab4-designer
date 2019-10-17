@@ -18,18 +18,17 @@ export const Header = styled.div`
 `;
 
 export const Title = styled.h2`
-  margin: 1rem;
+  margin: 0.7rem;
   font-weight: 800;
   font-style: bold;
-  font-size: 34px;
+  font-size: 24px;
   color: ${DARK_BLUE};
-  text-transform: uppercase;
 `;
 
 export const TabContainer = styled.div`
   display: flex;
   justify-content: flex-start;
-  margin: 40px 100px;
+  margin: 20px 100px;
   width: 800px;
   box-sizing: border-box;
 
@@ -49,6 +48,7 @@ export const Container = styled(ContainerTab)`
 
 export const ContentTitle = styled.h3`
   color: ${DARK_BLUE};
+  margin: 10px 0;
 `;
 
 const styles = () => ({
@@ -62,7 +62,7 @@ const styles = () => ({
     borderTop: `1px solid ${BLUE_GREY}`,
   },
   button: {
-    margin: '1rem 1rem',
+    margin: '0.4rem',
     width: '10rem',
   },
 });
