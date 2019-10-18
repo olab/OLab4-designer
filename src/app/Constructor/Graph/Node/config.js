@@ -17,4 +17,4 @@ export const ROOT_TYPE = 1;
 export const ORDINARY_TYPE = 2;
 export const BORDER_SIZE = 2;
 
-export const SALT = 'tmp-node';
+export const SALT = 'tmp-node-';

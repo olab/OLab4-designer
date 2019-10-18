@@ -8,7 +8,9 @@ export type INodeEditorProps = {
     [props: string]: any,
   },
   node: NodeType,
+  mapId: number,
   isDragging: boolean;
+  isShow: boolean;
   connectDragSource: Function;
   connectDragPreview: Function;
   ACTION_UPDATE_NODE: Function;

@@ -17,7 +17,7 @@ import AdvancedNodeEditor from './AdvancedNodeEditor';
 
 import * as mapActions from './reducers/map/action';
 
-import { LOCAL_STORAGE_KEY, SCOPED_OBJECT } from './config';
+import { SCOPED_OBJECT } from './config';
 
 import type { IAppProps, IProtectedRouteProps } from './types';
 
@@ -44,11 +44,6 @@ export class App extends PureComponent<IAppProps> {
 
   handleStorageChange = (event: Event): void => {
     const { newValue } = event;
-
-    if (!newValue) {
-      return;
-    }
-
     const { nodes, ACTION_GET_NODE } = this.props;
     const { nodeId, mapId } = JSON.parse(newValue);
     const isNodeFound = nodes.some(node => node.id === nodeId);
@@ -56,8 +51,6 @@ export class App extends PureComponent<IAppProps> {
     if (isNodeFound) {
       ACTION_GET_NODE(mapId, nodeId);
     }
-
-    localStorage.removeItem(LOCAL_STORAGE_KEY);
   }
 
   render() {

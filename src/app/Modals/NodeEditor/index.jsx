@@ -7,7 +7,7 @@ import { withStyles } from '@material-ui/core/styles';
 import { Button } from '@material-ui/core';
 import isEqual from 'lodash.isequal';
 
-import TextEditor from './TextEditor';
+import TextEditor from '../../../shared/components/TextEditor';
 import OutlinedInput from '../../../shared/components/OutlinedInput';
 import ColorPicker from '../../../shared/components/ColorPicker';
 import Switch from '../../../shared/components/Switch';
@@ -20,7 +20,7 @@ import type { INodeEditorProps, INodeEditorState } from './types';
 import * as modalActions from '../action';
 import * as mapActions from '../../reducers/map/action';
 import { spec, collect } from '../utils';
-import { KEY_S } from './config';
+import { KEY_S, EDITOR_OPTIONS } from './config';
 import { DND_CONTEXTS, MODALS_NAMES } from '../config';
 import { LINK_STYLES } from '../../config';
 
@@ -31,12 +31,9 @@ import {
 import styles from './styles';
 
 class NodeEditor extends PureComponent<INodeEditorProps, INodeEditorState> {
-  textEditorRef: { current: any };
-
   constructor(props: INodeEditorProps) {
     super(props);
     this.state = { ...props.node };
-    this.textEditorRef = React.createRef();
   }
 
   componentDidUpdate(prevProps: INodeEditorProps) {
@@ -55,15 +52,10 @@ class NodeEditor extends PureComponent<INodeEditorProps, INodeEditorState> {
       text: textPrev,
       ...restNodePrev
     } = this.state;
-    const { current: currentTextEditorRef } = this.textEditorRef;
 
     if (id !== idPrev || prevProps.node !== node) {
       // eslint-disable-next-line react/no-did-update-set-state
       this.setState({ ...node });
-
-      if (currentTextEditorRef) {
-        currentTextEditorRef.updateComponent(text);
-      }
     }
 
     if (!isEqual(restNode, restNodePrev)) {
@@ -117,7 +109,9 @@ class NodeEditor extends PureComponent<INodeEditorProps, INodeEditorState> {
   }
 
   handleKeyPressed = (e: KeyboardEvent): void => {
-    if (e.keyCode === KEY_S && e.ctrlKey) {
+    const isSavingCombination = e.keyCode === KEY_S && (e.ctrlKey || e.metaKey);
+
+    if (isSavingCombination) {
       e.preventDefault();
       this.applyChanges();
     }
@@ -137,7 +131,7 @@ class NodeEditor extends PureComponent<INodeEditorProps, INodeEditorState> {
       color, title, isVisitOnce, linkStyle, text,
     } = this.state;
     const {
-      x, y, isDragging, connectDragSource, classes, node: { id: nodeId }, mapId,
+      x, y, isDragging, connectDragSource, classes, node: { id: nodeId }, mapId, isShow,
     } = this.props;
 
     if (isDragging) {
@@ -148,6 +142,7 @@ class NodeEditor extends PureComponent<INodeEditorProps, INodeEditorState> {
       <NodeEditorWrapper
         ref={this.handleModalRef}
         onKeyDown={this.handleKeyPressed}
+        isShow={isShow}
         x={x}
         y={y}
       >
@@ -215,8 +210,11 @@ class NodeEditor extends PureComponent<INodeEditorProps, INodeEditorState> {
           <article>
             <TextEditor
               text={text}
-              ref={this.textEditorRef}
-              onChange={this.handleTextChange}
+              width={440}
+              height={300}
+              handleEditorChange={this.handleTextChange}
+              editorOptions={EDITOR_OPTIONS}
+              handleKeyDown={this.handleKeyPressed}
             />
           </article>
         </ModalBody>

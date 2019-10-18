@@ -7,8 +7,13 @@ import { BASIC_TEXT_EDITOR_OPTIONS, EDITOR_API_KEY, EDITOR_VERSION } from './con
 import type { TextEditorProps as IProps } from './types';
 
 const TextEditor = ({
-  height = 200, width = 800, text = '', editorId = '',
-  handleEditorChange, handleKeyDown,
+  height = 200,
+  width = 800,
+  text = '',
+  editorId = '',
+  handleEditorChange,
+  editorOptions = {},
+  handleKeyDown,
 }: IProps) => (
   <Editor
     apiKey={EDITOR_API_KEY}
@@ -19,8 +24,9 @@ const TextEditor = ({
     init={{
       width,
       height,
-      selector: `textarea#${editorId}`,
+      ...(editorId && { selector: `textarea#${editorId}` }),
       ...BASIC_TEXT_EDITOR_OPTIONS,
+      ...editorOptions,
     }}
     onEditorChange={handleEditorChange}
     onKeyDown={handleKeyDown}

@@ -30,6 +30,7 @@ export const ModalWrapper = styled(ModalCommonStyles)`
 export const NodeEditorWrapper = styled(ModalCommonStyles)`
   right: ${({ x }) => x || 0}px;
   bottom: ${({ y }) => y || 0}px;
+  display: ${({ isShow }) => (isShow ? '' : 'none')};
 `;
 
 export const ModalHeaderButton = styled.button`

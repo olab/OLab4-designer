@@ -155,7 +155,7 @@ export class Constructor extends PureComponent<IConstructorProps, IConstructorSt
         <Graph />
 
         { Boolean(selectedLink) && <LinkEditor link={selectedLink} /> }
-        { Boolean(focusedNode) && <NodeEditor node={focusedNode} /> }
+        <NodeEditor isShow={Boolean(focusedNode)} node={focusedNode || {}} />
         { isShowSOPicker && <SOPicker /> }
 
         {isShowCreateTemplateModal && (

@@ -14,7 +14,7 @@ const OutlinedSelect = ({
   label,
   name,
   classes,
-  value,
+  value = '',
   values,
   onChange,
   labelWidth = 0,

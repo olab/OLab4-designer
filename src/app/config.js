@@ -36,5 +36,3 @@ export const LINK_STYLES = [
 ];
 
 export const SCOPED_OBJECT = 'scopedObject';
-
-export const LOCAL_STORAGE_KEY = 'node';

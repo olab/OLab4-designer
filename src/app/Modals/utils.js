@@ -16,10 +16,8 @@ export const spec = {
     }
 
     const { x: offsetX, y: offsetY } = dropResult;
-
-    const { props: { node }, textEditorRef, handleModalMove } = component;
-
-    const isNodeEditor = Boolean(node && textEditorRef);
+    const { constructor, handleModalMove } = component;
+    const isNodeEditor = constructor.name === 'NodeEditor';
 
     const x = props.x + (isNodeEditor ? -offsetX : offsetX);
     const y = props.y + (isNodeEditor ? -offsetY : offsetY);

@@ -1,4 +1,4 @@
-export const SALT = 'tmp-edge';
+export const SALT = 'tmp-edge-';
 
 export const VARIANT = {
   STANDARD: 1,

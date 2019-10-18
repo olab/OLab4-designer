@@ -5,6 +5,7 @@ import {
 import {
   createNode, deleteNode, updateNode, getNode,
 } from '../../../../services/api/node';
+import generateTmpId from '../../../../helpers/generateTmpId';
 
 import {
   GET_NODE, CREATE_NODE, UPDATE_NODE, DELETE_NODE, CREATE_NODE_WITH_EDGE,
@@ -18,7 +19,6 @@ import {
 import { ACTION_NOTIFICATION_ERROR, ACTION_NOTIFICATION_SUCCESS } from '../../../reducers/notifications/action';
 
 import { MESSAGES, ERROR_MESSAGES } from '../../../reducers/notifications/config';
-import { LOCAL_STORAGE_KEY } from '../../../config';
 
 function* getNodeSaga({ mapId, nodeId }) {
   try {
@@ -74,11 +74,12 @@ function* updateNodeSaga({ node, isShowNotification, mapIdFromURL }) {
     yield call(updateNode, mapId, node);
 
     const editorPayload = {
+      id: generateTmpId(),
       nodeId: node.id,
       mapId,
     };
     const editorPayloadString = JSON.stringify(editorPayload);
-    localStorage.setItem(LOCAL_STORAGE_KEY, editorPayloadString);
+    localStorage.setItem('node', editorPayloadString);
 
     if (isShowNotification) {
       yield put(ACTION_NOTIFICATION_SUCCESS(MESSAGES.ON_UPDATE.NODE));

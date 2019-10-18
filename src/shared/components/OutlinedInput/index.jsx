@@ -11,7 +11,7 @@ const OutlinedInput = ({
   name,
   label,
   classes,
-  value,
+  value = '',
   placeholder = '',
   onChange,
   onFocus,

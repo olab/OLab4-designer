@@ -8,7 +8,7 @@ import type { ISwitchProps } from './types';
 import styles from './styles';
 
 const Switch = ({
-  name, label, labelPlacement, classes, checked, disabled = false, onChange,
+  name, label, labelPlacement, classes, checked = false, disabled = false, onChange,
 }: ISwitchProps) => (
   <FormControlLabel
     label={(
