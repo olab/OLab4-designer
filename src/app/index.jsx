@@ -49,9 +49,10 @@ export class App extends PureComponent<IAppProps> {
       return;
     }
 
-    const { ACTION_GET_NODE, nodeIdFromURL, isANE } = this.props;
+    const { nodes, mapId: mapIdFromRedux, ACTION_GET_NODE } = this.props;
     const { nodeId, mapId } = JSON.parse(newValue);
-    const shouldRetrieveNode = !isANE || Number(nodeIdFromURL) === nodeId;
+    const isNodeFound = nodes.some(node => node.id === nodeId);
+    const shouldRetrieveNode = isNodeFound && mapIdFromRedux === Number(mapId);
 
     if (shouldRetrieveNode) {
       localStorage.removeItem(LOCAL_STORAGE_KEY);
@@ -83,15 +84,11 @@ export class App extends PureComponent<IAppProps> {
   }
 }
 
-const mapStateToProps = ({ user: { isAuth } }, { history: { location: { pathname } } }) => {
-  const [,, nodeIdFromURL, isANE] = pathname.split('/');
-
-  return {
-    isAuth,
-    nodeIdFromURL,
-    isANE,
-  };
-};
+const mapStateToProps = ({ user: { isAuth }, map: { nodes, id: mapId } }) => ({
+  mapId,
+  isAuth,
+  nodes,
+});
 
 const mapDispatchToProps = dispatch => ({
   ACTION_GET_NODE: (mapId: number, nodeId: number) => {

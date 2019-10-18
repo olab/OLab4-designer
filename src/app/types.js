@@ -1,14 +1,14 @@
 // @flow
 import React from 'react';
 
+import type { Node as NodeType } from './Constructor/Graph/Node/types';
+
 export type IAppProps = {
-  nodeIdFromURL: number,
-  history: any;
-  isANE: boolean,
+  mapId: number,
+  history: any,
   isAuth: boolean,
-  isDataFetching: boolean,
-  notifications: Array<any>,
   ACTION_GET_NODE: Function,
+  nodes: Array<NodeType>,
 };
 
 export type IProtectedRouteProps = {
