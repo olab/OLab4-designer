@@ -13,7 +13,8 @@ import { LINK_STYLES } from '../../config';
 import type { SecondaryTabProps as IProps } from './types';
 
 import styles, {
-  Title, TextEditorBlock, BlockCheckbox, CheckBoxContainer, TextFieldContainer,
+  Title, TextEditorBlock, TextEditorWrapper,
+  BlockCheckbox, CheckBoxContainer, TextFieldContainer,
 } from './styles';
 
 const SecondaryTab = ({
@@ -24,7 +25,7 @@ const SecondaryTab = ({
 
   return (
     <TextEditorBlock>
-      <div>
+      <TextEditorWrapper>
         <Title>Supporting information</Title>
         <TextEditor
           editorId="info"
@@ -42,7 +43,7 @@ const SecondaryTab = ({
           />
           <CopyToClipboard text={keyword} medium />
         </TextFieldContainer>
-      </div>
+      </TextEditorWrapper>
       <div>
         <Title>Annotation</Title>
         <TextEditor

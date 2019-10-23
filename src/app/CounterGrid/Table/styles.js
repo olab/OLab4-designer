@@ -2,7 +2,7 @@ import { MIDDLE_LIGHT_GREY } from '../../../shared/colors';
 
 const styles = () => ({
   paper: {
-    height: '87.75vh',
+    height: '79.5vh',
     overflow: 'auto',
   },
   tableRow: {

@@ -19,23 +19,22 @@ export const Header = styled.div`
   display: flex;
   justify-content: space-between;
   width: 100%;
-  padding: 0 84px;
+  padding: 0 0 0 84px;
   background-color: ${LIGHT_GREY};
 `;
 
 export const Title = styled.h2`
-  margin: 1rem;
+  margin: .5rem;
   font-weight: 800;
   font-style: bold;
-  font-size: 34px;
+  font-size: 2rem;
   color: ${DARK_BLUE};
-  text-transform: uppercase;
 `;
 
 export const TabContainer = styled.div`
   display: flex;
   justify-content: flex-start;
-  padding: 24px 0 0 100px;
+  padding: 16px 0 0 100px;
 
   @media only screen and (max-width: 1199px) {
     flex-direction: column;
@@ -53,7 +52,7 @@ const styles = () => ({
     borderTop: `1px solid ${BLUE_GREY}`,
   },
   button: {
-    margin: '1rem 1rem',
+    margin: '.5rem 1rem',
     width: '10rem',
   },
 });

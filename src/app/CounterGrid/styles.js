@@ -13,7 +13,7 @@ export const Header = styled.div`
 `;
 
 export const Label = styled.h1`
-  font-size: 2.25em;
+  font-size: 2rem;
   color: ${DARK_TEXT};
   margin: 0.5rem 1.4rem;
 `;
@@ -27,7 +27,7 @@ export const Text = styled.h3`
 
 const styles = () => ({
   button: {
-    margin: '1rem',
+    margin: '.6rem 1rem',
   },
 });
 

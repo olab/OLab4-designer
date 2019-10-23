@@ -8,16 +8,17 @@ export const Container = styled.div`
 `;
 
 export const TextContent = styled.div`
-  margin-top: 15px;
-  padding-bottom: 30px;
+  margin-top: 5px;
 `;
 
 export const OtherContent = styled.div`
   display: flex;
-  justify-content: space-between;
-  padding-bottom: 100px;
+  justify-content: flex-start;
+  padding-bottom: 50px;
 `;
 
 export const NodeContentTitle = styled.h3`
   color: ${DARK_BLUE};
+  margin-top: 10px;
+  margin-bottom: 10px;
 `;
