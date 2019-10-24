@@ -15,7 +15,7 @@ import {
 
 const MainTab = ({
   text = '', title = '', type = false, isEnd = false, isVisitOnce = false,
-  handleTitleChange, handleEditorChange, handleCheckBoxChange,
+  handleTitleChange, handleEditorChange, handleCheckBoxChange, handleKeyDown,
 }: IProps) => {
   const checkBoxes = [
     { label: 'Root Node', value: type, name: 'type' },
@@ -40,6 +40,7 @@ const MainTab = ({
           width={800}
           text={text}
           handleEditorChange={handleEditorChange}
+          handleKeyDown={handleKeyDown}
         />
       </TextContent>
       <OtherContent>

@@ -10,4 +10,5 @@ export type SecondaryTabProps = {
   priorityId: number,
   handleSelectChange: Function,
   handleEditorChange: Function,
+  handleKeyDown: Function,
 };

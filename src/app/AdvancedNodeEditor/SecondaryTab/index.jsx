@@ -19,7 +19,7 @@ import styles, {
 
 const SecondaryTab = ({
   classes, info = '', nodeId = 0, annotation = '', linkStyle = 1, priorityId = 1,
-  handleSelectChange, handleEditorChange,
+  handleSelectChange, handleEditorChange, handleKeyDown,
 }: IProps) => {
   const keyword = `[[INFO:${nodeId}]]`;
 
@@ -33,6 +33,7 @@ const SecondaryTab = ({
           height={200}
           text={info}
           handleEditorChange={handleEditorChange}
+          handleKeyDown={handleKeyDown}
         />
         <TextFieldContainer>
           <TextField
@@ -52,6 +53,7 @@ const SecondaryTab = ({
           height={200}
           text={annotation}
           handleEditorChange={handleEditorChange}
+          handleKeyDown={handleKeyDown}
         />
         <BlockCheckbox>
           <CheckBoxContainer>

@@ -7,7 +7,8 @@ import { BASIC_TEXT_EDITOR_OPTIONS, EDITOR_API_KEY, EDITOR_VERSION } from './con
 import type { TextEditorProps as IProps } from './types';
 
 const TextEditor = ({
-  height = 200, width = 800, text = '', editorId = '', handleEditorChange,
+  height = 200, width = 800, text = '', editorId = '',
+  handleEditorChange, handleKeyDown,
 }: IProps) => (
   <Editor
     apiKey={EDITOR_API_KEY}
@@ -22,6 +23,7 @@ const TextEditor = ({
       ...BASIC_TEXT_EDITOR_OPTIONS,
     }}
     onEditorChange={handleEditorChange}
+    onKeyDown={handleKeyDown}
   />
 );
 

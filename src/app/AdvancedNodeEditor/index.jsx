@@ -12,6 +12,7 @@ import SecondaryTab from './SecondaryTab';
 
 import * as mapActions from '../reducers/map/action';
 
+import { KEY_S } from '../Modals/NodeEditor/config';
 import { LINK_STYLES } from '../config';
 import { NODE_PRIORITIES } from './SecondaryTab/config';
 import {
@@ -35,6 +36,14 @@ class AdvancedNodeEditor extends PureComponent<IProps, NodeType> {
     ACTION_GET_NODE(mapId, nodeId);
 
     this.state = { ...node };
+  }
+
+  componentDidMount() {
+    document.addEventListener('keydown', this.handleKeyPressed);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('keydown', this.handleKeyPressed);
   }
 
   componentDidUpdate(prevProps: IProps) {
@@ -89,6 +98,15 @@ class AdvancedNodeEditor extends PureComponent<IProps, NodeType> {
     this.setState({ [name]: index + 1 });
   };
 
+  handleKeyPressed = (e: KeyboardEvent): void => {
+    const isSavingCombination = e.keyCode === KEY_S && (e.ctrlKey || e.metaKey);
+
+    if (isSavingCombination) {
+      e.preventDefault();
+      this.applyChanges();
+    }
+  };
+
   render() {
     const {
       isVisitOnce = false, isEnd, type, title, text, linkStyle,
@@ -122,7 +140,7 @@ class AdvancedNodeEditor extends PureComponent<IProps, NodeType> {
         </Paper>
         <ScrollingContainer>
           <TabContainer>
-            {this.tabNumber === 0 && (
+            {[
               <MainTab
                 title={title}
                 text={text}
@@ -132,9 +150,8 @@ class AdvancedNodeEditor extends PureComponent<IProps, NodeType> {
                 handleEditorChange={this.handleEditorChange}
                 handleCheckBoxChange={this.handleCheckBoxChange}
                 handleTitleChange={this.handleTitleChange}
-              />
-            )}
-            {this.tabNumber === 1 && (
+                handleKeyDown={this.handleKeyPressed}
+              />,
               <SecondaryTab
                 nodeId={nodeId}
                 info={info}
@@ -143,8 +160,9 @@ class AdvancedNodeEditor extends PureComponent<IProps, NodeType> {
                 priorityId={priorityId}
                 handleEditorChange={this.handleEditorChange}
                 handleSelectChange={this.handleSelectChange}
-              />
-            )}
+                handleKeyDown={this.handleKeyPressed}
+              />,
+            ][this.tabNumber]}
           </TabContainer>
         </ScrollingContainer>
       </Container>

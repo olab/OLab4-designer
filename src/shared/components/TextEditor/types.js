@@ -5,4 +5,5 @@ export type TextEditorProps = {
   width: number,
   height: number,
   handleEditorChange: Function,
+  handleKeyDown: Function,
 };
