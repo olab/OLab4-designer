@@ -149,10 +149,9 @@ class NavigationBar extends PureComponent<INavigationProps, INavigationState> {
 
 const mapStateToProps = ({ map }, { location: { pathname } }) => {
   const [, mapIdFromLocation] = pathname.split('/');
-  const isShowMapOptionsDropdown = mapIdFromLocation && (mapIdFromLocation !== SCOPED_OBJECT);
-  const mapId = map.id || mapIdFromLocation;
+  const mapId = map.id || (mapIdFromLocation === SCOPED_OBJECT ? null : mapIdFromLocation);
 
-  return { mapId: isShowMapOptionsDropdown ? mapId : null };
+  return { mapId };
 };
 
 export default withRouter(connect(mapStateToProps)(
