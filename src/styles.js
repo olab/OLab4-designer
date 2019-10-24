@@ -54,6 +54,10 @@ const GlobalStyle = createGlobalStyle`
   div.tox-tinymce {
     border-radius: 5px;
   }
+
+  div.tox-notifications-container {
+    display: none;
+  }
 `;
 
 export default GlobalStyle;
