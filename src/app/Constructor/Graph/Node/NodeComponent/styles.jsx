@@ -8,7 +8,7 @@ import { HEADER_PADDING, HEADER_HEIGHT, BORDER_SIZE } from '../config';
 export const CardContent = styled(({
   borderColor, isLocked, isSelected, ...rest
 }) => <CardContentMUI {...rest} />)`
-  overflow: auto;
+  overflow: hidden;
   position: relative;
   font-size: 16px;
   width: 100%;
