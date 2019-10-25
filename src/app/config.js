@@ -34,5 +34,3 @@ export const LINK_STYLES = [
   'Type in text',
   'Buttons',
 ];
-
-export const SCOPED_OBJECT = 'scopedObject';

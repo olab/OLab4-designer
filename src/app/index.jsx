@@ -17,8 +17,6 @@ import AdvancedNodeEditor from './AdvancedNodeEditor';
 
 import * as mapActions from './reducers/map/action';
 
-import { SCOPED_OBJECT } from './config';
-
 import type { IAppProps, IProtectedRouteProps } from './types';
 
 import 'react-redux-notify/dist/ReactReduxNotify.css';
@@ -67,7 +65,7 @@ export class App extends PureComponent<IAppProps> {
             <ProtectedRoute exact isAuth={isAuth} path="/:mapId/mapdetails" component={MapDetails} />
             <ProtectedRoute exact isAuth={isAuth} path="/:mapId/countergrid" component={CounterGrid} />
             <ProtectedRoute exact isAuth={isAuth} path="/:mapId/:nodeId/ane" component={AdvancedNodeEditor} />
-            <ProtectedRoute isAuth={isAuth} path={`/${SCOPED_OBJECT}/:scopedObjectType`} component={SOEditor} />
+            <ProtectedRoute isAuth={isAuth} path="/scopedObject/:scopedObjectType" component={SOEditor} />
             <ProtectedRoute exact isAuth={isAuth} path="*" component={PageNotFound} />
           </Switch>
           <Notify />

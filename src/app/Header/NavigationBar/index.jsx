@@ -10,9 +10,7 @@ import type { INavigationProps, INavigationState } from './types';
 
 import { getStringToUrlPath } from './utils';
 
-import {
-  SCOPED_OBJECTS, MAP_MENU_ITEMS, TOOLS_MENU_ITEMS, SCOPED_OBJECT,
-} from '../../config';
+import { SCOPED_OBJECTS, MAP_MENU_ITEMS, TOOLS_MENU_ITEMS } from '../../config';
 
 import styles from './styles';
 
@@ -149,7 +147,7 @@ class NavigationBar extends PureComponent<INavigationProps, INavigationState> {
 
 const mapStateToProps = ({ mapDetails }, { location: { pathname } }) => {
   const [, mapIdFromLocation] = pathname.split('/');
-  const mapId = mapDetails.id || (mapIdFromLocation === SCOPED_OBJECT ? null : mapIdFromLocation);
+  const mapId = mapDetails.id || Number(mapIdFromLocation) || null;
 
   return { mapId };
 };
