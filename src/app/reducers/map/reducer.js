@@ -29,6 +29,11 @@ import {
   CREATE_MAP_REQUESTED,
   GET_NODE_FULLFILLED,
 } from './types';
+import {
+  UPDATE_NODE_GRID_REQUESTED,
+  UPDATE_NODE_GRID_SUCCEEDED,
+  UPDATE_NODE_GRID_FAILED,
+} from '../nodeGrid/types';
 import { SAVE_MAP_TO_UNDO } from '../../../middlewares/core/types';
 
 export const initialMapState: MapType = {
@@ -37,6 +42,7 @@ export const initialMapState: MapType = {
   undo: [],
   redo: [],
   isFetching: false,
+  isUpdating: false,
 };
 
 const map = (state: MapType = initialMapState, action: MapActions) => {
@@ -95,12 +101,22 @@ const map = (state: MapType = initialMapState, action: MapActions) => {
         ...state,
         isFetching: true,
       };
+    case UPDATE_NODE_GRID_REQUESTED:
+      return {
+        ...state,
+        isUpdating: true,
+      };
     case GET_MAP_FAILED:
     case CREATE_MAP_FAILED:
     case EXTEND_MAP_FAILED:
       return {
         ...state,
         isFetching: false,
+      };
+    case UPDATE_NODE_GRID_FAILED:
+      return {
+        ...state,
+        isUpdating: false,
       };
     case GET_MAP_SUCCEEDED:
     case CREATE_MAP_SUCCEEDED: {
@@ -134,6 +150,15 @@ const map = (state: MapType = initialMapState, action: MapActions) => {
           node,
           ...nodes.slice(index + 1),
         ],
+      };
+    }
+    case UPDATE_NODE_GRID_SUCCEEDED: {
+      const { nodes } = action;
+
+      return {
+        ...state,
+        nodes,
+        isUpdating: false,
       };
     }
     case SELECT_NODE:

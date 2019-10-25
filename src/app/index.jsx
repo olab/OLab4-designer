@@ -9,6 +9,7 @@ import Login from './Login';
 import Home from './Home';
 import Constructor from './Constructor';
 import CounterGrid from './CounterGrid';
+import NodeGrid from './NodeGrid';
 import PageNotFound from './404';
 import Header from './Header';
 import SOEditor from './SOEditor';
@@ -62,6 +63,7 @@ export class App extends PureComponent<IAppProps> {
             <Route exact path="/login" component={Login} />
             <ProtectedRoute exact isAuth={isAuth} path="/" component={Home} />
             <ProtectedRoute exact isAuth={isAuth} path="/:mapId" component={Constructor} />
+            <ProtectedRoute exact isAuth={isAuth} path="/:mapId/nodegrid" component={NodeGrid} />
             <ProtectedRoute exact isAuth={isAuth} path="/:mapId/mapdetails" component={MapDetails} />
             <ProtectedRoute exact isAuth={isAuth} path="/:mapId/countergrid" component={CounterGrid} />
             <ProtectedRoute exact isAuth={isAuth} path="/:mapId/:nodeId/ane" component={AdvancedNodeEditor} />

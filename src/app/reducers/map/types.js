@@ -18,6 +18,7 @@ export type Map = {
   undo: Array<MapItem>,
   redo: Array<MapItem>,
   isFetching: boolean,
+  isUpdating: boolean,
 };
 
 const GET_NODE = 'GET_NODE';

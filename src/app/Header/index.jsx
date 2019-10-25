@@ -31,6 +31,7 @@ const mapStateToProps = ({
 }) => ({
   isDataFetching: user.isFetching
     || map.isFetching
+    || map.isUpdating
     || mapDetails.isFetching
     || counterGrid.isFetching
     || scopedObjects.isCreating
