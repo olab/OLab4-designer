@@ -24,7 +24,7 @@ const Appearance = ({ details, themes, handleSelectChange }: IProps): React$Elem
         const isControlled = name === 'securityType' && details[name] === 4;
         const isValidvalue = !isControlled && (details[name] && (details[name] <= values.length));
         const numberValue = isControlled ? values[details[name] - 2] : values[details[name] - 1];
-        const resultValue = isValidvalue ? numberValue : values[0];
+        const resultValue = isValidvalue || isControlled ? numberValue : values[0];
         const key = label + index;
 
         return (

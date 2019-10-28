@@ -108,8 +108,6 @@ class MapTitle extends PureComponent<IMapTitleProps, IMapTitleState> {
           error={isError}
         >
           <Input
-            // TODO Delete the disabled field when the backend is ready
-            disabled
             placeholder="Labyrinth name"
             classes={{
               root: classes.inputRoot,

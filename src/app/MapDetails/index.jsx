@@ -104,8 +104,6 @@ class AdvancedNodeEditor extends PureComponent<IProps, IState> {
             variant="contained"
             className={classes.button}
             onClick={this.applyChanges}
-            // TODO Delete the disabled field when the backend is ready
-            disabled
           >
             Save
           </Button>

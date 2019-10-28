@@ -123,8 +123,7 @@ export const mapDetailsFromServer = mapData => ({
 export const mapDetailsToServer = mapData => ({
   id: mapData.id,
   name: mapData.name,
-  // TODO: Uncomment when this value is added to the backend
-  // notes: mapData.notes,
+  notes: mapData.notes,
   author: mapData.author,
   themeId: mapData.themeId,
   keywords: mapData.keywords,

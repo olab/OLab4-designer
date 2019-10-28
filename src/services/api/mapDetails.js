@@ -10,7 +10,7 @@ export const getMapDetails = mapId => API
     throw error;
   });
 
-export const updateMapDetails = (mapId, mapDetails) => API
+export const updateMapDetails = ({ id: mapId, ...mapDetails }) => API
   .put(`/olab/maps/${mapId}`, {
     data: { ...mapDetailsToServer(mapDetails) },
   })
