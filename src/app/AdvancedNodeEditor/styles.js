@@ -3,6 +3,10 @@ import {
   DARK_BLUE, BLUE_GREY, WHITE, LIGHT_GREY,
 } from '../../shared/colors';
 
+export const Triangle = styled.div`
+  margin-bottom: 2.5px;
+`;
+
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -52,7 +56,7 @@ const styles = () => ({
     borderTop: `1px solid ${BLUE_GREY}`,
   },
   button: {
-    margin: '.5rem 1rem',
+    margin: '.5rem 1rem .5rem 0',
     width: '10rem',
   },
 });

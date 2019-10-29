@@ -28,7 +28,7 @@ import {
   NodeEditorWrapper, ModalHeader, ModalBody,
   ModalFooter, ArticleItem, ModalHeaderButton,
 } from '../styles';
-import styles from './styles';
+import styles, { Triangle } from './styles';
 
 class NodeEditor extends PureComponent<INodeEditorProps, INodeEditorState> {
   constructor(props: INodeEditorProps) {
@@ -219,6 +219,18 @@ class NodeEditor extends PureComponent<INodeEditorProps, INodeEditorState> {
           </article>
         </ModalBody>
         <ModalFooter>
+          <Button
+            variant="contained"
+            color="primary"
+            component={Link}
+            className={classes.previewButton}
+            to={`/player/olab/play#${mapId}:${nodeId}`}
+            target="_blank"
+          >
+            <Triangle>&#9658;</Triangle>
+            &nbsp;
+            Preview
+          </Button>
           <Button
             variant="contained"
             color="primary"

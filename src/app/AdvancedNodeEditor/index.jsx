@@ -1,6 +1,6 @@
 // @flow
 import React, { PureComponent } from 'react';
-import { withRouter } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import {
@@ -24,7 +24,7 @@ import type { AdvancedNodeEditorProps as IProps } from './types';
 import type { Node as NodeType } from '../Constructor/Graph/Node/types';
 
 import styles, {
-  TabContainer, Container, ScrollingContainer, Title, Header,
+  TabContainer, Container, ScrollingContainer, Title, Header, Triangle,
 } from './styles';
 
 class AdvancedNodeEditor extends PureComponent<IProps, NodeType> {
@@ -112,20 +112,34 @@ class AdvancedNodeEditor extends PureComponent<IProps, NodeType> {
       isVisitOnce = false, isEnd, type, title, text, linkStyle,
       info, annotation, priorityId,
     } = this.state;
-    const { classes, match: { params: { nodeId } } } = this.props;
+    const { classes, match: { params: { mapId, nodeId } } } = this.props;
 
     return (
       <Container>
         <Header>
           <Title>Advanced Node Editor</Title>
-          <Button
-            color="primary"
-            variant="contained"
-            className={classes.button}
-            onClick={this.applyChanges}
-          >
-            Save
-          </Button>
+          <div>
+            <Button
+              color="primary"
+              variant="contained"
+              className={classes.button}
+              component={Link}
+              to={`/player/olab/play#${mapId}:${nodeId}`}
+              target="_blank"
+            >
+              <Triangle>&#9658;</Triangle>
+              &nbsp;
+              Preview
+            </Button>
+            <Button
+              color="primary"
+              variant="contained"
+              className={classes.button}
+              onClick={this.applyChanges}
+            >
+              Save
+            </Button>
+          </div>
         </Header>
         <Paper className={classes.paper}>
           <Tabs
