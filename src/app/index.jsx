@@ -16,7 +16,7 @@ import SOEditor from './SOEditor';
 import MapDetails from './MapDetails';
 import AdvancedNodeEditor from './AdvancedNodeEditor';
 
-import * as mapActions from './reducers/map/action';
+import * as wholeMapActions from '../middlewares/app/action';
 
 import type { IAppProps, IProtectedRouteProps } from './types';
 
@@ -43,13 +43,10 @@ export class App extends PureComponent<IAppProps> {
 
   handleStorageChange = (event: Event): void => {
     const { newValue } = event;
-    const { nodes, ACTION_GET_NODE } = this.props;
-    const { nodeId, mapId } = JSON.parse(newValue);
-    const isNodeFound = nodes.some(node => node.id === nodeId);
+    const { ACTION_SYNC_NODE_MIDDLEWARE } = this.props;
+    const { nodeId, mapId, actionType } = JSON.parse(newValue);
 
-    if (isNodeFound) {
-      ACTION_GET_NODE(mapId, nodeId);
-    }
+    ACTION_SYNC_NODE_MIDDLEWARE(mapId, nodeId, actionType);
   }
 
   render() {
@@ -86,8 +83,8 @@ const mapStateToProps = ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  ACTION_GET_NODE: (mapId: number, nodeId: number) => {
-    dispatch(mapActions.ACTION_GET_NODE(mapId, nodeId));
+  ACTION_SYNC_NODE_MIDDLEWARE: (mapId: number, nodeId: number, actionType: string) => {
+    dispatch(wholeMapActions.ACTION_SYNC_NODE_MIDDLEWARE(mapId, nodeId, actionType));
   },
 });
 

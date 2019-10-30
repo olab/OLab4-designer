@@ -14,11 +14,10 @@ import {
 } from './utils';
 import { EDGE_TYPES, NODE_CREATION_OFFSET } from './config';
 import { DND_CONTEXTS, MODALS_NAMES } from '../../Modals/config';
-import { ROOT_TYPE as ROOT_NODE_TYPE } from './Node/config';
-import { MESSAGES } from '../../reducers/notifications/config';
 
 import * as mapActions from '../../reducers/map/action';
 import * as modalActions from '../../Modals/action';
+import * as wholeMapActions from '../../../middlewares/app/action';
 import * as notificationActions from '../../reducers/notifications/action';
 
 import type { IGraphProps, IGraphState } from './types';
@@ -147,13 +146,9 @@ export class Graph extends Component<IGraphProps, IGraphState> {
   }
 
   onDeleteNode = (node: NodeType) => {
-    const { ACTION_DELETE_NODE, ACTION_NOTIFICATION_INFO } = this.props;
+    const { mapId, ACTION_DELETE_NODE_MIDDLEWARE } = this.props;
 
-    if (node.type === ROOT_NODE_TYPE) {
-      ACTION_NOTIFICATION_INFO(MESSAGES.ON_DELETE.NODE.INFO);
-    } else {
-      ACTION_DELETE_NODE(node.id);
-    }
+    ACTION_DELETE_NODE_MIDDLEWARE(mapId, node.id, node.type);
   }
 
   onDeleteEdge = (edge: EdgeType) => {
@@ -284,8 +279,8 @@ const mapDispatchToProps = dispatch => ({
   ACTION_CREATE_EDGE: (edge: EdgeType) => {
     dispatch(mapActions.ACTION_CREATE_EDGE(edge));
   },
-  ACTION_DELETE_NODE: (nodeId: number) => {
-    dispatch(mapActions.ACTION_DELETE_NODE(nodeId));
+  ACTION_DELETE_NODE_MIDDLEWARE: (mapId: number, nodeId: number, nodeType: number) => {
+    dispatch(wholeMapActions.ACTION_DELETE_NODE_MIDDLEWARE(mapId, nodeId, nodeType));
   },
   ACTION_UPDATE_NODE: (node: NodeType) => {
     dispatch(mapActions.ACTION_UPDATE_NODE(node));

@@ -4,17 +4,17 @@ import React from 'react';
 import type { Node as NodeType } from './Constructor/Graph/Node/types';
 
 export type IAppProps = {
-  mapId: number,
   history: any,
+  mapId: number,
   isAuth: boolean,
-  ACTION_GET_NODE: Function,
   nodes: Array<NodeType>,
+  ACTION_SYNC_NODE_MIDDLEWARE: Function,
 };
 
 export type IProtectedRouteProps = {
-  component: React.Node,
   path: string,
   isAuth: boolean,
   exact?: boolean,
   scopedObject?: string,
+  component: React.Node,
 };

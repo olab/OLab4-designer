@@ -34,3 +34,5 @@ export const LINK_STYLES = [
   'Type in text',
   'Buttons',
 ];
+
+export const KEY_S = 83;

@@ -3,7 +3,7 @@ import { ACTION_SAVE_MAP_TO_UNDO } from './action';
 import {
   CREATE_NODE,
   UPDATE_NODE,
-  DELETE_NODE,
+  DELETE_NODE_REQUESTED,
   CREATE_EDGE,
   CREATE_NODE_WITH_EDGE,
   UPDATE_EDGE,
@@ -14,7 +14,7 @@ const undoRedo = store => next => (action) => {
   if ([
     CREATE_NODE,
     UPDATE_NODE,
-    DELETE_NODE,
+    DELETE_NODE_REQUESTED,
     CREATE_NODE_WITH_EDGE,
     CREATE_EDGE,
     UPDATE_EDGE,

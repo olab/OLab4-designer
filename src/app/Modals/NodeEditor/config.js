@@ -1,5 +1,3 @@
-export const KEY_S = 83;
-
 export const EDITOR_OPTIONS = {
   toolbar: 'styleselect | bold italic strikethrough | image link | bullist numlist',
   style_formats: [
@@ -25,4 +23,8 @@ export const EDITOR_OPTIONS = {
     },
   ],
   statusbar: false,
+};
+
+export default {
+  EDITOR_OPTIONS,
 };

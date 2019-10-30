@@ -117,8 +117,8 @@ class Home extends PureComponent<IHomeProps, IHomeState> {
   }
 
   handleMapItemClick = (scopeLevel: ScopeLevelType): void => {
-    const { ACTION_GET_WHOLE_MAP_REQUESTED } = this.props;
-    ACTION_GET_WHOLE_MAP_REQUESTED(scopeLevel.id);
+    const { ACTION_GET_WHOLE_MAP_MIDDLEWARE } = this.props;
+    ACTION_GET_WHOLE_MAP_MIDDLEWARE(scopeLevel.id);
 
     this.toggleDisableButtons();
   }
@@ -193,8 +193,8 @@ const mapDispatchToProps = dispatch => ({
   ACTION_CREATE_MAP_REQUESTED: (templateId?: number) => {
     dispatch(mapActions.ACTION_CREATE_MAP_REQUESTED(templateId));
   },
-  ACTION_GET_WHOLE_MAP_REQUESTED: (mapId: string) => {
-    dispatch(wholeMapActions.ACTION_GET_WHOLE_MAP_REQUESTED(mapId));
+  ACTION_GET_WHOLE_MAP_MIDDLEWARE: (mapId: number) => {
+    dispatch(wholeMapActions.ACTION_GET_WHOLE_MAP_MIDDLEWARE(mapId));
   },
   ACTION_TEMPLATES_REQUESTED: () => {
     dispatch(templatesActions.ACTION_TEMPLATES_REQUESTED());

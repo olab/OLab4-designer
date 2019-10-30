@@ -5,7 +5,9 @@ import {
   SELECT_NODE,
   CREATE_NODE,
   UPDATE_NODE,
-  DELETE_NODE,
+  DELETE_NODE_REQUESTED,
+  DELETE_NODE_FULLFILLED,
+  DELETE_NODE_SYNC,
   FOCUS_NODE,
   UNFOCUS_NODE,
   SELECT_EDGE,
@@ -27,6 +29,7 @@ import {
   CREATE_MAP_FAILED,
   CREATE_MAP_SUCCEEDED,
   CREATE_MAP_REQUESTED,
+  GET_NODE_REQUESTED,
   GET_NODE_FULLFILLED,
 } from './types';
 import {
@@ -43,6 +46,7 @@ export const initialMapState: MapType = {
   redo: [],
   isFetching: false,
   isUpdating: false,
+  isDeleting: false,
 };
 
 const map = (state: MapType = initialMapState, action: MapActions) => {
@@ -94,6 +98,7 @@ const map = (state: MapType = initialMapState, action: MapActions) => {
         ],
       };
     }
+    case GET_NODE_REQUESTED:
     case GET_MAP_REQUESTED:
     case CREATE_MAP_REQUESTED:
     case EXTEND_MAP_REQUESTED:
@@ -112,6 +117,11 @@ const map = (state: MapType = initialMapState, action: MapActions) => {
       return {
         ...state,
         isFetching: false,
+      };
+    case DELETE_NODE_FULLFILLED:
+      return {
+        ...state,
+        isDeleting: false,
       };
     case UPDATE_NODE_GRID_FAILED:
       return {
@@ -150,6 +160,7 @@ const map = (state: MapType = initialMapState, action: MapActions) => {
           node,
           ...nodes.slice(index + 1),
         ],
+        isFetching: false,
       };
     }
     case UPDATE_NODE_GRID_SUCCEEDED: {
@@ -210,7 +221,7 @@ const map = (state: MapType = initialMapState, action: MapActions) => {
         edges,
       };
     }
-    case DELETE_NODE: {
+    case DELETE_NODE_REQUESTED: {
       const { nodes, ...restState } = state;
       const { nodeIndex, edges } = action;
 
@@ -221,6 +232,20 @@ const map = (state: MapType = initialMapState, action: MapActions) => {
           ...nodes.slice(nodeIndex + 1),
         ],
         edges,
+        isDeleting: true,
+      };
+    }
+    case DELETE_NODE_SYNC: {
+      const { nodes, ...restState } = state;
+      const { edges, nodeIndex } = action;
+
+      return {
+        ...restState,
+        edges,
+        nodes: [
+          ...nodes.slice(0, nodeIndex),
+          ...nodes.slice(nodeIndex + 1),
+        ],
       };
     }
     case CREATE_NODE_WITH_EDGE: {

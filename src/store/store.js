@@ -7,6 +7,8 @@ import createSagaMiddleware from 'redux-saga';
 import { createBrowserHistory } from 'history';
 
 import undoRedoMiddleware from '../middlewares/core/undoRedo';
+import syncNodeMiddleware from '../middlewares/app/syncNode';
+import deleteNodeMiddleware from '../middlewares/app/deleteNode';
 import getWholeMapMiddleware from '../middlewares/app/getWholeMap';
 
 import config from './storeConfig';
@@ -25,6 +27,8 @@ const middleware = [
   routerMiddleware(history),
   undoRedoMiddleware,
   getWholeMapMiddleware,
+  syncNodeMiddleware,
+  deleteNodeMiddleware,
 ];
 
 if (process.env.NODE_ENV === 'development') {

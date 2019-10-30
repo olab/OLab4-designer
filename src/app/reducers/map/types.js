@@ -19,11 +19,12 @@ export type Map = {
   redo: Array<MapItem>,
   isFetching: boolean,
   isUpdating: boolean,
+  isDeleting: boolean,
 };
 
-const GET_NODE = 'GET_NODE';
-type GetNode = {
-  type: 'GET_NODE',
+const GET_NODE_REQUESTED = 'GET_NODE_REQUESTED';
+type GetNodeRequested = {
+  type: 'GET_NODE_REQUESTED',
   mapId: number,
   nodeId: number,
 };
@@ -70,12 +71,25 @@ type UpdateNode = {
   isShowNotification: boolean,
 };
 
-const DELETE_NODE = 'DELETE_NODE';
-type DeleteNode = {
-  type: 'DELETE_NODE',
+const DELETE_NODE_REQUESTED = 'DELETE_NODE_REQUESTED';
+type DeleteNodeRequested = {
+  type: 'DELETE_NODE_REQUESTED',
+  mapId?: number,
   nodeId: number,
   nodeIndex: number,
   edges: Array<EdgeType>,
+};
+
+const DELETE_NODE_FULLFILLED = 'DELETE_NODE_FULLFILLED';
+type DeleteNodeFullFilled = {
+  type: 'DELETE_NODE_FULLFILLED',
+};
+
+const DELETE_NODE_SYNC = 'DELETE_NODE_SYNC';
+type DeleteNodeSync = {
+  type: 'DELETE_NODE_SYNC',
+  edges: Array<EdgeType>,
+  nodeIndex: number,
 };
 
 const EXCHANGE_NODE_ID = 'EXCHANGE_NODE_ID';
@@ -203,7 +217,7 @@ type CreateMapFromTemplateRequested = {
 };
 
 export type MapActions = SelectNode | SelectEdge |
-  CreateNode | UpdateNode | DeleteNode |
+  CreateNode | UpdateNode | DeleteNodeRequested |
   CreateEdge | DeleteEdge | UpdateEdge |
   UndoMap | RedoMap | ExchangeNodeId |
   GetMapSucceeded | GetMapFailed | GetMapRequested |
@@ -211,17 +225,20 @@ export type MapActions = SelectNode | SelectEdge |
   CreateMapFromTemplateFailed | CreateNodeWithEdge | ExchangeEdgeId |
   ExtendMapRequested | ExtendMapFailed | ExtendMapSucceeded |
   UpdateEdgeVisual | FocusNode | UnfocusNode |
-  GetNode | GetNodeFullfilled;
+  GetNodeRequested | GetNodeFullfilled | DeleteNodeFullFilled |
+  DeleteNodeSync;
 
 export {
-  GET_NODE,
+  GET_NODE_REQUESTED,
   GET_NODE_FULLFILLED,
   FOCUS_NODE,
   UNFOCUS_NODE,
   SELECT_NODE,
   CREATE_NODE,
   UPDATE_NODE,
-  DELETE_NODE,
+  DELETE_NODE_SYNC,
+  DELETE_NODE_REQUESTED,
+  DELETE_NODE_FULLFILLED,
   EXCHANGE_NODE_ID,
   EXCHANGE_EDGE_ID,
   SELECT_EDGE,

@@ -14,10 +14,10 @@ export type NodeGridProps = {
     [props: string]: any,
   },
   mapId: string,
-  mapIdUrl: string,
+  mapIdUrl: number,
   nodes: Array<FullNode>,
   isFetching: boolean,
-  ACTION_GET_WHOLE_MAP_REQUESTED: Function,
+  ACTION_GET_WHOLE_MAP_MIDDLEWARE: Function,
   ACTION_UPDATE_NODE_GRID_REQUESTED: Function,
 };
 

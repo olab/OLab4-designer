@@ -5,12 +5,14 @@ import store from '../../../store/store';
 import type { Node as NodeType } from '../../Constructor/Graph/Node/types';
 import type { Edge as EdgeType } from '../../Constructor/Graph/Edge/types';
 import {
-  GET_NODE,
+  GET_NODE_REQUESTED,
   GET_NODE_FULLFILLED,
   SELECT_NODE,
   CREATE_NODE,
   UPDATE_NODE,
-  DELETE_NODE,
+  DELETE_NODE_REQUESTED,
+  DELETE_NODE_FULLFILLED,
+  DELETE_NODE_SYNC,
   SELECT_EDGE,
   CREATE_EDGE,
   DELETE_EDGE,
@@ -34,8 +36,8 @@ import {
   CREATE_MAP_REQUESTED,
 } from './types';
 
-export const ACTION_GET_NODE = (mapId: number, nodeId: number) => ({
-  type: GET_NODE,
+export const ACTION_GET_NODE_REQUESTED = (mapId: number, nodeId: number) => ({
+  type: GET_NODE_REQUESTED,
   mapId,
   nodeId,
 });
@@ -240,7 +242,10 @@ export const ACTION_UPDATE_NODE = (
   };
 };
 
-export const ACTION_DELETE_NODE = (nodeId: number) => {
+export const ACTION_DELETE_NODE_REQUESTED = (
+  nodeId: number,
+  mapId?: number,
+) => {
   const { map: { nodes, edges } } = store.getState();
   const nodeIndex = nodes.findIndex(({ id }) => id === nodeId);
   const filteredEdges = edges.filter(({ source, target }) => (
@@ -248,11 +253,32 @@ export const ACTION_DELETE_NODE = (nodeId: number) => {
   ));
 
   return {
-    type: DELETE_NODE,
+    type: DELETE_NODE_REQUESTED,
+    edges: filteredEdges,
+    mapId,
     nodeId,
     nodeIndex,
-    edges: filteredEdges,
   };
+};
+
+export const ACTION_DELETE_NODE_FULLFILLED = () => ({
+  type: DELETE_NODE_FULLFILLED,
+});
+
+export const ACTION_DELETE_NODE_SYNC = (
+  nodeId: number,
+) => {
+  const { map: { edges, nodes } } = store.getState();
+  const nodeIndex = nodes.findIndex(({ id }) => id === nodeId);
+  const filteredEdges = edges.filter(({ source, target }) => (
+    source !== nodeId && target !== nodeId
+  ));
+
+  return ({
+    type: DELETE_NODE_SYNC,
+    edges: filteredEdges,
+    nodeIndex,
+  });
 };
 
 export const ACTION_EXCHANGE_NODE_ID = (oldNodeId: number | string, newNodeId: number) => {

@@ -10,10 +10,12 @@ import {
 import MainTab from './MainTab';
 import SecondaryTab from './SecondaryTab';
 
-import * as mapActions from '../reducers/map/action';
+import CircularSpinnerWithText from '../../shared/components/CircularSpinnerWithText';
 
-import { KEY_S } from '../Modals/NodeEditor/config';
-import { LINK_STYLES } from '../config';
+import * as mapActions from '../reducers/map/action';
+import * as wholeMapActions from '../../middlewares/app/action';
+
+import { LINK_STYLES, KEY_S } from '../config';
 import { NODE_PRIORITIES } from './SecondaryTab/config';
 import {
   ROOT_TYPE as ROOT_NODE_TYPE,
@@ -24,16 +26,21 @@ import type { AdvancedNodeEditorProps as IProps } from './types';
 import type { Node as NodeType } from '../Constructor/Graph/Node/types';
 
 import styles, {
-  TabContainer, Container, ScrollingContainer, Title, Header, Triangle,
+  TabContainer, Container, ScrollingContainer, Title,
+  Header, ControlsDeleteContainer,
 } from './styles';
+import { Triangle } from '../Modals/NodeEditor/styles';
 
 class AdvancedNodeEditor extends PureComponent<IProps, NodeType> {
   tabNumber: number = 0;
 
   constructor(props) {
     super(props);
-    const { match: { params: { mapId, nodeId } }, ACTION_GET_NODE, node } = this.props;
-    ACTION_GET_NODE(mapId, nodeId);
+    const {
+      mapId, nodeId, node, ACTION_GET_NODE_REQUESTED,
+    } = this.props;
+
+    ACTION_GET_NODE_REQUESTED(mapId, nodeId);
 
     this.state = { ...node };
   }
@@ -47,22 +54,38 @@ class AdvancedNodeEditor extends PureComponent<IProps, NodeType> {
   }
 
   componentDidUpdate(prevProps: IProps) {
-    const { match: { params: { nodeId: nodeIdPage } }, node } = this.props;
-    const { node: prevNode } = prevProps;
-    const isDataChanged = node.id === Number(nodeIdPage) && prevNode !== node;
+    const {
+      history, nodeId: nodeIdPage, mapId, node, isDeleting,
+    } = this.props;
+    const { node: prevNode, isDeleting: isDeletingPrevious } = prevProps;
+    const isDataChanged = node && (node.id === nodeIdPage && prevNode !== node);
+    const shouldRedirectOnMap = isDeletingPrevious && !isDeleting;
+    const isNodeDeleted = !node && nodeIdPage;
 
     if (isDataChanged) {
       // eslint-disable-next-line react/no-did-update-set-state
       this.setState({ ...node });
     }
+
+    if (shouldRedirectOnMap || isNodeDeleted) {
+      history.push(`/${mapId}`, { isFromANE: true });
+    }
   }
 
   applyChanges = (): void => {
-    const { match: { params: { mapId } }, ACTION_UPDATE_NODE } = this.props;
+    const { mapId, ACTION_UPDATE_NODE } = this.props;
     const updatedNode = { ...this.state };
 
     ACTION_UPDATE_NODE(updatedNode, true, mapId);
   };
+
+  deleteNode = (): void => {
+    const {
+      mapId, node: { id: nodeId, type: nodeType }, ACTION_DELETE_NODE_MIDDLEWARE,
+    } = this.props;
+
+    ACTION_DELETE_NODE_MIDDLEWARE(mapId, nodeId, nodeType);
+  }
 
   handleCheckBoxChange = (e: Event, checkedVal: boolean, name: string): void => {
     if (name === 'type') {
@@ -86,7 +109,7 @@ class AdvancedNodeEditor extends PureComponent<IProps, NodeType> {
     this.setState({ title });
   };
 
-  handleEditorChange = (text: string, { id: editorId }: { editorId: string }): void => {
+  handleEditorChange = (text: string, { id: editorId }: { id: string }): void => {
     this.setState({ [editorId]: text });
   };
 
@@ -112,15 +135,31 @@ class AdvancedNodeEditor extends PureComponent<IProps, NodeType> {
       isVisitOnce = false, isEnd, type, title, text, linkStyle,
       info, annotation, priorityId,
     } = this.state;
-    const { classes, match: { params: { mapId, nodeId } } } = this.props;
+    const {
+      classes, mapId, nodeId, node,
+    } = this.props;
+
+    if (!node) {
+      return <CircularSpinnerWithText text="Data is being fetched..." large centered />;
+    }
 
     return (
       <Container>
         <Header>
-          <Title>Advanced Node Editor</Title>
+          <ControlsDeleteContainer>
+            <Title>Advanced Node Editor</Title>
+            <Button
+              color="default"
+              variant="contained"
+              className={classes.button}
+              onClick={this.deleteNode}
+            >
+              Delete
+            </Button>
+          </ControlsDeleteContainer>
           <div>
             <Button
-              color="primary"
+              color="default"
               variant="contained"
               className={classes.button}
               component={Link}
@@ -128,7 +167,6 @@ class AdvancedNodeEditor extends PureComponent<IProps, NodeType> {
               target="_blank"
             >
               <Triangle>&#9658;</Triangle>
-              &nbsp;
               Preview
             </Button>
             <Button
@@ -184,11 +222,20 @@ class AdvancedNodeEditor extends PureComponent<IProps, NodeType> {
   }
 }
 
-const mapStateToProps = ({ map: { nodes } }) => ({ node: nodes[0] });
+const mapStateToProps = ({
+  map: { nodes, isDeleting },
+}, {
+  match: { params: { mapId, nodeId } },
+}) => ({
+  node: nodes[0],
+  mapId: Number(mapId),
+  nodeId: Number(nodeId),
+  isDeleting,
+});
 
 const mapDispatchToProps = dispatch => ({
-  ACTION_GET_NODE: (mapId: number, nodeId: number) => {
-    dispatch(mapActions.ACTION_GET_NODE(mapId, nodeId));
+  ACTION_GET_NODE_REQUESTED: (mapId: number, nodeId: number) => {
+    dispatch(mapActions.ACTION_GET_NODE_REQUESTED(mapId, nodeId));
   },
   ACTION_UPDATE_NODE: (
     nodeData: NodeType,
@@ -196,6 +243,9 @@ const mapDispatchToProps = dispatch => ({
     mapIdFromURL: number,
   ) => {
     dispatch(mapActions.ACTION_UPDATE_NODE(nodeData, isShowNotification, mapIdFromURL));
+  },
+  ACTION_DELETE_NODE_MIDDLEWARE: (mapId: number, nodeId: number, nodeType: number) => {
+    dispatch(wholeMapActions.ACTION_DELETE_NODE_MIDDLEWARE(mapId, nodeId, nodeType));
   },
 });
 

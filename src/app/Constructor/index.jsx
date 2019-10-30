@@ -73,11 +73,12 @@ export class Constructor extends PureComponent<IConstructorProps, IConstructorSt
   validateUrl = (): void => {
     const {
       mapId, history, location, mapIdUrl, nodes,
-      ACTION_GET_MAP_REQUESTED, ACTION_GET_WHOLE_MAP_REQUESTED,
+      ACTION_GET_MAP_REQUESTED, ACTION_GET_WHOLE_MAP_MIDDLEWARE,
     } = this.props;
     const isPageRefreshed = !mapId && mapIdUrl;
     const isPageNotFound = !isPageRefreshed && !mapIdUrl;
     const isFromHomePage = location.state && location.state.isFromHome;
+    const isFromANEPage = location.state && location.state.isFromANE;
 
     if (isPageNotFound) {
       history.push('/404');
@@ -88,10 +89,10 @@ export class Constructor extends PureComponent<IConstructorProps, IConstructorSt
     }
 
     if (isPageRefreshed) {
-      ACTION_GET_WHOLE_MAP_REQUESTED(mapIdUrl);
+      ACTION_GET_WHOLE_MAP_MIDDLEWARE(mapIdUrl);
     }
 
-    if (!isFromHomePage && !nodes.length) {
+    if (!isFromHomePage && !nodes.length && !isFromANEPage) {
       ACTION_GET_MAP_REQUESTED(mapIdUrl);
     }
   }
@@ -210,8 +211,8 @@ const mapDispatchToProps = dispatch => ({
   ACTION_GET_MAP_REQUESTED: (mapId: string) => {
     dispatch(mapActions.ACTION_GET_MAP_REQUESTED(mapId));
   },
-  ACTION_GET_WHOLE_MAP_REQUESTED: (mapId: string) => {
-    dispatch(wholeMapActions.ACTION_GET_WHOLE_MAP_REQUESTED(mapId));
+  ACTION_GET_WHOLE_MAP_MIDDLEWARE: (mapId: number) => {
+    dispatch(wholeMapActions.ACTION_GET_WHOLE_MAP_MIDDLEWARE(mapId));
   },
   ACTION_EXTEND_MAP_REQUESTED: (templateId: number) => {
     dispatch(mapActions.ACTION_EXTEND_MAP_REQUESTED(templateId));

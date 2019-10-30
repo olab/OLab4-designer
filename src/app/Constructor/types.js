@@ -4,19 +4,22 @@ import type { Edge as EdgeType } from './Graph/Edge/types';
 import type { Template as TemplateType } from '../reducers/templates/types';
 
 export type IConstructorProps = {
-  mapId: string,
-  mapName: string,
-  nodes: Array<NodeType>,
-  edges: Array<EdgeType>,
-  isShowSOPicker: boolean,
   match: any,
   history: any,
+  location: any,
+  mapId: string,
+  mapName: string,
+  mapIdUrl: number,
+  isShowSOPicker: boolean,
+  isTemplatesFetching: boolean,
+  nodes: Array<NodeType>,
+  edges: Array<EdgeType>,
+  templates: Array<TemplateType>,
+  ACTION_GET_MAP_REQUESTED: Function,
   ACTION_TEMPLATES_REQUESTED: Function,
   ACTION_EXTEND_MAP_REQUESTED: Function,
-  ACTION_GET_WHOLE_MAP_REQUESTED: Function,
   ACTION_TEMPLATE_UPLOAD_REQUESTED: Function,
-  templates: Array<TemplateType>,
-  isTemplatesFetching: boolean,
+  ACTION_GET_WHOLE_MAP_MIDDLEWARE: Function,
 };
 export type IConstructorState = {
   selectedLink: EdgeType | null,

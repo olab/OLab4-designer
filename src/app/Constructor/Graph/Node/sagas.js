@@ -8,15 +8,23 @@ import {
 import generateTmpId from '../../../../helpers/generateTmpId';
 
 import {
-  GET_NODE, CREATE_NODE, UPDATE_NODE, DELETE_NODE, CREATE_NODE_WITH_EDGE,
+  CREATE_NODE,
+  UPDATE_NODE,
+  GET_NODE_REQUESTED,
+  DELETE_NODE_REQUESTED,
+  CREATE_NODE_WITH_EDGE,
 } from '../../../reducers/map/types';
 
 import {
   ACTION_EXCHANGE_NODE_ID,
   ACTION_EXCHANGE_EDGE_ID,
   ACTION_GET_NODE_FULLFILLED,
+  ACTION_DELETE_NODE_FULLFILLED,
 } from '../../../reducers/map/action';
-import { ACTION_NOTIFICATION_ERROR, ACTION_NOTIFICATION_SUCCESS } from '../../../reducers/notifications/action';
+import {
+  ACTION_NOTIFICATION_ERROR,
+  ACTION_NOTIFICATION_SUCCESS,
+} from '../../../reducers/notifications/action';
 
 import { MESSAGES, ERROR_MESSAGES } from '../../../reducers/notifications/config';
 
@@ -66,7 +74,9 @@ function* createNodeWithEdgeSaga({
   }
 }
 
-function* updateNodeSaga({ node, isShowNotification, mapIdFromURL }) {
+function* updateNodeSaga({
+  node, isShowNotification, mapIdFromURL, type: actionType,
+}) {
   try {
     const mapIdFromStore = yield select(({ mapDetails }) => mapDetails.id);
     const mapId = mapIdFromURL || mapIdFromStore;
@@ -77,6 +87,7 @@ function* updateNodeSaga({ node, isShowNotification, mapIdFromURL }) {
       id: generateTmpId(),
       nodeId: node.id,
       mapId,
+      actionType,
     };
     const editorPayloadString = JSON.stringify(editorPayload);
     localStorage.setItem('node', editorPayloadString);
@@ -98,24 +109,35 @@ function* updateNodeSaga({ node, isShowNotification, mapIdFromURL }) {
   }
 }
 
-function* deleteNodeSaga({ nodeId }) {
+function* deleteNodeSaga({ nodeId, mapId: mapIdFromURL, type: actionType }) {
   try {
-    const mapId = yield select(({ mapDetails }) => mapDetails.id);
-
+    const mapIdFromStore = yield select(({ mapDetails }) => mapDetails.id);
+    const mapId = mapIdFromStore || mapIdFromURL;
     yield call(deleteNode, mapId, nodeId);
+
+    const editorPayload = {
+      id: generateTmpId(),
+      mapId,
+      nodeId,
+      actionType,
+    };
+
+    const editorPayloadString = JSON.stringify(editorPayload);
+    localStorage.setItem('node', editorPayloadString);
   } catch (error) {
     const { response, message } = error;
     const errorMessage = response ? response.statusText : message;
 
     yield put(ACTION_NOTIFICATION_ERROR(errorMessage));
   }
+  yield put(ACTION_DELETE_NODE_FULLFILLED());
 }
 
 function* nodeSaga() {
-  yield takeEvery(GET_NODE, getNodeSaga);
+  yield takeEvery(GET_NODE_REQUESTED, getNodeSaga);
   yield takeEvery(CREATE_NODE, createNodeSaga);
   yield takeEvery(UPDATE_NODE, updateNodeSaga);
-  yield takeEvery(DELETE_NODE, deleteNodeSaga);
+  yield takeEvery(DELETE_NODE_REQUESTED, deleteNodeSaga);
   yield takeEvery(CREATE_NODE_WITH_EDGE, createNodeWithEdgeSaga);
 }
 

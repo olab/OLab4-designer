@@ -15,7 +15,7 @@ export type IHomeProps = {
   ACTION_MAPS_REQUESTED: Function,
   ACTION_TEMPLATES_REQUESTED: Function,
   ACTION_CREATE_MAP_REQUESTED: Function,
-  ACTION_GET_WHOLE_MAP_REQUESTED: Function,
+  ACTION_GET_WHOLE_MAP_MIDDLEWARE: Function,
   templates: Array<TemplateType>,
   isTemplatesFetching: boolean,
 };

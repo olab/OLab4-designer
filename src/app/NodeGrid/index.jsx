@@ -15,7 +15,7 @@ import { getNodesReduced } from './utils';
 import { isBoolean } from '../../helpers/dataTypes';
 
 import { FIELDS_TO_SEARCH } from './config';
-import { KEY_S } from '../Modals/NodeEditor/config';
+import { KEY_S } from '../config';
 
 import type { NodeGridProps as IProps, NodeGridState as IState, Node as NodeType } from './types';
 
@@ -27,12 +27,12 @@ class NodeGrid extends Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
     const {
-      mapId, mapIdUrl, nodes, ACTION_GET_WHOLE_MAP_REQUESTED,
+      mapId, mapIdUrl, nodes, ACTION_GET_WHOLE_MAP_MIDDLEWARE,
     } = props;
     const isPageRefreshed = mapIdUrl && !mapId;
 
     if (isPageRefreshed) {
-      ACTION_GET_WHOLE_MAP_REQUESTED(Number(mapIdUrl));
+      ACTION_GET_WHOLE_MAP_MIDDLEWARE(mapIdUrl);
     }
 
     this.state = getNodesReduced(nodes);
@@ -61,7 +61,7 @@ class NodeGrid extends Component<IProps, IState> {
     this.setState({ nodes });
   };
 
-  handleModalShow = (isClosed: boolean | undefined): void => {
+  handleModalShow = (isClosed: boolean | void): void => {
     this.isModalOpen = isBoolean(isClosed)
       ? isClosed
       : !this.isModalOpen;
@@ -150,8 +150,8 @@ const mapStateToProps = (
 });
 
 const mapDispatchToProps = dispatch => ({
-  ACTION_GET_WHOLE_MAP_REQUESTED: (mapId: number) => {
-    dispatch(wholeMapActions.ACTION_GET_WHOLE_MAP_REQUESTED(mapId));
+  ACTION_GET_WHOLE_MAP_MIDDLEWARE: (mapId: number) => {
+    dispatch(wholeMapActions.ACTION_GET_WHOLE_MAP_MIDDLEWARE(mapId));
   },
   ACTION_UPDATE_NODE_GRID_REQUESTED: (nodes: Array<NodeType>) => {
     dispatch(nodeGridActions.ACTION_UPDATE_NODE_GRID_REQUESTED(nodes));

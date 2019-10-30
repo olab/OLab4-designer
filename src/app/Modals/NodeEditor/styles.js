@@ -1,9 +1,8 @@
 import styled from 'styled-components';
 
 export const Triangle = styled.div`
-  position: relative;
-  bottom: 1.5px;
-  margin-right: -4px;
+  margin-bottom: 2.5px;
+  margin-right: 4px;
 `;
 
 const styles = {
@@ -15,7 +14,11 @@ const styles = {
     marginLeft: 9,
   },
   previewButton: {
-    marginRight: 12,
+    marginRight: 8,
+  },
+  deleteButton: {
+    position: 'absolute',
+    left: 16,
   },
 };
 

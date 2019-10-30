@@ -7,22 +7,25 @@ import { withStyles } from '@material-ui/core/styles';
 import { Button } from '@material-ui/core';
 import isEqual from 'lodash.isequal';
 
-import TextEditor from '../../../shared/components/TextEditor';
-import OutlinedInput from '../../../shared/components/OutlinedInput';
-import ColorPicker from '../../../shared/components/ColorPicker';
 import Switch from '../../../shared/components/Switch';
-import OutlinedSelect from '../../../shared/components/OutlinedSelect';
 import ScaleIcon from '../../../shared/assets/icons/cross.svg';
+import TextEditor from '../../../shared/components/TextEditor';
+import ColorPicker from '../../../shared/components/ColorPicker';
+import OutlinedInput from '../../../shared/components/OutlinedInput';
+import OutlinedSelect from '../../../shared/components/OutlinedSelect';
 
-import type { Node as NodeType } from '../../Constructor/Graph/Node/types';
-import type { INodeEditorProps, INodeEditorState } from './types';
+import { spec, collect } from '../utils';
 
 import * as modalActions from '../action';
 import * as mapActions from '../../reducers/map/action';
-import { spec, collect } from '../utils';
-import { KEY_S, EDITOR_OPTIONS } from './config';
+import * as wholeMapActions from '../../../middlewares/app/action';
+
+import { EDITOR_OPTIONS } from './config';
+import { LINK_STYLES, KEY_S } from '../../config';
 import { DND_CONTEXTS, MODALS_NAMES } from '../config';
-import { LINK_STYLES } from '../../config';
+
+import type { INodeEditorProps, INodeEditorState } from './types';
+import type { Node as NodeType } from '../../Constructor/Graph/Node/types';
 
 import {
   NodeEditorWrapper, ModalHeader, ModalBody,
@@ -106,6 +109,16 @@ class NodeEditor extends PureComponent<INodeEditorProps, INodeEditorState> {
   applyChanges = (): void => {
     const { ACTION_UPDATE_NODE } = this.props;
     ACTION_UPDATE_NODE(this.state, true);
+  }
+
+  deleteNode = (): void => {
+    const {
+      mapId,
+      node: { id: nodeId, type: nodeType },
+      ACTION_DELETE_NODE_MIDDLEWARE,
+    } = this.props;
+
+    ACTION_DELETE_NODE_MIDDLEWARE(mapId, nodeId, nodeType);
   }
 
   handleKeyPressed = (e: KeyboardEvent): void => {
@@ -221,14 +234,21 @@ class NodeEditor extends PureComponent<INodeEditorProps, INodeEditorState> {
         <ModalFooter>
           <Button
             variant="contained"
-            color="primary"
+            color="default"
+            onClick={this.deleteNode}
+            className={classes.deleteButton}
+          >
+            Delete
+          </Button>
+          <Button
+            variant="contained"
+            color="default"
             component={Link}
             className={classes.previewButton}
             to={`/player/olab/play#${mapId}:${nodeId}`}
             target="_blank"
           >
             <Triangle>&#9658;</Triangle>
-            &nbsp;
             Preview
           </Button>
           <Button
@@ -267,6 +287,9 @@ const mapDispatchToProps = dispatch => ({
     dispatch(modalActions.ACTION_TOGGLE_MODAL(
       MODALS_NAMES.SO_PICKER_MODAL,
     ));
+  },
+  ACTION_DELETE_NODE_MIDDLEWARE: (mapId: number, nodeId: number, nodeType: number) => {
+    dispatch(wholeMapActions.ACTION_DELETE_NODE_MIDDLEWARE(mapId, nodeId, nodeType));
   },
 });
 
