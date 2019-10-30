@@ -8,7 +8,7 @@ import type {
 export type ISOPickerProps = {
   ...ModalPositionType,
   ACTION_CLOSE_MODAL: Function,
-  ACTION_SET_POSITION_MODAL: Function,
+  ACTION_ADJUST_POSITION_MODAL: Function,
   ACTION_SCOPED_OBJECTS_REQUESTED: Function,
   connectDragSource: Function,
   connectDragPreview: Function,

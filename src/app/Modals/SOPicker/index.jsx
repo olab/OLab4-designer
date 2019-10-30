@@ -87,9 +87,9 @@ export class SOPicker extends PureComponent<ISOPickerProps, ISOPickerState> {
     ACTION_CLOSE_MODAL();
   }
 
-  handleModalMove = (x: number, y: number): void => {
-    const { ACTION_SET_POSITION_MODAL } = this.props;
-    ACTION_SET_POSITION_MODAL(x, y);
+  handleModalMove = (offsetX: number, offsetY: number): void => {
+    const { ACTION_ADJUST_POSITION_MODAL } = this.props;
+    ACTION_ADJUST_POSITION_MODAL(offsetX, offsetY);
   }
 
   handleTypeChange = (e: Event): void => {
@@ -247,11 +247,11 @@ const mapDispatchToProps = dispatch => ({
       MODALS_NAMES.SO_PICKER_MODAL,
     ));
   },
-  ACTION_SET_POSITION_MODAL: (x: number, y: number) => {
-    dispatch(modalActions.ACTION_SET_POSITION_MODAL(
+  ACTION_ADJUST_POSITION_MODAL: (offsetX: number, offsetY: number) => {
+    dispatch(modalActions.ACTION_ADJUST_POSITION_MODAL(
       MODALS_NAMES.SO_PICKER_MODAL,
-      x,
-      y,
+      offsetX,
+      offsetY,
     ));
   },
   ACTION_SCOPED_OBJECTS_REQUESTED: () => {

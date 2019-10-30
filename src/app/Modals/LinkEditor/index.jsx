@@ -97,9 +97,9 @@ class LinkEditor extends PureComponent<ILinkEditorProps, ILinkEditorState> {
     ACTION_DESELECT_EDGE();
   }
 
-  handleModalMove = (x: number, y: number): void => {
-    const { ACTION_SET_POSITION_MODAL } = this.props;
-    ACTION_SET_POSITION_MODAL(x, y);
+  handleModalMove = (offsetX: number, offsetY: number): void => {
+    const { ACTION_ADJUST_POSITION_MODAL } = this.props;
+    ACTION_ADJUST_POSITION_MODAL(offsetX, offsetY);
   }
 
   handleSwitchChange = (e: Event, checked: boolean, name: string): void => {
@@ -296,11 +296,11 @@ const mapDispatchToProps = dispatch => ({
   ACTION_DESELECT_EDGE: () => {
     dispatch(mapActions.ACTION_SELECT_EDGE(null));
   },
-  ACTION_SET_POSITION_MODAL: (x: number, y: number) => {
-    dispatch(modalActions.ACTION_SET_POSITION_MODAL(
+  ACTION_ADJUST_POSITION_MODAL: (offsetX: number, offsetY: number) => {
+    dispatch(modalActions.ACTION_ADJUST_POSITION_MODAL(
       MODALS_NAMES.LINK_EDITOR_MODAL,
-      x,
-      y,
+      offsetX,
+      offsetY,
     ));
   },
 });

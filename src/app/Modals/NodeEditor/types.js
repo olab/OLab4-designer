@@ -15,7 +15,7 @@ export type INodeEditorProps = {
   connectDragPreview: Function;
   ACTION_UPDATE_NODE: Function;
   ACTION_UNFOCUS_NODE: Function;
-  ACTION_SET_POSITION_MODAL: Function;
+  ACTION_ADJUST_POSITION_MODAL: Function;
   ACTION_TOGGLE_SO_PICKER_MODAL: Function;
 };
 

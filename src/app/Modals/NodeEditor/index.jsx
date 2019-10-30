@@ -93,9 +93,9 @@ class NodeEditor extends PureComponent<INodeEditorProps, INodeEditorState> {
     this.setState({ isVisitOnce });
   }
 
-  handleModalMove = (x: number, y: number): void => {
-    const { ACTION_SET_POSITION_MODAL } = this.props;
-    ACTION_SET_POSITION_MODAL(x, y);
+  handleModalMove = (offsetX: number, offsetY: number): void => {
+    const { ACTION_ADJUST_POSITION_MODAL } = this.props;
+    ACTION_ADJUST_POSITION_MODAL(offsetX, offsetY);
   }
 
   toggleScopedObjectModal = (): void => {
@@ -244,11 +244,11 @@ const mapDispatchToProps = dispatch => ({
   ACTION_UNFOCUS_NODE: (nodeId: number) => {
     dispatch(mapActions.ACTION_UNFOCUS_NODE(nodeId));
   },
-  ACTION_SET_POSITION_MODAL: (x: number, y: number) => {
-    dispatch(modalActions.ACTION_SET_POSITION_MODAL(
+  ACTION_ADJUST_POSITION_MODAL: (offsetX: number, offsetY: number) => {
+    dispatch(modalActions.ACTION_ADJUST_POSITION_MODAL(
       MODALS_NAMES.NODE_EDITOR_MODAL,
-      x,
-      y,
+      offsetX,
+      offsetY,
     ));
   },
   ACTION_TOGGLE_SO_PICKER_MODAL: () => {

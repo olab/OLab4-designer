@@ -46,9 +46,8 @@ describe('<SOPicker />', () => {
   });
 
   describe('handleCloseModal method', () => {
-      output.instance().handleCloseModal();
-      expect(ACTION_CLOSE_MODAL).toBeCalled();
-    });
+    output.instance().handleCloseModal();
+    expect(ACTION_CLOSE_MODAL).toBeCalled();
   });
 
   describe('handleModalMove method', () => {

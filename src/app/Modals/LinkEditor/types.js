@@ -11,7 +11,7 @@ export type ILinkEditorProps = {
   connectDragPreview: Function;
   ACTION_UPDATE_EDGE: Function;
   ACTION_DESELECT_EDGE: Function;
-  ACTION_SET_POSITION_MODAL: Function;
+  ACTION_ADJUST_POSITION_MODAL: Function;
   layoutEngine: string,
 };
 
