@@ -6,12 +6,15 @@ import { Typography, CircularProgress } from '@material-ui/core';
 
 import type { CircularSpinnerWithTextProps as IProps } from './types';
 
+import { DEFAULT_LABEL } from './config';
+
 import { getSize } from './utils';
 
 import styles, { ProgressWrapper } from './styles';
 
 const CircularSpinnerWithText = ({
-  classes, small = false, medium = true, large = false, centered = false, text,
+  classes, small = false, medium = true, large = false,
+  centered = false, text = DEFAULT_LABEL,
 }: IProps) => (
   <ProgressWrapper centered={centered}>
     <CircularProgress size={getSize(small, medium, large)} />

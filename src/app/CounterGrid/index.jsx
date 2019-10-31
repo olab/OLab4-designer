@@ -40,7 +40,7 @@ class CounterGrid extends PureComponent<CounterGridProps> {
 
       ACTION_UPDATE_COUNTER_GRID_REQUESTED(mapId, counterActions);
     }
-  };
+  }
 
   render() {
     const {
@@ -63,7 +63,7 @@ class CounterGrid extends PureComponent<CounterGridProps> {
         </Header>
         <Divider />
         {isFirstLoading ? (
-          <CircularSpinnerWithText text="Data is being fetched..." large centered />
+          <CircularSpinnerWithText large centered />
         ) : (
           <CounterGridTable
             innerRef={this.tableRef}

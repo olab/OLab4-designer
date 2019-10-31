@@ -8,7 +8,7 @@ export type TextEditorProps = {
   editorId?: string,
   width: number,
   height: number,
-  handleEditorChange: Function,
   handleKeyDown: Function,
+  handleEditorChange: Function,
   editorOptions?: EditorOptions,
 };

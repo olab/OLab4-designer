@@ -1,5 +1,6 @@
 // @flow
 import type { Counter, CounterActions } from '../reducers/counterGrid/types';
+import type { Node } from '../Constructor/Graph/Node/types';
 
 export type CounterGridProps = {
   classes: {

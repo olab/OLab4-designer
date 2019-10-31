@@ -11,7 +11,7 @@ import {
   COUNTER_GRID_ACTIONS_CLEAR,
 } from './types';
 
-export const initialCounterGridState: CounterGridType = {
+export const initialCounterGridState: CounterActionsType = {
   nodes: [],
   counters: [],
   actions: [],

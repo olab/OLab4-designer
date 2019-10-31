@@ -11,9 +11,9 @@ const TextEditor = ({
   width = 800,
   text = '',
   editorId = '',
+  handleKeyDown,
   handleEditorChange,
   editorOptions = {},
-  handleKeyDown,
 }: IProps) => (
   <Editor
     apiKey={EDITOR_API_KEY}
