@@ -28,9 +28,25 @@ export class NodeGridTable extends PureComponent<IProps, IState> {
     };
   }
 
+  handleChange = (nodeKey: string, index: number): Function => (html: string): void => {
+    const { nodes, onTableChange } = this.props;
+    const resultNodes = [
+      ...nodes.slice(0, index),
+      {
+        ...nodes[index],
+        [nodeKey]: ['x', 'y'].includes(nodeKey)
+          ? Number(html)
+          : html,
+      },
+      ...nodes.slice(index + 1),
+    ];
+
+    onTableChange(resultNodes);
+  };
+
   handleSort = (headLabelKey: string): Function => (): void => {
     const { sortStatus: stateSortStatus } = this.state;
-    const { nodes, onTableSortChange } = this.props;
+    const { nodes, onTableChange } = this.props;
     const sortedNodes = nodes.sort(sortNodesByField(headLabelKey, stateSortStatus[headLabelKey]));
 
     this.setState(({ sortStatus }): IState => ({
@@ -43,12 +59,12 @@ export class NodeGridTable extends PureComponent<IProps, IState> {
       headLabelKey,
     }));
 
-    onTableSortChange(sortedNodes);
+    onTableChange(sortedNodes);
   }
 
   render() {
     const { sortStatus, headLabelKey: stateHeadLabelKey } = this.state;
-    const { classes, onChange, nodes } = this.props;
+    const { classes, nodes, onSearchPopupClose } = this.props;
 
     return (
       <Paper className={classes.paper}>
@@ -112,7 +128,8 @@ export class NodeGridTable extends PureComponent<IProps, IState> {
                           ? (
                             <ContentEditable
                               html={node[nodeKey]}
-                              onChange={onChange(nodeKey, i)}
+                              onFocus={onSearchPopupClose}
+                              onChange={this.handleChange(nodeKey, i)}
                             />
                           )
                           : node[nodeKey]

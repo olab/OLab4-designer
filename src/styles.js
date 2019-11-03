@@ -1,4 +1,5 @@
 import { createGlobalStyle } from 'styled-components';
+import { YELLOW } from './shared/colors';
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -57,6 +58,10 @@ const GlobalStyle = createGlobalStyle`
 
   div.tox-notifications-container {
     display: none;
+  }
+
+  mark {
+    background-color: ${YELLOW},
   }
 `;
 

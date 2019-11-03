@@ -6,8 +6,8 @@ export type NodeGridTableProps = {
     [props: string]: any,
   },
   nodes: Array<Node>,
-  onChange: Function,
-  onTableSortChange: Function,
+  onTableChange: Function,
+  onSearchPopupClose: Function,
 };
 
 export type SortStatus = {

@@ -5,13 +5,16 @@ import { Divider, Button } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 
 import NodeGridTable from './Table';
+import CustomCtrlH from '../../shared/components/CustomCtrlH';
 import CircularSpinnerWithText from '../../shared/components/CircularSpinnerWithText';
 
 import * as nodeGridActions from '../reducers/nodeGrid/action';
 import * as wholeMapActions from '../../middlewares/app/action';
 
 import { getNodesReduced } from './utils';
+import { isBoolean } from '../../helpers/dataTypes';
 
+import { FIELDS_TO_SEARCH } from './config';
 import { KEY_S } from '../Modals/NodeEditor/config';
 
 import type { NodeGridProps as IProps, NodeGridState as IState, Node as NodeType } from './types';
@@ -19,6 +22,8 @@ import type { NodeGridProps as IProps, NodeGridState as IState, Node as NodeType
 import styles, { Wrapper, Header, Label } from '../CounterGrid/styles';
 
 class NodeGrid extends Component<IProps, IState> {
+  isModalOpen: boolean = false;
+
   constructor(props: IProps) {
     super(props);
     const {
@@ -52,19 +57,16 @@ class NodeGrid extends Component<IProps, IState> {
     }
   }
 
-  handleChange = (nodeKey: string, index: number): Function => (html: string): void => {
-    this.setState(({ nodes }: IState): IState => ({
-      nodes: [
-        ...nodes.slice(0, index),
-        {
-          ...nodes[index],
-          [nodeKey]: ['x', 'y'].includes(nodeKey)
-            ? Number(html)
-            : html,
-        },
-        ...nodes.slice(index + 1),
-      ],
-    }));
+  handleStateChange = (nodes: Array<Node>): void => {
+    this.setState({ nodes });
+  };
+
+  handleModalShow = (isClosed: boolean | undefined): void => {
+    this.isModalOpen = isBoolean(isClosed)
+      ? isClosed
+      : !this.isModalOpen;
+
+    this.forceUpdate();
   };
 
   applyChanges = (): void => {
@@ -83,10 +85,6 @@ class NodeGrid extends Component<IProps, IState> {
     }
   };
 
-  handleTableSortChange = (nodes: Array<NodeType>): void => {
-    this.setState({ nodes });
-  }
-
   render() {
     const { nodes } = this.state;
     const { classes, isFetching } = this.props;
@@ -95,25 +93,45 @@ class NodeGrid extends Component<IProps, IState> {
       <Wrapper>
         <Header>
           <Label>Node grid</Label>
-          <Button
-            color="primary"
-            variant="contained"
-            className={classes.button}
-            onClick={this.applyChanges}
-          >
-            Save
-          </Button>
+          <div>
+            <Button
+              color="primary"
+              variant="contained"
+              className={classes.button}
+              onClick={this.handleModalShow}
+            >
+              Find & Replace
+            </Button>
+            <Button
+              color="primary"
+              variant="contained"
+              className={classes.button}
+              onClick={this.applyChanges}
+            >
+              Save
+            </Button>
+          </div>
         </Header>
         <Divider />
         {
           isFetching
             ? <CircularSpinnerWithText large centered />
             : (
-              <NodeGridTable
-                nodes={nodes}
-                onChange={this.handleChange}
-                onTableSortChange={this.handleTableSortChange}
-              />
+              <CustomCtrlH
+                data={nodes}
+                fields={FIELDS_TO_SEARCH}
+                isShow={this.isModalOpen}
+                onModalShow={this.handleModalShow}
+                onStateChange={this.handleStateChange}
+              >
+                {(data, handleTableChange, handleSearchPopupClose) => (
+                  <NodeGridTable
+                    nodes={data}
+                    onTableChange={handleTableChange}
+                    onSearchPopupClose={handleSearchPopupClose}
+                  />
+                )}
+              </CustomCtrlH>
             )
         }
       </Wrapper>

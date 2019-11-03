@@ -15,3 +15,5 @@ export const WHITE = '#FFFFFF';
 export const DARK_TEXT = '#283443';
 export const GREEN = '#03B595';
 export const BLACK = '#000000';
+export const YELLOW = '#FFFF00';
+export const LIGHT_WHITE_BLUE = '#FAFDFF';

@@ -28,13 +28,13 @@ class ContentEditable extends Component<IProps> {
   }
 
   render() {
-    const { html } = this.props;
+    const { html, onFocus } = this.props;
 
     return (
       <TextField
         ref={this.contentEditableRef}
         onInput={this.emitChange}
-        onBlur={this.emitChange}
+        onFocus={onFocus}
         dangerouslySetInnerHTML={{ __html: sanitize(html) }}
         contentEditable
       />
