@@ -47,7 +47,7 @@ const reducer = combineReducers({
 });
 
 const store = createStore(
-  connectRouter(history)(reducer),
+  reducer,
   initialState,
   composedEnhancers,
 );
