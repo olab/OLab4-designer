@@ -7,14 +7,15 @@ export const TOOLS_MENU_ITEMS = {
 };
 
 export const MAP_MENU_ITEMS = {
-  MAP_DETAILS: 'Map Details ',
   NODE_GRID: 'Node Grid',
+  MAP_DETAILS: 'Map Details ',
   COUNTER_GRID: 'Counter Grid',
 };
 
 export const SCOPED_OBJECTS = {
-  CONSTANT: 'Constant',
+  FILE: 'File',
   COUNTER: 'Counter',
+  CONSTANT: 'Constant',
   QUESTION: 'Question',
 };
 

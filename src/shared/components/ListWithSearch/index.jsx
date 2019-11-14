@@ -17,6 +17,8 @@ import CircularSpinnerWithText from '../CircularSpinnerWithText';
 
 import removeHTMLTags from '../../../helpers/removeHTMLTags';
 
+import { getIconType } from './utils';
+
 import type { IListWithSearchProps, IListWithSearchState } from './types';
 
 import styles, { SearchWrapper, ListItemContentWrapper } from './styles';
@@ -33,6 +35,19 @@ class ListWithSearch extends PureComponent<IListWithSearchProps, IListWithSearch
   state: IListWithSearchState = {
     query: '',
   };
+
+  getIcon(index, file) {
+    const { isMedia, iconEven: IconEven, iconOdd: IconOdd } = this.props;
+
+    if (isMedia) {
+      const iconType = file.resourceUrl && file.resourceUrl.split('.').pop();
+      const MediaIconContent = getIconType(iconType);
+
+      return <MediaIconContent />;
+    }
+
+    return index % 2 === 0 ? <IconEven /> : <IconOdd />;
+  }
 
   clearSearch = (): void => {
     const { onClear } = this.props;
@@ -62,8 +77,6 @@ class ListWithSearch extends PureComponent<IListWithSearchProps, IListWithSearch
       isHideSearch,
       isItemsFetching,
       isItemsDisabled,
-      iconEven: IconEven,
-      iconOdd: IconOdd,
     } = this.props;
 
     const listClassNames = classNames(
@@ -121,7 +134,7 @@ class ListWithSearch extends PureComponent<IListWithSearchProps, IListWithSearch
                   onClick={() => onItemClick(listItem)}
                   disabled={isItemsDisabled}
                 >
-                  {i % 2 === 0 ? <IconEven /> : <IconOdd />}
+                  {this.getIcon(i, listItem)}
                   <ListItemText
                     primary={listItem.name}
                     secondary={removeHTMLTags(listItem.description || '')}

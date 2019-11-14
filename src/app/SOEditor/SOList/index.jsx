@@ -10,19 +10,21 @@ import {
 import ListWithSearch from '../../../shared/components/ListWithSearch';
 import CircularSpinnerWithText from '../../../shared/components/CircularSpinnerWithText';
 
-import type { ISOListProps, ISOListState } from './types';
-import type { ScopedObjectListItem as ScopedObjectListItemType } from '../../reducers/scopedObjects/types';
-
 import * as scopedObjectsActions from '../../reducers/scopedObjects/action';
 
-import filterByName from '../../../helpers/filterByName';
 import { toLowerCaseAndPlural, toUpperCaseAndPlural } from '../utils';
+
+import { PAGE_TITLES, SCOPED_OBJECTS } from '../../config';
+
+import filterByName from '../../../helpers/filterByName';
+import capitalizeFirstLetter from '../../../helpers/capitalizeFirstLetter';
+
+import type { ISOListProps, ISOListState } from './types';
+import type { ScopedObjectListItem as ScopedObjectListItemType } from '../../reducers/scopedObjects/types';
 
 import styles, {
   HeaderWrapper, ProgressWrapper, ListWithSearchWrapper,
 } from './styles';
-import { PAGE_TITLES } from '../../config';
-import capitalizeFirstLetter from '../../../helpers/capitalizeFirstLetter';
 
 class SOList extends PureComponent<ISOListProps, ISOListState> {
   listWithSearchRef: null | React.RefObject<any>;
@@ -128,6 +130,7 @@ class SOList extends PureComponent<ISOListProps, ISOListState> {
     } = this.props;
 
     const isHideSearch = isScopedObjectsFetching && !scopedObjects.length;
+    const isMedia = scopedObjectType === SCOPED_OBJECTS.FILE.toLowerCase();
 
     return (
       <Grid container component="main" className={classes.root}>
@@ -164,6 +167,7 @@ class SOList extends PureComponent<ISOListProps, ISOListState> {
               isHideSearch={isHideSearch}
               isItemsFetching={isScopedObjectsFetching}
               isWithSpinner={false}
+              isMedia={isMedia}
             />
           </ListWithSearchWrapper>
         </Grid>
