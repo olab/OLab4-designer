@@ -21,6 +21,11 @@ To make production build:
 npm build
 ```
 
+## Environment variables
+
+API_URL - base api url
+PLAYER_PUBLIC_URL - base player url
+
 ## Production runbook
 
 Clone your repository and Open the folder
@@ -34,6 +39,7 @@ npm i
 ```
 
 If you need update the API_URL update it `./env/.env.production`
+If you need update the PLAYER_PUBLIC_URL update it `./env/.env.production`
 
 Run the generating of the production build
 ```bash
