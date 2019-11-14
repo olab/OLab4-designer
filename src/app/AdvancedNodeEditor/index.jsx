@@ -1,6 +1,6 @@
 // @flow
 import React, { PureComponent } from 'react';
-import { Link, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import {
@@ -14,6 +14,8 @@ import CircularSpinnerWithText from '../../shared/components/CircularSpinnerWith
 
 import * as mapActions from '../reducers/map/action';
 import * as wholeMapActions from '../../middlewares/app/action';
+
+import { redirectToPlayer } from '../utils';
 
 import { LINK_STYLES, KEY_S } from '../config';
 import { NODE_PRIORITIES } from './SecondaryTab/config';
@@ -136,7 +138,7 @@ class AdvancedNodeEditor extends PureComponent<IProps, NodeType> {
       info, annotation, priorityId,
     } = this.state;
     const {
-      classes, mapId, nodeId, node,
+      classes, nodeId, mapId, node,
     } = this.props;
 
     if (!node) {
@@ -162,9 +164,7 @@ class AdvancedNodeEditor extends PureComponent<IProps, NodeType> {
               color="default"
               variant="contained"
               className={classes.button}
-              component={Link}
-              to={`/player/olab/play#${mapId}:${nodeId}`}
-              target="_blank"
+              onClick={redirectToPlayer(mapId, nodeId)}
             >
               <Triangle>&#9658;</Triangle>
               Preview

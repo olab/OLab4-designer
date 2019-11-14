@@ -15,6 +15,7 @@ import OutlinedInput from '../../../shared/components/OutlinedInput';
 import OutlinedSelect from '../../../shared/components/OutlinedSelect';
 
 import { spec, collect } from '../utils';
+import { redirectToPlayer } from '../../utils';
 
 import * as modalActions from '../action';
 import * as mapActions from '../../reducers/map/action';
@@ -243,10 +244,8 @@ class NodeEditor extends PureComponent<INodeEditorProps, INodeEditorState> {
           <Button
             variant="contained"
             color="default"
-            component={Link}
             className={classes.previewButton}
-            to={`/player/olab/play#${mapId}:${nodeId}`}
-            target="_blank"
+            onClick={redirectToPlayer(mapId, nodeId)}
           >
             <Triangle>&#9658;</Triangle>
             Preview
