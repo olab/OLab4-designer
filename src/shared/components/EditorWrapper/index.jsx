@@ -11,7 +11,7 @@ import { redirectToSO } from './utils';
 
 import type { IEditorWrapperProps } from './types';
 
-import styles, { HeadingWrapper } from './styles';
+import styles, { HeadingWrapper, Paper, Container } from './styles';
 
 const EditorWrapper = ({
   classes, children, history, scopedObject, onSubmit, isEditMode, isDisabled,
@@ -42,9 +42,11 @@ const EditorWrapper = ({
         {isEditMode ? 'Update' : 'Create'}
       </Button>
     </HeadingWrapper>
-    <div className={classes.paper}>
-      {children}
-    </div>
+    <Container>
+      <Paper>
+        {children}
+      </Paper>
+    </Container>
   </Grid>
 );
 

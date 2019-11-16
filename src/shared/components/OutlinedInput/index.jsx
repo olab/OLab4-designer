@@ -12,6 +12,7 @@ const OutlinedInput = ({
   label,
   classes,
   value = '',
+  type = 'text',
   placeholder = '',
   onChange,
   onFocus,
@@ -21,7 +22,7 @@ const OutlinedInput = ({
   readOnly = false,
 }: IOutlinedInputProps) => (
   <TextField
-    type="text"
+    type={type}
     name={name}
     label={label}
     value={value}

@@ -15,9 +15,8 @@ import {
 
 import CircularSpinnerWithText from '../CircularSpinnerWithText';
 
+import getIconType from '../../../helpers/getIconType';
 import removeHTMLTags from '../../../helpers/removeHTMLTags';
-
-import { getIconType } from './utils';
 
 import type { IListWithSearchProps, IListWithSearchState } from './types';
 

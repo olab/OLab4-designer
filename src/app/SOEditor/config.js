@@ -1,32 +1,42 @@
 import { SCOPED_OBJECTS } from '../config';
 
-import Constants from './Constants';
+import Files from './Files';
 import Counters from './Counters';
+import Constants from './Constants';
 import Questions from './Questions';
 
 export const EDITORS_FIELDS = {
-  NAME: 'Name',
-  DESCRIPTION: 'Description',
+  ID: 'ID',
+  TYPE: 'Type',
   TEXT: 'Text',
-  SCOPE_LEVEL: 'Scope Level',
-  PARENT: 'Parent',
-  STARTING_VALUE: 'Starting value (optional)',
-  SCOPED_OBJECT_STATUS: 'Status',
-  VISIBLE: 'Visible',
-  COUNTER_STATUS: 'Counter status',
+  WIKI: 'Wiki',
+  NAME: 'Name',
   STEM: 'Stem',
-  QUESTION_TYPES: 'Question Types',
   WIDTH: 'Width',
   HEIGHT: 'Height',
+  PARENT: 'Parent',
+  VISIBLE: 'Visible',
+  FEEDBACK: 'Feedback',
+  FILE_TYPE: 'File Type',
+  FILE_SIZE: 'File Size',
+  COPYRIGHT: 'Copyright',
+  ORIGIN_URL: 'Origin URL',
+  DESCRIPTION: 'Description',
+  SCOPE_LEVEL: 'Scope Level',
   PLACEHOLDER: 'Placeholder',
   LAYOUT_TYPE: 'Layout Type',
-  FEEDBACK: 'Feedback',
   SHOW_ANSWER: 'Show Answer',
   SHOW_SUBMIT: 'Show Submit',
+  RESOURCE_URL: 'Resource Url',
+  SCOPED_OBJECT_STATUS: 'Status',
+  COUNTER_STATUS: 'Counter Status',
+  QUESTION_TYPES: 'Question Types',
+  STARTING_VALUE: 'Starting Value (optional)',
 };
 
 export const SCOPED_OBJECTS_MAPPING = {
-  [SCOPED_OBJECTS.CONSTANT.toLowerCase()]: Constants,
+  [SCOPED_OBJECTS.FILE.toLowerCase()]: Files,
   [SCOPED_OBJECTS.COUNTER.toLowerCase()]: Counters,
+  [SCOPED_OBJECTS.CONSTANT.toLowerCase()]: Constants,
   [SCOPED_OBJECTS.QUESTION.toLowerCase()]: Questions,
 };

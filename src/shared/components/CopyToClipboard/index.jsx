@@ -9,6 +9,7 @@ import {
 } from '@material-ui/icons';
 
 import { COPY_TIMEOUT } from './config';
+
 import type { ICopyToClipboardProps, ICopyToClipboardState } from './types';
 
 import styles from './styles';

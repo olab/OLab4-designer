@@ -1,7 +1,7 @@
 // @flow
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
-import { Link, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 import {
   Grid, Button, Paper, Typography, Divider,
@@ -103,7 +103,7 @@ class SOList extends PureComponent<ISOListProps, ISOListState> {
   }
 
   handleScopedObjectClick = (scopedObject: ScopedObjectListItemType): void => {
-    const { history, location: { pathname } } = this.props;
+    const { history, pathname } = this.props;
     history.push(`${pathname}/${scopedObject.id}`);
   }
 
@@ -119,13 +119,17 @@ class SOList extends PureComponent<ISOListProps, ISOListState> {
     );
   }
 
+  handleRedirect = () => {
+    const { history, pathname } = this.props;
+    history.push(`${pathname}/add`);
+  }
+
   render() {
     const { scopedObjectsFiltered } = this.state;
     const {
       classes,
       scopedObjects,
       isScopedObjectsFetching,
-      location: { pathname },
       match: { params: { scopedObjectType } },
     } = this.props;
 
@@ -144,8 +148,7 @@ class SOList extends PureComponent<ISOListProps, ISOListState> {
                 color="primary"
                 variant="contained"
                 className={classes.button}
-                component={Link}
-                to={`${pathname}/add`}
+                onClick={this.handleRedirect}
               >
                 {`Add New ${scopedObjectType}`}
               </Button>
@@ -178,8 +181,12 @@ class SOList extends PureComponent<ISOListProps, ISOListState> {
 
 const mapStateToProps = (
   { scopedObjects },
-  { match: { params: { scopedObjectType } } },
+  {
+    match: { params: { scopedObjectType } },
+    location: { pathname },
+  },
 ) => ({
+  pathname,
   scopedObjects: scopedObjects[toLowerCaseAndPlural(scopedObjectType)],
   isScopedObjectsFetching: scopedObjects.isFetching,
 });

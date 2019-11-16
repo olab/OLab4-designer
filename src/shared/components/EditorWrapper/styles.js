@@ -6,6 +6,7 @@ import {
 export const HeadingWrapper = styled.div`
   display: flex;
   align-items: center;
+  width: 100%;
   position: sticky;
   z-index: 3;
   top: 0;
@@ -15,6 +16,25 @@ export const HeadingWrapper = styled.div`
   border-bottom-width: 1px;
   border-bottom-style: solid;
   border-bottom-color: ${MIDDLE_GREY};
+`;
+
+export const Paper = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: 12px 18px;
+  boxShadow: none;
+  width: 60%;
+
+  @media only screen and (max-width: 1099px) {
+    width: 100%;
+  }
+`;
+
+export const Container = styled.div`
+  width: 100%;
+  height: 83vh;
+  padding-bottom: 70px;
+  overflow: auto;
 `;
 
 const styles = () => ({
@@ -39,13 +59,6 @@ const styles = () => ({
   },
   arrow: {
     fill: `${DARK_BLUE}`,
-  },
-  paper: {
-    padding: '12px 18px',
-    display: 'flex',
-    flexDirection: 'column',
-    boxShadow: 'none',
-    width: '50%',
   },
   submit: {
     marginTop: 0,

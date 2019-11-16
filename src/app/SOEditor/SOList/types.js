@@ -7,7 +7,7 @@ export type ISOListProps = {
   },
   match: any,
   history: any,
-  location: any,
+  pathName: any,
   scopedObjects: Array<ScopedObjectListItemType>,
   isScopedObjectsFetching: boolean,
   ACTION_SCOPED_OBJECTS_TYPED_REQUESTED: (scopedObjectType: string) => void,

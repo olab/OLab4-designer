@@ -3,23 +3,25 @@ import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { DragSource } from 'react-dnd';
 
-import OutlinedSelect from '../../../shared/components/OutlinedSelect';
-import CopyToClipboard from './CopyToClipboard';
 import SearchBox from './SearchBox';
 import EyeComponent from './EyeComponent';
+import OutlinedSelect from '../../../shared/components/OutlinedSelect';
+import CopyToClipboard from '../../../shared/components/CopyToClipboard';
 
 import CrossIcon from '../../../shared/assets/icons/cross.svg';
 import ReloadIcon from '../../../shared/assets/icons/reload.svg';
 
-import type { ScopedObject as ScopedObjectType } from '../../reducers/scopedObjects/types';
-import type { ISOPickerProps, ISOPickerState } from './types';
-import { DND_CONTEXTS, MODALS_NAMES } from '../config';
-import { SO_TYPES, SO_LEVELS, SO_ITEMS_LIMIT } from './config';
+import * as modalActions from '../action';
+import * as scopedObjectsActions from '../../reducers/scopedObjects/action';
+
 import getFilterCallback from './utils';
 import { spec, collect } from '../utils';
 
-import * as modalActions from '../action';
-import * as scopedObjectsActions from '../../reducers/scopedObjects/action';
+import { DND_CONTEXTS, MODALS_NAMES } from '../config';
+import { SO_TYPES, SO_LEVELS, SO_ITEMS_LIMIT } from './config';
+
+import type { ISOPickerProps, ISOPickerState } from './types';
+import type { ScopedObject as ScopedObjectType } from '../../reducers/scopedObjects/types';
 
 import {
   ModalBody, ModalFooter,

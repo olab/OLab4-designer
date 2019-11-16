@@ -8,7 +8,7 @@ import {
   InsertDriveFile as InsertDriveFileIcon,
 } from '@material-ui/icons';
 
-export const getIconType = (iconType: string): any => {
+const getIconType = (iconType: string): any => {
   switch (iconType) {
     case 'png':
     case 'gif':
@@ -39,6 +39,4 @@ export const getIconType = (iconType: string): any => {
   }
 };
 
-export default {
-  getIconType,
-};
+export default getIconType;

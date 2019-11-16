@@ -5,7 +5,7 @@ import { withStyles } from '@material-ui/core/styles';
 
 import TextEditor from '../../../shared/components/TextEditor';
 import OutlinedSelect from '../../../shared/components/OutlinedSelect';
-import CopyToClipboard from '../../Modals/SOPicker/CopyToClipboard';
+import CopyToClipboard from '../../../shared/components/CopyToClipboard';
 
 import { NODE_PRIORITIES } from './config';
 import { LINK_STYLES } from '../../config';
