@@ -95,7 +95,7 @@ class NodeGrid extends Component<IProps, IState> {
           <Label>Node grid</Label>
           <div>
             <Button
-              color="primary"
+              color="default"
               variant="contained"
               className={classes.button}
               onClick={this.handleModalShow}
