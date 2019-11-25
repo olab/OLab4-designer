@@ -10,8 +10,8 @@ import ReplaceIcon from '../../assets/icons/replace.svg';
 import ReplaceAllIcon from '../../assets/icons/replaceAll.svg';
 
 import {
-  getReplacedData, changeBackgroundInActiveElement, getHighlight,
-  removeHighlight, getReplacedAllData, nextButton, prevButton,
+  getReplacedData, changeBackgroundInActiveElement, getHighlight, removeHighlight,
+  getReplacedAllData, nextButton, prevButton, escapeSymbol,
 } from './utils';
 
 import { KEY_H, SEARCH_VALIDATE, FIELD_ERROR } from './config';
@@ -62,7 +62,7 @@ class CustomCtrlH extends Component<IProps, IState> {
     }
 
     if (isShow !== isShowPrev) {
-      const searchWord = isShow ? search : '';
+      const searchWord = isShow ? escapeSymbol(search) : '';
 
       this.highlight(searchWord);
     }
@@ -173,7 +173,7 @@ class CustomCtrlH extends Component<IProps, IState> {
 
     if (!isValidValue) {
       this.setState({ search: value, isInputError: false });
-      this.highlight(value);
+      this.highlight(escapeSymbol(value));
 
       return;
     }

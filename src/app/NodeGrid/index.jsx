@@ -11,11 +11,11 @@ import CircularSpinnerWithText from '../../shared/components/CircularSpinnerWith
 import * as nodeGridActions from '../reducers/nodeGrid/action';
 import * as wholeMapActions from '../../middlewares/app/action';
 
-import { getNodesReduced } from './utils';
 import { isBoolean } from '../../helpers/dataTypes';
+import { getNodesReduced, unEscapeNodes } from './utils';
 
-import { FIELDS_TO_SEARCH } from './config';
 import { KEY_S } from '../config';
+import { FIELDS_TO_SEARCH } from './config';
 
 import type { NodeGridProps as IProps, NodeGridState as IState, Node as NodeType } from './types';
 
@@ -73,7 +73,7 @@ class NodeGrid extends Component<IProps, IState> {
     const { nodes } = this.state;
     const { ACTION_UPDATE_NODE_GRID_REQUESTED } = this.props;
 
-    ACTION_UPDATE_NODE_GRID_REQUESTED(nodes);
+    ACTION_UPDATE_NODE_GRID_REQUESTED(unEscapeNodes(nodes));
   };
 
   handleKeyPressed = (e: KeyboardEvent): void => {

@@ -1,7 +1,9 @@
 // @flow
-import { ORDER } from './Table/config';
 import { isString } from '../../helpers/dataTypes';
 import removeHTMLTags from '../../helpers/removeHTMLTags';
+
+import { ORDER } from './Table/config';
+import { FIELDS_TO_SEARCH } from './config';
 
 import type { NodeGridState, Node as NodeType } from './types';
 import type { Node as FullNode } from '../Constructor/Graph/Node/types';
@@ -36,3 +38,22 @@ export const sortNodesByField = (
     default: return 0;
   }
 };
+
+export const unEscapeHtml = (data: string): string => (data
+  .replace(/&lt;/g, '<')
+  .replace(/&gt;/g, '>')
+  .replace(/&amp;/g, '&')
+  .replace(/&nbsp;/g, ' ')
+  .replace(/&quot;/g, '"')
+  .replace(/&#039;/g, '\'')
+);
+
+export const unEscapeNodes = (nodes: NodeGridState): NodeGridState => (
+  nodes.map((elem: NodeType): NodeType => {
+    FIELDS_TO_SEARCH.forEach((field: string): void => {
+      elem[field] = unEscapeHtml(elem[field]);
+    });
+
+    return elem;
+  })
+);

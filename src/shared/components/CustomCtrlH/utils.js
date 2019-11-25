@@ -11,7 +11,13 @@ import type {
   AllMatches as AllMatchesType,
 } from './types';
 
-export const searchStringOutsideTags = (search: string): string => `(${search})(?![^<]*>)`;
+export const searchStringOutsideTags = (
+  search: string,
+): string => `(${search}(?!&|#|9|1|;))(?![^<]*>)`;
+
+export const escapeSymbol = (data: string): string => data.replace(/\[/g, '&#91;');
+
+export const unEscapeSymbol = (data: string): string => data.replace(/&nbsp;/g, ' ');
 
 export const addMark = (search: string): string => `<mark>${search}</mark>`;
 
@@ -28,6 +34,7 @@ export const getHighlight = (
     const clonedItem = { ...item };
     fields.forEach((key: string): void => {
       if (isString(clonedItem[key])) {
+        clonedItem[key] = escapeSymbol(clonedItem[key]);
         clonedItem[key] = clonedItem[key].replace(SEARCH_MARK, '');
         const isSearchIncludes = Boolean(search) && clonedItem[key].includes(search);
 
@@ -46,6 +53,7 @@ export const getHighlight = (
             itemLink: clonedItem,
           });
 
+          clonedItem[key] = unEscapeSymbol(clonedItem[key]);
           clonedItem[key] = clonedItem[key].replace(regex, addMark(search));
         }
       }
@@ -82,7 +90,8 @@ export const getReplacedData = (
   search: string,
   replace: string,
 ): DataType => {
-  const regex = new RegExp(search, 'gi');
+  const escapingSearch = escapeSymbol(search);
+  const regex = new RegExp(escapingSearch, 'gi');
   const index = data.findIndex((element: Object<any>): boolean => element === item.itemLink);
   const elementData = data[index][item.key];
   const matchingElement = [...elementData.matchAll(regex)];
@@ -93,7 +102,7 @@ export const getReplacedData = (
 
   const { index: idx } = matchingElement[indexInString];
   const startString = elementData.slice(0, idx);
-  const endString = elementData.slice(idx + search.length);
+  const endString = elementData.slice(idx + escapingSearch.length);
 
   data[index][item.key] = startString + replace + endString;
 
@@ -106,12 +115,13 @@ export const getReplacedAllData = (
   search: string,
   replace: string,
 ): DataType => {
+  const escapingSearch = escapeSymbol(search);
   const replacedData = data.map((item: Object<any>): DataType => {
     const clonedItem = { ...item };
 
     fields.forEach((key: string): void => {
       if (isString(clonedItem[key])) {
-        const regex = new RegExp(addMark(search), 'gi');
+        const regex = new RegExp(addMark(escapingSearch), 'gi');
         clonedItem[key] = clonedItem[key].replace(regex, replace);
       }
     });
