@@ -76,13 +76,16 @@ export class Graph extends Component<IGraphProps, IGraphState> {
   }
 
   onSelectNode = (node: NodeType | null) => {
-    const nodeId = node ? node.id : null;
     const { ACTION_SELECT_NODE } = this.props;
+    const nodeId = node ? node.id : null;
+    const shouldSelectedNode = node && !(node.isSelected);
 
-    ACTION_SELECT_NODE(nodeId);
+    if (shouldSelectedNode) {
+      ACTION_SELECT_NODE(nodeId);
+    }
   };
 
-  onSelectEdge = (edge: EdgeType | null, posX?: number = 0, posY?: number = 0) => {
+  onSelectEdge = (edge: EdgeType | null, posX: number = 0, posY: number = 0) => {
     const edgeId = edge ? edge.id : null;
     const {
       ACTION_SELECT_EDGE,

@@ -40,6 +40,8 @@ export class Node extends PureComponent<INodeProps, INodeState> {
       isResizeStart: false,
       x: props.data.x || 0,
       y: props.data.y || 0,
+      prevX: props.data.x || 0,
+      prevY: props.data.y || 0,
       deltaMouseX: 0,
       deltaMouseY: 0,
     };
@@ -218,6 +220,7 @@ export class Node extends PureComponent<INodeProps, INodeState> {
   }
 
   handleDragStart = () => {
+    const { x: prevX, y: prevY } = this.state;
     const {
       data,
       data: { isLocked },
@@ -230,6 +233,8 @@ export class Node extends PureComponent<INodeProps, INodeState> {
     const { parentElement: currentNodeRefParent } = currentNodeRef;
 
     this.setState({
+      prevX,
+      prevY,
       deltaMouseX,
       deltaMouseY,
     });
@@ -247,7 +252,9 @@ export class Node extends PureComponent<INodeProps, INodeState> {
   }
 
   handleDragEnd = () => {
-    const { x, y } = this.state;
+    const {
+      x, y, prevX, prevY,
+    } = this.state;
     const { data, onNodeUpdate, isLinkingStarted } = this.props;
     const { current: currentNodeRef } = this.nodeRef;
 
@@ -257,8 +264,9 @@ export class Node extends PureComponent<INodeProps, INodeState> {
 
     const action = this.getClickedItemAction();
 
-    const isInappropriateAction = !action || action === ACTION_RESIZE || action === ACTION_FOCUS;
-    const shouldUpdateNode = (!isLinkingStarted && action !== ACTION_SELECT)
+    const isInappropriateAction = !action || action === ACTION_RESIZE || action === ACTION_SELECT;
+    const shouldUpdateNode = ((!isLinkingStarted && action !== ACTION_FOCUS)
+      && (prevX !== x || prevY !== y))
       || (isLinkingStarted && isInappropriateAction);
 
     if (shouldUpdateNode) {

@@ -50,5 +50,7 @@ export type INodeProps = {
 
 export type INodeState = {
   ...IPoint,
+  prevX: number,
+  prevY: number,
   isResizeStart: boolean,
 };
