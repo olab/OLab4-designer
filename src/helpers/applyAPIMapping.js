@@ -1,14 +1,14 @@
 // @flow
 import { isBoolean, isNumber } from './dataTypes';
-import { QUESTION_TYPES } from '../app/SOEditor/Questions/config';
+import { QUESTION_TYPES } from '../components/SOEditor/Questions/config';
 
-import { MapItem } from '../app/reducers/map/types';
-import { Edge } from '../app/Constructor/Graph/Edge/types';
-import { Node } from '../app/Constructor/Graph/Node/types';
-import { MapDetails } from '../app/reducers/mapDetails/types';
-import { CounterActions } from '../app/reducers/counterGrid/types';
-import { DefaultNode, DefaultEdge } from '../app/reducers/defaults/types';
-import { ScopedObject, ScopedObjectListItem, ScopedObjectBase } from '../app/reducers/scopedObjects/types';
+import type { MapItem } from '../redux/map/types';
+import type { MapDetails } from '../redux/mapDetails/types';
+import type { CounterActions } from '../redux/counterGrid/types';
+import type { Edge } from '../components/Constructor/Graph/Edge/types';
+import type { Node } from '../components/Constructor/Graph/Node/types';
+import type { DefaultNode, DefaultEdge } from '../redux/defaults/types';
+import type { ScopedObject, ScopedObjectListItem, ScopedObjectBase } from '../redux/scopedObjects/types';
 
 export const edgeToServer = (edgeData: Edge): Edge => ({
   id: edgeData.id,

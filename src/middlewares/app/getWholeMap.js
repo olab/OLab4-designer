@@ -1,5 +1,5 @@
-import { ACTION_GET_MAP_REQUESTED } from '../../app/reducers/map/action';
-import { ACTION_GET_MAP_DETAILS_REQUESTED } from '../../app/reducers/mapDetails/action';
+import { ACTION_GET_MAP_REQUESTED } from '../../redux/map/action';
+import { ACTION_GET_MAP_DETAILS_REQUESTED } from '../../redux/mapDetails/action';
 
 import { GET_WHOLE_MAP_MIDDLEWARE } from './types';
 

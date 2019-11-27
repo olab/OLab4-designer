@@ -1,10 +1,10 @@
 import {
   ACTION_GET_NODE_REQUESTED,
   ACTION_DELETE_NODE_SYNC,
-} from '../../app/reducers/map/action';
+} from '../../redux/map/action';
 
 import { SYNC_NODE_MIDDLEWARE } from './types';
-import { UPDATE_NODE, DELETE_NODE_REQUESTED } from '../../app/reducers/map/types';
+import { UPDATE_NODE, DELETE_NODE_REQUESTED } from '../../redux/map/types';
 
 const syncNodeMiddleware = store => next => (action) => {
   if (SYNC_NODE_MIDDLEWARE === action.type) {

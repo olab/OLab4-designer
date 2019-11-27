@@ -1,23 +1,23 @@
 // @flow
-import { initialMapState } from '../app/reducers/map/reducer';
-import { initialUserState } from '../app/Login/reducer';
-import { initialModalsState } from '../app/Modals/reducer';
-import { initialDefaultsState } from '../app/reducers/defaults/reducer';
-import { initialTemplatesState } from '../app/reducers/templates/reducer';
-import { initialConstructorState } from '../app/Constructor/reducer';
-import { initialMapDetailsState } from '../app/reducers/mapDetails/reducer';
-import { initialScopeLevelsState } from '../app/reducers/scopeLevels/reducer';
-import { initialScopedObjectsState } from '../app/reducers/scopedObjects/reducer';
+import { initialMapState } from '../redux/map/reducer';
+import { initialUserState } from '../redux/login/reducer';
+import { initialModalsState } from '../redux/modals/reducer';
+import { initialDefaultsState } from '../redux/defaults/reducer';
+import { initialTemplatesState } from '../redux/templates/reducer';
+import { initialConstructorState } from '../redux/constructor/reducer';
+import { initialMapDetailsState } from '../redux/mapDetails/reducer';
+import { initialScopeLevelsState } from '../redux/scopeLevels/reducer';
+import { initialScopedObjectsState } from '../redux/scopedObjects/reducer';
 
-import type { Map as MapType } from '../app/reducers/map/types';
-import type { User as UserType } from '../app/Login/types';
-import type { Modals as ModalsType } from '../app/Modals/types';
-import type { MapDetails as MapDetailsType } from '../app/reducers/mapDetails/types';
-import type { Defaults as DefaultsType } from '../app/reducers/defaults/types';
-import type { Templates as TemplatesType } from '../app/reducers/templates/types';
-import type { Constructor as ConstructorType } from '../app/Constructor/types';
-import type { ScopeLevels as ScopeLevelsType } from '../app/reducers/scopeLevels/types';
-import type { ScopedObjectsState as ScopedObjectsType } from '../app/reducers/scopedObjects/types';
+import type { Map as MapType } from '../redux/map/types';
+import type { User as UserType } from '../components/Login/types';
+import type { Modals as ModalsType } from '../components/Modals/types';
+import type { MapDetails as MapDetailsType } from '../redux/mapDetails/types';
+import type { Defaults as DefaultsType } from '../redux/defaults/types';
+import type { Templates as TemplatesType } from '../redux/templates/types';
+import type { Constructor as ConstructorType } from '../components/Constructor/types';
+import type { ScopeLevels as ScopeLevelsType } from '../redux/scopeLevels/types';
+import type { ScopedObjectsState as ScopedObjectsType } from '../redux/scopedObjects/types';
 
 export type Store = {
   user: UserType,

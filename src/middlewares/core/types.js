@@ -1,5 +1,5 @@
 // @flow
-import { MapItem } from '../../app/reducers/map/types';
+import { MapItem } from '../../redux/map/types';
 
 export const SAVE_MAP_TO_UNDO = 'SAVE_MAP_TO_UNDO';
 type MapToUndo = {

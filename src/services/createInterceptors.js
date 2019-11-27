@@ -1,5 +1,5 @@
 import store from '../store/store';
-import { ACTION_USER_AUTH_LOGOUT } from '../app/Login/action';
+import { ACTION_USER_AUTH_LOGOUT } from '../redux/login/action';
 
 /**
  * Local storage auth token key

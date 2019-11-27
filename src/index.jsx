@@ -4,9 +4,9 @@ import { Provider } from 'react-redux';
 import { CssBaseline } from '@material-ui/core';
 import store, { history } from './store/store';
 import * as serviceWorker from './serviceWorker';
-import { ACTION_USER_AUTH_SUCCEEDED } from './app/Login/action';
+import { ACTION_USER_AUTH_SUCCEEDED } from './redux/login/action';
 
-import App from './app';
+import App from './components';
 import GlobalStyles from './styles';
 
 const token = localStorage.getItem('token');

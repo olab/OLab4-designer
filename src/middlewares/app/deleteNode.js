@@ -1,8 +1,8 @@
-import { ACTION_DELETE_NODE_REQUESTED } from '../../app/reducers/map/action';
-import { ACTION_NOTIFICATION_INFO } from '../../app/reducers/notifications/action';
+import { ACTION_DELETE_NODE_REQUESTED } from '../../redux/map/action';
+import { ACTION_NOTIFICATION_INFO } from '../../redux/notifications/action';
 
-import { MESSAGES } from '../../app/reducers/notifications/config';
-import { ROOT_TYPE as ROOT_NODE_TYPE } from '../../app/Constructor/Graph/Node/config';
+import { MESSAGES } from '../../redux/notifications/config';
+import { ROOT_TYPE as ROOT_NODE_TYPE } from '../../components/Constructor/Graph/Node/config';
 
 import { DELETE_NODE_MIDDLEWARE } from './types';
 

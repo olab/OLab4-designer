@@ -6,8 +6,8 @@ import notifyReducer from 'react-redux-notify';
 import createSagaMiddleware from 'redux-saga';
 import { createBrowserHistory } from 'history';
 
-import undoRedoMiddleware from '../middlewares/core/undoRedo';
 import syncNodeMiddleware from '../middlewares/app/syncNode';
+import undoRedoMiddleware from '../middlewares/core/undoRedo';
 import deleteNodeMiddleware from '../middlewares/app/deleteNode';
 import getWholeMapMiddleware from '../middlewares/app/getWholeMap';
 

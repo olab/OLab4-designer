@@ -8,7 +8,7 @@ import {
   CREATE_NODE_WITH_EDGE,
   UPDATE_EDGE,
   DELETE_EDGE,
-} from '../../app/reducers/map/types';
+} from '../../redux/map/types';
 
 const undoRedo = store => next => (action) => {
   if ([
