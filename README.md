@@ -15,7 +15,7 @@ npm start
 
 To make production build:
 ```bash
-npm build
+npm run-script build
 ```
 
 ## Environment variables
