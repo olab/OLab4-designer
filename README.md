@@ -20,10 +20,18 @@ npm build
 
 ## Environment variables
 
+```
 API_URL - base api url
 PLAYER_PUBLIC_URL - base player url
+```
 
 ## Production runbook
+
+Ensure no line ending translation
+
+```
+git config --global core.autocrlf false
+```
 
 Clone your repository and Open the folder
 ```bash
