@@ -7,7 +7,7 @@
     "@material-ui/icons": "^3.0.2",
     "@material-ui/lab": "^3.0.0-alpha.30",
     "@tinymce/tinymce-react": "^3.3.2",
-    "axios": "^0.18.0",
+    "axios": "^0.21.2",
     "babel-preset-stage-0": "^6.24.1",
     "bfj": "6.1.1",
     "chalk": "2.4.1",
